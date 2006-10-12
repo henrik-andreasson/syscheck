@@ -306,6 +306,39 @@ OCP_DESCR_3="FAIL - OCSP : Application Server is unavailable"
 ECA_ERRNO_3="0305"
 ECA_LEVEL_3="W"
 
+#MYSQL Cluster NDBD Resources
+NDBD_DESCR_1="OK - ndbd is running"
+NDBD_ERRNO_1="2501"
+NDBD_LEVEL_1="I"
+NDBD_DESCR_2="FAIL - ndbd is NOT running"
+#NDBD_ERRNO_2="2502"
+#NDBD_LEVEL_2="E"
+NDBD_ERRNO_2="2503"
+NDBD_LEVEL_2="W"
+
+
+#MYSQL Cluster NDB Manager Resources
+NDBM_DESCR_1="OK - ndb_mgmd is running"
+NDBM_ERRNO_1="2601"
+NDBM_LEVEL_1="I"
+NDBM_DESCR_2="FAIL - ndb_mgmd is NOT running"
+#NDBM_ERRNO_2="2602"
+#NDBM_LEVEL_2="E"
+NDBM_ERRNO_2="2603"
+NDBM_LEVEL_2="W"
+
+#DSS Resources
+SIGNSERVER_HOME=/usr/local/signserver
+
+DSS_DESCR_1="OK - Document SignServer is active"
+DSS_ERRNO_1="2701"
+DSS_LEVEL_1="I"
+DSS_DESCR_2="FAIL - Document SignServer is NOT active"
+#DSS_ERRNO_2="2702"
+#DSS_LEVEL_2="E"
+DSS_ERRNO_2="2703"
+DSS_LEVEL_2="W"
+
 #ACTIVATE CA RESOURCES
 #List indicating CAs to activate, should contain a list of caname and PIN separated by space.  
 CANAME[0]="test" 
