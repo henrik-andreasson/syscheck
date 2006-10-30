@@ -1,0 +1,3 @@
+
+DROP DATABASE ejbca;
+CREATE DATABASE ejbca;
