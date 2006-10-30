@@ -13,4 +13,4 @@ PRINTTOSCREEN="TRUE"
 export PRINTTOSCREEN
 
 . $SYSCHECK_HOME/resources.sh
-$SYSCHECK_HOME/systemcheck.sh all 
+$SYSCHECK_HOME/systemcheck.sh $*

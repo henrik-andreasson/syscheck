@@ -1,16 +1,22 @@
 README for system check scripts.
 
-Written by Philip Vendil philip@primekey.se 2006-05-17
+Written by Philip Vendil Primekey 2006-05-17 and 
+updated by Henrik Andreasson WM-data 2006-10-29
 
-The system check scripts controlls the overall health of the system
+DESCRIPTION
+---------------------------
+The system check scripts controls the overall health of the system
 and sends it's result to syslog for further processing
 
 The main script is 'systemcheck.sh' that performs all subsystem checks with
-a filename starting with "sc_" in the script directory. If one of the
-subsystem checks shouldn't be performed, remove it from the directory.
+a filename starting with "sc_" in the scripts-enebled directory. 
 
 The script 'console_systemcheck.sh' performs the same checks but echoes
 the output to the terminal instead of syslog.
+
+All message are described in lang/syscheck.<lang>
+errorcodes are defined in the local sc_file 
+defines that may be useful to more than the local script resides in resources.sh
 
 
 INSTALLATION
@@ -18,39 +24,19 @@ INSTALLATION
 untar the distribution in a suitable directory (default /usr/local/syscheck).
 Then edit resource.sh to fit your needs.
 
-All message resources, errorcodes and levels  are defined in the file resources.sh
+by default a subset of scripts are enabled by having a link in "scripts-enabled" to "scripts-available" where all 
+scripts reside, if you want all script enabled go to "scripts-enabled" and make links to "scripts-available"
+eg: cd scripts-enabled ; ln -s ../scripts-available/sc_01_disk_usage.sh .
 
+make a test-run by doing: ./console_systemcheck.sh if it works out good (All is OK), then go ahead and try
+./systemsheck.sh then check your syslog-logs 
+
+We've been running with the TCP feature of syslog-ng for a higer level of reliability for som time now, it works nice.
+
+HELP
+---------------------------
 Description of each subcheck script:
 
-sc_disk-usage.sh
-Script that checks that the disk have enougth free space on the hard drive.
-The limit is configured in the script (default 80%)
-
-sc_memory-usage.sh
-Checks that enought memory and swap is available.
-The limits are configured in the script (default mem :TODO, swap :)
-
-sc_pcsc_list_readers-usage.sh
-Checks that the expected number of card readers are available. The
-expected number is defined in the script with the NUMBER_OF_READERS variable.
-Any other number will raise an alarm.
-
-sc_pcscd.sh 
-Scripts that checks that pcscd daemon is up and running.
-
-sc_ejbca.sh
-Script that connects to the ejbca health check servlet to check
-the status of the ejbca application. The health check servlet
-checks JVM memory, database connection and HSM connection.
-
-sc_raid-check.sh
-Script that checks that the raid disk arrays are running ok.
-
-sc_syslog.sh
-Script that the syslog daemon is running and is exception log messages.
-
- 
-
-
-
+Run: ./scripts-available/sc_nn_foo.sh --help
+Eg: ./scripts-available/sc_04_pcsc_readers.sh --help
 
