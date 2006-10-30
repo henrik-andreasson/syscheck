@@ -8,25 +8,25 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 PATH=$SYSCHECK_HOME:$PATH
 
-export PATH
+export PATH 
 
-if [ "x$1" = "xall" ] ; then
 
-	for file in ${SYSCHECK_HOME}/sc_* ; do
+
+if [ "x$1" = "xall" -o "x$1" = "x" ] ; then
+
+	for file in ${SYSCHECK_HOME}/scripts-enabled/sc_* ; do
 		$file
 	done
 
 else
-	if [ -f $1 ] ; then
-		$*
-	elif [ -f ${scpath}/$1 ] ; then
-		${scpath}/$1
-	elif [ -f sc_${1} ] ; then
-		sc_${1}
-	elif [ -f ${scpath}/ov_$1 ] ; then
-		${scpath}/ov_$1
+	if [ -f ${SYSCHECK_HOME}/scripts-enabled/$1 ] ; then
+		${SYSCHECK_HOME}/scripts-enabled/$1
+	elif [ -f ${SYSCHECK_HOME}/$1 ] ; then
+		# called with script-enable/sc_0x_foo.sh
+                ${SYSCHECK_HOME}/$1
 	else
 		echo "cant find $1";
+		echo "maybe it is in scripts-available, but not in scripts-enabled?"
 		exit 1
 	fi
 fi
