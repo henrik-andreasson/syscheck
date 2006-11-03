@@ -17,19 +17,13 @@ get () {
 	./ejbca.sh ca getcrl $1 $CRLDIRECTORY/$2
 }
 
-get "E-TUGRA_ASM_NES" "e-tugra_asm_nes.crl"
-get "E-TUGRA_ASM_SSL" "e-tugra_asm_ssl.crl"
-get "YONETIM_SM" "yonetim_sm.crl"
+get "CA" "ca.crl"
 
 put () {
 	cd $CRLDIRECTORY
 	scp $2 $SSHUSER@$1:$SSHSERVER_DIR
 }
 
-put 192.168.10.10 "e-tugra_asm_nes.crl"
-put 192.168.10.10 "e-tugra_asm_ssl.crl"
-put 192.168.10.10 "yonetim_sm.crl"
+put 192.168.10.10 "ca.crl"
 
-put 192.168.10.11 "e-tugra_asm_nes.crl"
-put 192.168.10.11 "e-tugra_asm_ssl.crl"
-put 192.168.10.11 "yonetim_sm.crl"
+put 192.168.10.11 "ca.crl"
