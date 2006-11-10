@@ -6,6 +6,28 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # Import common resources
 . $SYSCHECK_HOME/resources.sh
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
+SCRIPTID=03
+
+MEM_ERRNO_1=${SCRIPTID}01
+MEM_ERRNO_2=${SCRIPTID}02
+MEM_ERRNO_3=${SCRIPTID}03
+MEM_ERRNO_4=${SCRIPTID}03
+
+
+
+
+if [ "x$1" = "x--help" ] ; then
+        echo "Script that checks that the disk have enougth free space on the hard drive."
+        echo "The limit is configured in the script (limit: ${DU_PERCENT}%)"
+        echo "to run with output directed to screen:"
+        echo "$0 <-s|--screen>"
+        exit
+elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
+    PRINTTOSCREEN=1
+fi 
+
+
 MEMORY=`free | grep -v total | grep -v buffers | grep -v Swap | cut -f2 -d: | perl -ane 's/\ +/;/gio,print'`
 SWAP=`free | grep -v total | grep -v buffers | grep -v Mem | cut -f2 -d: | perl -ane 's/\ +/;/gio,print'`
 
@@ -30,14 +52,14 @@ SWAPLIMIT=`expr $TOTALSWAP \* 5 \/ 10`
 REALUSEDMEMORY=`expr $TOTALMEMORY - $MEMORYTOGETHER`
 
 if [ $REALUSEDMEMORY -gt $MEMORYLIMIT ] ; then
-        printlogmess $MEM_LEVEL_1 $MEM_ERRNO_1 "$MEM_DESCR_1" "$REALUSEDMEMORY" "$MEMORYLIMIT"
+        printlogmess $WARN $MEM_ERRNO_1 "$MEM_DESCR_1" "$REALUSEDMEMORY" "$MEMORYLIMIT"
 else
-        printlogmess $MEM_LEVEL_2 $MEM_ERRNO_2 "$MEM_DESCR_2" "$REALUSEDMEMORY" "$MEMORYLIMIT"
+        printlogmess $INFO $MEM_ERRNO_2 "$MEM_DESCR_2" "$REALUSEDMEMORY" "$MEMORYLIMIT"
 fi
 
 if [ $USEDSWAP -gt $SWAPLIMIT ] ; then
-        printlogmess $MEM_LEVEL_3 $MEM_ERRNO_3 "$MEM_DESCR_3" "$USEDSWAP" "$SWAPLIMIT"
+        printlogmess $WARN $MEM_ERRNO_3 "$MEM_DESCR_3" "$USEDSWAP" "$SWAPLIMIT"
 else
-        printlogmess $MEM_LEVEL_4 $MEM_ERRNO_4 "$MEM_DESCR_4" "$USEDSWAP" "$SWAPLIMIT"
+        printlogmess $INFO $MEM_ERRNO_4 "$MEM_DESCR_4" "$USEDSWAP" "$SWAPLIMIT"
 
 fi

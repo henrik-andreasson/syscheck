@@ -50,7 +50,7 @@ raiddiskcheck () {
 raidlogiccheck () {
 	LDID=$1 
 
-        COMMAND=`echo "controller slot=0 ld all show" | $RAID_HPTOOL | grep "$LDID" | cut -d\, -f3 | sed 's/)//g'` 
+        COMMAND=`echo "controller slot=0 ld all show" | $RAID_HPTOOL | grep "$LDID" | cut -d\, -f3 | sed 's/)//g' | sed 's/\ //'` 
 #	echo $COMMAND 
 
         if [ "xOK" = "x$COMMAND" ] ; then
