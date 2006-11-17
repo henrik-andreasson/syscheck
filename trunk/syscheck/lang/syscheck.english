@@ -161,3 +161,16 @@ SW_RAID_HELP_2="A disk has failed, you need to replace it"
 SW_RAID_DESCR_3="Unpredicted error in SW-raid %s"
 SW_RAID_HELP_3="this script has found a not prediced error"
 
+
+APA_HELP="Check apache process is up and running"
+APA_DESCR_1="Apache webserver is running"
+APA_HELP_1="server is running and serving web pages"
+APA_DESCR_2="Apache webserver is not running"
+APA_HELP_2="check apache error.log, it is not running"
+
+LDAP_HELP="Checks the ldap server to make sure it's running"
+LDAP_DESCR_1="LDAP directory server is running"
+LDAP_HELP_1="all ok"
+LDAP_DESCR_2="LDAP directory server is not running"
+LDAP_HELP_2="check you ldap server logs"
+
