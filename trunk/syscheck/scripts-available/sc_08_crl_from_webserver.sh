@@ -32,7 +32,7 @@ checkcrl () {
 	CRLNAME=$1
 	cd /tmp
 	rm -f /tmp/$CRLNAME
-	wget $CRLFETCH_URL -T 10 -t 1 -O /tmp/$CRLNAME -o /dev/null
+	wget http://localhost/$CRLNAME -T 10 -t 1 -O /tmp/$CRLNAME -o /dev/null
 	if [ $? -ne 0 ] ; then
 		printlogmess $ERROR $CRL_ERRNO_3 "$CRL_DESCR_3" "$CRLNAME"	
 		exit
@@ -60,13 +60,17 @@ checkcrl () {
 # now we can check the crl:s best before date is in the future with atleast HOURTHRESHOLD hours (defined in resources)
 	TEMPDATE=`openssl crl -inform der -in $CRLNAME -lastupdate -noout`
 	DATE=${TEMPDATE:11}
-	HOURSSINCEGENERATION=`/usr/local/syscheck/cmp_dates.pl "$DATE"`
+	HOURSSINCEGENERATION=`${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE"`
 	
 	if [ "$HOURSSINCEGENERATION" -gt "$HOURTHRESHOLD" ] ; then
-		printlogmess $INFO $CRL_ERRNO_1 "$CRL_DESCR_1" "$CRLNAME"
+		printlogmess $ERROR $CRL_ERRNO_1 "$CRL_DESCR_1" "$CRLNAME"
 	else
-		printlogmess $ERROR $CRL_ERRNO_2 "$CRL_DESCR_2" "$CRLNAME"
+		printlogmess $INFO $CRL_ERRNO_2 "$CRL_DESCR_2" "$CRLNAME"
 	fi
 }
 
-checkcrl vpn_ca.crl
+
+checkcrl AdminCA1.crl
+#checkcrl Public_AdminCA2.crl
+# and so on ...
+
