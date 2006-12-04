@@ -21,7 +21,7 @@ my %mon2int = (	"Jan" => "1",
 		
 
 # input crl date on the format: May 17 11:23:01 2006 GMT
-$indate =~ m/(\w+) (\d+) (\d+):(\d+):(\d+) (\d+)/gio;
+$indate =~ m/(\w+)\ +(\d+) (\d+):(\d+):(\d+) (\d+)/gio;
 my ($strmon, $day, $hour, $min, $sec, $year) = ($1, $2, $3, $4, $5, $6);
 my $mon = $mon2int{$strmon};
 $date1 = Date_SecsSince1970($mon,$day,$year,$hour,$min,$sec);
