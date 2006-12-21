@@ -47,7 +47,7 @@ IPTABLES_RULE1="DROP       all  --  anywhere             anywhere            sta
 #CLUSTER SCRIPT RESOURCES
 
 #Path do clusterscript directory
-CLUSTERSCRIPT_HOME=$SYSCHECK_HOME/clusterscripts
+CLUSTERSCRIPT_HOME=$SYSCHECK_HOME/related/clusterscripts
 
 #IP address or hostname to primary and secondary cluster nodes.
 HOSTNAME_NODE1=192.168.0.11
