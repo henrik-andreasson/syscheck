@@ -23,18 +23,21 @@ perl -pi -e "s/HOSTNAME_NODE2/$HOSTNAME_NODE2/g" $CLUSTERSCRIPT_HOME/ejbca-ds-no
 perl -pi -e "s/DB_USER/$DB_USER/g" $CLUSTERSCRIPT_HOME/ejbca-ds-node2.xml
 perl -pi -e "s/DB_PASSWORD/$DB_PASSWORD/g" $CLUSTERSCRIPT_HOME/ejbca-ds-node2.xml
 
-cp $CLUSTERSCRIPT_HOME/ejbca-ds-node2.xml /usr/local/jboss/server/default/deploy/ejbca-ds.xml
-chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca-ds.xml 
-scp $CLUSTERSCRIPT_HOME/ejbca-ds-node2.xml $SSH_USER@$HOSTNAME_NODE1:/usr/local/jboss/server/default/deploy/ejbca-ds.xml
-ssh $SSH_USER@$HOSTNAME_NODE1 chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca-ds.xml
+# Fail over JBoss datasource
+if [ "$DO_DATASOURCE_FAILOVER" == "false" ] ; then
+  echo Not failing over JBoss datasources.
+else
+  cp $CLUSTERSCRIPT_HOME/ejbca-ds-node2.xml /usr/local/jboss/server/default/deploy/ejbca-ds.xml
+  chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca-ds.xml 
+  scp $CLUSTERSCRIPT_HOME/ejbca-ds-node2.xml $SSH_USER@$HOSTNAME_NODE1:/usr/local/jboss/server/default/deploy/ejbca-ds.xml
+  ssh $SSH_USER@$HOSTNAME_NODE1 chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca-ds.xml
+  
+  # Re-deploy to re-read the new datasource
+  cp $EJBCA_HOME/dist/ejbca.ear $JBOSS_HOME/server/default/deploy/ejbca.ear
+  chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca.ear
+  scp $EJBCA_HOME/dist/ejbca.ear $SSH_USER@$HOSTNAME_NODE1:$JBOSS_HOME/server/default/deploy/ejbca.ear
+  ssh $SSH_USER@$HOSTNAME_NODE1 chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca.ear
 
- 
-cp $EJBCA_HOME/dist/ejbca.ear $JBOSS_HOME/server/default/deploy/ejbca.ear
-chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca.ear
-scp $EJBCA_HOME/dist/ejbca.ear $SSH_USER@$HOSTNAME_NODE1:$JBOSS_HOME/server/default/deploy/ejbca.ear
-ssh $SSH_USER@$HOSTNAME_NODE1 chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca.ear
-
-sleep 20
-
-$CLUSTERSCRIPT_HOME/activateCAs.sh
-
+  sleep 20
+  $CLUSTERSCRIPT_HOME/activateCAs.sh  
+fi
