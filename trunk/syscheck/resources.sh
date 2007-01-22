@@ -56,6 +56,11 @@ HOSTNAME_NODE2=192.168.0.12
 #The virual IP address or hostname used by the cluster
 HOSTNAME_VIRTUAL=192.168.0.15
 
+# Indicates if the datasources in JBoss should be failed over.
+# Useful to set to false on OCSP-responders, if thay should always run against their local databases.
+# Anything other than false means true
+DO_DATASOURCE_FAILOVER=true
+
 #Path to EJBCA
 EJBCA_HOME=/usr/local/ejbca 
 
