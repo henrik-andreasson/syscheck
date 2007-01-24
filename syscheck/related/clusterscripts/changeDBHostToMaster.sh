@@ -44,7 +44,7 @@ perl -pi -e "s/DB_PASSWORD/$DB_PASSWORD/g" $CLUSTERSCRIPT_HOME/ejbca-ds-node1.xm
 
 # Fail over JBoss datasource
 if [ "$DO_DATASOURCE_FAILOVER" == "false" ] ; then
-  echo Not failing over JBoss datasources.
+  echo Info: Not failing over JBoss datasources.
 else
   cp $CLUSTERSCRIPT_HOME/ejbca-ds-node1.xml /usr/local/jboss/server/default/deploy/ejbca-ds.xml 
   chown jboss:jboss /usr/local/jboss/server/default/deploy/ejbca-ds.xml 
