@@ -90,6 +90,9 @@ DBREP_PASSWORD="foo123"
 #Username used for no-passphrase ssh login
 SSH_USER=jboss
 
+# Backup resources
+BACKUPFILE=/var/backup/ejbcabackup
+BACKUPFILE_NFAST=/var/backup/nfastbackup
 
 #ACTIVATE CA RESOURCES
 #List indicating CAs to activate, should contain a list of caname and PIN separated by space.  

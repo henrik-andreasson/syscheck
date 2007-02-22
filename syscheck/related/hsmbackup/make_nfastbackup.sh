@@ -8,21 +8,21 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 DATE=`date +%Y%m%d-%H:%M`
 
-FULLFILENAME="$BACKUPFILE-$DATE.sql"
+FULLFILENAME="$BACKUPFILE_NFAST-local-$DATE.tar"
 
-$MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca  > $FULLFILENAME 
+tar -c --directory /opt/nfast/kmdata -f $FULLFILENAME local
 
 if [ $? = 0 ]
 then
   gzip $FULLFILENAME
   if [ $? = 0 ]
   then
-      printlogmess $INFO $BAK_ERRNO_1 "$BAK_DESCR_1" 
+      printlogmess $INFO $BAK_ERRNO_1 "$BAK_NFAST_DESCR_1" 
   else
-      printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
+      printlogmess $ERROR $BAK_ERRNO_2 "$BAK_NFAST_DESCR_2"
   fi  
 else
-  printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
+  printlogmess $ERROR $BAK_ERRNO_2 "$BAK_NFAST_DESCR_2"
 fi 
 
 

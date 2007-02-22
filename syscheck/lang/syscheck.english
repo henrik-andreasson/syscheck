@@ -111,6 +111,8 @@ BAK_DESCR_1="Database backup of EJBCA was successful"
 BAK_HELP_1="No action is needed"
 BAK_DESCR_2="Database backup of EJBCA was unsuccessful"
 BAK_HELP_2="Check log (TODO) for more info about the actual message"
+BAK_NFAST_DESCR_1="NFast security world backup was successful"
+BAK_NFAST_DESCR_2="NFast security world backup was unsuccessful"
 
 BOKS_REPLICA_HELP="BoKS Replica checks"
 BOKS_REPLICA_DESCR_1="No action is needed"
