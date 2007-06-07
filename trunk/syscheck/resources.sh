@@ -5,7 +5,7 @@
 # Make only readable by root.
 
 #Script Location
-SYSCHECK_HOME=/usr/local/syscheck
+SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 export SYSCHECK_HOME
 PATH=$SYSCHECK_HOME:$PATH
 
