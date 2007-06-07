@@ -6,6 +6,10 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # Import common resources
 . $SYSCHECK_HOME/resources.sh
 
+#Define the number of readers to look for
+PCSC_NUMBER_OF_READERS=1
+
+
 SCRIPTID=04
 
 PCL_ERRNO_1=${SCRIPTID}01
@@ -23,7 +27,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-CMD=`$SYSCHECK_HOME/lib/list_reader.pl 2>&1`
+CMD=`$SYSCHECK_HOME/lib/list_reader.pl 2>&1 | grep "Number of"`
 
 ERRCHK=`echo $CMD| grep "locate Chipcard/PCSC.pm" ` 
 if [ "x$ERRCHK" != "x" ] ; then
@@ -31,7 +35,8 @@ if [ "x$ERRCHK" != "x" ] ; then
 	exit
 fi
 
-STATUS=`echo $CMD | grep "Number of attatched readers:"`
+STATUS=`echo $CMD `
+`
 
 
 if [ "Number of attatched readers: $PCSC_NUMBER_OF_READERS" = "$STATUS" ] ; then     
