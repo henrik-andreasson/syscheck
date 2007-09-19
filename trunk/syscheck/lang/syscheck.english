@@ -100,6 +100,13 @@ MYSQL_HELP_1="No action is needed"
 MYSQL_DESCR_2="mysql is NOT running"
 MYSQL_HELP_2="mysql is not running, try /etc/init.d/mysql stop, wait, /etc/init.d/mysql start"
 
+SQLSELECT_HELP="Mysql select keepalive"
+SQLSELECT_DESCR_1="mysql is running and answering"
+SQLSELECT_HELP_1="No action is needed"
+SQLSELECT_DESCR_2="mysql is NOT answering to select statement check"
+SQLSELECT_HELP_2="mysql is not running, try /etc/init.d/mysql stop, wait, /etc/init.d/mysql start"
+
+
 NFAST_HELP="NFAST, HSM token checks"
 NFAST_DESCR_1="nfast is running"
 NFAST_HELP_1="No action is needed"
@@ -113,6 +120,7 @@ BAK_DESCR_2="Database backup of EJBCA was unsuccessful"
 BAK_HELP_2="Check log (TODO) for more info about the actual message"
 BAK_NFAST_DESCR_1="NFast security world backup was successful"
 BAK_NFAST_DESCR_2="NFast security world backup was unsuccessful"
+
 
 BOKS_REPLICA_HELP="BoKS Replica checks"
 BOKS_REPLICA_DESCR_1="No action is needed"
