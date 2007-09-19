@@ -25,7 +25,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
 fi
 
 
-status="echo 'SELECT * FROM CertificateData LIMIT 1'|$MYSQL_BIN ejbca -u root --password=$MYSQLROOT_PASSWORD"
+status=`echo 'SELECT * FROM CertificateData LIMIT 1'|$MYSQL_BIN ejbca -u root --password=$MYSQLROOT_PASSWORD 2>&1 > /dev/null`
 if [ $? -ne 0 ] ; then
     printlogmess $ERROR $SQLSELECT_ERRNO_2 "$SQLSELECT_DESCR_2"  
     exit 3
