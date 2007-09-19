@@ -45,11 +45,11 @@ checkntp () {
 
 	ntpq -p > /tmp/$NTPTEMPFILE
 
-	NTPCHECKTEMPFILE=`cat /tmp/$NTPTEMPFILE | grep -v LOCAL | grep -v remote | grep -v = | sed 's/*//g' | sed 's/=//g' | awk '{print $1}'`
+	NTPCHECKTEMPFILE=`cat /tmp/$NTPTEMPFILE | grep -v LOCAL | grep -v remote | grep -v = | sed 's/*//g' | sed 's/=//g' | sed 's/+//g' | sed 's/-//g' | awk '{print $1}'`
 
 	# This flag is set so that $CHECKNTPRUN will only run once (no need to have it run for every server defined, because we already now that it is running after the first time).
 	while [ x"$CHECKNTPRUNONCE" = x"0" ]; do
-		echo CHECKNTPRUNONCE=`expr $CHECKNTPRUNONCE \+ 1`
+		CHECKNTPRUNONCE=`expr $CHECKNTPRUNONCE \+ 1`
 		if [ x"$CHECKNTPRUN" != xntpd ]; then
 			printlogmess $ERROR $NTP_ERRNO_2 $NTP_DESCR_2
 			exit 1
@@ -67,7 +67,7 @@ checkntp () {
 			printlogmess $INFO $NTP_ERRNO_3 $NTP_DESCR_3 \(Server configured: ${NTPSERVER[$i]}\)
 		fi	
 	done
-	rm /tmp/$NTPTEMPFILE
+	#rm /tmp/$NTPTEMPFILE
 }
 
 mytrapfunc () {
@@ -77,4 +77,9 @@ mytrapfunc () {
 
 # Add the ntp servers below.
 # checkntp 'LOCAL(0)' # This is just for test, do not use the LOCAL(0) in production.
-checkntp 'tsa.localdomain'
+
+#remove when config:ed 
+echo "script need config"
+exit
+
+checkntp ntp.company.com
