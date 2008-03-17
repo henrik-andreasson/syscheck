@@ -3,7 +3,7 @@
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
-# Import common resources
+## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
@@ -28,7 +28,7 @@ swraidcheck () {
 	ARRAY=$1
         DISC=$2
 
-        COMMAND=`mdadm --detail $ARRAY | grep $DISC `
+        COMMAND=`mdadm --detail $ARRAY 2>&1| grep $DISC `
 
         STATUSactive=`echo $COMMAND | grep 'active sync' `
         STATUSfault=`echo $COMMAND | grep 'fault' `
