@@ -6,7 +6,7 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=22
 
-# Import common resources
+## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
 BOKS_REPLICA_ERRNO_1=${SCRIPTID}01

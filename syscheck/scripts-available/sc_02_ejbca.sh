@@ -3,8 +3,13 @@
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
-# Import common resources
+## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
+
+## Local definitions ##
+#Hostname to check, default (localhost)
+EJBCA_HOSTNAME=localhost
+
 
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
@@ -14,6 +19,7 @@ ECA_ERRNO_1=${SCRIPTID}01
 ECA_ERRNO_2=${SCRIPTID}02
 ECA_ERRNO_3=${SCRIPTID}04
 
+PRINTTOSCREEN=0
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 	echo "Script that connects to the ejbca health check servlet to check"
 	echo "the status of the ejbca application. The health check servlet"
@@ -34,12 +40,21 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi 
 
+printtoscreen() {
 
+  IFS=$'\n'
+
+  if [ $PRINTTOSCREEN -eq 1 ] ; then 
+	echo "Screenonly output:"
+	echo $*
+  fi
+}
 
 OUTPUT='/tmp/ejbcahealth.log'
 EJBCAHEALTHLOG='/tmp/ejbcahealth'
 cd /tmp
 wget http://$EJBCA_HOSTNAME:8080/ejbca/publicweb/healthcheck/ejbcahealth -T 10 -t 1 -o $OUTPUT
+printtoscreen `cat $OUTPUT `
 
 ERRORCATOUTPUT=`cat $OUTPUT | grep ERROR`
 ERRORECHOOUTPUT=`echo $ERRORCATOUTPUT`

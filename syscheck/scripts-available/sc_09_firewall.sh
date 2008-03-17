@@ -5,8 +5,17 @@
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
-# Import common resources
+## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
+
+## Local definitions ##
+#FIREWALL CHECK RESOURCES
+IPTABLES_BIN=/usr/sbin/iptables # suse
+#IPTABLES_BIN=/sbin/iptables # debian 
+
+#Rules to check that it exists.
+IPTABLES_RULE1="DROP       all  --  anywhere             anywhere            state INVALID"
+
 
 SCRIPTID=09
 

@@ -6,7 +6,7 @@ procname=/usr/local/mysql/libexec/mysqld
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
-# Import common resources
+## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
 

@@ -11,13 +11,12 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=17
 
-# Import common resources
+## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
 NTP_ERRNO_1=${SCRIPTID}01
 NTP_ERRNO_2=${SCRIPTID}02
 NTP_ERRNO_3=${SCRIPTID}03
-NTP_ERRNO_4=${SCRIPTID}04
 
 
 # help
@@ -32,42 +31,35 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" ] ; then
 fi
 
 
-CHECKNTPRUNONCE=0
+NTP_SERVERS=`grep '^server' /etc/ntp.conf  | awk  '{print $2}'`
+i=0
+for server in ${NTP_SERVERS} ; do
+	IP_NTP_SERVERS[$i]=`host $server | grep address | awk '{print $4}'`
+	i=`expr $i + 1`
+done
+
 
 trap mytrapfunc HUP KILL QUIT TERM
 
 checkntp () {
+	NTPSERVER=$1
 	DATE=`date +'%Y-%m-%d'`
-	CHECKNTPRUN=`ps -ef | grep ntpd | grep -v grep | sed 's/\/usr\/sbin\///g' | awk '{print $8}'`
 	XNTPDPID=`ps -ef | grep ntpd | grep -v grep | awk '{print $2}'`
+	if [ x"$XNTPDPID" = "x" ]; then
+		printlogmess $ERROR $NTP_ERRNO_2 "$NTP_DESCR_2"
+		exit
+	fi	
 	NTPTEMPFILE='checkntpsync-'$DATE
-	NTPSERVER=( "$1" )
 
-	ntpq -p > /tmp/$NTPTEMPFILE
+	# todo make one row, and no tempfile
+	ntpq -pn > /tmp/$NTPTEMPFILE
+	NTPCHECK=`cat /tmp/$NTPTEMPFILE | grep $NTPSERVER`
 
-	NTPCHECKTEMPFILE=`cat /tmp/$NTPTEMPFILE | grep -v LOCAL | grep -v remote | grep -v = | sed 's/*//g' | sed 's/=//g' | sed 's/+//g' | sed 's/-//g' | awk '{print $1}'`
-
-	# This flag is set so that $CHECKNTPRUN will only run once (no need to have it run for every server defined, because we already now that it is running after the first time).
-	while [ x"$CHECKNTPRUNONCE" = x"0" ]; do
-		CHECKNTPRUNONCE=`expr $CHECKNTPRUNONCE \+ 1`
-		if [ x"$CHECKNTPRUN" != xntpd ]; then
-			printlogmess $ERROR $NTP_ERRNO_2 $NTP_DESCR_2
-			exit 1
-		else
-			printlogmess $INFO $NTP_ERRNO_1 $NTP_DESCR_1
-		fi
-		echo
-	done
-
-	# Checks if the servers defined in the en of the file is in the list.
-	for (( i = 0 ; i < ${#NTPSERVER[@]} ; i++ )) ; do
-		if [ x"$NTPCHECKTEMPFILE" != x${NTPSERVER[$i]} ]; then
-			printlogmess $ERROR $NTP_ERRNO_4 $NTP_DESCR_4 \(Server configured: ${NTPSERVER[$i]}\)
-		else
-			printlogmess $INFO $NTP_ERRNO_3 $NTP_DESCR_3 \(Server configured: ${NTPSERVER[$i]}\)
-		fi	
-	done
-	#rm /tmp/$NTPTEMPFILE
+	if [ x"$NTPCHECK" = "x" ]; then
+		printlogmess $ERROR $NTP_ERRNO_3 "$NTP_DESCR_3" "$NTPSERVER"
+		exit
+	fi	
+	printlogmess $INFO $NTP_ERRNO_1 "$NTP_DESCR_1" "$NTPSERVER"
 }
 
 mytrapfunc () {
@@ -75,11 +67,9 @@ mytrapfunc () {
 	exit 1
 }
 
-# Add the ntp servers below.
-# checkntp 'LOCAL(0)' # This is just for test, do not use the LOCAL(0) in production.
 
-#remove when config:ed 
-echo "script need config"
-exit
+# check with the IP:s of all ntp servers
+for (( i = 0 ;  i < ${#IP_NTP_SERVERS[@]} ; i++ )) ; do
+	checkntp ${IP_NTP_SERVERS[$i]}
+done
 
-checkntp ntp.company.com

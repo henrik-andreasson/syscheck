@@ -4,8 +4,18 @@
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
-# Import common resources
+# Import common definitions
 . $SYSCHECK_HOME/resources.sh
+
+## Local Definitions ##
+
+#CRL CHECK RESOURCES
+#CRL Fetch URL
+CRLFETCH_URL=TODO
+
+# Variable indication the maximum age of the CRL i hours.
+HOURTHRESHOLD=24
+
 
 SCRIPTID=08
 
