@@ -25,8 +25,8 @@ SSH_USER=jboss
 #select you lang (choose from files in lang/)
 SYSCHECK_LANG=english
 
-# source the specified lang
-. ${SYSCHECK_HOME}/lang/syscheck.${SYSCHECK_LANG}
+# source the lang func
+. ${SYSCHECK_HOME}/lib/lang.sh
 
 
 

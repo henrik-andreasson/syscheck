@@ -6,15 +6,15 @@
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
-SCRIPTID=07
+SCRIPTID=16
 
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
+getlangfiles $SCRIPTID ;
+
 LDAP_ERRNO_1=${SCRIPTID}01
 LDAP_ERRNO_2=${SCRIPTID}02
-LDAP_ERRNO_3=${SCRIPTID}03
-LDAP_ERRNO_4=${SCRIPTID}04
 
 
 # help
@@ -22,7 +22,6 @@ if [ "x$1" = "x--help" ] ; then
     echo "$0 $LDAP_HELP"
     echo "$LDAP_ERRNO_1/$LDAP_DESCR_1 - $LDAP_HELP_1"
     echo "$LDAP_ERRNO_2/$LDAP_DESCR_2 - $LDAP_HELP_2"
-    echo "$LDAP_ERRNO_3/$LDAP_DESCR_3 - $LDAP_HELP_3"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" ] ; then
     PRINTTOSCREEN=1

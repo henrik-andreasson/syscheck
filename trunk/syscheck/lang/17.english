@@ -1,0 +1,16 @@
+NTP_HELP="Check that ntp i running and is insync"
+
+NTP_DESCR_1="OK - XNTPD is up running"
+NTP_HELP_1="all ok"
+
+NTP_DESCR_2="FAIL - XNTPD is NOT running."
+NTP_HELP_2="Start it with /etc/init.d/xntpd start"
+
+NTP_DESCR_3="OK - XNTPD can synchronize to servers"
+NTP_HELP_3="all ok"
+
+NTP_DESCR_4="FAIL - XNTPD can NOT synchronize to servers."
+NTP_HELP_4="Check network connectivity and configuration of ntp"
+
+NTP_DESCR_5="FAIL - ntp.conf not found"
+NTP_HELP_5="Check your ntp installation"

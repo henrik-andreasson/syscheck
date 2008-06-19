@@ -9,8 +9,9 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
-
 SCRIPTID=12
+
+getlangfiles $SCRIPTID ;
 
 MYSQL_ERRNO_1=${SCRIPTID}01
 MYSQL_ERRNO_2=${SCRIPTID}02

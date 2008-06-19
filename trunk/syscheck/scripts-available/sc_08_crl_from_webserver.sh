@@ -7,7 +7,9 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # Import common definitions
 . $SYSCHECK_HOME/resources.sh
 
+
 ## Local Definitions ##
+SCRIPTID=08
 
 #CRL CHECK RESOURCES
 #CRL Fetch URL
@@ -17,7 +19,7 @@ CRLFETCH_URL=TODO
 HOURTHRESHOLD=24
 
 
-SCRIPTID=08
+getlangfiles $SCRIPTID ;
 
 CRL_ERRNO_1=${SCRIPTID}01
 CRL_ERRNO_2=${SCRIPTID}02
@@ -30,6 +32,7 @@ if [ "x$1" = "x--help" ] ; then
     echo "$CRL_ERRNO_1/$CRL_DESCR_1 - $CRL_HELP_1"
     echo "$CRL_ERRNO_2/$CRL_DESCR_2 - $CRL_HELP_2"
     echo "$CRL_ERRNO_3/$CRL_DESCR_3 - $CRL_HELP_3"
+    echo "$CRL_ERRNO_4/$CRL_DESCR_4 - $CRL_HELP_4"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1

@@ -1,5 +1,16 @@
 #!/bin/sh
 
+# func to output debug when using -s or --screen
+printtoscreen() {
+
+  IFS=$'\n'
+
+  if [ $PRINTTOSCREEN -eq 1 ] ; then 
+	echo "Screenonly output:"
+	echo $*
+  fi
+}
+
 
 # ex: printlogmess $LEVEL $SLOG_ERRNO_1 "$SLOG_DESCR_1"
 printlogmess(){

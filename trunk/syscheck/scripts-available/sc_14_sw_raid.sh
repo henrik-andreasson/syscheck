@@ -9,17 +9,18 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=14
 
+getlangfiles $SCRIPTID ;
+
 SW_RAID_ERRNO_1=${SCRIPTID}01
 SW_RAID_ERRNO_2=${SCRIPTID}02
 SW_RAID_ERRNO_3=${SCRIPTID}03
 
-
-
 if [ "x$1" = "x--help" -o "x$1" = "x-h" ] ; then
-	/bin/echo -e $SW_RAID_EXHLP
-	/bin/echo -e $SW_RAID_EXHLP_1
-	/bin/echo -e $SW_RAID_EXHLP_2
-	/bin/echo -e $SW_RAID_EXHLP_3
+    echo -e "$0: $SW_RAID_HELP"
+    echo -e "$SW_RAID_ERRNO_1 - $SW_RAID_HELP_1" 
+    echo -e "$SW_RAID_ERRNO_2 - $SW_RAID_HELP_2" 
+    echo -e "$SW_RAID_ERRNO_3 - $SW_RAID_HELP_3" 
+    
 elif [ "x$1" = "x--screen" -o "x$1" = "x-s" ] ; then
 	PRINTTOSCREEN=1
 fi

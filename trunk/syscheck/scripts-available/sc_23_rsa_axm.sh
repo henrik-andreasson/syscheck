@@ -9,6 +9,8 @@ SCRIPTID=23
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
+getlangfiles $SCRIPTID ;
+
 RSA_AXM_ERRNO_1=${SCRIPTID}01
 RSA_AXM_ERRNO_2=${SCRIPTID}02
 RSA_AXM_ERRNO_3=${SCRIPTID}03
@@ -17,8 +19,8 @@ RSA_AXM_ERRNO_3=${SCRIPTID}03
 # help
 if [ "x$1" = "x--help" ] ; then
     echo "$0 $RSA_AXM_HELP"
-    echo "$RSA_AXM_ERRNO_1/$RSA_AXM_DESCR_1 - $BOKS_REPLICA_HELP_1"
-    echo "$RSA_AXM_ERRNO_2/$RSA_AXM_DESCR_2 - $BOKS_REPLICA_HELP_2"
+    echo "$RSA_AXM_ERRNO_1/$RSA_AXM_DESCR_1 - $RSA_AXM_HELP_1"
+    echo "$RSA_AXM_ERRNO_2/$RSA_AXM_DESCR_2 - $RSA_AXM_HELP_2"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
