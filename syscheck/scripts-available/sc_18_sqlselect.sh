@@ -7,8 +7,9 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
-
 SCRIPTID=18
+
+getlangfiles $SCRIPTID ;
 
 SQLSELECT_ERRNO_1=${SCRIPTID}01
 SQLSELECT_ERRNO_2=${SCRIPTID}02

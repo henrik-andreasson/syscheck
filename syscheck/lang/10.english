@@ -1,0 +1,13 @@
+CLU_HELP="Cluster checks"
+
+CLU_DESCR_1="OK - Primary Node is Master Database."
+CLU_HELP_1="No action is needed"
+
+CLU_DESCR_2="FAIL - Secondary Node is Master Database, schedule a resync!"
+CLU_HELP_2="TODO"
+
+CLU_DESCR_3="FAIL - JBoss Database settings match between clusters."
+CLU_HELP_3="TODO"
+
+CLU_DESCR_4="FAIL - JBoss Db settings doesn't match, possible dataloss."
+CLU_HELP_4="TODO"

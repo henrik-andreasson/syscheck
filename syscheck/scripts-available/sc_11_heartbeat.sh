@@ -9,8 +9,9 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
-
 SCRIPTID=11
+
+getlangfiles $SCRIPTID ;
 
 HA_ERRNO_1=${SCRIPTID}01
 HA_ERRNO_2=${SCRIPTID}02

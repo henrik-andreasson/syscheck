@@ -13,15 +13,14 @@ SCRIPTID=15
 
 APA_ERRNO_1=${SCRIPTID}01
 APA_ERRNO_2=${SCRIPTID}02
-APA_ERRNO_3=${SCRIPTID}03
 
+getlangfiles $SCRIPTID ;
 
 # help
 if [ "x$1" = "x--help" ] ; then
     echo "$0 $APA_HELP"
     echo "$APA_ERRNO_1/$APA_DESCR_1 - $APA_HELP_1"
     echo "$APA_ERRNO_2/$APA_DESCR_2 - $APA_HELP_2"
-    echo "$APA_ERRNO_3/$APA_DESCR_3 - $APA_HELP_3"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1

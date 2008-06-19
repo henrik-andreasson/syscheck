@@ -8,18 +8,20 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=27
 
-DSS_ERRNO_1=${SCRIPTID}01
-DSS_ERRNO_2=${SCRIPTID}02
-DSS_ERRNO_3=${SCRIPTID}03
-DSS_ERRNO_4=${SCRIPTID}04
+getlangfiles $SCRIPTID ;
+
+ERRNO_1=${SCRIPTID}01
+ERRNO_2=${SCRIPTID}02
+ERRNO_3=${SCRIPTID}03
+ERRNO_4=${SCRIPTID}04
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $DSS_HELP"
-    echo "$DSS_ERRNO_1/$DSS_DESCR_1 - $DSS_HELP_1"
-    echo "$DSS_ERRNO_2/$DSS_DESCR_2 - $DSS_HELP_2"
-    echo "$DSS_ERRNO_3/$DSS_DESCR_3 - $DSS_HELP_3"
-    echo "$DSS_ERRNO_4/$DSS_DESCR_4 - $DSS_HELP_4"
+    echo "$0 $HELP"
+    echo "$ERRNO_1/$DSS_DESCR_1 - $DSS_HELP_1"
+    echo "$ERRNO_2/$DSS_DESCR_2 - $DSS_HELP_2"
+    echo "$ERRNO_3/$DSS_DESCR_3 - $DSS_HELP_3"
+    echo "$ERRNO_4/$DSS_DESCR_4 - $DSS_HELP_4"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
@@ -30,7 +32,7 @@ fi
 SIGNSERVER_HOME=/usr/local/signserver
 
 if [ ! -f $SIGNSERVER_HOME/bin/signserver.sh ] ; then 
-    printlogmess $ERROR $DSS_ERRNO_4 "$DSS_DESCR_4"
+    printlogmess $ERROR $ERRNO_4 "$DSS_DESCR_4"
     exit
 fi
 cd $SIGNSERVER_HOME
@@ -38,10 +40,10 @@ OUTPUT=`$SIGNSERVER_HOME/bin/signserver.sh getstatus all 1 | grep "Status : Acti
 
 
 if [ "$OUTPUT" = "2" ] ; then
-	printlogmess $INFO $DSS_ERRNO_1 "$DSS_DESCR_1"  
+	printlogmess $INFO $ERRNO_1 "$DSS_DESCR_1"  
 elif [ "$OUTPUT" = "1" ] ; then
-	printlogmess $WARNING $DSS_ERRNO_2 "$DSS_DESCR_2"  
+	printlogmess $WARNING $ERRNO_2 "$DSS_DESCR_2"  
 else
-	printlogmess $ERROR $DSS_ERRNO_3 "$DSS_DESCR_3"
+	printlogmess $ERROR $ERRNO_3 "$DSS_DESCR_3"
 fi
 

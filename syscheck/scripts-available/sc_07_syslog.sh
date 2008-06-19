@@ -3,17 +3,18 @@
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
-# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
-SCRIPTID=07
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
+
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
+SCRIPTID=07
 
 ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02
 ERRNO_3=${SCRIPTID}03
 ERRNO_4=${SCRIPTID}04
 
+getlangfiles $SCRIPTID ;
 
 # file at localhost messages goes to
 localsyslogfile=/var/log/messages
@@ -32,9 +33,9 @@ status=0
 # help
 if [ "x$1" = "x--help" ] ; then
     echo "$0 $SLOG_HELP"
-    echo "$SLOG_ERRNO_1/$SLOG_DESCR_1 - $SLOG_HELP_1"
-    echo "$SLOG_ERRNO_2/$SLOG_DESCR_2 - $SLOG_HELP_2"
-    echo "$SLOG_ERRNO_3/$SLOG_DESCR_3 - $SLOG_HELP_3"
+    echo "$ERRNO_1/$SLOG_DESCR_1 - $SLOG_HELP_1"
+    echo "$ERRNO_2/$SLOG_DESCR_2 - $SLOG_HELP_2"
+    echo "$ERRNO_3/$SLOG_DESCR_3 - $SLOG_HELP_3"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" ] ; then
     PRINTTOSCREEN=1

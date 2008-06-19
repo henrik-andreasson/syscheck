@@ -7,13 +7,15 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
+SCRIPTID=20
+
+getlangfiles $SCRIPTID ;
 
 # Ejbca Error Logger, reports error from server.log once
 EEL_SERVER_LOG_FILE="/misc/pkg/jboss/server/default/log/server.log"
 EEL_SERVER_LOG_LASTPOSITION="/tmp/misc_pkg_jboss_server_default_log_server_log.lastposision"
 
 
-SCRIPTID=20
 
 EEL_ERRNO_1=${SCRIPTID}01
 EEL_ERRNO_2=${SCRIPTID}02

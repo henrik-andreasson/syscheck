@@ -4,10 +4,12 @@
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
-SCRIPTID=23
+SCRIPTID=24
 
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
+
+getlangfiles $SCRIPTID ;
 
 WEBLOGIC_ERRNO_1=${SCRIPTID}01
 WEBLOGIC_ERRNO_2=${SCRIPTID}02
@@ -17,8 +19,8 @@ WEBLOGIC_ERRNO_3=${SCRIPTID}03
 # help
 if [ "x$1" = "x--help" ] ; then
     echo "$0 $WEBLOGIC_HELP"
-    echo "$WEBLOGIC_ERRNO_1/$WEBLOGIC_DESCR_1 - $BOKS_REPLICA_HELP_1"
-    echo "$WEBLOGIC_ERRNO_2/$WEBLOGIC_DESCR_2 - $BOKS_REPLICA_HELP_2"
+    echo "$WEBLOGIC_ERRNO_1/$WEBLOGIC_DESCR_1 - $WEBLOGIC_HELP_1"
+    echo "$WEBLOGIC_ERRNO_2/$WEBLOGIC_DESCR_2 - $WEBLOGIC_HELP_2"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
