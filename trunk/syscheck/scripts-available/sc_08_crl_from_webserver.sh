@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 # Set default home if not already set.
