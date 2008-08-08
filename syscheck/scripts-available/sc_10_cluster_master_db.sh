@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Skript that checks that the firewall haven't been turned off.
+# Skript that checks that the primary database node is active and that both JBoss works against the same database.
 
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
