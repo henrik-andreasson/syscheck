@@ -1,0 +1,5 @@
+ACTVIP_HELP="Activate the VIP"
+ACTVIP_DESCR_1="Activate VIP run successfully"
+ACTVIP_DESCR_2="Activate VIP failed (%s) "
+ACTVIP_HELP_1="All is ok"
+ACTVIP_HELP_2="Could be problems accessing the application server, or token is not available  %s"

@@ -28,8 +28,6 @@ SYSCHECK_LANG=english
 # source the lang func
 . ${SYSCHECK_HOME}/lib/lang.sh
 
-
-
 ### EJBCA settings ###
 #Path to EJBCA
 EJBCA_HOME=/usr/local/ejbca 
@@ -76,12 +74,19 @@ MYSQLROOT_PASSWORD="foo123"
 #Path do clusterscript directory
 CLUSTERSCRIPT_HOME=$SYSCHECK_HOME/related/clusterscripts
 
+#Path do ejbcascript directory
+EJBCASCRIPT_HOME=$SYSCHECK_HOME/misc/ejbca
+
+
 #IP address or hostname to primary and secondary cluster nodes.
 HOSTNAME_NODE1=192.168.0.11
 HOSTNAME_NODE2=192.168.0.12
 
 #The virual IP address or hostname used by the cluster
 HOSTNAME_VIRTUAL=192.168.0.15
+NETMASK_VIRTUAL=24
+IF_VIRTUAL=eth0
+
 
 # Indicates if the datasources in JBoss should be failed over.
 # Useful to set to false on OCSP-responders, if thay should always run against their local databases.

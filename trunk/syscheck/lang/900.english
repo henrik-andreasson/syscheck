@@ -1,0 +1,3 @@
+ECRT_DESCR_1="Export certificate run successfully"
+ECRT_DESCR_2="Export certificate failed (%s) "
+ECRT_DESCR_3="Export certificate failed, script called without file"

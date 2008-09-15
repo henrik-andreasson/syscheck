@@ -15,6 +15,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 . $SYSCHECK_HOME/resources.sh
 
 ## local definitions ##
+SCRIPTID=905
+
 HOURTHRESHOLD=12
 
 
@@ -33,7 +35,6 @@ SSHKEY[1]='/home/jboss/.ssh/id_rsa'
 
 ### end config ###
 
-SCRIPTID=19
 
 PUB_ERRNO_1=${SCRIPTID}01
 PUB_ERRNO_2=${SCRIPTID}02
