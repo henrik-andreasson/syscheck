@@ -1,0 +1,4 @@
+ECRL_DESCR_1="Export CRL run successfully"
+ECRL_DESCR_2="Export CRL failed (%s) "
+ECRL_DESCR_3="Export CRL failed, script called without file"
+

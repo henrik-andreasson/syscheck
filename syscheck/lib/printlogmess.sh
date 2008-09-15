@@ -5,7 +5,7 @@ printtoscreen() {
 
   IFS=$'\n'
 
-  if [ $PRINTTOSCREEN -eq 1 ] ; then 
+  if [ "x$PRINTTOSCREEN" = "x1" ] ; then 
 	echo "Screenonly output:"
 	echo $*
   fi
@@ -51,11 +51,10 @@ printlogmess(){
         MESSAGE0="${HOST}: ${DESCR_W_ARGS}"
         MESSAGE=${MESSAGE0:0:79}
 
-        if [ "x$PRINTTOSCREEN" = "x" ] ; then
-            logger -p local3.${SYSLOGLEVEL} "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
-        else
-            echo "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
+        if [ "x$PRINTTOSCREEN" = "x1" ] ; then
+            echo "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}"
         fi
 
-}
+	logger -p local3.${SYSLOGLEVEL} "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
 
+}
