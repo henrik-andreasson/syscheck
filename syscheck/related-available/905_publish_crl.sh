@@ -7,15 +7,15 @@
 
 # source env vars from system that dont get included when running from cron
 
-. /etc/profile.local
-
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 # Import common resources
 . $SYSCHECK_HOME/resources.sh
 
+
 ## local definitions ##
 SCRIPTID=905
+getlangfiles $SCRIPTID
 
 HOURTHRESHOLD=12
 
@@ -36,18 +36,18 @@ SSHKEY[1]='/home/jboss/.ssh/id_rsa'
 ### end config ###
 
 
-PUB_ERRNO_1=${SCRIPTID}01
-PUB_ERRNO_2=${SCRIPTID}02
-PUB_ERRNO_3=${SCRIPTID}03
-PUB_ERRNO_4=${SCRIPTID}04
-PUB_ERRNO_5=${SCRIPTID}05
-PUB_ERRNO_6=${SCRIPTID}06
-PUB_ERRNO_7=${SCRIPTID}07
+ERRNO_1=${SCRIPTID}01
+ERRNO_2=${SCRIPTID}02
+ERRNO_3=${SCRIPTID}03
+ERRNO_4=${SCRIPTID}04
+ERRNO_5=${SCRIPTID}05
+ERRNO_6=${SCRIPTID}06
+ERRNO_7=${SCRIPTID}07
 
 
 
 
-if [ "x$1" = "x--help" ] ; then
+if [ "x$1" = "x--help" -o "x$1" = "x-h" ] ; then
         echo "$0 <-s|--screen>"
         exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
@@ -70,10 +70,10 @@ get () {
 	CRLNAME=$1
 	CRLFILE=$2
         rm -f $CRLDIRECTORY/$CRLFILE
-        cd /usr/local/ejbca/bin
-        ./ejbca.sh ca getcrl $CRLNAME $CRLDIRECTORY/$CRLFILE
+        printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLDIRECTORY/$CRLFILE"
+        ${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLDIRECTORY/$CRLFILE
 	if [ $? != 0 -o  ! -r $CRLDIRECTORY/$CRLFILE  ] ; then
-                printlogmess $ERROR $PUB_ERRNO_6 "$PUB_DESCR_6" $CRLNAME
+                printlogmess $ERROR $ERRNO_6 "$PUBL_DESCR_6" $CRLNAME
 	fi
 }
 
@@ -86,9 +86,11 @@ put () {
 	SSHUSER=$5
 
         cd $CRLDIRECTORY
-        scp -i $SSHKEY $CRLNAME $SSHUSER@$CRLHOST:$SSHSERVER_DIR
+        printtoscreen "scp -i $SSHKEY $CRLNAME $SSHUSER@$CRLHOST:$SSHSERVER_DIR"
+#        scp -i $SSHKEY $CRLNAME $SSHUSER@$CRLHOST:$SSHSERVER_DIR
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh $CRLNAME $CRLHOST $SSHSERVER_DIR
 	if [ $? != 0 ] ; then
-                printlogmess $ERROR $PUB_ERRNO_2 "$PUB_DESCR_2" $CRLHOST $CRLNAME
+                printlogmess $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLHOST $CRLNAME
 	fi
 }
 
@@ -103,28 +105,29 @@ checkcrl () {
 
         cd $VERIFYCRLDIRECTORY
         rm -f $VERIFYCRLDIRECTORY/$CRLNAME
-        scp -i $SSHKEY $SSHUSER@${CRLHOST}:$SSHSERVER_DIR/$CRLNAME $VERIFYCRLDIRECTORY/$CRLNAME 
+        printtoscreen "scp -o ConnectTimeout=10 -i $SSHKEY $SSHUSER@${CRLHOST}:$SSHSERVER_DIR/$CRLNAME $VERIFYCRLDIRECTORY/$CRLNAME "
+        scp -o ConnectTimeout=10 -i $SSHKEY $SSHUSER@${CRLHOST}:$SSHSERVER_DIR/$CRLNAME $VERIFYCRLDIRECTORY/$CRLNAME 
         if [ $? -ne 0 ] ; then
-		printlogmess $ERROR $PUB_ERRNO_3 "$PUB_DESCR_3" $CRLHOST $CRLNAME
+		printlogmess $ERROR $ERRNO_3 "$PUBL_DESCR_3" $CRLHOST $CRLNAME
                 exit
         fi
 
 # file not found where it should be
         if [ ! -f $VERIFYCRLDIRECTORY/$CRLNAME ] ; then
-		printlogmess $ERROR $PUB_ERRNO_4 "$PUB_DESCR_4" $CRLHOST $CRLNAME
+		printlogmess $ERROR $ERRNO_4 "$PUBL_DESCR_4" $CRLHOST $CRLNAME
                 exit 1
         fi
 
         CRL_FILE_SIZE=`stat -c"%s" $VERIFYCRLDIRECTORY/$CRLNAME`
 # stat return check
         if [ $? -ne 0 ] ; then
-		printlogmess $ERROR $PUB_ERRNO_5 "$PUB_DESCR_5" $CRLHOST $CRLNAME
+		printlogmess $ERROR $ERRNO_5 "$PUBL_DESCR_5" $CRLHOST $CRLNAME
                 exit
         fi
 
 # crl of 0 size?
         if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-		printlogmess $ERROR $PUB_ERRNO_6 "$PUB_DESCR_6" $CRLHOST $CRLNAME
+		printlogmess $ERROR $ERRNO_6 "$PUBL_DESCR_6" $CRLHOST $CRLNAME
                 exit
         fi
 
@@ -134,9 +137,9 @@ checkcrl () {
         HOURSSINCEGENERATION=`${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE"`
 
         if [ "$HOURSSINCEGENERATION" -gt "$HOURTHRESHOLD" ] ; then
-		printlogmess $ERROR $PUB_ERRNO_7 "$PUB_DESCR_7" $CRLNAME $CRLHOST
+		printlogmess $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLNAME $CRLHOST
         else
-		printlogmess $INFO $PUB_ERRNO_1 "$PUB_DESCR_1" $CRLHOST $CRLNAME
+		printlogmess $INFO $ERRNO_1 "$PUBL_DESCR_1" $CRLHOST $CRLNAME
         fi
 }
 
