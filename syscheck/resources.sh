@@ -14,6 +14,9 @@ PATH=$SYSCHECK_HOME:$PATH
 # use the printlog function
 . $SYSCHECK_HOME/lib/printlogmess.sh
 
+# get definitions for EJBCA
+. /etc/ejbca/environment
+
 # System name is name of the overall system that is supervised.
 SYSTEMNAME=PKI
 
@@ -46,6 +49,7 @@ CAPIN[0]="1903"
 
 
 ### Application server database user and password ###
+DB_NAME=ejbca
 DB_USER=ejbca
 DB_PASSWORD="foo123"
 
@@ -84,7 +88,7 @@ HOSTNAME_NODE2=192.168.0.12
 
 #The virual IP address or hostname used by the cluster
 HOSTNAME_VIRTUAL=192.168.0.15
-NETMASK_VIRTUAL=24
+NETMASK_VIRTUAL=255.255.255.0
 IF_VIRTUAL=eth0
 
 
