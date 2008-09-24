@@ -22,7 +22,7 @@ ERRNO_3="${SCRIPTID}3"
 
 ### config ###
 IP=/sbin/ip
-
+IFCONFIG=/sbin/ifconfig
 ### end config ###
 
 PRINTTOSCREEN=
@@ -40,7 +40,8 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
 fi 
 
 
-$IP address del $HOSTNAME_VIRTUAL/$NETMASK_VIRTUAL dev $IF_VIRTUAL
+$IFCONFIG ${IF_VIRTUAL}:0 down
+#$IP address del $HOSTNAME_VIRTUAL/$NETMASK_VIRTUAL dev $IF_VIRTUAL
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$DEACTVIP_DESCR_1" "$?" 
 else
