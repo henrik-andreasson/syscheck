@@ -43,7 +43,7 @@ fi
 
 # arg1, if you use regexps, be sure to use "" , ex: "*.txt" on the command line
 SSHFILE=
-if [ "x$1" = "x" -o ! -r "$1" ] ; then 
+if [ "x$1" = "x" ] ; then 
     printlogmess $ERROR $ERRNO_2 "$SSH_DESCR_2"  
     exit
 else
