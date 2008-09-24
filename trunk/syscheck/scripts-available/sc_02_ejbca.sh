@@ -20,10 +20,6 @@ ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02
 ERRNO_3=${SCRIPTID}03
 
-
-
-
-PRINTTOSCREEN=0
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 	echo "$ECA_HELP"
 	echo "$ERRNO_1/$ECA_DESCR_1 - $ECA_HELP_1"
