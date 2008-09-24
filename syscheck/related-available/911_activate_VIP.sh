@@ -22,7 +22,7 @@ ERRNO_3="${SCRIPTID}3"
 
 ROUTE=/sbin/route
 IP=/sbin/ip
-#IFCONFIG=/sbin/ifconfig
+IFCONFIG=/sbin/ifconfig
 IP_GATEWAY=`$ROUTE -n | awk '/0.0.0.0/'| awk '{print $2}' |awk '!/0.0.0.0/'` 
 PING=/bin/ping
 
@@ -41,7 +41,8 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     shift
 fi 
 
-$IP address add $HOSTNAME_VIRTUAL/$NETMASK_VIRTUAL dev $IF_VIRTUAL
+$IFCONFIG ${IF_VIRTUAL}:0 inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up
+#$IP address add $HOSTNAME_VIRTUAL/$NETMASK_VIRTUAL dev $IF_VIRTUAL
 #$IFCONFIG $IF_VIRTUAL add $HOSTNAME_VIRTUAL netmask $HOSTNAME_VIRTUAL
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$ACTVIP_DESCR_1" "$?" 
