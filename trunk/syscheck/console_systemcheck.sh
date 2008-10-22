@@ -9,7 +9,7 @@
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 
-PRINTTOSCREEN="TRUE"
+PRINTTOSCREEN="1"
 export PRINTTOSCREEN
 
 . $SYSCHECK_HOME/resources.sh
