@@ -49,9 +49,13 @@ CAPIN[0]="1903"
 
 
 ### Application server database user and password ###
+# Example:
+# For EJBCA you should have DB_NAME=ejbca and DB_TEST_TABLE=CertificateData
+# For ExtRA you should have DB_NAME=messages and DB_TEST_TABLE=message
 DB_NAME=ejbca
 DB_USER=ejbca
 DB_PASSWORD="foo123"
+DB_TEST_TABLE=CertificateData
 
 
 ### Mysql ###
