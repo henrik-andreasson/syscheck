@@ -18,11 +18,11 @@ SCRIPTID=17
 getlangfiles $SCRIPTID ;
 
 
-ERRNO_1=${SCRIPTID}01
-ERRNO_2=${SCRIPTID}02
-ERRNO_3=${SCRIPTID}03
-ERRNO_4=${SCRIPTID}04
-ERRNO_5=${SCRIPTID}05
+NTP_ERRNO_1=${SCRIPTID}01
+NTP_ERRNO_2=${SCRIPTID}02
+NTP_ERRNO_3=${SCRIPTID}03
+NTP_ERRNO_4=${SCRIPTID}04
+NTP_ERRNO_5=${SCRIPTID}05
 
 ## local definitions ###
 NTPBIN="/usr/sbin/ntpq"
@@ -31,31 +31,15 @@ NTPCONF="/etc/ntp.conf"
 # help
 if [ "x$1" = "x--help" ] ; then
     echo "$0 $NTP_HELP"
-    echo "$ERRNO_1/$NTP_DESCR_1 - $NTP_HELP_1"
-    echo "$ERRNO_2/$NTP_DESCR_2 - $NTP_HELP_2"
-    echo "$ERRNO_3/$NTP_DESCR_3 - $NTP_HELP_3"
-    echo "$ERRNO_4/$NTP_DESCR_4 - $NTP_HELP_4"
-    echo "$ERRNO_5/$NTP_DESCR_5 - $NTP_HELP_5"
+    echo "$NTP_ERRNO_1/$NTP_DESCR_1 - $NTP_HELP_1"
+    echo "$NTP_ERRNO_2/$NTP_DESCR_2 - $NTP_HELP_2"
+    echo "$NTP_ERRNO_3/$NTP_DESCR_3 - $NTP_HELP_3"
+    echo "$NTP_ERRNO_4/$NTP_DESCR_4 - $NTP_HELP_4"
+    echo "$NTP_ERRNO_5/$NTP_DESCR_5 - $NTP_HELP_5"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" ] ; then
     PRINTTOSCREEN=1
 fi
-
-
-NTP_SERVERS=`grep '^server' ${NTPCONF} 2>/dev/null | awk  '{print $2}' `
-if [ "x$NTP_SERVERS" = "x" ]; then
-    printlogmess $ERROR $ERRNO_5 "$NTP_DESCR_5" 
-    exit
-fi	
-
-
-i=0
-for server in ${NTP_SERVERS} ; do
-	IP_NTP_SERVERS[$i]=`host $server | grep address | awk '{print $4}'`
-	i=`expr $i + 1`
-done
-
-
 
 checkntp () {
 	NTPSERVER=$1
@@ -81,7 +65,5 @@ checkntp () {
 
 
 # check with the IP:s of all ntp servers
-for (( i = 0 ;  i < ${#IP_NTP_SERVERS[@]} ; i++ )) ; do
-	checkntp ${IP_NTP_SERVERS[$i]}
-done
-
+checkntp 10.200.16.4
+checkntp 10.200.16.5
