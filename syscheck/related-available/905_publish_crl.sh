@@ -16,25 +16,7 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 ## local definitions ##
 SCRIPTID=905
 getlangfiles $SCRIPTID
-
-HOURTHRESHOLD=12
-
-
-CANAME[0]="Labb_EID_CA_v2"
-VERIFY_HOST[0]="certpubl-nod1"
-SSHUSER[0]='crlpubl'
-SSHSERVER_DIR[0]='/srv/www/htdocs/'
-SSHKEY[0]='/home/jboss/.ssh/id_rsa'
-
-CANAME[1]="Labb_EID_CA_v2"
-VERIFY_HOST[1]="certpubl-nod2"
-SSHUSER[1]='crlpubl'
-SSHSERVER_DIR[1]='/srv/www/htdocs/'
-SSHKEY[1]='/home/jboss/.ssh/id_rsa'
-
-
-### end config ###
-
+getconfig $SCRIPTID
 
 ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02
@@ -43,7 +25,6 @@ ERRNO_4=${SCRIPTID}04
 ERRNO_5=${SCRIPTID}05
 ERRNO_6=${SCRIPTID}06
 ERRNO_7=${SCRIPTID}07
-
 
 
 
@@ -150,10 +131,6 @@ for (( i=0; i < ${#CANAME[@]} ; i++ )){
     checkcrl ${VERIFY_HOST[$i]} "${CANAME[$i]}.crl" ${SSHSERVER_DIR[$i]} ${SSHKEY[$i]}  ${SSHUSER[$i]} 
 
 }
-
-#get ${CANAME2} "${CANAME2}.crl"
-#put ${VERIFY_HOST2} "${CANAME2}.crl" ${SSHSERVER_DIR2} ${SSHKEY2}  ${SSHUSER2} 
-#checkcrl ${VERIFY_HOST2} "${CANAME2}.crl" ${SSHSERVER_DIR2} ${SSHKEY2}  ${SSHUSER2} 
 
 
 

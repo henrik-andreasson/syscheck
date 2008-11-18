@@ -11,28 +11,14 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=908
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID 
+getconfig $SCRIPTID
+
 
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
 
-
-### config ###
-
-KEEPDAYS[0]=3;
-BACKUPDIR[0]="/var/backup/ejbca_db";
-DATESTR[0]=`${SYSCHECK_HOME}/lib/x-days-ago-datestring.pl ${KEEPDAYS[0]}  2>/dev/null`;
-FILENAME[0]="${BACKUPDIR[0]}/ejbcabackup-${DATESTR[0]}*"
-
-
-KEEPDAYS[1]=15;
-BACKUPDIR[1]="/var/backup/hsmbackup";
-DATESTR[1]=`${SYSCHECK_HOME}/lib/x-days-ago-datestring.pl ${KEEPDAYS[1]}  2>/dev/null`;
-FILENAME[1]="${BACKUPDIR[1]}/hsmbackup-${DATESTR[1]}*"
-
-
-### end config ###
 
 
 

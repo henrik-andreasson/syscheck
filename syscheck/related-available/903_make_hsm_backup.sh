@@ -6,19 +6,15 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
-## Local definitions ##
-BACKUPFILE_NFAST=/var/backup/nfastbackup/
-
-
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=903
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 BAK_ERRNO_1="${SCRIPTID}1"
 BAK_ERRNO_2="${SCRIPTID}2"
 BAK_ERRNO_3="${SCRIPTID}3"
-
 
 
 PRINTTOSCREEN=
@@ -36,9 +32,7 @@ fi
 
 DATE=`date +%Y%m%d-%H.%M`
 
-FULLFILENAME="${BACKUPFILE_NFAST}/nfast-$DATE.tar"
-
-tar -c --directory /opt/nfast/kmdata -f $FULLFILENAME local
+tar -c --directory $HSMDIR -f $FULLFILENAME local
 
 if [ $? = 0 ] ; then
     gzip $FULLFILENAME

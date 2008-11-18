@@ -9,23 +9,11 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 SCRIPTID=916
 
 getlangfiles $SCRIPTID
-
-FileName[0]="/home/logtest/log/message.*"
-ToServer0[0]="sles10-1"
-ToServer1[0]="sles10-2"
-ToUser[0]='logtest'
-ToServerDir[0]="/home/logtest/log-backup/${ToServer[0]}/"
-
-
-### end config ###
-
+getconfig $SCRIPTID
 
 ERRNO_1=${SCRIPTID}1
 ERRNO_2=${SCRIPTID}2
 ERRNO_3=${SCRIPTID}3
-
-
-
 
 if [ "x$1" = "x--help" ] ; then
         echo "$0 <-s|--screen>"

@@ -10,13 +10,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 SCRIPTID=917
 
 getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
-
-### config ###
-
-# move files to this dir first and give it a unique name, then move it to the archive, 
-# thus there should never be any files in here to any extended period of time
-InTransitDir=/home/logtest/intransit-to-archive
 
 ### end config ###
 
