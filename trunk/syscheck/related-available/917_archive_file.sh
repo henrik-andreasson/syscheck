@@ -7,7 +7,7 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 . $SYSCHECK_HOME/resources.sh
 
 ## local definitions ##
-SCRIPTID=914
+SCRIPTID=917
 
 getlangfiles $SCRIPTID
 
