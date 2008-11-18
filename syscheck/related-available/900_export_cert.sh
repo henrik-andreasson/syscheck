@@ -69,8 +69,9 @@ CERT=`openssl x509 -inform der -in $1`
 if [ $? -ne 0 ] ; then 
     printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?" 
 fi
-CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
 
+# putting the base64 string in the log (livrem och hängslen)
+CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
 echo "CERTSTRING: $CERTSTRING " >> ${CERTLOG}
 echo                            >> ${CERTLOG}
 

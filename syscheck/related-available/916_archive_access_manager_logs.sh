@@ -37,14 +37,14 @@ fi
 
 for (( i=0; i < ${#FileName[@]} ; i++ )){
 
-	$SYSCHECK_HOME/related-available/914_archive_file.sh --keep-org "${FileName[$i]}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
+	$SYSCHECK_HOME/related-available/917_archive_file.sh --keep-org "${FileName[$i]}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 	if [ $? != 0 ] ; then
 		printlogmess $ERROR $ERRNO_2 "$AMLB_DESCR_2" ${FileName[$i]} "${ToServer0[$i]} ${ToServerDir[$i]}" 
 	else
 		printlogmess $INFO $ERRNO_1 "$AMLB_DESCR_1" ${FileName[$i]} "${ToServer0[$i]} ${ToServerDir[$i]}"
 	fi
 
-	$SYSCHECK_HOME/related-available/914_archive_file.sh "${FileName[$i]}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
+	$SYSCHECK_HOME/related-available/917_archive_file.sh "${FileName[$i]}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 	if [ $? != 0 ] ; then
 		printlogmess $ERROR $ERRNO_2 "$AMLB_DESCR_2" ${FileName[$i]} "${ToServer1[$i]} ${ToServerDir[$i]}" 
 	else
