@@ -11,22 +11,12 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=900
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID || exit 1;
+getconfig $SCRIPTID || exit 1;
 
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
-
-### config ###
-OUTPATH=/misc/pkg/ejbca/archival/cert/
-CERTLOG=${OUTPATH}/exportcert.log
-DATE=`date +'%Y-%m-%d_%H.%m.%S'`
-DATE2=`date +'%Y/%m/%d'`
-
-OUTPATH2="${OUTPATH}/${DATE2}"
-mkdir -p ${OUTPATH2}
-
-### end config ###
 
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
@@ -49,23 +39,29 @@ if [ "x$1" = "x" -o ! -r "$1" ] ; then
 	exit
 fi
 
-
-
-date >> ${CERTLOG} 
-CERTSERIAL=`openssl x509 -inform der -in $1 -serial -noout | sed 's/serial=//'`
-if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?" 
+CERTFILE=
+if [ ! -f $1 ] ; then
+    printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?"
+    exit
+else
+	CERTFILE=$1	
 fi
 
+date >> ${CERTLOG} 
+CERTSERIAL=`openssl x509 -inform der -in ${CERTFILE} -serial -noout | sed 's/serial=//'`
+if [ $? -ne 0 ] ; then 
+    printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?"
+    exit; 
+fi
 
-CERTISSUER=`openssl x509 -inform der -in $1 -issuer -noout | perl -ane 's/\//_/gio,s/issuer=//,s/=/-/gio,s/\ /_/gio,print'`
+CERTISSUER=`openssl x509 -inform der -in ${CERTFILE} -issuer -noout | perl -ane 's/\//_/gio,s/issuer=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
     printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?" 
 fi
 
 echo "CERTSERIAL: $CERTSERIAL" >> ${CERTLOG}
 echo "CERTISSUER: $CERTISSUER" >> ${CERTLOG}
-CERT=`openssl x509 -inform der -in $1`
+CERT=`openssl x509 -inform der -in ${CERTFILE}`
 if [ $? -ne 0 ] ; then 
     printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?" 
 fi
@@ -76,9 +72,10 @@ echo "CERTSTRING: $CERTSTRING " >> ${CERTLOG}
 echo                            >> ${CERTLOG}
 
 OUTFILE="${OUTPATH2}/archived-cert-${DATE}-${CERTISSUER}-${CERTSERIAL}"
-openssl x509 -inform der -in $1 > ${OUTFILE}
+openssl x509 -inform der -in ${CERTFILE} > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$ECRT_DESCR_1" "$?" 
 else
     printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?" 
 fi
+

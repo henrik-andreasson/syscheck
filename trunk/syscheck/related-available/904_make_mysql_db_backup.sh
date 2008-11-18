@@ -6,18 +6,10 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # Import common resources
 . $SYSCHECK_HOME/resources.sh
 
-### config ###
-
 SCRIPTID=904
-DATE=`date +'%Y-%m-%d_%H.%m.%S'`
-FULLFILENAME="$BACKUPFILE-$DATE.sql"
-
-### end config ###
-
 
 getlangfiles $SCRIPTID 
-
-
+getconfig $SCRIPTID
 
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"

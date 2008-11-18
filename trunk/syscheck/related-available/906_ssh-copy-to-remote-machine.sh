@@ -11,14 +11,9 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=906
 
-# local definitions #
+getlangfiles $SCRIPTID 
+getconfig $SCRIPTID
 
-# if you like to enable the ssh timeout option uncomment this (value is seconds)
-SSHTIMEOUT="-o ConnectTimeout=10"
-
-# end defs #
-
-getlangfiles $SCRIPTID ;
 
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"

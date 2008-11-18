@@ -9,17 +9,12 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=910
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
-
-### config ###
-
-# none, CA:s and pins are defined in resources.sh
-
-### end config ###
 
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then

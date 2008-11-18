@@ -12,19 +12,13 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=911
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID 
+getconfig $SCRIPTID 
 
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
 
-### config ###
-
-ROUTE=/sbin/route
-IP=/sbin/ip
-IFCONFIG=/sbin/ifconfig
-IP_GATEWAY=`$ROUTE -n | awk '/0.0.0.0/'| awk '{print $2}' |awk '!/0.0.0.0/'` 
-PING=/bin/ping
 
 
 PRINTTOSCREEN=

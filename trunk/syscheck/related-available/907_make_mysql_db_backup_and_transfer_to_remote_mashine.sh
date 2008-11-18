@@ -12,18 +12,8 @@ ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
 
-getlangfiles $SCRIPTID ;
-
-
-# config #
-DATE=`date +%Y%m%d-%H:%M`
-BACKUPFILE=/var/backup/ejbcabackup
-FULLFILENAME="$BACKUPFILE-$DATE.sql"
-BACKUP_HOST[0]=logandbak1.labb
-#BACKUP_HOST[1]=logandbak2.labb
-#BACKUP_HOST[2]=logandbak3.labb
-
-# end config #
+getlangfiles $SCRIPTID 
+getconfig $SCRIPTID
 
 
 PRINTTOSCREEN=

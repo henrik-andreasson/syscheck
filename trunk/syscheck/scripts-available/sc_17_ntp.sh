@@ -57,9 +57,9 @@ checkntp () {
 
 	if [ x"$NTPCHECK" = "x" ]; then
 		printlogmess $ERROR $NTP_ERRNO_3 "$NTP_DESCR_3" "$NTPSERVER" "$ERRCODE"
-		rm -f /tmp/$NTPTEMPFILE
 		exit
 	fi	
+	rm -f /tmp/$NTPTEMPFILE
 	printlogmess $INFO $NTP_ERRNO_1 "$NTP_DESCR_1" "$NTPSERVER"
 }
 

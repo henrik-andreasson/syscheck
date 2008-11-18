@@ -1,8 +1,7 @@
 #!/bin/sh
-# File containing COMMON defitions, use local script for local definitions !!!!
+# File containing COMMON definitions, use local script for local definitions !!!!
 # IMPORTANT, This file might be Very sensitive and contain PIN codes and passwords.
 # Make only readable by root.
-
 
 ### General settings ###
 
@@ -15,9 +14,11 @@ PATH=$SYSCHECK_HOME:$PATH
 . $SYSCHECK_HOME/lib/printlogmess.sh
 
 # get definitions for EJBCA
-. /etc/ejbca/environment
+if [ -f /etc/ejbca/environment ] ; then
+	. /etc/ejbca/environment
+fi
 
-# System name is name of the overall system that is supervised.
+# System name is name of the overall system that is monitored.
 SYSTEMNAME=PKI
 
 # Username used for no-passphrase ssh login
@@ -30,6 +31,9 @@ SYSCHECK_LANG=english
 
 # source the lang func
 . ${SYSCHECK_HOME}/lib/lang.sh
+
+# source the config func
+. ${SYSCHECK_HOME}/lib/config.sh
 
 ### EJBCA settings ###
 #Path to EJBCA

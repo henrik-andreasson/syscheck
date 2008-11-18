@@ -11,19 +11,13 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=913
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID 
+getconfig $SCRIPTID
 
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
 
-### config ###
-OUTPATH=/usr/local/ejbca/archival/cert/
-CERTLOG=${OUTPATH}/exportcert.log
-DATE=`date +'%Y-%m-%d_%H.%m.%S'`
-DATE2=`date +'%Y/%m/%d'`
-
-OUTPATH2="${OUTPATH}/${DATE2}"
 mkdir -p ${OUTPATH2}
 
 ### end config ###
