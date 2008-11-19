@@ -54,13 +54,13 @@ if [ $? -ne 0 ] ; then
     exit; 
 fi
 
-CERTISSUER=`openssl x509 -inform der -in ${CERTFILE} -issuer -noout | perl -ane 's/\//_/gio,s/issuer=//,s/=/-/gio,s/\ /_/gio,print'`
+CERTSUBJECT=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
     printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?" 
 fi
 
 echo "CERTSERIAL: $CERTSERIAL" >> ${CERTLOG}
-echo "CERTISSUER: $CERTISSUER" >> ${CERTLOG}
+echo "CERTSUBJECT: $CERTSUBJECT" >> ${CERTLOG}
 CERT=`openssl x509 -inform der -in ${CERTFILE}`
 if [ $? -ne 0 ] ; then 
     printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?" 
@@ -71,7 +71,7 @@ CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
 echo "CERTSTRING: $CERTSTRING " >> ${CERTLOG}
 echo                            >> ${CERTLOG}
 
-OUTFILE="${OUTPATH2}/archived-cert-${DATE}-${CERTISSUER}-${CERTSERIAL}"
+OUTFILE="${OUTPATH2}/archived-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in ${CERTFILE} > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$ECRT_DESCR_1" "$?" 
