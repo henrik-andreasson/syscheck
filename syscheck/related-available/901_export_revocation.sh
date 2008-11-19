@@ -47,13 +47,13 @@ if [ $? -ne 0 ] ; then
 fi
 
 
-CERTISSUER=`openssl x509 -inform der -in $1 -issuer -noout | perl -ane 's/\//_/gio,s/issuer=//,s/=/-/gio,s/\ /_/gio,print'`
+CERTSUBJECT=`openssl x509 -inform der -in $1 -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
     printlogmess $ERROR $ERRNO_3 "$EREV_DESCR_3" "$?" 
 fi
 
 echo "CERTSERIAL: $CERTSERIAL" >> ${REVLOG}
-echo "CERTISSUER: $CERTISSUER" >> ${REVLOG}
+echo "CERTSUBJECT: $CERTSUBJECT" >> ${REVLOG}
 CERT=`openssl x509 -inform der -in $1`
 if [ $? -ne 0 ] ; then 
     printlogmess $ERROR $ERRNO_3 "$EREV_DESCR_3" "$?" 
@@ -63,7 +63,7 @@ CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
 echo "CERTSTRING: $CERTSTRING " >> ${REVLOG}
 echo                            >> ${REVLOG}
 
-OUTFILE="${OUTPATH2}/revoked-cert-${DATE}-${CERTISSUER}-${CERTSERIAL}"
+OUTFILE="${OUTPATH2}/revoked-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in $1 > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$EREV_DESCR_1" "$?" 
