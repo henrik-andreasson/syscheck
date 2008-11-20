@@ -32,19 +32,19 @@ fi
 
 
 
-$MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca  > $FULLFILENAME 
+$MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca  > $MYSQLBACKUPFULLFILENAME 
 
 if [ $? -ne 0 ] ; then
     printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
 fi 
 
-gzip $FULLFILENAME
+gzip $MYSQLBACKUPFULLFILENAME
 if [ $? -ne 0 ] ;   then
     printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
 fi  
 
 
 for ( i = 0 ;  i < ${#BACKUP_HOST[@]} ; i++ ) ; do
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${FULLFILENAME}.gz ${BACKUP_HOST[$i]}
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${MYSQLBACKUPFULLFILENAME}.gz ${BACKUP_HOST[$i]}
 done
 
