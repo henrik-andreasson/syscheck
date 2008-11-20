@@ -17,7 +17,6 @@ ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
 ERRNO_4="${SCRIPTID}4"
 
-
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 	echo "$SSHCMD_HELP"

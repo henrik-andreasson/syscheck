@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # The script fetches a crl from the ca and scp the crl to a webserver.
 # Change $HTTPSERVER, $SSHUSER and $SSHSERVER_DIR. Define the crl's and the servers in the end.
 # Usage:

@@ -22,7 +22,6 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi 
 
-
 for (( i=0; i < ${#FileName[@]} ; i++ )){
 
 	$SYSCHECK_HOME/related-available/917_archive_file.sh --keep-org "${FileName[$i]}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
