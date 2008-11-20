@@ -28,10 +28,10 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     PRINTTOSCREEN=1
 fi
 
-$MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca  > $FULLFILENAME 
+$MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca  > $MYSQLBACKUPMYSQLBACKUPFULLFILENAME 
 
 if [ $? = 0 ] ; then
-  gzip $FULLFILENAME
+  gzip $MYSQLBACKUPFULLFILENAME
   if [ $? = 0 ] ; then
       printlogmess $INFO $BAK_ERRNO_1 "$BAK_DESCR_1" 
   else

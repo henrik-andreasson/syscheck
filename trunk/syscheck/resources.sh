@@ -10,6 +10,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 export SYSCHECK_HOME
 PATH=$SYSCHECK_HOME:$PATH
 
+DATE=`date +'%Y-%m-%d_%H.%m.%S'`
+
 # use the printlog function
 . $SYSCHECK_HOME/lib/printlogmess.sh
 
@@ -76,6 +78,9 @@ MYSQLDUMP_BIN=/usr/local/mysql/bin/mysqldump
 #Password for Mysql root
 MYSQLROOT_PASSWORD="foo123"
 
+#Name of the mysql backup file.
+MYSQLBACKUPFILE=/var/backup/ejbcabackup
+MYSQLBACKUPFULLFILENAME="${BACKUPFILE}-${DATE}.sql"
 
 
 ### CLUSTER SCRIPT RESOURCES ###
