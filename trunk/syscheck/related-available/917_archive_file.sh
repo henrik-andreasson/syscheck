@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e 
 
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
@@ -11,7 +12,6 @@ SCRIPTID=917
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
-
 
 ### end config ###
 
