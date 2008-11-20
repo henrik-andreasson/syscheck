@@ -28,7 +28,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     PRINTTOSCREEN=1
 fi
 
-$MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca  > $MYSQLBACKUPMYSQLBACKUPFULLFILENAME 
+$MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca  > $MYSQLBACKUPFULLFILENAME 
 
 if [ $? = 0 ] ; then
   gzip $MYSQLBACKUPFULLFILENAME
