@@ -32,7 +32,7 @@ fi
 
 
 cd $EJBCA_HOME
-for ( i = 0 ;  i < ${#CANAME[@]} ; i++ ) ; do
+for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
 
 	printtoscreen "Deactivating CA :  ${CANAME[$i]} on node $HOSTNAME_NODE2"
 	returncode=`bin/ejbca.sh ca deactivateca ${CANAME[$i]} `

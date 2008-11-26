@@ -35,6 +35,10 @@ JBOSSCP=${JBOSSCP:-"$JBOSS_HOME/bin/shutdown.jar:$JBOSS_HOME/client/jnet.jar"}
 #define the script to use to start jboss
 JBOSSSH=${JBOSSSH:-"$JBOSS_HOME/bin/run.sh -c default"} 
 
+if [ -f /etc/ejbca/environment ] ; then
+    source /etc/ejbca/environment
+fi
+
 # Shell functions sourced from /etc/rc.status:
 #      rc_check         check and set local and overall rc status
 #      rc_status        check and set local and overall rc status
