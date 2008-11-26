@@ -1,9 +1,7 @@
 #!/bin/sh
 
-
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
-
 
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
@@ -17,8 +15,6 @@ getconfig $SCRIPTID
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
-
-mkdir -p ${OUTPATH2}
 
 ### end config ###
 
@@ -42,7 +38,11 @@ read -p "Do you want to send EJBCA conf to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
 	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh "$EJBCA_HOME/conf/*.properties" $HOSTNAME_NODE2 $EJBCA_HOME/conf/
-	echo "Done"
+	if [ $? -eq 0 ] ; then	
+		echo "Done"
+	else
+		echo "Failed to contact other host"
+	fi 
 else
 	echo "Configuration not copied."
 fi
@@ -51,7 +51,11 @@ read -p "Do you want to send EJBCA keys to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
 	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh "$EJBCA_HOME/p12/*" $HOSTNAME_NODE2 $EJBCA_HOME/p12/
-	echo "Done"
+	if [ $? -eq 0 ] ; then	
+		echo "Done"
+	else
+		echo "Failed to contact other host"
+	fi
 else
         echo "Keys not copied."
 fi
@@ -60,7 +64,11 @@ read -p "Do you want to send syscheck to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
 	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "$SYSCHECK_HOME/" $HOSTNAME_NODE2 /usr/local/
-	echo "Done"
+	if [ $? -eq 0 ] ; then	
+		echo "Done"
+	else
+		echo "Failed to contact other host"
+	fi
 else
         echo "Syscheck not copied."
 fi

@@ -78,4 +78,5 @@ if [ $? -eq 0 ] ; then
 	printlogmess $INFO $ERRNO_1 "$SSH_DESCR_1" 
 else
 	printlogmess $ERROR $ERRNO_4 "$SSH_DESCR_4" "$runresult"
+	exit -1
 fi

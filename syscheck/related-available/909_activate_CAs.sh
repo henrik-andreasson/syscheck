@@ -37,7 +37,7 @@ fi
 
 
 cd $EJBCA_HOME
-for ( i = 0 ;  i < ${#CANAME[@]} ; i++ ) ; do
+for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
 	NAME=${CANAME[$i]}
 	PIN=${CAPIN[$i]}
   
