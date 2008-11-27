@@ -69,8 +69,7 @@ put () {
 
         cd $CRLDIRECTORY
         printtoscreen "scp -i $SSHKEY $CRLNAME $SSHUSER@$CRLHOST:$SSHSERVER_DIR"
-#        scp -i $SSHKEY $CRLNAME $SSHUSER@$CRLHOST:$SSHSERVER_DIR
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh $CRLNAME $CRLHOST $SSHSERVER_DIR
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh $CRLNAME $CRLHOST $SSHSERVER_DIR $SSHUSER
 	if [ $? != 0 ] ; then
                 printlogmess $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLHOST $CRLNAME
 	fi
