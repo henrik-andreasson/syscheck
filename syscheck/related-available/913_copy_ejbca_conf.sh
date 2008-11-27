@@ -34,38 +34,45 @@ fi
 # Make sure you add quotation marks for the first argument when adding new files that should be copied, for exampel.
 # $SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "$EJBCA_HOME/conf/*.properties" $HOSTNAME_NODE2 $EJBCA_HOME/conf/
 
+echo ""
 read -p "Do you want to send EJBCA conf to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh "$EJBCA_HOME/conf/*.properties" $HOSTNAME_NODE2 $EJBCA_HOME/conf/
-	if [ $? -eq 0 ] ; then	
-		echo "Done"
-	else
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$EJBCA_HOME/conf/*.properties" $HOSTNAME_NODE2 $EJBCA_HOME/conf/ $SSH_USER
+	if [ $? -ne 0 ] ; then	
 		echo "Failed to contact other host"
 	fi 
 else
 	echo "Configuration not copied."
 fi
 
+echo ""
 read -p "Do you want to send EJBCA keys to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh "$EJBCA_HOME/p12/*" $HOSTNAME_NODE2 $EJBCA_HOME/p12/
-	if [ $? -eq 0 ] ; then	
-		echo "Done"
-	else
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$EJBCA_HOME/p12/*" $HOSTNAME_NODE2 $EJBCA_HOME/p12/ $SSH_USER
+	if [ $? -ne 0 ] ; then	
+		echo ""
 		echo "Failed to contact other host"
 	fi
 else
         echo "Keys not copied."
 fi
 
+echo ""
 read -p "Do you want to send syscheck to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
-	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "$SYSCHECK_HOME/" $HOSTNAME_NODE2 /usr/local/
+	# $SYSCHECK_HOME/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir /tmp/backup/" ${SSH_USER}
+	# ssh jboss@147.186.2.6 mkdir /var/backup/
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$SYSCHECK_HOME/" $HOSTNAME_NODE2 /tmp/backup_syscheck $SSH_USER
 	if [ $? -eq 0 ] ; then	
-		echo "Done"
+		echo "#######################################################################"
+		echo "# The syscheck directory is placed in /tmp/backup_syscheck/.          #"
+		echo "# You have to manually move it to /usr/local/ and change the owner to #"
+		echo "# root and the name of the directory.                                 #"
+		echo "#######################################################################"
+		echo ""
 	else
 		echo "Failed to contact other host"
 	fi
