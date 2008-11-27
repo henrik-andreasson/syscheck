@@ -12,18 +12,18 @@ SCRIPTID=915
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
 
-ERRNO_1="${SCRIPTID}1"
-ERRNO_2="${SCRIPTID}2"
-ERRNO_3="${SCRIPTID}3"
-ERRNO_4="${SCRIPTID}4"
+SSHCMD_ERRNO_1="${SCRIPTID}1"
+SSHCMD_ERRNO_2="${SCRIPTID}2"
+SSHCMD_ERRNO_3="${SCRIPTID}3"
+SSHCMD_ERRNO_4="${SCRIPTID}4"
 
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 	echo "$SSHCMD_HELP"
-	echo "$ERRNO_1/$SSHCMD_DESCR_1 - $SSH_HELP_1"
-	echo "$ERRNO_2/$SSHCMD_DESCR_2 - $SSH_HELP_2"
-	echo "$ERRNO_3/$SSHCMD_DESCR_3 - $SSH_HELP_3"
-	echo "$ERRNO_4/$SSHCMD_DESCR_4 - $SSH_HELP_4"
+	echo "$SSHCMD_ERRNO_1/$SSHCMD_DESCR_1 - $SSHCMD_HELP_1"
+	echo "$SSHCMD_ERRNO_2/$SSHCMD_DESCR_2 - $SSHCMD_HELP_2"
+	echo "$SSHCMD_ERRNO_3/$SSHCMD_DESCR_3 - $SSHCMD_HELP_3"
+	echo "$SSHCMD_ERRNO_4/$SSHCMD_DESCR_4 - $SSHCMD_HELP_4"
 	echo "${SCREEN_HELP}"
 	exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
@@ -36,7 +36,7 @@ fi
 # arg1
 SSHHOST=
 if [ "x$1" = "x"  ] ; then 
-	printlogmess $ERROR $ERRNO_3 "$SSHCMD_DESCR_3"  
+	printlogmess $ERROR $SSHCMD_ERRNO_2 "$SSHCMD_DESCR_2"  
 	exit -1
 else
     SSHHOST=$1
@@ -46,7 +46,7 @@ fi
 # arg2 mandatory, eg.: "ls /tmp/file" (tip: ssh will return with the returncode of the command executed on the other side of the ssh tunnel)
 SSHCMD=
 if [ "x$2" = "x"  ] ; then 
-        printlogmess $ERROR $ERRNO_3 "$SSHCMD_DESCR_3"
+        printlogmess $ERROR $SSHCMD_ERRNO_3 "$SSHCMD_DESCR_3"
         exit -1
 else
 	SSHCMD=$2
@@ -72,8 +72,8 @@ ssh ${SSHOPTIONS} ${SSHFROMKEY} ${SSHUSER} ${SSHHOST} ${SSHCMD} 2>&1
 retcode=$?
 
 if [ $retcode -eq 0 ] ; then
-	printlogmess $INFO $ERRNO_1 "$SSHCMD_DESCR_1" 
+	printlogmess $INFO $SSHCMD_ERRNO_1 "$SSHCMD_DESCR_1" 
 else
-	printlogmess $ERROR $ERRNO_4 "$SSHCMD_DESCR_4" "$retcode"
+	printlogmess $ERROR $SSHCMD_ERRNO_4 "$SSHCMD_DESCR_4" "$retcode"
 	exit $retcode
 fi
