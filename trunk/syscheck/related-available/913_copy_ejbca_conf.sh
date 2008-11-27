@@ -18,7 +18,7 @@ ERRNO_3="${SCRIPTID}3"
 
 ### end config ###
 
-PRINTTOSCREEN=
+PRINTTOSCREEN=1
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 	echo "$ECRT_HELP"
 	echo "$ERRNO_1/$COPY_EJBCA_CONF_DESCR_1 - $COPY_EJBCA_CONF_HELP_1"
@@ -63,8 +63,6 @@ echo ""
 read -p "Do you want to send syscheck to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
-	# $SYSCHECK_HOME/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir /tmp/backup/" ${SSH_USER}
-	# ssh jboss@147.186.2.6 mkdir /var/backup/
 	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$SYSCHECK_HOME/" $HOSTNAME_NODE2 /tmp/backup_syscheck $SSH_USER
 	if [ $? -eq 0 ] ; then	
 		echo "#######################################################################"
