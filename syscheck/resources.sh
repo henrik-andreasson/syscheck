@@ -44,7 +44,8 @@ EJBCA_HOME=/usr/local/ejbca
 #Path to active jboss config
 JBOSS_HOME=/usr/local/jboss
 
-#List indicating CAs to activate, should contain a list of caname and PIN separated by space.  
+# List indicating CAs to activate, should contain a list of caname and PIN separated by space.  
+# Also used for handling CRLs.
 CANAME[0]="test" 
 CAPIN[0]="1903"
 #uncomment to activate more CA:s
