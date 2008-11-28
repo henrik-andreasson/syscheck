@@ -13,7 +13,7 @@ SCRIPTID=08
 
 #CRL CHECK RESOURCES
 #CRL Fetch URL
-CRLFETCH_URL=TODO
+CRLFETCH_URL="http://localhost"
 
 # Variable indication the maximum age of the CRL i hours.
 HOURTHRESHOLD=24
@@ -45,7 +45,7 @@ checkcrl () {
 	CRLNAME=$1
 	cd /tmp
 	rm -f /tmp/$CRLNAME
-	wget http://localhost/$CRLNAME -T 10 -t 1 -O /tmp/$CRLNAME -o /dev/null
+	wget ${CRLFETCH_URL}/${CRLNAME} -T 10 -t 1 -O /tmp/$CRLNAME -o /dev/null
 	if [ $? -ne 0 ] ; then
 		printlogmess $ERROR $CRL_ERRNO_3 "$CRL_DESCR_3" "$CRLNAME"	
 		exit
