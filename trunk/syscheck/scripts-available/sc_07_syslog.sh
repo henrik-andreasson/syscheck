@@ -14,20 +14,8 @@ ERRNO_2=${SCRIPTID}02
 ERRNO_3=${SCRIPTID}03
 ERRNO_4=${SCRIPTID}04
 
-getlangfiles $SCRIPTID ;
-
-# file at localhost messages goes to
-localsyslogfile=/var/log/messages
-#localsyslogfile=/var/log/localmessages
-
-#syslog-ng
-#pidfile=/var/run/syslog-ng.pid
-#procname=syslog-ng
-
-#syslogd
-pidfile=/var/run/syslogd.pid
-procname=syslogd
-status=0
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 
 # help

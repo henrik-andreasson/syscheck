@@ -6,15 +6,11 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
-## Local definitions ##
-#Hostname to check, default (localhost)
-EJBCA_HOSTNAME=localhost
-
-
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=02
 
 getlangfiles $SCRIPTID ;
+getconfig $SCRITPID;
 
 ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02

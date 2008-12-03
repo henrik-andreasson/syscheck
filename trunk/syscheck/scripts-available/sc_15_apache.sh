@@ -14,7 +14,8 @@ SCRIPTID=15
 APA_ERRNO_1=${SCRIPTID}01
 APA_ERRNO_2=${SCRIPTID}02
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 # help
 if [ "x$1" = "x--help" ] ; then
@@ -26,8 +27,6 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-pidfile=/var/run/apache.pid
-procname=apache2
 proc=`$SYSCHECK_HOME/lib/proc_checker.sh $pidfile $procname` 
 
 # Sends an error to syslog if x"$proc" is not xhttpd.

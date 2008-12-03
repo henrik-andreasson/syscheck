@@ -8,11 +8,9 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=06
 
-RAID_HPTOOL=/usr/sbin/hpacucli
 
-
-getlangfiles $SCRIPTID ;
-
+getlangfiles $SCRIPTID 
+getconfig $SCRIPTID
 
 
 RAID_ERRNO_1=${SCRIPTID}01
@@ -74,9 +72,15 @@ if [ ! -x $RAID_HPTOOL ] ; then
 fi
 
 
-raiddiskcheck "physicaldrive 2:0"
-raiddiskcheck "physicaldrive 2:1"
+for (( i = 0 ;  i < ${#PHYSICALDRIVE[@]} ; i++ )) ; do
+	#raiddiskcheck "physicaldrive 2:0"
+	raiddiskcheck ${#PHYSICALDRIVE[$i]}
+done
 
-raidlogiccheck "logicaldrive 1"
+for (( i = 0 ;  i < ${#LOGICALDRIVE[@]} ; i++ )) ; do
+	raidlogiccheck ${#LOGICALDRIVE[$i]}
+#	raidlogiccheck "logicaldrive 1"
+done
+
 
 

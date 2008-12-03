@@ -9,7 +9,8 @@ SCRIPTID=22
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 BOKS_REPLICA_ERRNO_1=${SCRIPTID}01
 BOKS_REPLICA_ERRNO_2=${SCRIPTID}02

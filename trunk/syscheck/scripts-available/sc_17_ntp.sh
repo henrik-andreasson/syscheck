@@ -15,8 +15,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=17
 
-getlangfiles $SCRIPTID ;
-
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 NTP_ERRNO_1=${SCRIPTID}01
 NTP_ERRNO_2=${SCRIPTID}02
@@ -24,9 +24,6 @@ NTP_ERRNO_3=${SCRIPTID}03
 NTP_ERRNO_4=${SCRIPTID}04
 NTP_ERRNO_5=${SCRIPTID}05
 
-## local definitions ###
-NTPBIN="/usr/sbin/ntpq"
-NTPCONF="/etc/ntp.conf"
 
 # help
 if [ "x$1" = "x--help" ] ; then

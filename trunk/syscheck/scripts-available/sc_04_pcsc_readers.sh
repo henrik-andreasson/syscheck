@@ -9,15 +9,13 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 SCRIPTID=04
 
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID;
+getconfig $SCRITPTID;
 
 
 PCL_ERRNO_1=${SCRIPTID}01
 PCL_ERRNO_2=${SCRIPTID}02
 PCL_ERRNO_3=${SCRIPTID}03
-
-# how many readers is attached?
-PCSC_NUMBER_OF_READERS=1
 
 # help
 if [ "x$1" = "x--help" ] ; then

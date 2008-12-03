@@ -8,14 +8,12 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=13
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 HAMAS_ERRNO_1=${SCRIPTID}01
 HAMAS_ERRNO_2=${SCRIPTID}02
 HAMAS_ERRNO_3=${SCRIPTID}03
-
-HAMAS_IP_ADDR_LIST="/tmp/ipaddrlist.txt"
-HAMAS_INTERFACE="eth0"
 
 # help
 if [ "x$1" = "x--help" ] ; then

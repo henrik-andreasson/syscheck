@@ -9,7 +9,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=14
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 SW_RAID_ERRNO_1=${SCRIPTID}01
 SW_RAID_ERRNO_2=${SCRIPTID}02
@@ -45,9 +46,9 @@ swraidcheck () {
 
         fi
 }
-swraidcheck /dev/md0 /dev/hda1
-swraidcheck /dev/md0 /dev/hde1
-swraidcheck /dev/md1 /dev/hda2
-swraidcheck /dev/md1 /dev/hde2
+
+for (( i = 0 ;  i < ${#MDDEV[@]} ; i++ )) ; do
+    swraidcheck ${#MDDEV[$i]} ${#DDDEV[$i]}
+done
 
 

@@ -1,7 +1,4 @@
 #!/bin/sh 
-pidfile=/var/run/heartbeat.pid
-procname=heartbeat
-status=0
 
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
@@ -11,7 +8,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=11
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 HA_ERRNO_1=${SCRIPTID}01
 HA_ERRNO_2=${SCRIPTID}02

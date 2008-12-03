@@ -10,16 +10,10 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 ## Local definitions ##
 
-#FIREWALL CHECK RESOURCES
-IPTABLES_BIN=/usr/sbin/iptables # suse
-#IPTABLES_BIN=/sbin/iptables # debian 
-
-#Rules to check that it exists.
-IPTABLES_RULE1="DROP       all  --  anywhere             anywhere            state INVALID"
-
 SCRIPTID=09
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRITPID
 
 FWALL_ERRNO_1=${SCRIPTID}01
 FWALL_ERRNO_2=${SCRIPTID}02

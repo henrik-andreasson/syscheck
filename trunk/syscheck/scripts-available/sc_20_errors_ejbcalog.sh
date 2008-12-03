@@ -9,13 +9,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=20
 
-getlangfiles $SCRIPTID ;
-
-# Ejbca Error Logger, reports error from server.log once
-EEL_SERVER_LOG_FILE="/misc/pkg/jboss/server/default/log/server.log"
-EEL_SERVER_LOG_LASTPOSITION="/tmp/misc_pkg_jboss_server_default_log_server_log.lastposision"
-
-
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 EEL_ERRNO_1=${SCRIPTID}01
 EEL_ERRNO_2=${SCRIPTID}02
