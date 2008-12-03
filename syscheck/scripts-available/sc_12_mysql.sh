@@ -1,8 +1,5 @@
 #!/bin/sh 
 
-pidfile=/var/run/mysqld.pid
-procname=/usr/local/mysql/libexec/mysqld
-
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
@@ -12,6 +9,7 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 SCRIPTID=12
 
 getlangfiles $SCRIPTID ;
+getconfig $SCRIPTID
 
 MYSQL_ERRNO_1=${SCRIPTID}01
 MYSQL_ERRNO_2=${SCRIPTID}02

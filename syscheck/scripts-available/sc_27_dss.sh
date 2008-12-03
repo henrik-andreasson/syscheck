@@ -8,7 +8,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=27
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02
@@ -27,9 +28,6 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-
-#DSS Resources
-SIGNSERVER_HOME=/usr/local/signserver
 
 if [ ! -f $SIGNSERVER_HOME/bin/signserver.sh ] ; then 
     printlogmess $ERROR $ERRNO_4 "$DSS_DESCR_4"

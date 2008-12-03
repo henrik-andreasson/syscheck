@@ -10,15 +10,13 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 SCRIPTID=03
 
 getlangfiles $SCRIPTID ;
+getconfig $SCRITPID;
 
 ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02
 ERRNO_3=${SCRIPTID}03
 ERRNO_4=${SCRIPTID}03
 
-
-MEM_PERCENT=80
-SWAP_PERCENT=50
 
 if [ "x$1" = "x--help" ] ; then
     echo "$MEM_HELP mem: ${MEM_PERCENT}% / swap ${SWAP_PERCENT} %"

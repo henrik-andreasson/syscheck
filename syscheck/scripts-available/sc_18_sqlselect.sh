@@ -1,6 +1,5 @@
 #!/bin/sh 
 
-
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
@@ -9,7 +8,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=18
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 SQLSELECT_ERRNO_1=${SCRIPTID}01
 SQLSELECT_ERRNO_2=${SCRIPTID}02
@@ -26,7 +26,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
 fi
 
 
-status=`echo "SELECT * FROM $DB_TEST_TABLE LIMIT 1"|$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD 2>&1 > /dev/null`
+
 if [ $? -ne 0 ] ; then
     printlogmess $ERROR $SQLSELECT_ERRNO_2 "$SQLSELECT_DESCR_2"  
     exit 3

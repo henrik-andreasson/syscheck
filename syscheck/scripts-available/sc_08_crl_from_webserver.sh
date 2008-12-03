@@ -7,19 +7,11 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # Import common definitions
 . $SYSCHECK_HOME/resources.sh
 
-
 ## Local Definitions ##
 SCRIPTID=08
 
-#CRL CHECK RESOURCES
-#CRL Fetch URL
-CRLFETCH_URL="http://localhost"
-
-# Variable indication the maximum age of the CRL i hours.
-HOURTHRESHOLD=24
-
-
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 CRL_ERRNO_1=${SCRIPTID}01
 CRL_ERRNO_2=${SCRIPTID}02
@@ -82,8 +74,7 @@ checkcrl () {
 	fi
 }
 
-
-checkcrl AdminCA1.crl
-#checkcrl Public_AdminCA2.crl
-# and so on ...
+for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
+    checkcrl ${#CRLS[$i]}
+done
 

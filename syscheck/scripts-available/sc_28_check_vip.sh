@@ -11,7 +11,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=28
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02
@@ -30,8 +31,8 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-CHECK_VIP_NODE1=`ssh ${SSH_USER}@${HOSTNAME_NODE1} ip addr list | grep $HOSTNAME_VIRTUAL | awk '{print $2}' | cut -d "/" -f1`
-CHECK_VIP_NODE2=`ssh ${SSH_USER}@${HOSTNAME_NODE2} ip addr list | grep $HOSTNAME_VIRTUAL | awk '{print $2}' | cut -d "/" -f1`
+CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "ip addr list | grep $HOSTNAME_VIRTUAL | awk '{print $2}' | cut -d "/" -f1" ${SSH_USER}`
+CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "ip addr list | grep $HOSTNAME_VIRTUAL | awk '{print $2}' | cut -d "/" -f1" ${SSH_USER}`
 
 if [ ! -z "$CHECK_VIP_NODE1" -a ! -z "$CHECK_VIP_NODE2" ] ; then
 	printlogmess $ERROR $ERRNO_3 "$CHECK_VIP_DESCR_3"

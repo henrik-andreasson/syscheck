@@ -11,7 +11,8 @@ SCRIPTID=16
 ## Import common definitions ##
 . $SYSCHECK_HOME/resources.sh
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 LDAP_ERRNO_1=${SCRIPTID}01
 LDAP_ERRNO_2=${SCRIPTID}02
@@ -26,9 +27,6 @@ if [ "x$1" = "x--help" ] ; then
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" ] ; then
     PRINTTOSCREEN=1
 fi
-
-pidfile=/var/run/slapd.pid
-procname=slapd
 
 proc=`$SYSCHECK_HOME/lib/proc_checker.sh $pidfile $procname` 
 if [ "x$proc" = "x" ] ; then

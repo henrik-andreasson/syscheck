@@ -10,7 +10,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=10
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 CLU_ERRNO_1=${SCRIPTID}01
 CLU_ERRNO_2=${SCRIPTID}02

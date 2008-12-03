@@ -10,8 +10,9 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=01
 
-getlangfiles $SCRIPTID ;
-
+getlangfiles $SCRIPTID;
+getconfig $SCRITPID;
+ 
 ERRNO_1="${SCRIPTID}01"
 ERRNO_2="${SCRIPTID}02"
 
@@ -20,7 +21,6 @@ DESCR_2="${DU_DESCR_2}"
 
 ### local conf ###
 
-DU_PERCENT=95
 
 if [ "x$1" = "x--help" ] ; then
     echo "$DU_HELP ${DU_PERCENT}%)"

@@ -1,7 +1,4 @@
 #!/bin/sh 
-pidfile=/var/run/pcscd.pid
-procname=/usr/local/sbin/pcscd
-status=0
 
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
@@ -11,7 +8,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=05
 
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID 
+getconfig $SCRIPTID
 
 PCSCD_ERRNO_1=${SCRIPTID}01
 PCSCD_ERRNO_2=${SCRIPTID}02
