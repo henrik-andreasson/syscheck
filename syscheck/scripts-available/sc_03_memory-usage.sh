@@ -9,8 +9,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=03
 
-getlangfiles $SCRIPTID ;
-getconfig $SCRITPID;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02

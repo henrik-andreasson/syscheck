@@ -8,9 +8,8 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 SCRIPTID=04
 
-
-getlangfiles $SCRIPTID;
-getconfig $SCRITPTID;
+getlangfiles $SCRIPTID
+getconfig $SCRIPTID
 
 
 PCL_ERRNO_1=${SCRIPTID}01
