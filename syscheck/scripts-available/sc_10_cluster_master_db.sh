@@ -37,7 +37,7 @@ else
 fi
 
 # TODO HARDCODED PATHs
-scp -q $SSH_USER@$HOSTNAME_NODE1:/usr/local/jboss/server/default/deploy/ejbca-ds.xml /tmp/node1EjbcaDS.xml
+scp -o ConnectTimeout=10 -q $SSH_USER@$HOSTNAME_NODE1:/usr/local/jboss/server/default/deploy/ejbca-ds.xml /tmp/node1EjbcaDS.xml
 diff -s /tmp/node1EjbcaDS.xml /usr/local/jboss/server/default/deploy/ejbca-ds.xml > /tmp/diffres.txt
 
 if grep -q "are identical" /tmp/diffres.txt
