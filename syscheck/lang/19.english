@@ -1,20 +1,8 @@
-PUB_DESCR_1="Publish of crl is ok to host: %s and crl: %s"
-PUB_HELP_1="all ok"
+SCALIVE_HELP="Sends alive messages to a central syscheck server run this script either along with the rest of the syscheck scripts or in a crontab (then you can run me more often...)"
+SCALIVE_DESCR_1="Operating system just started"
+SCALIVE_DESCR_2="Operating system is shutting down"
+SCALIVE_DESCR_3="I'm alive"
+SCALIVE_HELP_1="Message is sent when the server's operating system is started"
+SCALIVE_HELP_2="Message is sent when the server's operating system is shutdown"
+SCALIVE_HELP_3="Message is sent to make sure central server know's this server is alive"
 
-PUB_DESCR_2="Failed to transfer crl(%s) to host(%s)"
-PUB_HELP_2="check connection to the host"
-
-PUB_DESCR_3="Failed to copy the crl(%s) back from host(%s) for verification"
-PUB_HELP_3="check connection to the host"
-
-PUB_DESCR_4="File not found at remote host(%s)"
-PUB_HELP_4="check permissions and owner in the taget directory"
-
-PUB_DESCR_5="The crl(%s) is a empty file at host (%s)"
-PUB_HELP_5="check the disk and filesystem"
-
-PUB_DESCR_6="Failed to get crl(%s) from ca"
-PUB_HELP_6="check ejbca and try a manual get or use the web admingui to verify ca is online and working"
-
-PUB_DESCR_7="CRL:%s has expired, got it from host:%s"
-PUB_HELP_7="check CRL in ejbca and try a manual get/issue via the web admingui to verify ca is online and issuing crl:s"
