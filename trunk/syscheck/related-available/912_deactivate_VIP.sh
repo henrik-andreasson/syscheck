@@ -11,7 +11,7 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 . $SYSCHECK_HOME/resources.sh
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
-SCRIPTID=911
+SCRIPTID=912
 
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID 

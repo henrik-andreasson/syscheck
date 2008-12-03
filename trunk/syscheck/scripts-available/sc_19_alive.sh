@@ -11,9 +11,9 @@ SCRIPTID=19
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1=${SCRIPTID}1 # boot (machine start)
-ERRNO_2=${SCRIPTID}2 # shutdown (machine stop)
-ERRNO_3=${SCRIPTID}3 # server "I'm alive" message
+ERRNO_1=${SCRIPTID}01 # boot (machine start)
+ERRNO_2=${SCRIPTID}02 # shutdown (machine stop)
+ERRNO_3=${SCRIPTID}03 # server "I'm alive" message
 
 if [ "x$1" = "x--help" ] ; then
     echo "$SCALIVE_HELP"

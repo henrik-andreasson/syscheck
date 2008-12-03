@@ -13,7 +13,7 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 SCRIPTID=09
 
 getlangfiles $SCRIPTID
-getconfig $SCRITPID
+getconfig $SCRIPTID
 
 FWALL_ERRNO_1=${SCRIPTID}01
 FWALL_ERRNO_2=${SCRIPTID}02
