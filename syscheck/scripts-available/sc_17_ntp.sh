@@ -49,21 +49,20 @@ checkntp () {
 		printlogmess $ERROR $NTP_ERRNO_2 "$NTP_DESCR_2"
 		exit
 	fi	
-	NTPTEMPFILE='checkntpsync-'$DATE
 
 	# todo make one row, and no tempfile
-	${NTPBIN} -pn > /tmp/$NTPTEMPFILE 2>&1
-	NTPCHECK=`cat /tmp/$NTPTEMPFILE | grep $NTPSERVER`
+	STATUS=`${NTPBIN} -pn | grep $NTPSERVER`
 
-	if [ x"$NTPCHECK" = "x" ]; then
+	if [ "x${STATUS} = "x" ]; then
 		printlogmess $ERROR $NTP_ERRNO_3 "$NTP_DESCR_3" "$NTPSERVER" "$ERRCODE"
-		exit
+	else		
+		printlogmess $INFO $NTP_ERRNO_1 "$NTP_DESCR_1" "$NTPSERVER"
 	fi	
-	rm -f /tmp/$NTPTEMPFILE
-	printlogmess $INFO $NTP_ERRNO_1 "$NTP_DESCR_1" "$NTPSERVER"
 }
 
 
 # check with the IP:s of all ntp servers
-checkntp 10.200.16.4
-checkntp 10.200.16.5
+
+for (( i = 0 ;  i < ${#HOST[@]} ; i++ )) ; do  
+	checkntp ${#HOST[$i]}
+}
