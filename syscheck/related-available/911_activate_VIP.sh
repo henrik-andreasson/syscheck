@@ -44,8 +44,6 @@ else
     printlogmess $ERROR $ERRNO_3 "$ACTVIP_DESCR_3" "$?" 
 fi
 
-
-$PING -I $HOSTNAME_VIRTUAL -c 4 $IP_GATEWAY 
 if [ $? -eq 0 ] ; then 
     printlogmess $ERROR $ERRNO_1 "$ACTVIP_DESCR_1" "$?" 
 else
