@@ -32,7 +32,7 @@ fi
 #Check that the primary node is active 
 if grep -q "Node1" $ACTIVENODE_FILE 
 then
-      printlogmess $ERROR $CLU_ERRNO_1 "$CLU_DESCR_1"  
+      printlogmess $INFO $CLU_ERRNO_1 "$CLU_DESCR_1"  
 else
       printlogmess $ERROR $CLU_ERRNO_2 "$CLU_DESCR_2"
 fi
