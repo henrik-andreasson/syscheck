@@ -31,17 +31,24 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "ip addr list | grep $HOSTNAME_VIRTUAL | awk '{print $2}' | cut -d "/" -f1" ${SSH_USER}`
-CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "ip addr list | grep $HOSTNAME_VIRTUAL | awk '{print $2}' | cut -d "/" -f1" ${SSH_USER}`
+# The following command does not work!
+#CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g ${SSH_USER}`
 
-if [ ! -z "$CHECK_VIP_NODE1" -a ! -z "$CHECK_VIP_NODE2" ] ; then
+CHECK_VIP_NODE1=`ssh -o ConnectTimeout=10 ${SSH_USER}@${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g`
+
+# The following command does not work!
+#CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g ${SSH_USER}`
+
+CHECK_VIP_NODE2=`ssh -o ConnectTimeout=10 ${SSH_USER}@${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g`
+
+if [ "$CHECK_VIP_NODE1" = "${HOSTNAME_VIRTUAL}" -a "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess $ERROR $ERRNO_3 "$CHECK_VIP_DESCR_3"
-elif [ ! -z $CHECK_VIP_NODE1 ] ; then
+elif [ "$CHECK_VIP_NODE1" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess $INFO $ERRNO_1 "$CHECK_VIP_DESCR_1"
-elif [ ! -z $CHECK_VIP_NODE2 ] ; then
+elif [ "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess $INFO $ERRNO_2 "$CHECK_VIP_DESCR_2"
 fi
 
-if [ -z "$CHECK_VIP_NODE1" -a -z "$CHECK_VIP_NODE2" ] ; then
+if [ ! "$CHECK_VIP_NODE1" = "${HOSTNAME_VIRTUAL}" -a ! "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess $ERROR $ERRNO_4 "$CHECK_VIP_DESCR_4"
 fi
