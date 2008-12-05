@@ -69,6 +69,9 @@ if [ "x$question" = "xy" ] ; then
 		echo "# The syscheck directory is placed in /tmp/backup_syscheck/.          #"
 		echo "# You have to manually move it to /usr/local/ and change the owner to #"
 		echo "# root and the name of the directory.                                 #"
+                echo "#                                                                     #"
+		echo "# mv /tmp/backup_syscheck /usr/local/syscheck                         #"
+                echo "#                                                                     #"
 		echo "#######################################################################"
 		echo ""
 	else
