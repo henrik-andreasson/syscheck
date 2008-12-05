@@ -75,6 +75,6 @@ checkcrl () {
 }
 
 for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
-    checkcrl ${#CRLS[$i]}
+    checkcrl ${CRLS[$i]}
 done
 
