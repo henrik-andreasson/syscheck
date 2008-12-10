@@ -50,7 +50,7 @@ checkntp () {
 	# todo make one row, and no tempfile
 	STATUS=`${NTPBIN} -pn | grep $NTPSERVER`
 
-	if [ "x${STATUS} = "x" ]; then
+	if [ "x${STATUS}" = "x" ]; then
 		printlogmess $ERROR $NTP_ERRNO_3 "$NTP_DESCR_3" "$NTPSERVER" "$ERRCODE"
 	else		
 		printlogmess $INFO $NTP_ERRNO_1 "$NTP_DESCR_1" "$NTPSERVER"
@@ -62,4 +62,4 @@ checkntp () {
 
 for (( i = 0 ;  i < ${#HOST[@]} ; i++ )) ; do  
 	checkntp ${#HOST[$i]}
-}
+done

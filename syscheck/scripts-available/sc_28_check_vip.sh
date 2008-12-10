@@ -33,13 +33,13 @@ fi
 
 # The following command does not work!
 #CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g ${SSH_USER}`
+#CHECK_VIP_NODE1=`ssh -o ConnectTimeout=10 ${SSH_USER}@${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g`
 
-CHECK_VIP_NODE1=`ssh -o ConnectTimeout=10 ${SSH_USER}@${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g`
+CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} | awk '{print $2}' | sed 's/addr\://g'`
+CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} | awk '{print $2}' | sed 's/addr\://g'`
 
-# The following command does not work!
-#CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g ${SSH_USER}`
 
-CHECK_VIP_NODE2=`ssh -o ConnectTimeout=10 ${SSH_USER}@${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g`
+#CHECK_VIP_NODE2=`ssh -o ConnectTimeout=10 ${SSH_USER}@${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" | awk '{print $2}' | sed s/addr\://g`
 
 if [ "$CHECK_VIP_NODE1" = "${HOSTNAME_VIRTUAL}" -a "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess $ERROR $ERRNO_3 "$CHECK_VIP_DESCR_3"
