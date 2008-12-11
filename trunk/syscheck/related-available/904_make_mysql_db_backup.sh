@@ -33,12 +33,12 @@ $MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca  > $MYSQLBACKUPFUL
 if [ $? = 0 ] ; then
   gzip $MYSQLBACKUPFULLFILENAME
   if [ $? = 0 ] ; then
-      printlogmess $INFO $BAK_ERRNO_1 "$BAK_DESCR_1" 
+      printlogmess $INFO $ERRNO_1 "$MYSQL_BACKUP_DESCR_1" 
   else
-      printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
+      printlogmess $ERROR $ERRNO_2 "$MYSQL_BACKUP_DESCR_2"
   fi  
 else
-  printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
+  printlogmess $ERROR $ERRNO_2 "$MYSQL_BACKUP_DESCR_2"
 fi 
 
 
