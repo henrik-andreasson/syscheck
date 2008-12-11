@@ -45,7 +45,7 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
 	
 	returncode=`./bin/ejbca.sh ca activateca $NAME $PIN`
 	if [ $? -eq 0 ] ; then
-	    printlogmess $ERROR $ERRNO_1 "$ACT_DESCR_1" "$NAME" 
+	    printlogmess $INFO $ERRNO_1 "$ACT_DESCR_1" "$NAME" 
 	else
 	    printlogmess $ERROR $ERRNO_2 "$ACT_DESCR_2" "$NAME" 
 	fi
