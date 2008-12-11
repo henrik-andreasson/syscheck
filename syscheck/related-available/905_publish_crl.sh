@@ -19,13 +19,13 @@ SCRIPTID=905
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1=${SCRIPTID}01
-ERRNO_2=${SCRIPTID}02
-ERRNO_3=${SCRIPTID}03
-ERRNO_4=${SCRIPTID}04
-ERRNO_5=${SCRIPTID}05
-ERRNO_6=${SCRIPTID}06
-ERRNO_7=${SCRIPTID}07
+ERRNO_1=${SCRIPTID}1
+ERRNO_2=${SCRIPTID}2
+ERRNO_3=${SCRIPTID}3
+ERRNO_4=${SCRIPTID}4
+ERRNO_5=${SCRIPTID}5
+ERRNO_6=${SCRIPTID}6
+ERRNO_7=${SCRIPTID}7
 
 
 
@@ -68,8 +68,7 @@ put () {
 	SSHUSER=$5
 
         cd $CRLDIRECTORY
-        printtoscreen "scp -i $SSHKEY $CRLNAME $SSHUSER@$CRLHOST:$SSHSERVER_DIR"
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh $CRLNAME $CRLHOST $SSHSERVER_DIR $SSHUSER
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLNAME $CRLHOST $SSHSERVER_DIR $SSHUSER
 	if [ $? != 0 ] ; then
                 printlogmess $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLHOST $CRLNAME
 	fi
@@ -127,8 +126,10 @@ checkcrl () {
 for (( i=0; i < ${#CANAME[@]} ; i++ )){
 
     get ${CANAME[$i]} "${CANAME[$i]}.crl"
-    put ${VERIFY_HOST[$i]} "${CANAME[$i]}.crl" ${SSHSERVER_DIR[$i]} ${SSHKEY[$i]}  ${SSHUSER[$i]} 
-    checkcrl ${VERIFY_HOST[$i]} "${CANAME[$i]}.crl" ${SSHSERVER_DIR[$i]} ${SSHKEY[$i]}  ${SSHUSER[$i]} 
+	for (( j=0; j < ${#VERIFY_HOST[@]} ; j++ )){
+    		put ${VERIFY_HOST[$i]} "${CANAME[$i]}.crl" ${SSHSERVER_DIR} ${SSHKEY}  ${SSHUSER} 
+    		checkcrl ${VERIFY_HOST[$j]} "${CANAME[$i]}.crl" ${SSHSERVER_DIR} ${SSHKEY}  ${SSHUSER} 
+	}
 
 }
 
