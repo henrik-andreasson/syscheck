@@ -71,6 +71,7 @@ if [ "x$question" = "xy" ] ; then
 		echo "# root and the name of the directory.                                 #"
                 echo "#                                                                     #"
 		echo "# mv /tmp/backup_syscheck /usr/local/syscheck                         #"
+                echo "# chown -R root:root /usr/local/syscheck/                             #"
                 echo "#                                                                     #"
 		echo "#######################################################################"
 		echo ""
