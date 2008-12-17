@@ -139,7 +139,7 @@ start)
 
 	echo "Waiting for jboss server to start:"
 	sleep 5
-	while [ "`grep Server.*JBoss.*Started $JBOSS_HOME/server/default/log/server.log 2>/dev/null`x" = "x" ] ; do
+	while [ "`grep 'Server.*JBoss.*Started' $JBOSS_HOME/server/default/log/server.log 2>/dev/null`x" = "x" ] ; do
 		echo -n "."
 		sleep 2 
 	done
@@ -156,8 +156,7 @@ stop)
     else
         $SUBIT "$CMD_STOP"
     fi
-	while [ "`grep Server.*Shutdown.complete
-		$JBOSS_HOME/server/default/log/server.log 2>/dev/null`x" = "x" ] ; do
+	while [ "`grep 'Server.*Shutdown.*complete' $JBOSS_HOME/server/default/log/server.log 2>/dev/null`x" = "x" ] ; do
 		echo -n "."
 		sleep 2
 	done
