@@ -24,10 +24,10 @@ ERRNO_3="${SCRIPTID}3"
 
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-	echo "$ECRT_HELP"
-	echo "$ERRNO_1/$ECRT_DESCR_1 - $ECRT_HELP_1"
-	echo "$ERRNO_2/$ECRT_DESCR_2 - $ECRT_HELP_2"
-	echo "$ERRNO_3/$ECRT_DESCR_3 - $ECRT_HELP_3"
+	echo "$CLEANBAK_HELP"
+	echo "$ERRNO_1/$CLEANBAK_DESCR_1 - $CLEANBAK_HELP_1"
+	echo "$ERRNO_2/$CLEANBAK_DESCR_2 - $CLEANBAK_HELP_2"
+	echo "$ERRNO_3/$CLEANBAK_DESCR_3 - $CLEANBAK_HELP_3"
 	echo "${SCREEN_HELP}"
 	exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
@@ -43,7 +43,7 @@ ERR=""
 for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
     printtoscreen "deleteing ${FILENAME[$i]} ... "  
 
-    if [ -f  ${FILENAME[$i]} ] ; then 
+    if [ -f  "${FILENAME[$i]}" ] ; then 
 
 	returnstr=`rm ${FILENAME[$i]} 2>&1`
 	if [ $? -ne 0 ] ; then 
