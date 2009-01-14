@@ -37,25 +37,26 @@ fi
 
 
 raiddiskcheck () {
-        DISCID=$1
-        COMMAND=`echo "controller slot=0 pd all show" | $RAID_HPTOOL | grep "$DISCID"`
-        STATUS=`echo $COMMAND | awk '{print $11}' | sed 's/)//g'`
-        if [ "xOK" = "x$STATUS" ] ; then
+        DISCID="$1"
+	xSLOT="$2"
+        COMMAND=`echo "controller slot=${xSLOT} pd all show" | $RAID_HPTOOL | grep "$DISCID"`
+        STATUS=`echo $COMMAND | grep "OK"`
+        if [ "x$STATUS" != "x" ] ; then
                 printlogmess $INFO $RAID_ERRNO_1 "$RAID_DESCR_1" "$COMMAND"
         else
                 printlogmess $ERROR $RAID_ERRNO_2 "$RAID_DESCR_2" "$COMMAND"
-
         fi
 }
 
 
 raidlogiccheck () {
-	LDID=$1 
+	LDID="$1"
+	xSLOT="$2"
 
-        COMMAND=`echo "controller slot=0 ld all show" | $RAID_HPTOOL | grep "$LDID" | cut -d\, -f3 | sed 's/)//g' | sed 's/\ //'` 
-#	echo $COMMAND 
+        COMMAND=`echo "controller slot=${xSLOT} ld all show" | $RAID_HPTOOL | grep "$LDID"` 
+	STATUS=`echo $COMMAND | grep "OK"`
 
-        if [ "xOK" = "x$COMMAND" ] ; then
+	if [ "x$STATUS" != "x" ] ; then
                 printlogmess $INFO $RAID_ERRNO_3 "$RAID_DESCR_3" "$COMMAND"
 
         elif [ "xRebuilding" = "x$COMMAND" ] ; then
@@ -74,11 +75,11 @@ fi
 
 for (( i = 0 ;  i < ${#PHYSICALDRIVE[@]} ; i++ )) ; do
 	#raiddiskcheck "physicaldrive 2:0"
-	raiddiskcheck ${#PHYSICALDRIVE[$i]}
+	raiddiskcheck "${PHYSICALDRIVE[$i]}" $SLOT
 done
 
 for (( i = 0 ;  i < ${#LOGICALDRIVE[@]} ; i++ )) ; do
-	raidlogiccheck ${#LOGICALDRIVE[$i]}
+	raidlogiccheck "${LOGICALDRIVE[$i]}" $SLOT
 #	raidlogiccheck "logicaldrive 1"
 done
 
