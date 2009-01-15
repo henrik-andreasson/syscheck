@@ -53,7 +53,7 @@ else
 fi
 
 # arg3 optional, if not specified the executing user will be used
-SSHUSER=
+SSHTOUSER=
 if [ "x$3" != "x"  ] ; then 
     SSHTOUSER="$3@"
 fi
@@ -67,8 +67,8 @@ fi
 
 
 
-printtoscreen "ssh ${SSHOPTIONS} ${SSHFROMKEY} ${SSHUSER}${SSHHOST} ${SSHCMD} 2>&1"
-ssh ${SSHOPTIONS} ${SSHFROMKEY} ${SSHUSER}${SSHHOST} ${SSHCMD} 2>&1
+printtoscreen "ssh ${SSHOPTIONS} ${SSHFROMKEY} ${SSHTOUSER}${SSHHOST} ${SSHCMD} 2>&1"
+ssh ${SSHOPTIONS} ${SSHFROMKEY} ${SSHTOUSER}${SSHHOST} ${SSHCMD} 2>&1
 retcode=$?
 
 if [ $retcode -eq 0 ] ; then
