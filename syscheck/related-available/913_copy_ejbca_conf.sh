@@ -50,7 +50,7 @@ echo ""
 read -p "Do you want to send EJBCA keys to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$EJBCA_HOME/p12/*" $HOSTNAME_NODE2 $EJBCA_HOME/p12/ $SSH_USER
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$EJBCA_HOME/p12/" $HOSTNAME_NODE2 $EJBCA_HOME/p12/ $SSH_USER
 	if [ $? -ne 0 ] ; then	
 		echo ""
 		echo "Failed to contact other host"
