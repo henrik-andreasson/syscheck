@@ -43,19 +43,20 @@ ERR=""
 for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
     printtoscreen "deleteing ${FILENAME[$i]} ... "  
 
-    if [ -f  "${FILENAME[$i]}" ] ; then 
+    realfiles=$(ls ${FILENAME[$i]})
+    if [ "x${realfiles}" != "x" ] ; then 
 
 	returnstr=`rm ${FILENAME[$i]} 2>&1`
 	if [ $? -ne 0 ] ; then 
 	    ERR=" ${FILENAME[$i]} ; $ERR"
-	    printtoscreen "deleted ${FILENAME[$i]} failed ($returnstr)"  
+	    printtoscreen "deleted ${realfiles} failed ($returnstr)"  
 	else
-	    printtoscreen "deleted ${FILENAME[$i]} ok"  
+	    printtoscreen "deleted ${realfiles} ok"  
 	fi
 
     else
 
-	printlogmess $WARN $ERRNO_3 "$CLEANBAK_DESCR_3" ${FILENAME[$i]}
+	printlogmess $WARN $ERRNO_3 "$CLEANBAK_DESCR_3" "${FILENAME[$i]}"
 	printtoscreen "file ${FILENAME[$i]} did not exist before deleting "  
 	    
     fi
