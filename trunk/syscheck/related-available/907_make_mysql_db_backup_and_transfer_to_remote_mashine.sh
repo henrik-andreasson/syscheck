@@ -31,7 +31,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     shift
 fi 
 
-$MYSQLDUMP_BIN -u ${DB_NAME} --password="${DB_PASSWORD}" ${DB_NAME}  > ${MYSQLBACKUPFULLFILENAME} 
+$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh
 
 if [ $? -ne 0 ] ; then
     printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
