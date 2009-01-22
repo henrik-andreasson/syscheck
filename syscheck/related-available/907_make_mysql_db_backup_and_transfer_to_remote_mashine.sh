@@ -31,13 +31,12 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     shift
 fi 
 
-$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh
+$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s
 
 if [ $? -ne 0 ] ; then
     printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
 fi 
 
-gzip $MYSQLBACKUPFULLFILENAME
 if [ $? -ne 0 ] ;   then
     printlogmess $ERROR $BAK_ERRNO_3 "$BAK_DESCR_3"
 fi  
