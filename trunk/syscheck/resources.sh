@@ -11,7 +11,7 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 export SYSCHECK_HOME
 PATH=$SYSCHECK_HOME:$PATH
 
-DATE=`date +'%Y-%m-%d_%H.%m.%S'`
+DATE=`date +'%Y-%m-%d_%H.%M.%S'`
 
 # use the printlog function
 . $SYSCHECK_HOME/lib/printlogmess.sh
