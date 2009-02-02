@@ -79,10 +79,18 @@ echo "CRLSTRING: $CRLSTRING"          >> ${CRLLOG}
 echo "CRLLASTUPDATE: $CRLLASTUPDATE2" >> ${CRLLOG}
 echo "CRLISSUER: $CRLISSUER2"         >> ${CRLLOG}
 
-OUTFILE="${OUTPATH2}/archived-crl-${DATE}-${CRLLASTUPDATE2}-${CRLISSUER2}"
+#OUTFILE="${OUTPATH2}/archived-crl-${DATE}-${CRLLASTUPDATE2}-${CRLISSUER2}"
+# OUTFILE is defined in conf ...
+
 openssl crl -inform der -in $1 > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$ECRL_DESCR_1" "$?" 
 else
     printlogmess $ERROR $ERRNO_3 "$ECRL_DESCR_3" "$?" 
 fi
+
+for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
+    printtoscreen "Copying file: ${OUTFILE} to:${REMOTE_HOST[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey:${SSHKEY[$j]}"
+    ${SYSCHECK_HOME}/related-enabled/917_archive_file.sh ${OUTFILE} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}
+}
+
