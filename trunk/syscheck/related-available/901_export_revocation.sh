@@ -70,3 +70,9 @@ if [ $? -eq 0 ] ; then
 else
     printlogmess $ERROR $ERRNO_3 "$EREV_DESCR_3" "$?" 
 fi
+
+for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
+    printtoscreen "Copying file: ${OUTFILE} to:${REMOTE_HOST[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey:${SSHKEY[$j]}"
+    ${SYSCHECK_HOME}/related-enabled/917_archive_file.sh ${OUTFILE} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}
+}
+

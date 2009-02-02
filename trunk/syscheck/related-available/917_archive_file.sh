@@ -90,14 +90,14 @@ fi
 # arg4 optional, if not specified the executing user will be used
 SSHTOUSER=
 if [ "x$4" != "x"  ] ; then 
-    SSHTOUSER=" -l $4"
+    SSHTOUSER="$4"
 fi
 
 
 # arg5 optional , if not specified the default key will be used
 SSHFROMKEY=
 if [ "x$5" != "x"  ] ; then 
-    SSHFROMKEY="-i $5"
+    SSHFROMKEY="$5"
 fi
 
 ### func ... ###
@@ -134,8 +134,8 @@ transferFile(){
 	IntransitFileName=$2
 
 # claim the filename that the file is not already there
-	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX\" "
-	reultFromClaim=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX" `
+	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX\" ${SSHTOUSER} ${SSHFROMKEY}"
+	reultFromClaim=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX" ${SSHTOUSER} ${SSHFROMKEY}`
 	if [ $? != 0 ] ; then
                 printlogmess $ERROR $ERRNO_4 "$ARCHIVE_DESCR_4" 
 		exit -1
@@ -144,15 +144,15 @@ transferFile(){
 	remoteFileName=`basename $baseFile`
 
 # transfer the file 
- 	printtoscreen "$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $ToUser"
- 	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $ToUser
+ 	printtoscreen "$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER"
+ 	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER
 	if [ $? != 0 ] ; then
                 printlogmess $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "${InTransitDir}/${IntransitFileName} $ArchiveServer ${ArchiveDir}/${remoteFileName}"
 		exit -1
 	fi
 
-	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"md5sum ${ArchiveDir}/${remoteFileName}\" "
-	sshresult=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "md5sum ${ArchiveDir}/${remoteFileName}" `
+	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"md5sum ${ArchiveDir}/${remoteFileName}\" ${SSHTOUSER} ${SSHFROMKEY}"
+	sshresult=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "md5sum ${ArchiveDir}/${remoteFileName}" ${SSHTOUSER} ${SSHFROMKEY}`
 	if [ $? != 0 ] ; then
                 printlogmess $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "md5sum check failed"
 		exit -1

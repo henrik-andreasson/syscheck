@@ -47,6 +47,10 @@ else
 	CERTFILE=$1	
 fi
 
+if [ ! -d ${OUTPATH2} ] ; then
+    mkdir -p ${OUTPATH2}
+fi
+
 date >> ${CERTLOG} 
 CERTSERIAL=`openssl x509 -inform der -in ${CERTFILE} -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then 
@@ -79,3 +83,7 @@ else
     printlogmess $ERROR $ERRNO_3 "$ECRT_DESCR_3" "$?" 
 fi
 
+for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
+    printtoscreen "Copying file: ${OUTFILE} to:${REMOTE_HOST[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey:${SSHKEY[$j]}"
+    ${SYSCHECK_HOME}/related-enabled/917_archive_file.sh ${OUTFILE} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}
+}
