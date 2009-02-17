@@ -17,9 +17,14 @@ DATE=`date +'%Y-%m-%d_%H.%M.%S'`
 . $SYSCHECK_HOME/lib/printlogmess.sh
 
 # get definitions for EJBCA
-if [ -f /etc/ejbca/environment ] ; then
-	. /etc/ejbca/environment
+if [ -f /usr/local/environment ] ; then
+	. /usr/local/environment
 fi
+
+# cap message length to ...
+MESSAGELENGTH=160
+
+export LD_LIBRARY_PATH=/usr/local/pcsc/lib/
 
 # System name is name of the overall system that is monitored.
 SYSTEMNAME=PKI
@@ -102,7 +107,7 @@ HOSTNAME_NODE1=192.168.0.11
 HOSTNAME_NODE2=192.168.0.12
 
 #The virual IP address or hostname used by the cluster
-HOSTNAME_VIRTUAL=192.168.0.15
+HOSTNAME_VIRTUAL=147.186.2.12
 NETMASK_VIRTUAL=255.255.255.0
 IF_VIRTUAL=eth0
 

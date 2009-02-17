@@ -49,7 +49,7 @@ printlogmess(){
         HOST=`hostname `
 
         MESSAGE0="${HOST}: ${DESCR_W_ARGS}"
-        MESSAGE=${MESSAGE0:0:79}
+        MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
 
         if [ "x$PRINTTOSCREEN" = "x1" ] ; then
             echo "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}"
