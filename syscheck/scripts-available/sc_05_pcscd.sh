@@ -28,7 +28,7 @@ fi
 
 
 if [ -f $pidfile ] ; then
-	pid=`proc_checker.sh $pidfile` 
+	pid=`${SYSCHECK_HOME}/lib/proc_checker.sh $pidfile` 
 else
 	pid=`ps -ef | grep $procname | grep -v grep | awk '{print $2}'` 
 	if [ "x$pid" = "x" ] ; then
