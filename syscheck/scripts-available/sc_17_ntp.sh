@@ -48,7 +48,7 @@ checkntp () {
 	fi	
 
 	# todo make one row, and no tempfile
-	STATUS=`${NTPBIN} -pn | grep $NTPSERVER`
+	STATUS=`${NTPBIN} -pn | grep ${NTPSERVER}`
 
 	if [ "x${STATUS}" = "x" ]; then
 		printlogmess $ERROR $NTP_ERRNO_3 "$NTP_DESCR_3" "$NTPSERVER" "$ERRCODE"
@@ -60,6 +60,6 @@ checkntp () {
 
 # check with the IP:s of all ntp servers
 
-for (( i = 0 ;  i < ${#HOST[@]} ; i++ )) ; do  
-	checkntp ${#HOST[$i]}
+for (( i = 0 ;  i < ${#NTPHOST[@]} ; i++ )) ; do  
+	checkntp "${NTPHOST[$i]}"
 done
