@@ -80,7 +80,8 @@ echo "CRLLASTUPDATE: $CRLLASTUPDATE2" >> ${CRLLOG}
 echo "CRLISSUER: $CRLISSUER2"         >> ${CRLLOG}
 
 #OUTFILE="${OUTPATH2}/archived-crl-${DATE}-${CRLLASTUPDATE2}-${CRLISSUER2}"
-# OUTFILE is defined in conf ...
+
+OUTFILE="${OUTPATH2}/${CRLISSUER2}.crl"
 
 openssl crl -inform der -in $1 > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
