@@ -37,7 +37,7 @@ checkcrl () {
 	CRLNAME=$1
 	cd /tmp
 	rm -f /tmp/$CRLNAME
-	wget ${CRLFETCH_URL}/${CRLNAME} -T 10 -t 1 -O /tmp/$CRLNAME -o /dev/null
+	wget ${CRLNAME} -T 10 -t 1 -O /tmp/$CRLNAME -o /dev/null
 	if [ $? -ne 0 ] ; then
 		printlogmess $ERROR $CRL_ERRNO_3 "$CRL_DESCR_3" "$CRLNAME"	
 		exit
