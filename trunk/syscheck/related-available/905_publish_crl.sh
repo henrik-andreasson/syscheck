@@ -38,7 +38,6 @@ fi
 
 
 
-CRLDIRECTORY="/var/tmp/crl"
 if [ ! -d $CRLDIRECTORY ] ; then
 	mkdir $CRLDIRECTORY
 fi
@@ -52,6 +51,7 @@ get () {
 	CRLNAME=$1
 	CRLFILE=$2
         rm -f $CRLDIRECTORY/$CRLFILE
+	cd ${EJBCA_HOME}
         printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLDIRECTORY/$CRLFILE"
         ${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLDIRECTORY/$CRLFILE
 	if [ $? != 0 -o  ! -r $CRLDIRECTORY/$CRLFILE  ] ; then
@@ -85,12 +85,17 @@ checkcrl () {
 
         cd $VERIFYCRLDIRECTORY
         rm -f $VERIFYCRLDIRECTORY/$CRLNAME
-        printtoscreen "scp -o ConnectTimeout=10 -i $SSHKEY $SSHUSER@${CRLHOST}:$SSHSERVER_DIR/$CRLNAME $VERIFYCRLDIRECTORY/$CRLNAME "
-        scp -o ConnectTimeout=10 -i $SSHKEY $SSHUSER@${CRLHOST}:$SSHSERVER_DIR/$CRLNAME $VERIFYCRLDIRECTORY/$CRLNAME 
-        if [ $? -ne 0 ] ; then
-		printlogmess $ERROR $ERRNO_3 "$PUBL_DESCR_3" $CRLHOST $CRLNAME
-                exit
-        fi
+
+	if [ "x${CRLHOST}" != "xlocalhost" ] ; then
+	        printtoscreen "scp -o ConnectTimeout=10 -i $SSHKEY $SSHUSER@${CRLHOST}:$SSHSERVER_DIR/$CRLNAME $VERIFYCRLDIRECTORY/$CRLNAME "
+	        scp -o ConnectTimeout=10 -i $SSHKEY $SSHUSER@${CRLHOST}:$SSHSERVER_DIR/$CRLNAME $VERIFYCRLDIRECTORY/$CRLNAME 
+	        if [ $? -ne 0 ] ; then
+			printlogmess $ERROR $ERRNO_3 "$PUBL_DESCR_3" $CRLHOST $CRLNAME
+       		        exit
+        	fi
+	else
+		cp -f $SSHSERVER_DIR/$CRLNAME $VERIFYCRLDIRECTORY/$CRLNAME
+	fi
 
 # file not found where it should be
         if [ ! -f $VERIFYCRLDIRECTORY/$CRLNAME ] ; then
@@ -117,7 +122,7 @@ checkcrl () {
         HOURSSINCEGENERATION=`${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE"`
 
         if [ "$HOURSSINCEGENERATION" -gt "$HOURTHRESHOLD" ] ; then
-		printlogmess $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLNAME $CRLHOST
+		printlogmess $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLNAME $CRLHOST "old: ${HOURSSINCEGENERATION}) limit: ${HOURTHRESHOLD}"
         else
 		printlogmess $INFO $ERRNO_1 "$PUBL_DESCR_1" $CRLHOST $CRLNAME
         fi
@@ -125,11 +130,15 @@ checkcrl () {
 
 for (( i=0; i < ${#CANAME[@]} ; i++ )){
 
-    get ${CANAME[$i]} "${CANAME[$i]}.crl"
-	for (( j=0; j < ${#VERIFY_HOST[@]} ; j++ )){
-    		put ${VERIFY_HOST[$i]} "${CANAME[$i]}.crl" ${SSHSERVER_DIR} ${SSHKEY}  ${SSHUSER} 
-    		checkcrl ${VERIFY_HOST[$j]} "${CANAME[$i]}.crl" ${SSHSERVER_DIR} ${SSHKEY}  ${SSHUSER} 
-	}
+	if [ "x${VERIFY_HOST[$i]}" = "xlocalhost" ] ; then
+		get ${CANAME[$i]} "${CANAME[$i]}.crl"
+# todo fix verification date calc problems
+#    		checkcrl ${VERIFY_HOST[$i]} "${CANAME[$i]}.crl" ${CRLTO_DIR[$i]} 
+	else
+		get ${CANAME[$i]} "${CANAME[$i]}.crl"
+    		put ${VERIFY_HOST[$i]} "${CANAME[$i]}.crl" ${CRLTO_DIR[$i]} ${SSHKEY[$i]}  ${SSHUSER[$i]} 
+    		checkcrl ${VERIFY_HOST[$i]} "${CANAME[$i]}.crl" ${CRLTO_DIR[$i]} ${SSHKEY[$i]}  ${SSHUSER[$i]} 
+	fi
 
 }
 
