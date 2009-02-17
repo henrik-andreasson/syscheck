@@ -35,6 +35,13 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     shift
 fi 
 
+
+CHECK_VIP=`$IFCONFIG ${IF_VIRTUAL}:0 | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL}` 
+if [ "x${CHECK_VIP}" != "x" ] ; then 
+	printlogmess $INFO $ERRNO_3 "$ACTVIP_DESCR_3"
+	exit
+fi
+
 $IFCONFIG ${IF_VIRTUAL}:0 inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up
 #$IP address add $HOSTNAME_VIRTUAL/$NETMASK_VIRTUAL dev $IF_VIRTUAL
 #$IFCONFIG $IF_VIRTUAL add $HOSTNAME_VIRTUAL netmask $HOSTNAME_VIRTUAL
