@@ -36,23 +36,21 @@ $IPTABLES_BIN -L > $IPTABLES_TMP_FILE
 
 FIREWALLFAILED="0"
 
-#Check that no chain have policy accept.
-if grep -q "(policy ACCEPT)" $IPTABLES_TMP_FILE
-then
-      printlogmess $ERROR $FWALL_ERRNO_1 "$FWALL_DESCR_1"  
-      FIREWALLFAILED="1"
-else
-  #Check that the ruleset seems ok.
-  if ! grep -q "$IPTABLES_RULE1" $IPTABLES_TMP_FILE
-  then
-      printlogmess $ERROR $FWALL_ERRNO_2 "$FWALL_DESCR_2"
-      FIREWALLFAILED="1"
-  fi
+rule1check=`grep "$IPTABLES_RULE1" $IPTABLES_TMP_FILE`
+if [ "x$rule1check" = "x" ] ; then
+      FIREWALLFAILED=1
 fi
 
-if [ "$FIREWALLFAILED" -ne "1" ]
-then 
-      printlogmess $INFO $FWALL_ERRNO_3 "$FWALL_DESCR_3"
+# 
+rule2check=`grep "$IPTABLES_RULE2" $IPTABLES_TMP_FILE`
+if [ "x$rule2check" != "x" ] ; then
+      FIREWALLFAILED=1
+fi
+
+if [ "$FIREWALLFAILED" = 1 ] ; then 
+	printlogmess $ERROR $FWALL_ERRNO_1 "$FWALL_DESCR_1"
+else
+	printlogmess $INFO $FWALL_ERRNO_3 "$FWALL_DESCR_3"
 fi
 
 rm $IPTABLES_TMP_FILE
