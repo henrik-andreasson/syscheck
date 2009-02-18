@@ -36,20 +36,20 @@ checkcrl () {
 
 	CRLNAME=$1
 	cd /tmp
-	rm -f /tmp/$CRLNAME
-	wget ${CRLNAME} -T 10 -t 1 -O /tmp/$CRLNAME -o /dev/null
+	outname=`mktemp`
+	wget ${CRLNAME} -T 10 -t 1 -O $outname -o /dev/null
 	if [ $? -ne 0 ] ; then
 		printlogmess $ERROR $CRL_ERRNO_3 "$CRL_DESCR_3" "$CRLNAME"	
 		exit
 	fi
 	
 # file not found where it should be
-	if [ ! -f /tmp/$CRLNAME ] ; then
+	if [ ! -f $outname ] ; then
 		printlogmess $ERROR $CRL_ERRNO_1 "$CRL_DESCR_1" "$CRLNAME"
 		exit 1
 	fi
 
-	CRL_FILE_SIZE=`stat -c"%s" /tmp/$CRLNAME`
+	CRL_FILE_SIZE=`stat -c"%s" $outname`
 # stat return check
 	if [ $? -ne 0 ] ; then
 		printlogmess $ERROR $CRL_ERRNO_4 "$CRL_DESCR_4" "$CRLNAME"	
@@ -63,7 +63,7 @@ checkcrl () {
 	fi
 
 # now we can check the crl:s best before date is in the future with atleast HOURTHRESHOLD hours (defined in resources)
-	TEMPDATE=`openssl crl -inform der -in $CRLNAME -lastupdate -noout`
+	TEMPDATE=`openssl crl -inform der -in $outname -lastupdate -noout`
 	DATE=${TEMPDATE:11}
 	HOURSSINCEGENERATION=`${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE"`
 	
