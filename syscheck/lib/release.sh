@@ -5,17 +5,21 @@ set -e
 echo "release no:"
 read rel
 
-pwd=`pwd`
-basename=`basename $pwd`
-rm -rf ${basename}-${rel}.zip ${basename}-${rel}
-cp -r . ../${basename}-${rel}
+echo "progname: (syscheck):"
+read progname
+if [ "x${progname}" = "x" ] ; then
+	progname=syscheck
+fi
 
+svn export . ../${progname}-${rel}
+
+zipname="${progname}-${rel}.zip"
 cd ..
-zip -r ${basename}-${rel}.zip ${basename}-${rel}
+zip -r ${zipname} ${progname}-${rel}
 
 
-md5sum ${basename}-${rel}.zip > ${basename}-${rel}.zip.md5
-sha1sum ${basename}-${rel}.zip > ${basename}-${rel}.zip.sha1
-gpg -o ${basename}-${rel}.zip.gpg -sab ${basename}-${rel}.zip 
+md5sum ${zipname}          > ${zipname}.md5
+sha1sum ${zipname}         > ${zipname}.sha1
+gpg -o ${zipname}.gpg -sab   ${zipname} 
 
-cd $pwd
+cd -
