@@ -96,7 +96,7 @@ MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPFILE}-${DATE}.sql"
 #Comment and uncomment the levels you want to change
 
 #Path do clusterscript directory
-CLUSTERSCRIPT_HOME=$SYSCHECK_HOME/related/clusterscripts
+CLUSTERSCRIPT_HOME=$SYSCHECK_HOME/misc/clusterscripts
 
 #Path do ejbcascript directory
 EJBCASCRIPT_HOME=$SYSCHECK_HOME/misc/ejbca
