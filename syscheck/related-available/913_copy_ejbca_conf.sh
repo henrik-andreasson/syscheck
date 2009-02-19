@@ -38,7 +38,16 @@ echo ""
 read -p "Do you want to send EJBCA conf to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$EJBCA_HOME/conf/*.properties" $HOSTNAME_NODE2 /tmp/backup_ejbca/conf/ $SSH_USER
+        ${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir -p /tmp/backup_ejbca/conf/" ${SSH_USER}
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$EJBCA_HOME/conf/*" $HOSTNAME_NODE2 /tmp/backup_ejbca/conf/ $SSH_USER
+
+	echo "#######################################################"
+	echo "#                                                     #"
+	echo "# The conf/ directory is placed in /tmp/backup_ejbca/ #"
+	echo "# You have to manually move it to \$EJBCA_HOME/        #"
+	echo "#                                                     #"
+	echo "#######################################################"
+
 	if [ $? -ne 0 ] ; then	
 		echo "Failed to contact other host"
 	fi 
@@ -50,7 +59,16 @@ echo ""
 read -p "Do you want to send EJBCA keys to $HOSTNAME_NODE2 (y/n):" question
 
 if [ "x$question" = "xy" ] ; then
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$EJBCA_HOME/p12/" $HOSTNAME_NODE2 /tmp/backup_backup/p12/ $SSH_USER
+        ${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir -p /tmp/backup_ejbca/p12/" ${SSH_USER}
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$EJBCA_HOME/p12/*" $HOSTNAME_NODE2 /tmp/backup_ejbca/p12/ $SSH_USER
+
+	echo "######################################################"
+	echo "#                                                    #"
+	echo "# The p12/ directory is placed in /tmp/backup_ejbca/ #"
+	echo "# You have to manually move it to \$EJBCA_HOME/       #"
+	echo "#                                                    #"
+	echo "######################################################"
+
 	if [ $? -ne 0 ] ; then	
 		echo ""
 		echo "Failed to contact other host"
@@ -65,23 +83,19 @@ read -p "Do you want to send syscheck to $HOSTNAME_NODE2 (y/n):" question
 if [ "x$question" = "xy" ] ; then
 	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$SYSCHECK_HOME/" $HOSTNAME_NODE2 /tmp/backup_syscheck $SSH_USER
 	if [ $? -eq 0 ] ; then	
-		echo "################################################################"
-		echo "#                                                              #"
-		echo "# The conf/ and p12/ directory is placed in /tmp/backup_ejbca/ #"
-		echo "# You have to manually move it to /usr/local/.                 #"
-		echo "#                                                              #"
-		echo "# The syscheck directory is placed in /tmp/backup_syscheck/.   #"
-		echo "# You have to manually move it to /usr/local/ and change the   #"       
-		echo "# owner to root and the name of the directory.                 #"
-		echo "#                                                              #"
-		echo "# Before you can move /tmp/backup_syscheck/ you have to remove #"
-		echo "# /usr/local/syscheck/ or move it to a different location.     #"
-                echo "#                                                              #"
-		echo "# mv /usr/local/syscheck-xx /tmp/syscheck-xx-backup            #"
-		echo "# mv /tmp/backup_syscheck /usr/local/syscheck                  #"
-                echo "# chown -R root:root /usr/local/syscheck/                      #"
-                echo "#                                                              #"
-		echo "################################################################"
+		echo "####################################################################"
+		echo "#                                                                  #"
+		echo "# The syscheck directory is placed in /tmp/backup_syscheck/        #"
+		echo "# You have to manually move it to \$SYSCHECK_HOME/ and change the   #"       
+		echo "# owner to root and the name of the directory.                     #"
+		echo "#                                                                  #"
+		echo "# Before you can move /tmp/backup_syscheck/ you have to remove     #"
+		echo "# \$SYSCHECK_HOME/ or move it to a different location.              #"
+                echo "#                                                                  #"
+		echo "# mv /tmp/backup_syscheck \$SYSCHECK_HOME/                          #"
+                echo "# chown -R root:root \$SYSCHECK_HOME/                               #"
+                echo "#                                                                  #"
+		echo "####################################################################"
 		echo ""
 	else
 		echo "Failed to contact other host"
