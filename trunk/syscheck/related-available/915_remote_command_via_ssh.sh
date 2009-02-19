@@ -62,17 +62,23 @@ fi
 # arg4 optional , if not specified the default key will be used
 SSHFROMKEY=
 if [ "x$4" != "x"  ] ; then 
-    SSHFROMKEY="-i $4"
+    SSHFROMKEY="$4"
 fi
 
 
 
-printtoscreen "ssh ${SSHOPTIONS} ${SSHFROMKEY} ${SSHTOUSER}${SSHHOST} ${SSHCMD} 2>&1"
-ssh ${SSHOPTIONS} ${SSHFROMKEY} ${SSHTOUSER}${SSHHOST} ${SSHCMD} 2>&1
-retcode=$?
+if [ "x${SSHFROMKEY}" != "x" ] ; then
+	printtoscreen "ssh ${SSHOPTIONS} -i ${SSHFROMKEY} ${SSHTOUSER}${SSHHOST} ${SSHCMD} 2>&1"
+	ssh ${SSHOPTIONS} -i ${SSHFROMKEY} ${SSHTOUSER}${SSHHOST} ${SSHCMD} 2>&1
+	retcode=$?
+else
+	printtoscreen "ssh ${SSHOPTIONS} ${SSHTOUSER}${SSHHOST} ${SSHCMD} 2>&1"
+	ssh ${SSHOPTIONS} ${SSHTOUSER}${SSHHOST} ${SSHCMD} 2>&1
+	retcode=$?
+fi
 
 if [ $retcode -eq 0 ] ; then
-	printlogmess $INFO $SSHCMD_ERRNO_1 "$SSHCMD_DESCR_1" 
+	printlogmess $INFO $SSHCMD_ERRNO_1 "$SSHCMD_DESCR_1" "${SSHTOUSER}${SSHHOST} ${SSHCMD}"
 else
 	printlogmess $ERROR $SSHCMD_ERRNO_4 "$SSHCMD_DESCR_4" "$retcode"
 	exit $retcode

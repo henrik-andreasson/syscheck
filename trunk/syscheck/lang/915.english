@@ -1,5 +1,5 @@
-SSHCMD_HELP="Compare tables on master and slave database"
-SSHCMD_DESCR_1="Command executed successfully"
+SSHCMD_HELP="Run command on another host with ssh $0 <host> <cmd> [sshtouser] [sshfromkey]"
+SSHCMD_DESCR_1="Command executed successfully (%s)"
 SSHCMD_DESCR_2="Host not found (%s)"
 SSHCMD_DESCR_3="Command not found (%s)"
 SSHCMD_DESCR_4="Command not executed (%s)"
