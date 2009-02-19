@@ -17,8 +17,8 @@ DATE=`date +'%Y-%m-%d_%H.%M.%S'`
 . $SYSCHECK_HOME/lib/printlogmess.sh
 
 # get definitions for EJBCA
-if [ -f /usr/local/environment ] ; then
-	. /usr/local/environment
+if [ -f /etc/ejbca/environment ] ; then
+	. /etc/ejbca/environment
 fi
 
 # cap message length to ...
@@ -107,7 +107,7 @@ HOSTNAME_NODE1=192.168.0.11
 HOSTNAME_NODE2=192.168.0.12
 
 #The virual IP address or hostname used by the cluster
-HOSTNAME_VIRTUAL=147.186.2.12
+HOSTNAME_VIRTUAL=192.168.0.10
 NETMASK_VIRTUAL=255.255.255.0
 IF_VIRTUAL=eth0
 
