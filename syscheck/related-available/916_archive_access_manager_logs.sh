@@ -17,26 +17,44 @@ ERRNO_3=${SCRIPTID}3
 
 if [ "x$1" = "x--help" ] ; then
         echo "$0 <-s|--screen>"
+	echo "$AMLB_HELP"
+        echo "$ERRNO_1/$AMLB_DESCR_1 - $AMLB_HELP_1"
+        echo "$ERRNO_2/$AMLB_DESCR_2 - $AMLB_HELP_2"
+
         exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi 
 
+
 for (( i=0; i < ${#FileName[@]} ; i++ )){
-
-	$SYSCHECK_HOME/related-available/917_archive_file.sh --keep-org "${FileName[$i]}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
-	if [ $? != 0 ] ; then
-		printlogmess $ERROR $ERRNO_2 "$AMLB_DESCR_2" ${FileName[$i]} "${ToServer0[$i]} ${ToServerDir[$i]}" 
-	else
-		printlogmess $INFO $ERRNO_1 "$AMLB_DESCR_1" ${FileName[$i]} "${ToServer0[$i]} ${ToServerDir[$i]}"
+#for file in ${#FileName[@]} ; do
+   files=$(ls ${FileName[$i]} 2>/dev/null)
+   printtoscreen "Will loop over these files: ${files}"
+   for fn in ${files} ; do
+	KEEPORG=	
+	if [ "x${ToServer1[$i]}" != "x" ] ; then
+		KEEPORG=--keep-org
+	fi
+	if [ "x${ToServer0[$i]}" != "x" ] ; then
+		printtoscreen $SYSCHECK_HOME/related-available/917_archive_file.sh ${KEEPORG} "${fn}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
+		$SYSCHECK_HOME/related-available/917_archive_file.sh ${KEEPORG} "${fn}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
+		if [ $? != 0 ] ; then
+			printlogmess $ERROR $ERRNO_2 "$AMLB_DESCR_2" "${fn}" "${ToServerDir[$i]}" 
+		else
+			printlogmess $INFO $ERRNO_1 "$AMLB_DESCR_1" "${fn}" "${ToServerDir[$i]}"
+		fi
 	fi
 
-	$SYSCHECK_HOME/related-available/917_archive_file.sh "${FileName[$i]}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
-	if [ $? != 0 ] ; then
-		printlogmess $ERROR $ERRNO_2 "$AMLB_DESCR_2" ${FileName[$i]} "${ToServer1[$i]} ${ToServerDir[$i]}" 
-	else
-		printlogmess $INFO $ERRNO_1 "$AMLB_DESCR_1" ${FileName[$i]} "${ToServer1[$i]} ${ToServerDir[$i]}"
+	if [ "x${ToServer1[$i]}" != "x" ] ; then
+		printtoscreen $SYSCHECK_HOME/related-available/917_archive_file.sh "${fn}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
+		$SYSCHECK_HOME/related-available/917_archive_file.sh "${fn}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
+		if [ $? != 0 ] ; then
+			printlogmess $ERROR $ERRNO_2 "$AMLB_DESCR_2" "${fn}" "${ToServerDir[$i]}" 
+		else
+			printlogmess $INFO $ERRNO_1 "$AMLB_DESCR_1" "${fn}" "${ToServerDir[$i]}"
+		fi
 	fi
-
+ done
 }
 
