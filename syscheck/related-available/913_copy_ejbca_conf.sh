@@ -92,6 +92,7 @@ if [ "x$question" = "xy" ] ; then
 		echo "# Before you can move /tmp/backup_syscheck/ you have to remove     #"
 		echo "# \$SYSCHECK_HOME/ or move it to a different location.              #"
                 echo "#                                                                  #"
+                echo "# Example:                                                         #"
 		echo "# mv /tmp/backup_syscheck \$SYSCHECK_HOME/                          #"
                 echo "# chown -R root:root \$SYSCHECK_HOME/                               #"
                 echo "#                                                                  #"
