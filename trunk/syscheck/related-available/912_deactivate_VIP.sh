@@ -36,15 +36,15 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     shift
 fi 
 
-CHECK_VIP=`$IFCONFIG ${IF_VIRTUAL}:0 | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL}`
+CHECK_VIP=`$IFCONFIG ${IF_VIRTUAL} | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL}`
 if [ "x${CHECK_VIP}" = "x" ] ; then
         printlogmess $INFO $ERRNO_3 "$DEACTVIP_DESCR_3"
         exit
 fi
 
 
-$IFCONFIG ${IF_VIRTUAL}:0 down
-#$IP address del $HOSTNAME_VIRTUAL/$NETMASK_VIRTUAL dev $IF_VIRTUAL
+$IFCONFIG ${IF_VIRTUAL} down
+
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$DEACTVIP_DESCR_1" "$?" 
 else
