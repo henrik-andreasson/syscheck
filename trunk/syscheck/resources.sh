@@ -107,9 +107,10 @@ HOSTNAME_NODE1=192.168.0.11
 HOSTNAME_NODE2=192.168.0.12
 
 #The virual IP address or hostname used by the cluster
+#The virtual interface has to be the same interface as $HOSTNAME_NODEX 
 HOSTNAME_VIRTUAL=192.168.0.10
 NETMASK_VIRTUAL=255.255.255.0
-IF_VIRTUAL=eth0
+IF_VIRTUAL="eth0:0"
 
 
 # Indicates if the datasources in JBoss should be failed over.
