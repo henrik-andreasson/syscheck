@@ -18,6 +18,7 @@ getconfig $SCRIPTID
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
+ERRNO_4="${SCRIPTID}4"
 
 
 
@@ -42,20 +43,16 @@ if [ "x${CHECK_VIP}" != "x" ] ; then
 	exit
 fi
 
-$IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up
+res=`ping -c4 ${HOSTNAME_VIRTUAL} 2>&1`
+if [ $? -eq 0 ] ; then
+	printlogmess $ERROR $ERRNO_4 "$ACTVIP_DESCR_4" 
+	exit
+fi
 
+$IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$ACTVIP_DESCR_1" "$?" 
 else
     printlogmess $ERROR $ERRNO_3 "$ACTVIP_DESCR_3" "$?" 
 fi
 
-if [ $? -eq 0 ] ; then 
-    printlogmess $ERROR $ERRNO_1 "$ACTVIP_DESCR_1" "$?" 
-else
-    printlogmess $ERROR $ERRNO_3 "$ACTVIP_DESCR_3" "$?" 
-fi
-
-# Test tools
-#ifconfig eth0 | awk '/inet addr/' | awk '{print $2}' | sed 's/addr://g'
-# route -n  | awk '/0.0.0.0/'| awk '{print $2}' |awk '!/0.0.0.0/'
