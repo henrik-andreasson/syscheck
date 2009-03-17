@@ -52,13 +52,14 @@ JBOSS_HOME=/usr/local/jboss
 
 # List indicating CAs to activate, should contain a list of caname and PIN separated by space.  
 # Also used for handling CRLs.
-CANAME[0]="test" 
-CAPIN[0]="1903"
-#uncomment to activate more CA:s
-#CANAME[1]="test2"
-#CAPIN[1]="1023"
-#CANAME[2]="test2"
-#CAPIN[2]="1023"
+CANAME[0]="eIDCA" 
+CAPIN[0]="1111"
+CANAME[1]="eSignCA"
+CAPIN[1]="1111"
+CANAME[2]="MSDomainLogonCA"
+CAPIN[2]="1111"
+CANAME[3]="ServerCA"
+CAPIN[3]="1111"
 
 
 ### Application server database user and password ###
@@ -77,16 +78,19 @@ DBREP_USER=ejbcarep
 DBREP_PASSWORD="foo123"
 
 #Path to mysql binary
-MYSQL_BIN=/usr/local/mysql/bin/mysql
+MYSQL_BIN=/usr/bin/mysql
+
+# path to mysqladmin
+MYSQLADMIN_BIN=/usr/bin/mysqladmin
 
 #Path to mysqldump binary
-MYSQLDUMP_BIN=/usr/local/mysql/bin/mysqldump
+MYSQLDUMP_BIN=/usr/bin/mysqldump
 
 #Password for Mysql root
 MYSQLROOT_PASSWORD="foo123"
 
 #Name of the mysql backup file.
-MYSQLBACKUPFILE=/var/backup/ejbcabackup
+MYSQLBACKUPFILE=/backup/mysql/ejbcabackup
 MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPFILE}-${DATE}.sql"
 
 
@@ -103,10 +107,12 @@ EJBCASCRIPT_HOME=$SYSCHECK_HOME/misc/ejbca
 
 
 #IP address or hostname to primary and secondary cluster nodes.
-HOSTNAME_NODE1=192.168.0.11
-HOSTNAME_NODE2=192.168.0.12
+THIS_NODE=NODE2
+# master node
+HOSTNAME_NODE1=10.15.251.246
+# slave node
+HOSTNAME_NODE2=10.15.251.247
 
-#The virual IP address or hostname used by the cluster
 #The virtual interface has to be the same interface as $HOSTNAME_NODEX 
 HOSTNAME_VIRTUAL=192.168.0.10
 NETMASK_VIRTUAL=255.255.255.0
