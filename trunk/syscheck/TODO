@@ -4,3 +4,5 @@ move the core check-VIP to a new 900 script and use that in 911, 912 and sc_28
 store information about the VIP so it can keep state over a reboot
 
 higher level failover script (cluster script redux)
+
+remove console_systemcheck.sh and only supply systemcheck.sh -s | --screen  (and --help | -h)
