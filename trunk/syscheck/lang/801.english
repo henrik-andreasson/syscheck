@@ -1,0 +1,14 @@
+HELP="Drop old and creates an empty ejbca db"
+
+LEVEL_1=$INFO
+DESCR_1="Dropped the db ok"
+HELP_1="no action is needed"
+
+LEVEL_2=$INFO
+DESCR_2="Dropped the db failed"
+HELP_2="run the script with sh -x $0 -s to find out more info"
+
+LEVEL_3=$ERROR
+DESCR_3="Failed to backup the database before drop"
+HELP_3="Enable 904_make_mysql_db_backup.sh in related-enabled"
+
