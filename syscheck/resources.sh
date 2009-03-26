@@ -11,7 +11,6 @@ SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 export SYSCHECK_HOME
 PATH=$SYSCHECK_HOME:$PATH
 
-DATE=`date +'%Y-%m-%d_%H.%M.%S'`
 
 # use the printlog function
 . $SYSCHECK_HOME/lib/printlogmess.sh
@@ -89,9 +88,6 @@ MYSQLDUMP_BIN=/usr/bin/mysqldump
 #Password for Mysql root
 MYSQLROOT_PASSWORD="foo123"
 
-#Name of the mysql backup file.
-MYSQLBACKUPFILE=/backup/mysql/ejbcabackup
-MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPFILE}-${DATE}.sql"
 
 
 ### CLUSTER SCRIPT RESOURCES ###
@@ -109,9 +105,9 @@ EJBCASCRIPT_HOME=$SYSCHECK_HOME/misc/ejbca
 #IP address or hostname to primary and secondary cluster nodes.
 THIS_NODE=NODE2
 # master node
-HOSTNAME_NODE1=10.15.251.246
+HOSTNAME_NODE1=192.168.158.151
 # slave node
-HOSTNAME_NODE2=10.15.251.247
+HOSTNAME_NODE2=192.168.158.171
 
 #The virtual interface has to be the same interface as $HOSTNAME_NODEX 
 HOSTNAME_VIRTUAL=192.168.0.10
