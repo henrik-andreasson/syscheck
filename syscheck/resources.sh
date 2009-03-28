@@ -4,7 +4,7 @@
 # Make only readable by root.
 
 ### General settings ###
-SYSCHECK_VERSION=1.4
+SYSCHECK_VERSION=
 
 # Script Location
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}

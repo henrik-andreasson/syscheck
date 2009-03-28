@@ -1,4 +1,4 @@
-HELP="Restore db"
+HELP="Restore db, syntax: $0 <gzip:ed mysqldump-file>"
 LEVEL_1=$ERROR
 DESCR_1="Failed to make backup of the pre-existing db prior to restore"
 HELP_1="run a manual backup with $SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s to check if it works"
