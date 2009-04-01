@@ -86,7 +86,7 @@ MYSQLADMIN_BIN=/usr/bin/mysqladmin
 MYSQLDUMP_BIN=/usr/bin/mysqldump
 
 #Password for Mysql root
-MYSQLROOT_PASSWORD="asok12"
+MYSQLROOT_PASSWORD="foo123"
 
 
 
