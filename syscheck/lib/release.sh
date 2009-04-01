@@ -17,6 +17,7 @@ perl -pi -e 's/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gio' resources.sh
 find . -name \*.sh -exec chmod 755 {} \;
 
 svn export . ../${progname}-${rel}
+find ../${progname}-${rel} -name \*.sh -exec chmod 755 {} \;
 
 zipname="${progname}-${rel}.zip"
 cd ..
