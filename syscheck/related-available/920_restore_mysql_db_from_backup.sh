@@ -34,6 +34,13 @@ if [ "x$1" = "x" ] ; then
 	exit
 fi
 
+echo "enter 'im-really-sure' (without the '-') to continue or ctrl-c to abort"
+read a
+if [ "x$a" != "xim really sure" ] ; then
+        echo "ok probably wise choice, exiting"
+        exit
+fi
+
 
 echo "now we'll backup the current database before we restore the one you specified" 
 

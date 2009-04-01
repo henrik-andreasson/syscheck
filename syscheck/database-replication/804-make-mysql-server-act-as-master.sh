@@ -37,8 +37,13 @@ fi
 
 
 echo "Are you sure you want to make this mysql server act as mysql master?"
-echo "Press enter to continiue, ctrl-c to abort"
+echo "enter 'im-really-sure' (without the '-') to continiue or ctrl-c to abort"
 read a
+if [ "x$a" != "xim really sure" ] ; then
+        echo "ok probably wise choice, exiting"
+        exit
+fi
+
 
 OUTFILE="$CLUSTERSCRIPT_HOME/tmp_make-mysql-server-act-as-master.sql"
 
