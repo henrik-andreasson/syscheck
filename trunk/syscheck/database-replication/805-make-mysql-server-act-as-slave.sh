@@ -37,8 +37,12 @@ fi
 
 
 echo "Are you sure you want to make this mysql server act as mysql slave?"
-echo "Press enter to continiue, ctrl-c to abort"
+echo "enter 'im-really-sure' (without the '-') to continiue or ctrl-c to abort"
 read a
+if [ "x$a" != "xim really sure" ] ; then
+        echo "ok probably wise choice, exiting"
+        exit
+fi
 
 echo "now you need to run 810-show-mysql-master-status.sh on the master node"
 echo "For a first time setup (master has never had a slave) default file='' and pos=4 is the values to use"

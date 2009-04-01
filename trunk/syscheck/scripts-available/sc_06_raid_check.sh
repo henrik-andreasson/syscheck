@@ -44,7 +44,7 @@ raiddiskcheck () {
         if [ "x$STATUS" != "x" ] ; then
                 printlogmess $INFO $RAID_ERRNO_1 "$RAID_DESCR_1" "$COMMAND"
         else
-                printlogmess $ERROR $RAID_ERRNO_2 "$RAID_DESCR_2" "$COMMAND"
+                printlogmess $ERROR $RAID_ERRNO_2 "$RAID_DESCR_2" "$COMMAND disc: $DISCID slot: $xSLOT"
         fi
 }
 
@@ -62,7 +62,7 @@ raidlogiccheck () {
         elif [ "xRebuilding" = "x$COMMAND" ] ; then
                 printlogmess $ERROR $RAID_ERRNO_4 "$RAID_DESCR_4" "$COMMAND"
 	else 
-                printlogmess $ERROR $RAID_ERRNO_5 "$RAID_DESCR_5" "$COMMAND"
+                printlogmess $ERROR $RAID_ERRNO_5 "$RAID_DESCR_5" "$COMMAND LD:$LDID slot: $xSLOT"
 	fi
 }
 
