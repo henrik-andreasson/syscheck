@@ -1,4 +1,4 @@
-/bin/sh
+#!/bin/sh
 
 oldconfigdir=$1 
 if [ "x$oldconfigdir" = "x" -o ! -f $oldconfigdir/01.conf ] ; then
@@ -13,8 +13,8 @@ fi
 
 for file in $(cd $newconfigdir ; ls ) ; do 
     if [ -f $oldconfigdir/$file ] ; then
-	diff -u $oldconfigdir/$file $newconfigdir/$file
 	echo "The old config has '-' infront of the changed rows"
+	diff -u $oldconfigdir/$file $newconfigdir/$file
 	if [ $? -eq 0 ] ; then
 		echo "files are identical ($file)"
 		continue
