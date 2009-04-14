@@ -18,6 +18,9 @@ find . -name \*.sh -exec chmod 755 {} \;
 
 svn export . ../${progname}-${rel}
 find ../${progname}-${rel} -name \*.sh -exec chmod 755 {} \;
+find ../${progname}-${rel}/scripts-enabled/ -name \*.sh -exec chmod 755 {} \;
+find ../${progname}-${rel}/related-enabled/ -name \*.sh -exec chmod 755 {} \;
+find ../${progname}-${rel}/ -name \*\.pl -exec chmod 755 {} \;
 
 zipname="${progname}-${rel}.zip"
 cd ..
