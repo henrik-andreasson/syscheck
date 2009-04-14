@@ -1,4 +1,4 @@
-#!/bin/sh
+/bin/sh
 
 oldconfigdir=$1 
 if [ "x$oldconfigdir" = "x" -o ! -f $oldconfigdir/01.conf ] ; then
@@ -12,12 +12,14 @@ if [ "x$newconfigdir" = "x" -o ! -f $newconfigdir/01.conf ] ; then
 fi
 
 for file in $(cd $newconfigdir ; ls ) ; do 
+    if [ -f $oldconfigdir/$file ] ; then
 	diff -u $oldconfigdir/$file $newconfigdir/$file
+	echo "The old config has '-' infront of the changed rows"
 	if [ $? -eq 0 ] ; then
 		echo "files are identical ($file)"
 		continue
 	fi
-	echo "copy this file? y/n default:n"
+	echo "copy the old config file? y/N (default:n)"
 	read copy 
 	if [ "x$copy" = "xy" -o "x$copy" = "xY" ] ; then
 		mv $newconfigdir/$file $newconfigdir/$file.new
@@ -26,4 +28,5 @@ for file in $(cd $newconfigdir ; ls ) ; do
 		echo "did not copy $file (diff -u $oldconfigdir/$file $newconfigdir/$file)"
 		cp $oldconfigdir/$file $newconfigdir/$file.old
 	fi
+    fi
 done
