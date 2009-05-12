@@ -20,8 +20,8 @@ BAK_ERRNO_3="${SCRIPTID}3"
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 	echo "$HSM_HELP"
-	echo "$ERRNO_1/$BAK_NFAST_DESCR_1 "
-	echo "$ERRNO_2/$BAK_NFAST_DESCR_2 "
+	echo "$ERRNO_1/$DESCR_1 "
+	echo "$ERRNO_2/$DESCR_2 "
 	echo "${SCREEN_HELP}"
 	exit
 elif [ "x$1" == "x-s" -o  "x$1" == "x--screen" -o \
@@ -37,12 +37,12 @@ tar -c --directory $HSMDIR -f $FULLFILENAME local
 if [ $? = 0 ] ; then
     gzip $FULLFILENAME
     if [ $? = 0 ] ; then
-	printlogmess $INFO $BAK_ERRNO_1 "$BAK_NFAST_DESCR_1" 
+	printlogmess $INFO $ERRNO_1 "$DESCR_1" 
     else
-	printlogmess $ERROR $BAK_ERRNO_2 "$BAK_NFAST_DESCR_2"
+	printlogmess $ERROR $ERRNO_2 "$DESCR_2"
     fi  
 else
-    printlogmess $ERROR $BAK_ERRNO_2 "$BAK_NFAST_DESCR_2"
+    printlogmess $ERROR $ERRNO_2 "$DESCR_2"
 fi 
 
 

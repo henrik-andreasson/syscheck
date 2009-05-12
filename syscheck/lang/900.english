@@ -1,4 +1,10 @@
-ECRT_HELP="Export certificate and archive them"
-ECRT_DESCR_1="Export certificate run successfully"
-ECRT_DESCR_2="Export certificate failed (%s) "
-ECRT_DESCR_3="Export certificate failed, script called without file"
+HELP="Export certificate and archive them, $0 <certfile>"
+
+DESCR_1="Export certificate run successfully"
+HELP_1="no actions needed"
+
+DESCR_2="Export certificate failed (%s) "
+HELP_2="Unexpected, run the script with sh -x to check"
+
+DESCR_3="Export certificate failed, script called without file"
+HELP_3="call this script with a PEM encoded certficate as arg1"
