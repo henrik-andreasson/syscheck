@@ -18,6 +18,7 @@ getconfig $SCRIPTID
 ERRNO_1="${SCRIPTID}1"
 ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
+ERRNO_4="${SCRIPTID}4"
 
 
 
@@ -28,6 +29,7 @@ if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 	echo "$ERRNO_1/$CLEANBAK_DESCR_1 - $CLEANBAK_HELP_1"
 	echo "$ERRNO_2/$CLEANBAK_DESCR_2 - $CLEANBAK_HELP_2"
 	echo "$ERRNO_3/$CLEANBAK_DESCR_3 - $CLEANBAK_HELP_3"
+	echo "$ERRNO_4/$CLEANBAK_DESCR_4 - $CLEANBAK_HELP_4"
 	echo "${SCREEN_HELP}"
 	exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
@@ -42,6 +44,11 @@ ERR=""
 # loop throug all files to be removed due to age
 for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
     printtoscreen "deleteing ${FILENAME[$i]} ... "  
+
+    if [ "x${DATESTR[$i]}" = "x" ] ; then
+    	printlogmess $ERROR $ERRNO_4 "$CLEANBAK_DESCR_4"
+	exit
+    fi
 
     realfiles=$(ls ${FILENAME[$i]})
     if [ "x${realfiles}" != "x" ] ; then 
