@@ -53,8 +53,8 @@ printlogmess(){
 
         if [ "x$PRINTTOSCREEN" = "x1" ] ; then
             echo "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}"
+	else
+	    logger -p local3.${SYSLOGLEVEL} "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
         fi
-
-	logger -p local3.${SYSLOGLEVEL} "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
 
 }
