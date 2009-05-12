@@ -34,7 +34,7 @@ fi
 # Make sure you add quotation marks for the first argument when adding new files that should be copied, for exampel.
 
 
-${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir -p /tmp/backup_htmf/" ${SSH_USER} ${SSHKEY}
+${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir -p ${REMOTE_DIR}" ${SSH_USER} ${SSHKEY}
 if [ $? -ne 0 ] ; then
 	echo "couldn't make dir"
 	exit
@@ -43,7 +43,7 @@ fi
 
 for (( j=0; j < ${#HTMF_FILE[@]} ; j++ )){
 	printtoscreen "Copying file: ${HTMF_FILE[$j]} to:${HOSTNAME_NODE2} dir:${REMOTE_DIR} remotreuser:${REMOTE_USER} sshkey: ${SSHKEY}"
-	${SYSCHECK_HOME}/related-enabled/917_archive_file.sh "${HTMF_FILE[$j]}" ${HOSTNAME_NODE2} ${REMOTE_DIR} ${REMOTE_USER} ${SSHKEY}
+	${SYSCHECK_HOME}/related-enabled/906_ssh-copy-to-remote-machine.sh "${HTMF_FILE[$j]}" ${HOSTNAME_NODE2} ${REMOTE_DIR} ${REMOTE_USER} ${SSHKEY}
 	if [ $? -ne 0 ] ; then
 		echo "couln't copy file \"${HTMF_FILE[$j]}\""
 		exit
