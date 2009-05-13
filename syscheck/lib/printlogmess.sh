@@ -51,10 +51,16 @@ printlogmess(){
         MESSAGE0="${HOST}: ${DESCR_W_ARGS}"
         MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
 
-        if [ "x$PRINTTOSCREEN" = "x1" ] ; then
+        if [ "x${PRINTTOSCREEN}" = "x1" ] ; then
             echo "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}"
 	else
 	    logger -p local3.${SYSLOGLEVEL} "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
         fi
+
+	if [ "x${SAVELASTSTATUS}" = "x1" ] ; then
+	    echo "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}" >> ${SYSCHECK_HOME}/var/last_status
+	fi
+
+
 
 }

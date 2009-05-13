@@ -40,7 +40,9 @@ while true; do
 done
 
 export PRINTTOSCREEN
+export SAVELASTSTATUS
 
+date > ${SYSCHECK_HOME}/var/this_node_has_the_vip
 for file in ${SYSCHECK_HOME}/scripts-enabled/sc_* ; do
 	$file
 done
