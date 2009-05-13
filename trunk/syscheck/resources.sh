@@ -36,6 +36,10 @@ SSH_USER=jboss
 #select you lang (choose from files in lang/)
 SYSCHECK_LANG=english
 
+# save status to a file values: 1 or 0
+# will create a file in <syscheck>/var/last_status
+SAVELASTSTATUS=1
+
 # source the lang func
 . ${SYSCHECK_HOME}/lib/lang.sh
 
