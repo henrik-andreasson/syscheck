@@ -47,6 +47,8 @@ $IFCONFIG ${IF_VIRTUAL} down
 
 if [ $? -eq 0 ] ; then 
     printlogmess $INFO $ERRNO_1 "$DEACTVIP_DESCR_1" "$?" 
+    rm ${SYSCHECK_HOME}/var/this_node_has_the_vip
+
 else
     printlogmess $ERROR $ERRNO_2 "$DEACTVIP_DESCR_2" "$?" 
 fi
