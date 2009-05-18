@@ -42,7 +42,7 @@ done
 export PRINTTOSCREEN
 export SAVELASTSTATUS
 
-date > ${SYSCHECK_HOME}/var/this_node_has_the_vip
+date > ${SYSCHECK_HOME}/var/last_status
 for file in ${SYSCHECK_HOME}/scripts-enabled/sc_* ; do
 	$file
 done
