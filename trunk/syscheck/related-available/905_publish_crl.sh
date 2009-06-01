@@ -62,13 +62,13 @@ get () {
 put () {
 
 	CRLHOST=$1
-        CRLNAME=$2
+        CRLFILE=$2
 	SSHSERVER_DIR=$3
 	SSHKEY=$4
 	SSHUSER=$5
 
         cd $CRLDIRECTORY
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLNAME $CRLHOST $SSHSERVER_DIR $SSHUSER
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $CRLHOST $SSHSERVER_DIR $SSHUSER $SSHKEY
 	if [ $? != 0 ] ; then
                 printlogmess $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLHOST $CRLNAME
 	fi
