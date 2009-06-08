@@ -1,4 +1,4 @@
-BAK_HELP="Script used to take backup of the sql database, compress and send to a separate server."
+BAK_HELP="Script used to take backup of the sql database, compress and send to a separate server. call with -x|--default for puting the backupfile in the SUBDIR_DEFAULT ; -d|--daily to make daily backup end up in SUBDIR_DAILY; with -w|--weekly to make daily backup end up in SUBDIR_WEEKLY; -m|--monthly to make daily backup end up in SUBDIR_MONTHLY ; -y|--yearly to make daily backup end up in SUBDIR_YEARLY;"
 BAK_HELP_1="Ok"
 BAK_HELP_2="Could not make a backup."
 BAK_HELP_3="Could not compress the backup."
