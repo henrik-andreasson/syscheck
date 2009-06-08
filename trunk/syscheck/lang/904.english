@@ -1,6 +1,14 @@
+MYSQL_BACKUP_HELP="Mysql backup tool"
+
 MYSQL_BACKUP_DESCR_1="Backed up db ok (file:%s)"
 MYSQL_BACKUP_HELP_1="no action needed"
+
 MYSQL_BACKUP_DESCR_2="Could not compress the backup (%s)"
 MYSQL_BACKUP_HELP_2="Check disk space and owner of directory to write backup to"
-MYSQL_BACKUP_DESCR_3="Backup failed (%s)"
-MYSQL_BACKUP_HELP_3="Check username and password and access to database"
+
+MYSQL_BACKUP_DESCR_3="Backup failed, backupdir not found (%s)"
+MYSQL_BACKUP_HELP_3="check the configfile and make sure the configured directory exist"
+
+MYSQL_BACKUP_DESCR_4="Could not access the database (%s)"
+MYSQL_BACKUP_HELP_4="Check the configured username/password"
+
