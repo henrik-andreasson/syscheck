@@ -34,8 +34,8 @@ fi
 
 
 if [ "x$1" = "x" -o ! -r "$1" ] ; then 
-	printlogmess $ERROR $ERRNO_3 "$DESCR_2"  
-	printtoscreen $ERROR $ERRNO_3 "$DESCR_2"
+	printlogmess $ERROR $ERRNO_3 "$DESCR_3"  
+	printtoscreen $ERROR $ERRNO_3 "$DESCR_3"
 	exit
 fi
 
