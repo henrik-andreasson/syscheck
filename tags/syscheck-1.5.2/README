@@ -1,0 +1,143 @@
+README for system check scripts.
+
+Written by Philip Vendil 2006-05-17 and Henrik Andreasson 2008-12-03
+
+INFO
+---------------------------
+Homepage:                          http://wiki.ejbca.org/syscheck
+Download:                          https://sourceforge.net/project/showfiles.php?group_id=39716&package_id=58346
+Tracker for issues/improvements:   https://jira.primekey.se/secure/IssueNavigator.jspa?reset=true&mode=hide&sorter/order=DESC&sorter/field=priority&resolution=-1&pid=10000&fixfor=10325 (or http://jira.primekey.se -> Browse Projects -> EJBCA -> Components / Syscheck)
+
+
+
+Info - Docs
+---------------------------
+Syscheck doc (from lib/make-doc.sh) 
+ - online http://docs.google.com/View?docID=dd9mfpsn_10gz3h4cf9
+ - doc/syscheckdoc_x_y_z.odt (and pdf)
+
+Certificate and revocation Archival for EJBCA
+ - online http://docs.google.com/View?docID=dd9mfpsn_7fmx3f7gt
+ - doc/certificate_and_revovation_archival.odt (and pdf)
+
+Database replication for redundancy
+ - http://docs.google.com/Doc?docid=dd9mfpsn_6ftnhgkq4&hl=en_GB
+ - doc/database_replication_and_failover.odt (and pdf)
+
+
+DESCRIPTION
+---------------------------
+The system check scripts controls the overall health of the system
+and sends it's result to syslog for further processing
+
+The main script is 'syscheck.sh' that performs all subsystem checks with
+a filename starting with "sc_" in the scripts-enebled directory. 
+
+The script 'syscheck.sh -s' performs the same checks but echoes
+the output to the terminal and syslog.
+
+All message are described in lang/syscheck.<lang>
+errorcodes are defined in the local sc_file 
+defines that may be useful to more than the local script resides in resources.sh
+
+
+INSTALLATION Syscheck
+---------------------------
+untar the distribution in a suitable directory (default /usr/local/syscheck).
+Then edit resource.sh and config/xxx.conf (where xxx is ther scriptid) to fit your needs.
+
+Enable scripts by making a soft link (ln -s) in "scripts-enabled" to "scripts-available" where all 
+scripts reside.
+enable one script: 
+# cd scripts-enabled 
+# ln -s ../scripts-available/sc_01_disk_usage.sh .
+
+enable all script: 
+# cd scripts-enabled 
+# ln -s ../scripts-available/* .
+
+make a test-run by doing: ./syscheck.sh -s if it works out good (All is OK), then go ahead and try
+./sysheck.sh then check your syslog-logs 
+
+We've been running with the TCP feature of syslog-ng for a higer level of reliability for som time now, it works nice.
+Rsyslog(http://www.rsyslog.com/doc-rsyslog_secure_tls.html), the new default syslog of debian, is the first syslog implementation to native support SSL, we plan to switch to rsyslog up the road to make sure the messages are kept confidential during transport (you still can use any syslog implementation though).
+
+Related scripts
+---------------------------
+Related scripts are other scripts not intended to be run every x min like the core syscheck script but maybe by cron every now and then, maybe by a admin manually to perform a maintenece task.
+
+To list the available scripts look in related-available
+# ls  related-available
+
+To find out more about a certain script run with "-h" as argument: 
+# related-available/900_export_cert.sh -h
+
+To enable a script:
+# cd related-enabled
+# ln -s ../related-available/900_export_cert.sh .
+
+Why should you only use related scripts from "related-enabled"?
+ - Those are configured and tested on this particular installation, so do make it a habit to run stuff only from "related-enabled"
+
+
+Database-replication
+---------------------------
+Setup and status control for replication of mysql(master-slave setup)
+Read database_replication_and_failover.pdf for more info.
+
+
+HELP
+---------------------------
+Each script within syscheck shall implement "-h" and "--help" to give syntax help and a decription of errorcodes:
+
+Run: ./scripts-available/sc_nn_foo.sh --help
+Eg: ./scripts-available/sc_04_pcsc_readers.sh --help
+
+
+Info - Syscheck Sample output
+---------------------------
+
+han@plup:/misc/src/syscheck/syscheck-trunk$ ./syscheck.sh -s
+I-0101-PKI 20090328 22:54:23 plup: INFO - Diskusage ok (/ is 51 percent used: Limit is 95 percent)
+E-0203-PKI 20090328 22:54:23 plup: ERROR - EJBCA : Application Server is unavailable
+I-0302-PKI 20090328 22:54:23 plup: INFO - Memory limit ok (Memory is 869492 KB used: Limit is 1613286 KB)
+I-0303-PKI 20090328 22:54:23 plup: INFO - Swap limit ok (Swap is 18672 KB used: Limit is 2963988 KB)
+E-0402-PKI 20090328 22:54:24 plup: ERROR - Wrong number of attached pcsc-readers ()
+I-0501-PKI 20090328 22:54:24 plup: INFO - pcscd is running
+E-0606-PKI 20090328 22:54:24 plup: ERROR - HPTOOL not installed at: /usr/sbin/hpacucli
+E-0703-PKI 20090328 22:54:24 plup: ERROR - syslog is not running
+E-0803-PKI 20090328 22:54:25 plup: ERROR - Unable to get CRL http://localhost/crl/eIDCA.crl from webserver
+E-0901-PKI 20090328 22:54:25 plup: ERROR - Firewall seems to be turned off.
+E-1102-PKI 20090328 22:54:35 plup: ERROR - heartbeat is NOT running
+I-1201-PKI 20090328 22:54:35 plup: INFO - mysql is running
+E-1403-PKI 20090328 22:54:35 plup: ERROR - Unpredicted error in SW-raid 8 / 0 ()
+E-1502-PKI 20090328 22:54:35 plup: ERROR - Apache webserver is not running
+E-1602-PKI 20090328 22:54:36 plup: ERROR - LDAP directory server is not running
+E-1703-PKI 20090328 22:54:36 plup: ERROR - ntpd can't synchronize a server
+I-1801-PKI 20090328 22:54:36 plup: INFO - mysql is running and answering
+I-1903-PKI 20090328 22:54:36 plup: INFO - I'm alive
+
+
+Info - Format description:
+---------------------------
+
+I-0101-PKI 20090328 22:54:23 plup: INFO - Diskusage ok (/ is 51 percent used: Limit is 95 percent)
+
+With fixed width:
+1. "I" - Can be I for INFO, W for Warning or E for Error
+2. "-" Separator
+3-5. Script ID
+6. Status code
+7. "-" Separator
+8-10. System ID
+11. " " Separator
+12-28: date and time YYYYMMDD HH:MM:SS
+
+With Variable width:
+29-32. Systemname
+33. ":" Separator
+34. " " Separator
+35-38. Level spelled out
+39-41. " - " Separator
+42 - . Message
+
