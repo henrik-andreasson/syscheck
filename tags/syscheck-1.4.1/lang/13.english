@@ -1,0 +1,5 @@
+HAMAS_HELP="Heartbeat for master node checks"
+HAMAS_DESCR_1="heartbeat is running on the master node."
+HAMAS_HELP_1="No action is needed"
+HAMAS_DESCR_2="heartbeat is seem to have been failed over to slave."
+HAMAS_HELP_2="heartbeat TODO"
