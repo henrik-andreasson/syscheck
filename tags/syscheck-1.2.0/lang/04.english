@@ -1,0 +1,8 @@
+PCL_HELP="checks for the defined number of PCSC readers is attached to the computer"
+PCL_DESCR_1="Right number of attatched pcsc-readers (%s)"
+PCL_HELP_1="No action is needed"
+PCL_DESCR_2="Wrong number of attached pcsc-readers (%s)"
+PCL_HELP_2="means that all reader is NOT working correctly as defined by pcscd";
+PCL_DESCR_3="Perl module not installed(%s)"
+PCL_HELP_3="means that you've not installed the module used by this script 'Chipcard::PCSC' To install perl-module: cpan -i Chipcard::PCSC or get from http://search.cpan.org"
+

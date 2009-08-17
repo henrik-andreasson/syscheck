@@ -1,0 +1,13 @@
+CLU_HELP="Cluster checks"
+
+CLU_DESCR_1="Primary Node is Master Database."
+CLU_HELP_1="No action is needed"
+
+CLU_DESCR_2="Secondary Node is Master Database, schedule a resync!"
+CLU_HELP_2="A failover has been preformed, mening secondary node is master and only DB. Make seperate backups of both modes and make sure node1 is operational. Resync DB and move back to node1. System downtime is needed/and required to preforme the DB-resync."
+
+CLU_DESCR_3="JBoss Database settings match between nodes, (as it should)."
+CLU_HELP_3="No action is needed."
+
+CLU_DESCR_4="JBoss Db settings doesn't match, possible dataloss."
+CLU_HELP_4="SPLITBRAIN WARNING! Both DB may contain vital data. Manual comparison and resync must be preformed. Backup both DB's befor any action. System downtime is needed/and required to preforme the DB-resync."
