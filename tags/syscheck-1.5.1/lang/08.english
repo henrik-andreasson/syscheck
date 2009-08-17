@@ -1,0 +1,13 @@
+CRL_HELP="check the status of CRL, both that you can get it and that its valid"
+
+CRL_DESCR_1=" CRL %s creation have failed"
+CRL_HELP_1="either the server is not up, it dont produce CRL:s, it dont validate or the CRL is old "
+
+CRL_DESCR_2=" CRL %s is updated"
+CRL_HELP_2="No action is needed"
+
+CRL_DESCR_3="Unable to get CRL %s from webserver "
+CRL_HELP_3="Check manually to get CRL from webserver"
+
+CRL_DESCR_4="When getting CRL %s the size of file is 0"
+CRL_HELP_4="Check discusage, try manually to get CRL"
