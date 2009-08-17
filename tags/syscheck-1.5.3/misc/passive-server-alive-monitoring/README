@@ -1,0 +1,19 @@
+Passive server monitoring
+
+this is a simple server monitoring function, it has two major parts, one "client" that sends "I'm alive" messages to a "logserver" that checks that you get messages every now and then.
+
+The "client" part:
+
+lang/19.english	- language file for the sc-script that sends messages to central log server
+config/19.conf - config file for the sc-script that sends messages to central log server
+scripts-available/sc_19_alive.sh - the sc-script that sends messages to central log server
+
+The "logserver" part
+lang/918.english - language file for the monitoring script at the cental log server
+config/918.conf - config file for the monitoring script at the cental log server
+related-available/918_server_alive.sh - the monitoring script at the cental log server
+
+lib/cmp_syslog_dates.pl - new date support function
+misc/passive-server-alive-monitoring/README - this file
+misc/passive-server-alive-monitoring/syscheck-alive-init.d - sends messages when server starts/shuts down add appropiate links in rc3.d rc0.d and rc6.d ...
+
