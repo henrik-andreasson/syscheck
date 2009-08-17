@@ -1,0 +1,5 @@
+DEACTVIP_HELP="Deactivate the VIP"
+DEACTVIP_DESCR_1="Deactivate VIP run successfully"
+DEACTVIP_DESCR_2="Deactivate VIP failed (%s) "
+DEACTVIP_HELP_1="All is ok"
+DEACTVIP_HELP_2="Could be problems accessing the application server, or token is not available  %s"
