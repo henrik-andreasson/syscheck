@@ -1,0 +1,6 @@
+INFO="I"
+WARN="W"
+ERROR="E"
+ 
+SCREEN_HELP="to run with output directed to screen: add a '-s' or '--screen'"
+

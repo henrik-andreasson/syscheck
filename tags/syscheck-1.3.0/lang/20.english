@@ -1,0 +1,7 @@
+EEL_HELP="checks fo new errors in the server log for ejbca"
+EEL_DESCR_1="No new errors in ejbca server log"
+EEL_HELP_1="No action is needed"
+EEL_DESCR_2="New error in log: %s"
+EEL_HELP_2="There was new ERRORS in the LOG file, please attend to them"
+EEL_DESCR_3="Cant find the specified ejbca log %s"
+EEL_HELP_3="maybe you havn't configured the script yet?"

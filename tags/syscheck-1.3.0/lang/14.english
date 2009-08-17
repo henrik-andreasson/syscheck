@@ -1,0 +1,10 @@
+SW_RAID_HELP="Linux software raid checks"
+
+SW_RAID_DESCR_1="Disc Array is OK %s"
+SW_RAID_HELP_1="means this script has not detected any errors"
+
+SW_RAID_DESCR_2="Disc %s is failed in array: %s"
+SW_RAID_HELP_2="A disk has failed, you need to replace it"
+
+SW_RAID_DESCR_3="Unpredicted error in SW-raid %s"
+SW_RAID_HELP_3="this script has found a not prediced error"

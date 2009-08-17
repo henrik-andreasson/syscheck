@@ -1,0 +1,5 @@
+DU_HELP="Script that checks for to much hard-disc usage, limit is:"
+DU_DESCR_1="Diskusage ok (%s is %s percent used: Limit is %s percent)"
+DU_HELP_1="No action is needed"
+DU_DESCR_2="Diskusage exceeded (%s is %s percent used: Limit is %s percent)"
+DU_HELP_2="The usage is more than the limit, if the disk fills up thing will start to break, make some free space and maybe restart the machine"

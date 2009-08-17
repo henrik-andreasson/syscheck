@@ -1,0 +1,5 @@
+SQLSELECT_HELP="Mysql select keepalive"
+SQLSELECT_DESCR_1="mysql is running and answering"
+SQLSELECT_HELP_1="No action is needed"
+SQLSELECT_DESCR_2="mysql is NOT answering to select statement check"
+SQLSELECT_HELP_2="mysql is not running, try /etc/init.d/mysql stop, wait, /etc/init.d/mysql start"
