@@ -1,0 +1,42 @@
+README for system check scripts.
+
+Written by Philip Vendil Primekey 2006-05-17 and 
+updated by Henrik Andreasson 2008-12-03
+
+DESCRIPTION
+---------------------------
+The system check scripts controls the overall health of the system
+and sends it's result to syslog for further processing
+
+The main script is 'systemcheck.sh' that performs all subsystem checks with
+a filename starting with "sc_" in the scripts-enebled directory. 
+
+The script 'console_systemcheck.sh' performs the same checks but echoes
+the output to the terminal instead of syslog.
+
+All message are described in lang/syscheck.<lang>
+errorcodes are defined in the local sc_file 
+defines that may be useful to more than the local script resides in resources.sh
+
+
+INSTALLATION
+---------------------------
+untar the distribution in a suitable directory (default /usr/local/syscheck).
+Then edit resource.sh to fit your needs.
+
+by default a subset of scripts are enabled by having a link in "scripts-enabled" to "scripts-available" where all 
+scripts reside, if you want all script enabled go to "scripts-enabled" and make links to "scripts-available"
+eg: cd scripts-enabled ; ln -s ../scripts-available/sc_01_disk_usage.sh .
+
+make a test-run by doing: ./console_systemcheck.sh if it works out good (All is OK), then go ahead and try
+./systemsheck.sh then check your syslog-logs 
+
+We've been running with the TCP feature of syslog-ng for a higer level of reliability for som time now, it works nice.
+
+HELP
+---------------------------
+Description of each subcheck script:
+
+Run: ./scripts-available/sc_nn_foo.sh --help
+Eg: ./scripts-available/sc_04_pcsc_readers.sh --help
+

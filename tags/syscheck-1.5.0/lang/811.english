@@ -1,0 +1,10 @@
+HELP="Set mysql server FLUSH TABLES WITH READ LOCK;"
+
+LEVEL_1=$INFO
+DESCR_1="Set mysql FLUSH TABLES WITH READ LOCK ok"
+HELP_1="no action is needed"
+
+LEVEL_2=$ERROR
+DESCR_2="Failed to set mysql server FLUSH TABLES WITH READ LOCK;"
+HELP_2="try manually with mysql mysql -u root -p then > FLUSH TABLES WITH READ LOCK;"
+
