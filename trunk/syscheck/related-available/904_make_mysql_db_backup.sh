@@ -19,16 +19,16 @@ ERRNO_4="${SCRIPTID}4"
 PRINTTOSCREEN=0
 
 schelp () {
-	echo "$HELP"
-	echo "$ERRNO_1/$MYSQL_BACKUP_DESCR_1 - $MYSQL_BACKUP_HELP_1"
-	echo "$ERRNO_2/$MYSQL_BACKUP_DESCR_2 - $MYSQL_BACKUP_HELP_2"
-	echo "$ERRNO_3/$MYSQL_BACKUP_DESCR_3 - $MYSQL_BACKUP_HELP_3"
-	echo "${SCREEN_HELP}"
+	/bin/echo -e "$HELP"
+	/bin/echo -e "$ERRNO_1/$DESCR_1 - $HELP_1"
+	/bin/echo -e "$ERRNO_2/$DESCR_2 - $HELP_2"
+	/bin/echo -e "$ERRNO_3/$DESCR_3 - $HELP_3"
+	/bin/echo -e "${SCREEN_HELP}"
 	exit
 }
 
 
-TEMP=`/usr/bin/getopt --options "hsymwdx" --long "help,screen,default,daily,weekly,monthly,yearly" -- "$@"`
+TEMP=`/usr/bin/getopt --options "hsymwdxb" --long "help,screen,default,daily,weekly,monthly,yearly,batch" -- "$@"`
 if [ $? != 0 ] ; then help ; fi
 eval set -- "$TEMP"
 
@@ -40,7 +40,8 @@ while true; do
     -m|--monthly ) TYPE=${SUBDIR_MONTHLY}; shift;;
     -y|--yearly  ) TYPE=${SUBDIR_YEARLY}; shift;;
     -s|--screen ) PRINTTOSCREEN=1; shift;;
-    -h|--help )   help;shift;;
+    -b|--batch )  BATCH=1; shift;;
+    -h|--help )   schelp;shift;;
     --) break ;;
   esac
 done
@@ -53,7 +54,7 @@ else
 fi
 
 if [ ! -d "${MYSQLBACKUPDIR}/${EXTRADIR}" ] ; then
-	printlogmess $ERROR $ERRNO_3 "$MYSQL_BACKUP_DESCR_3" "${MYSQLBACKUPDIR}/${EXTRADIR}"
+	printlogmess $ERROR $ERRNO_3 "$DESCR_3" "${MYSQLBACKUPDIR}/${EXTRADIR}"
 	exit 1
 fi
 
@@ -63,13 +64,16 @@ dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${DB_NAME} 2
 if [ $? = 0 ] ; then
   gzip $MYSQLBACKUPFULLFILENAME
   if [ $? = 0 ] ; then
-      printlogmess $INFO $ERRNO_1 "$MYSQL_BACKUP_DESCR_1" $MYSQLBACKUPFULLFILENAME.gz
-      echo "$MYSQLBACKUPFULLFILENAME.gz"
+      printlogmess $INFO $ERRNO_1 "$DESCR_1" $MYSQLBACKUPFULLFILENAME.gz
+
+      if [ "x$BATCH" = "x1" ] ; then
+ 	     echo "$MYSQLBACKUPFULLFILENAME.gz"
+      fi
   else
-      printlogmess $ERROR $ERRNO_2 "$MYSQL_BACKUP_DESCR_2" $MYSQLBACKUPFULLFILENAME
+      printlogmess $ERROR $ERRNO_2 "$DESCR_2" $MYSQLBACKUPFULLFILENAME
   fi  
 else
-  printlogmess $ERROR $ERRNO_4 "$MYSQL_BACKUP_DESCR_4" "$dumpret"
+  printlogmess $ERROR $ERRNO_4 "$DESCR_4" "$dumpret"
 fi 
 
 

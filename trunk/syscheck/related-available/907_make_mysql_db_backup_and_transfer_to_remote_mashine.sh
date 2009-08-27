@@ -38,17 +38,25 @@ eval set -- "$TEMP"
 while true; do
   case "$1" in
     -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -x|--default ) BACKUPARG=$1; shift;;
-    -d|--daily   ) BACKUPARG=$1; shift;;
-    -w|--weekly  ) BACKUPARG=$1; shift;;
-    -m|--monthly ) BACKUPARG=$1; shift;;
-    -y|--yearly  ) BACKUPARG=$1; shift;;
+    -x|--default ) BACKUPARG=${SUBDIR_DEFAULT}; shift;;
+    -d|--daily   ) BACKUPARG=${SUBDIR_DAILY}  ; shift;;
+    -w|--weekly  ) BACKUPARG=${SUBDIR_WEEKLY} ; shift;;
+    -m|--monthly ) BACKUPARG=${SUBDIR_MONTHLY}; shift;;
+    -y|--yearly  ) BACKUPARG=${SUBDIR_YEARLY} ; shift;;
     -h|--help )   schelp;shift;;
     --) break;;
   esac
 done
 
-FULLFILENAME=`$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s ${BACKUPARG}`
+
+EXTRADIR=
+if [ "x${BACKUPARG}" = "x" ] ; then
+	EXTRADIR=${SUBDIR_DEFAULT}	
+else
+	EXTRADIR=${BACKUPARG}
+fi
+
+FULLFILENAME=`$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh --batch ${BACKUPARG}`
 
 if [ $? -ne 0 ] ; then
     printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
@@ -59,7 +67,7 @@ if [ $? -ne 0 ] ;   then
 fi  
 
 for (( i = 0 ;  i < "${#BACKUP_HOST[@]}" ; i++ )) ; do
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${FULLFILENAME} ${BACKUP_HOST[$i]} ${BACKUP_DIR[$i]} ${BACKUP_USER[$i]} 
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${FULLFILENAME} ${BACKUP_HOST[$i]} "${BACKUP_DIR[$i]}/${EXTRADIR}" ${BACKUP_USER[$i]} 
 	if [ $? -eq 0 ] ; then
 		printlogmess $INFO $BAK_ERRNO_1 "$BAK_DESCR_1"
 	else
