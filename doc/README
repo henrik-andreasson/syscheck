@@ -4,17 +4,18 @@ Written by Philip Vendil 2006-05-17 and Henrik Andreasson 2008-12-03
 
 INFO
 ---------------------------
-Homepage:                          http://wiki.ejbca.org/syscheck
-Download:                          https://sourceforge.net/project/showfiles.php?group_id=39716&package_id=58346
-Tracker for issues/improvements:   https://jira.primekey.se/secure/IssueNavigator.jspa?reset=true&mode=hide&sorter/order=DESC&sorter/field=priority&resolution=-1&pid=10000&fixfor=10325 (or http://jira.primekey.se -> Browse Projects -> EJBCA -> Components / Syscheck)
+Homepage:                          https://sourceforge.net/apps/trac/syscheck/wiki
+Download:                          https://sourceforge.net/projects/syscheck/
+Tracker for issues/improvements:   https://sourceforge.net/apps/trac/syscheck/report/9
+				   https://sourceforge.net/apps/trac/syscheck/newticket
 
 
 
 Info - Docs
 ---------------------------
 Syscheck doc (from lib/make-doc.sh) 
- - online http://docs.google.com/View?docID=dd9mfpsn_10gz3h4cf9
- - doc/syscheckdoc_x_y_z.odt (and pdf)
+ - https://sourceforge.net/apps/trac/syscheck/wiki/SyscheckDocumentation
+ - ./lib/make-doc.sh
 
 Certificate and revocation Archival for EJBCA
  - online http://docs.google.com/View?docID=dd9mfpsn_7fmx3f7gt
