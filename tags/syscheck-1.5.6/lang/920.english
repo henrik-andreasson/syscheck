@@ -1,0 +1,16 @@
+HELP="Restore db, syntax: $0 <gzip:ed mysqldump-file>"
+LEVEL_1=$ERROR
+DESCR_1="Failed to make backup of the pre-existing db prior to restore"
+HELP_1="run a manual backup with $SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s to check if it works"
+
+LEVEL_2=$INFO
+DESCR_2="Restored the db from file (%s)"
+HELP_2="no action needed"
+
+LEVEL_3=$ERROR
+DESCR_3="Failed to restore the db from the file (%s) consider to restore to previously db (%s)"
+HELP_3=""
+
+LEVEL_4=$ERROR
+DESCR_4="foo"
+HELP_4="bar"
