@@ -36,7 +36,7 @@ fi
 diskusage () {
 	FILESYSTEM=$1
 	LIMIT=$2
-	PERCENT=`df -h $FILESYSTEM | grep -v Filesystem | awk '{print $5}' | sed 's/%//'`
+	PERCENT=`df -Ph $FILESYSTEM | grep -v Filesystem | awk '{print $5}' | sed 's/%//'`
 
 	if [ $PERCENT -gt $LIMIT ] ; then
                 printlogmess $ERROR $ERRNO_2 "$DESCR_2" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
