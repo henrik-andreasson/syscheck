@@ -35,7 +35,7 @@ fi
 # $SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "$EJBCA_HOME/conf/*.properties" $HOSTNAME_NODE2 $EJBCA_HOME/conf/
 
 echo ""
-read -p "Do you want to send EJBCA conf to $HOSTNAME_NODE2 (y/n):" question
+read -p "Do you want to send EJBCA conf to $HOSTNAME_NODE2 (y/N):" question
 
 if [ "x$question" = "xy" ] ; then
         ${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir -p /tmp/backup_ejbca/conf/" ${SSH_USER}
@@ -56,7 +56,7 @@ else
 fi
 
 echo ""
-read -p "Do you want to send EJBCA keys to $HOSTNAME_NODE2 (y/n):" question
+read -p "Do you want to send EJBCA keys to $HOSTNAME_NODE2 (y/N):" question
 
 if [ "x$question" = "xy" ] ; then
         ${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir -p /tmp/backup_ejbca/p12/" ${SSH_USER}
@@ -78,7 +78,7 @@ else
 fi
 
 echo ""
-read -p "Do you want to send syscheck to $HOSTNAME_NODE2 (y/n):" question
+read -p "Do you want to send syscheck to $HOSTNAME_NODE2 (y/N):" question
 
 if [ "x$question" = "xy" ] ; then
 	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s "$SYSCHECK_HOME/" $HOSTNAME_NODE2 /tmp/backup_syscheck $SSH_USER
