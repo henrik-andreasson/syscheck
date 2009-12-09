@@ -45,6 +45,7 @@ if [ "x$question" = "xy" ] ; then
 	echo "#                                                     #"
 	echo "# The conf/ directory is placed in /tmp/backup_ejbca/ #"
 	echo "# You have to manually move it to \$EJBCA_HOME/        #"
+	echo "# You also have to change the user and group rights   #"
 	echo "#                                                     #"
 	echo "#######################################################"
 
@@ -66,6 +67,7 @@ if [ "x$question" = "xy" ] ; then
 	echo "#                                                    #"
 	echo "# The p12/ directory is placed in /tmp/backup_ejbca/ #"
 	echo "# You have to manually move it to \$EJBCA_HOME/       #"
+	echo "# You also have to change the user and group rights  #"
 	echo "#                                                    #"
 	echo "######################################################"
 
