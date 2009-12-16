@@ -1,0 +1,7 @@
+APA_HELP="Check apache process is up and running"
+
+APA_DESCR_1="Apache webserver is running"
+APA_HELP_1="server is running and serving web pages"
+
+APA_DESCR_2="Apache webserver is not running"
+APA_HELP_2="check apache error.log, it is not running"
