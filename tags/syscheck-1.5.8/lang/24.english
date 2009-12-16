@@ -1,0 +1,7 @@
+WEBLOGIC_HELP="Checks the weblogic server to make sure it's running"
+
+WEBLOGIC_DESCR_1="WebLogic server is running"
+WEBLOGIC_HELP_1="all ok"
+
+WEBLOGIC_DESCR_2="WebLogic server is not running (%s)"
+WEBLOGIC_HELP_2="Start the WebLogic server"
