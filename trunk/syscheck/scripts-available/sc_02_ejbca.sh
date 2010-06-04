@@ -30,7 +30,7 @@ fi
 OUTPUT='/tmp/ejbcahealth.log'
 EJBCAHEALTHLOG='/tmp/ejbcahealth'
 cd /tmp
-wget http://$EJBCA_HOSTNAME:8080/ejbca/publicweb/healthcheck/ejbcahealth -T 10 -t 1 -o $OUTPUT 2>/dev/null
+wget http://${EJBCA_HOSTNAME}:8080/ejbca/publicweb/healthcheck/ejbcahealth -T ${EJBCA_TIMEOUT} -t 1 -o $OUTPUT 2>/dev/null
 
 ERRORCATOUTPUT=`cat $OUTPUT | grep ERROR`
 ERRORECHOOUTPUT=`echo $ERRORCATOUTPUT`
