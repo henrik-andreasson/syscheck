@@ -7,7 +7,7 @@
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/resources.sh
+. $SYSCHECK_HOME/config/common.conf
 
 # Start with checking that node1 is the active db node.
 if grep -q Node1 $ACTIVENODE_FILE

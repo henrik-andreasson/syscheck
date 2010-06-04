@@ -43,7 +43,7 @@ rc_reset
 # considered a success.
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/resources.sh
+. $SYSCHECK_HOME/config/common.conf
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=

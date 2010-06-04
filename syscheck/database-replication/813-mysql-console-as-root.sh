@@ -6,7 +6,7 @@
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/resources.sh
+. $SYSCHECK_HOME/config/database-replication.conf
 
 $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" 
 
