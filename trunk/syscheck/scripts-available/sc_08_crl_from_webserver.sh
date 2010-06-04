@@ -72,6 +72,7 @@ checkcrl () {
 	else
 		printlogmess $INFO $CRL_ERRNO_2 "$CRL_DESCR_2" "$CRLNAME"
 	fi
+	rm "$outname" 
 }
 
 for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
