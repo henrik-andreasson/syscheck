@@ -31,8 +31,8 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} ${SSH_KEY} | awk '{print $2}' | sed 's/addr\://g'`
-CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} ${SSH_KEY} | awk '{print $2}' | sed 's/addr\://g'`
+CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "${IFCONFIG} | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} ${SSH_KEY} | awk '{print $2}' | sed 's/addr\://g'`
+CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "${IFCONFIG} | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} ${SSH_KEY} | awk '{print $2}' | sed 's/addr\://g'`
 
 if [ "$CHECK_VIP_NODE1" = "${HOSTNAME_VIRTUAL}" -a "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess $ERROR $ERRNO_3 "$CHECK_VIP_DESCR_3"

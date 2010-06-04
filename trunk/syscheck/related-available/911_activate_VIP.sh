@@ -36,6 +36,9 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     shift
 fi 
 
+IP_GATEWAY=`$ROUTE -n | awk '/0.0.0.0/'| awk '{print $2}' |awk '!/0.0.0.0/'`
+
+
 
 CHECK_VIP=`$IFCONFIG ${IF_VIRTUAL} | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL}` 
 if [ "x${CHECK_VIP}" != "x" ] ; then 
