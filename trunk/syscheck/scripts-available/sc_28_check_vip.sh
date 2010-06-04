@@ -1,13 +1,13 @@
 #!/bin/sh 
 
-# To use this script you have to configure ip-addresses, netmask and interface in $SYSCHECK_HOME/resources.sh.
+# To use this script you have to configure ip-addresses, netmask and interface in $SYSCHECK_HOME/config/syscheck-scripts.conf.
 # If you want this script to be run by cron you have to generate ssh keys with no password and add the id_rsa.pub to .ssh/authorized_keys on both nodes.
 
 # Set default home if not already set.
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/resources.sh
+. $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 SCRIPTID=28
 
@@ -31,8 +31,8 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} | awk '{print $2}' | sed 's/addr\://g'`
-CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} | awk '{print $2}' | sed 's/addr\://g'`
+CHECK_VIP_NODE1=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "ifconfig | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} ${SSH_KEY} | awk '{print $2}' | sed 's/addr\://g'`
+CHECK_VIP_NODE2=`${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "ifconfig | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} ${SSH_KEY} | awk '{print $2}' | sed 's/addr\://g'`
 
 if [ "$CHECK_VIP_NODE1" = "${HOSTNAME_VIRTUAL}" -a "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess $ERROR $ERRNO_3 "$CHECK_VIP_DESCR_3"

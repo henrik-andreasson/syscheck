@@ -5,7 +5,7 @@ set -e
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 # Import common resources
-. $SYSCHECK_HOME/resources.sh
+. $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 SCRIPTID=19
 getlangfiles $SCRIPTID

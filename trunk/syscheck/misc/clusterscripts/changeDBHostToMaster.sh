@@ -14,7 +14,7 @@
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/resources.sh
+. $SYSCHECK_HOME/config/common.conf
 
 
 $MYSQLDUMP_BIN -u root --password="$MYSQLROOT_PASSWORD" ejbca > /tmp/ejbcaSlaveDB.sql

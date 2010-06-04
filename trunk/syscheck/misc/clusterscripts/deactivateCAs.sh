@@ -7,7 +7,7 @@
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/resources.sh
+. $SYSCHECK_HOME/config/common.conf
 
 cd $EJBCA_HOME
 for (( i = 0 ;  i < ${#CANAME[@]} ; i++ ))

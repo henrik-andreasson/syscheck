@@ -13,7 +13,6 @@ if [ "x${progname}" = "x" ] ; then
 	progname=syscheck
 fi
 
-perl -pi -e 's/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gio' resources.sh
 
 
 find . -name \*.sh -exec chmod 755 {} \;
@@ -23,6 +22,7 @@ PROGPATH=${OUTPATH}/${progname}-${rel}
 
 
 svn export . ${PROGPATH}
+perl -pi -e "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gi"  ${PROGPATH}/resources.sh
 find ${PROGPATH} -name \*.sh -exec chmod 755 {} \;
 find ${PROGPATH}/scripts-available/ -name \*.sh -exec chmod 755 {} \;
 find ${PROGPATH}/scripts-enabled/ -name \*.sh -exec rm {} \;

@@ -6,7 +6,7 @@ status=0
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 # Import common resources
-. $SYSCHECK_HOME/resources.sh
+. $SYSCHECK_HOME/config/common.conf
 
 pid=`ps -ef | grep $procname | grep -v grep | awk '{print $2}'` 
 
