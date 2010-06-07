@@ -1,4 +1,4 @@
-HELP="grants access to the ejbca user"
+HELP="grants access to the ejbca user from localhost only"
 
 LEVEL_1=$INFO
 DESCR_1="access rules inserted into mysql db ok"
