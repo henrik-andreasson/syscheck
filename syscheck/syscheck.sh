@@ -4,7 +4,7 @@
 SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-script.conf
+. $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 PATH=$SYSCHECK_HOME:$PATH
 
