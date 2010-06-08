@@ -1,0 +1,11 @@
+HELP="Set mysql server UNLOCK TABLES;"
+
+LEVEL_1=$INFO
+DESCR_1="Set mysql unlock TABLESok"
+HELP_1="no action is needed"
+
+LEVEL_2=$ERROR
+DESCR_2="Failed to set mysql server unlock TABLES;"
+HELP_2="try manually with mysql mysql -u root -p then > unlock TABLES;"
+
+

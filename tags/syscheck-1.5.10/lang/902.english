@@ -1,0 +1,10 @@
+HELP="Export CRL $0: <DER encoded CRL>"
+
+DESCR_1="Export CRL run successfully"
+HELP_1="no action needed"
+
+DESCR_2="Export CRL failed (%s) "
+HELP_2="check manual with sh -x $0 <crl>"
+
+DESCR_3="Export CRL failed, script called without file"
+HELP_3="arg1 must be a DER encoded crl!"

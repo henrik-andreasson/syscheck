@@ -1,0 +1,8 @@
+SCALIVE_HELP="Sends alive messages to a central syscheck server run this script either along with the rest of the syscheck scripts or in a crontab (then you can run me more often...)"
+SCALIVE_DESCR_1="Operating system just started"
+SCALIVE_DESCR_2="Operating system is shutting down"
+SCALIVE_DESCR_3="I'm alive"
+SCALIVE_HELP_1="Message is sent when the server's operating system is started"
+SCALIVE_HELP_2="Message is sent when the server's operating system is shutdown"
+SCALIVE_HELP_3="Message is sent to make sure central server know's this server is alive"
+

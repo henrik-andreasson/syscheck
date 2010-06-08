@@ -1,0 +1,16 @@
+NTP_HELP="Check that ntp i running and is insync"
+
+NTP_DESCR_1="ntpd is up running"
+NTP_HELP_1="all ok"
+
+NTP_DESCR_2="ntpd is NOT running."
+NTP_HELP_2="Start it with /etc/init.d/xntpd start"
+
+NTP_DESCR_3="ntpd can't synchronize a server"
+NTP_HELP_3="check the configuration or restart ntpd"
+
+NTP_DESCR_4="ntpd can NOT synchronize to servers."
+NTP_HELP_4="Check network connectivity and configuration of ntp"
+
+NTP_DESCR_5="ntp.conf not found"
+NTP_HELP_5="Check your ntp installation"
