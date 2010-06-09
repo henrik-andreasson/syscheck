@@ -1,0 +1,5 @@
+BOKS_REPLICA_HELP="BoKS Replica checks"
+BOKS_REPLICA_DESCR_1="No action is needed"
+BOKS_REPLICA_HELP_1="all boks processes are running"
+BOKS_REPLICA_DESCR_2="This BoKS replikca processes IS NOT running %s"
+BOKS_REPLICA_HELP_2="Not all boks processes are running"

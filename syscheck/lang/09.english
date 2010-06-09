@@ -1,0 +1,10 @@
+FWALL_HELP="Check the firewall is configured and running"
+
+FWALL_DESCR_1=" Firewall seems to be turned off."
+FWALL_HELP_1="check manually with iptables -L -n (if you're running Linux), restart the firewall with /etc/init.d/firewall start"
+
+FWALL_DESCR_2=" Firewall doesn't seem to have the correct ruleset configured."
+FWALL_HELP_2="Maybe something went wrong loading the firewall ruleset, because some very basic rules are'nt present "
+
+FWALL_DESCR_3="Firewall is up and configured properly"
+FWALL_HELP_3="No action is needed"
