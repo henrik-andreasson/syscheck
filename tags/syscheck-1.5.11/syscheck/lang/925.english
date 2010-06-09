@@ -1,0 +1,10 @@
+HELP="Publish a CRL from file, ie you need to call this script with the file on disc\n$0: -c <file>|--crlfile=<file>"
+DESCR_1="Publish crl run successfully"
+HELP_1="ok"
+DESCR_2="no input file found"
+HELP_2="supply file as argument to this script"
+DESCR_3="Publish certificate failed, cant read file (%s)"
+HELP_3="verify the file is in place and with proper permissions before executing this script"
+DESCR_4="scp script failed"
+HELP_4="check the log for messages about the transfer"
+
