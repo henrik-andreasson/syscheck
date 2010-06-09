@@ -1,0 +1,10 @@
+HELP="grants access to the ejbca user"
+
+LEVEL_1=$INFO
+DESCR_1="Mysql server made to act as a master"
+HELP_1="no action is needed"
+
+LEVEL_2=$ERROR
+DESCR_2="Failed to make mysql server act as a master"
+HELP_2="check that /etc/my.cnf has log-bin=mysql-bin and a unique server-id"
+

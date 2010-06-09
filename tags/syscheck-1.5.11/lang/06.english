@@ -1,0 +1,17 @@
+
+RAID_HELP="check the raid discs"
+#RAID PHYSICALDISK CHECK RESOURCES
+RAID_DESCR_1="PhysicalDiscs is OK %s"
+RAID_HELP_1="No action is needed"
+RAID_DESCR_2="PhysicalDiscs is not OK %s"
+RAID_HELP_2="Change disc as soon as possible"
+#RAID LOGICALDISK CHECK RESOURCES
+RAID_DESCR_3="LogicalDiscs is OK %s"
+RAID_HELP_3="No action is needed"
+RAID_DESCR_4="LogicalDiscs is rebuilding %s"
+RAID_HELP_4="check back in a while to see this error goes away, else you need to investigate"
+RAID_DESCR_5="LogicalDiscs has some other error %s"
+RAID_HELP_5="you need to investigate this error ASAP"
+RAID_DESCR_6="HPTOOL not installed at: %s"
+RAID_HELP_6="the hptool is not installed, install the tool to get working reports"
+
