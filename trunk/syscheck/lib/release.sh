@@ -22,7 +22,7 @@ PROGPATH=${OUTPATH}/${progname}-${rel}
 
 
 svn export . ${PROGPATH}
-perl -pi -e "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gi"  ${PROGPATH}/resources.sh
+perl -pi -e "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gi"  ${PROGPATH}/config/common.conf
 find ${PROGPATH} -name \*.sh -exec chmod 755 {} \;
 find ${PROGPATH}/scripts-available/ -name \*.sh -exec chmod 755 {} \;
 find ${PROGPATH}/scripts-enabled/ -name \*.sh -exec rm {} \;
