@@ -41,7 +41,7 @@ help () {
 
 
 echo "are you really sure you want to drop and replace the ejbca db on this host?"
-echo "enter 'im-really-sure' without the '-' to continue or ctrl-c to abort"
+echo "enter 'im-really-sure' to continiue or ctrl-c to abort"
 read a
 if [ "x$a" != "xim really sure" ] ; then
 	echo "ok probably wise choice, exiting"
