@@ -50,7 +50,7 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
 	exit
     fi
 
-    realfiles=$(ls ${FILENAME[$i]})
+    realfiles=$(ls ${FILENAME[$i]} 2>/dev/null)
     if [ "x${realfiles}" != "x" ] ; then 
 
 	returnstr=`rm ${FILENAME[$i]} 2>&1`
