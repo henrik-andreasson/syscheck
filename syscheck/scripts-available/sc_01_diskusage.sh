@@ -15,9 +15,11 @@ getconfig $SCRIPTID
  
 ERRNO_1="${SCRIPTID}01"
 ERRNO_2="${SCRIPTID}02"
+ERRNO_3="${SCRIPTID}03"
 
 DESCR_1="${DU_DESCR_1}"
 DESCR_2="${DU_DESCR_2}"
+DESCR_3="${DU_DESCR_3}"
 
 ### local conf ###
 
@@ -36,14 +38,23 @@ fi
 diskusage () {
 	FILESYSTEM=$1
 	LIMIT=$2
-	PERCENT=`df -Ph $FILESYSTEM | grep -v Filesystem | awk '{print $5}' | sed 's/%//'`
+	DFPH=`df -Ph $FILESYSTEM 2>&1`
 
-	if [ $PERCENT -gt $LIMIT ] ; then
-                printlogmess $ERROR $ERRNO_2 "$DESCR_2" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+	if [ $? -ne 0 ] ; then
+		printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$FILESYSTEM" "$DFPH"
 	else
-                printlogmess $INFO $ERRNO_1 "$DESCR_1" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+
+  		PERCENT=`df -Ph $FILESYSTEM | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
+		if [ $PERCENT -gt $LIMIT ] ; then
+       	         	printlogmess $ERROR $ERRNO_2 "$DESCR_2" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+		else
+                	printlogmess $INFO $ERRNO_1 "$DESCR_1" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+		fi
 	fi
 }
 
 
-diskusage /  $DU_PERCENT
+for (( i = 0 ;  i < ${#FILESYSTEM[@]} ; i++ )) ; do
+	diskusage ${FILESYSTEM[$i]}  ${USAGEPERCENT[$i]}
+done
+
