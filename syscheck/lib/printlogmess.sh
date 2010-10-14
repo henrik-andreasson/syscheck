@@ -6,8 +6,7 @@ printtoscreen() {
   IFS=$'\n'
 
   if [ "x$PRINTTOSCREEN" = "x1" ] ; then 
-	echo "Screenonly output:"
-	echo $*
+	echo "Screenonly output: $*"
   fi
 }
 
@@ -63,4 +62,14 @@ printlogmess(){
 
 
 
+}
+
+displayhelp() {
+
+    DATE=`date +"%Y%m%d %H:%M:%S"`
+    echo "$0 $ABOUT"
+    for (( i = 0 ;  i < ${#ERRNO[@]} ; i++ )) ; do
+	echo "${LEVEL[$i]}-${ERRNO[$i]}-${SYSTEMNAME} ${DATE} - ${DESCR[$i]}"
+	echo "   ${HELP[$i]}"
+    done
 }

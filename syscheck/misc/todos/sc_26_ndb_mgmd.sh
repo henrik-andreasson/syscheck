@@ -2,8 +2,8 @@
 procname=/usr/local/mysql/libexec/ndb_mgmd
 status=0
 
-# Set default home if not already set.
-SYSCHECK_HOME=${SYSCHECK_HOME:-"/usr/local/syscheck"}
+
+
 
 # Import common resources
 . $SYSCHECK_HOME/config/common.conf
