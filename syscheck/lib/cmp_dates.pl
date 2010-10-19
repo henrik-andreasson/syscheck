@@ -33,6 +33,6 @@ $nmon++;
 $date2 = Date_SecsSince1970($nmon,$nmday,$nyear,$nhour,$nmin,$nsec);
 
 # diff
-my $diff=int(($date2 - $date1)/3600);
+my $diff=int(($date1 - $date2)/3600);
 
 print "$diff\n";
