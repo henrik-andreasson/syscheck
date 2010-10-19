@@ -49,7 +49,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
 fi
 
 
-OUTFILE="$CLUSTERSCRIPT_HOME/tmp_create-ejbca-mysql-user.sql"
+OUTFILE="$SYSCHECK_HOME/var/tmp_create-ejbca-mysql-user.sql"
 
 echo "GRANT ALL ON ejbca.* to '$DB_USER'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';" > $OUTFILE
 echo "select * from user where user like '%${DB_USER}%'" >> $OUTFILE

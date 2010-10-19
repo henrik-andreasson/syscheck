@@ -60,7 +60,7 @@ if [ "x$a" != "xim really sure" ] ; then
 fi
 
 
-OUTFILE="$CLUSTERSCRIPT_HOME/tmp_make-mysql-server-act-as-master.sql"
+OUTFILE="$SYSCHECK_HOME/var/tmp_make-mysql-server-act-as-master.sql"
 
 echo "SLAVE STOP;" > $OUTFILE
 echo "RESET MASTER;" >> $OUTFILE
