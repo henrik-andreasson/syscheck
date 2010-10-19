@@ -222,7 +222,7 @@ for file in ${FileToArchive} ; do
 
 # get new filenames 
 	infile=`basename $file`
-	datestr=`date +"%Y-%m-%d_%H.%m.%S"`
+	datestr=`date +"%Y-%m-%d_%H.%M.%S"`
 	ShortFileName="${datestr}_orgname__${infile}__"
 
 	itFile=`moveToIntransit ${ShortFileName}`
