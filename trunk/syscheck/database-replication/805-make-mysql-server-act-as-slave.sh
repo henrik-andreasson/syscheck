@@ -73,7 +73,7 @@ read LOGPOS
 
 
 
-OUTFILE="$CLUSTERSCRIPT_HOME/tmp_make-mysql-server-act-as-slave.sql"
+OUTFILE="$SYSCHECK_HOME/var/tmp_make-mysql-server-act-as-slave.sql"
 
 echo "STOP SLAVE;" > $OUTFILE
 if [ "x$THIS_NODE" = "xNODE1" ] ; then
