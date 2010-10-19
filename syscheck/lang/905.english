@@ -1,9 +1,25 @@
-PUBL_DESCR_1="Publish certificate run successfully"
-PUBL_DESCR_2="Publish failed (%s) "
-PUBL_HELP_2="Check connectivity to the host (%s) "
-PUBL_DESCR_3="Publish certificate failed, script called without file"
+PUBL_HELP="Script to publish the CRL:s from the CA, supports local and remote publishing by SSH"
+
+PUBL_DESCR_1="Publish CRL run successfully (%s)"
+PUBL_HELP_1="No action needed"
+
+PUBL_DESCR_2="Publish to remote host failed crl:(%s) host:(%s)"
+PUBL_HELP_2="Try manually to run this command and setup ssh-keys and check username"
+
+PUBL_DESCR_3="Publish CRL failed, can't copy crl to destination %s/%s"
+PUBL_HELP_3="Check permissions for the path:s"
+
 PUBL_DESCR_4="File not found"
-PUBL_DESCR_5="CRL is not the right size"
-PUBL_DESCR_6="Could not get a CRL from ejbca"
-PUBL_HELP_6="Check that EJBCA is running"
-PUBL_DESCR_7="CRL is outdated %s %s (%s)"
+PUBL_HELP_4="Verify the configuration of this script so it reflects the existing CA:s"
+
+PUBL_DESCR_5="Couldn't stat the file to get the filesize"
+PUBL_HELP_5="Probably some problem getting the file/or filerights"
+
+PUBL_DESCR_6="File size of CRL is 0 (%s)"
+PUBL_HELP_6="Probably some problem getting the file/or filerights"
+
+PUBL_DESCR_7="CRL is outdated %s (%s)"
+PUBL_HELP_7="This script cant get a new CRL, check the CA-logs"
+
+PUBL_DESCR_8="CRL:%s is published to host:%s"
+PUBL_HELP_8="no action needed"
