@@ -33,7 +33,6 @@ ERRNO_3="${SCRIPTID}3"
 
 ### end config ###
 
-PRINTTOSCREEN=1
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 	echo "$HELP"
 	echo "$ERRNO_1/$DESCR_1 - $HELP_1"
@@ -60,10 +59,10 @@ for (( j=0; j < ${#HTMF_FILE[@]} ; j++ )){
 	printtoscreen "Copying file: ${HTMF_FILE[$j]} to:${BACKUP_DIR}"
 	cp -f "${HTMF_FILE[$j]}" ${BACKUP_DIR}
 	if [ $? -ne 0 ] ; then
-	    printlogmess $ERROR $ERRNO_3 "$DESCR_3" ${HTMF_FILE[$j]}
+	    printlogmess $ERROR $ERRNO_2 "$DESCR_2" ${HTMF_FILE[$j]}
 	    continue
 	else
-	    printlogmess $INFO $ERRNO_2 "$DESCR_2" ${HTMF_FILE[$j]}
+	    printlogmess $INFO $ERRNO_1 "$DESCR_1" ${HTMF_FILE[$j]}
 	fi
 	
 }
