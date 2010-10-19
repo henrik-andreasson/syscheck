@@ -22,7 +22,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 . $SYSCHECK_HOME/config/related-scripts.conf
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
-SCRIPTID=921
+SCRIPTID=926
 
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
@@ -35,9 +35,9 @@ ERRNO_3="${SCRIPTID}3"
 
 PRINTTOSCREEN=1
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-	echo "$ECRT_HELP"
-	echo "$ERRNO_1/$COPY_EJBCA_CONF_DESCR_1 - $COPY_EJBCA_CONF_HELP_1"
-	echo "$ERRNO_2/$COPY_EJBCA_CONF_DESCR_2 - $COPY_EJBCA_CONF_HELP_2"
+	echo "$HELP"
+	echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+	echo "$ERRNO_2/$DESCR_2 - $HELP_2"
 	echo "${SCREEN_HELP}"
 	exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
@@ -49,19 +49,21 @@ fi
 # Make sure you add quotation marks for the first argument when adding new files that should be copied, for exampel.
 
 
-${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "mkdir -p ${REMOTE_DIR}" ${SSH_USER} ${SSHKEY}
+mkdir -p ${BACKUP_DIR}
 if [ $? -ne 0 ] ; then
-	echo "couldn't make dir"
-	exit
+    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "${BACKUP_DIR}"
+    exit
 fi
 
 
 for (( j=0; j < ${#HTMF_FILE[@]} ; j++ )){
-	printtoscreen "Copying file: ${HTMF_FILE[$j]} to:${HOSTNAME_NODE2} dir:${REMOTE_DIR} remotreuser:${REMOTE_USER} sshkey: ${SSHKEY}"
-	${SYSCHECK_HOME}/related-enabled/906_ssh-copy-to-remote-machine.sh "${HTMF_FILE[$j]}" ${HOSTNAME_NODE2} ${REMOTE_DIR} ${REMOTE_USER} ${SSHKEY}
+	printtoscreen "Copying file: ${HTMF_FILE[$j]} to:${BACKUP_DIR}"
+	cp -f "${HTMF_FILE[$j]}" ${BACKUP_DIR}
 	if [ $? -ne 0 ] ; then
-		echo "couln't copy file \"${HTMF_FILE[$j]}\""
-		exit
+	    printlogmess $ERROR $ERRNO_3 "$DESCR_3" ${HTMF_FILE[$j]}
+	    continue
+	else
+	    printlogmess $INFO $ERRNO_2 "$DESCR_2" ${HTMF_FILE[$j]}
 	fi
 	
 }
