@@ -1,0 +1,1 @@
+HELP="changes datasource in both ejbca/conf/database.properties and jboss/server/default/deploy/ejbca-ds.xml"
