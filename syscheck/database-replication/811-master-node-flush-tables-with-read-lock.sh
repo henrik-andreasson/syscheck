@@ -52,7 +52,14 @@ fi
 
 
 
-echo "FLUSH TABLES WITH READ LOCK;" | $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" 
+echo "Connecting to master(HOSTNAME_NODE1): ${HOSTNAME_NODE1}"
+echo "Enter manually:"
+echo "FLUSH TABLES WITH READ LOCK;"
+echo "keep the console open until the last step is done"
+echo "then enter:"
+echo "UNLOCK TABLES"
+
+$MYSQL_BIN mysql -u root --host=${HOSTNAME_NODE1} --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
         printlogmess $LEVEL_1 $ERRNO_1 "$DESCR_1"
 else
