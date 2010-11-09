@@ -27,7 +27,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 . $SYSCHECK_HOME/config/database-replication.conf
 
 
-OUTFILE="$CLUSTERSCRIPT_HOME/tmp_create-test-table.sql"
+OUTFILE="$SYSCHECK_HOME/var/tmp_create-test-table.sql"
 
 echo "USE $DB_NAME;" > $OUTFILE
 echo 'DROP TABLE IF EXISTS `test`;' >> $OUTFILE

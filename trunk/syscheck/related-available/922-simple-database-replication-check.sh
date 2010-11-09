@@ -67,8 +67,8 @@ $MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < $OUTFILE
 
 rm $OUTFILE
 newval=`perl -e 'print time'`
-echo "delete from relatedtest" | $MYSQL_BIN $DB_NAME -h $HOSTNAME_NODE1 -u ${DB_USER} --password=${DB_PASSWORD}
-echo "insert into relatedtest set value=$newval" | $MYSQL_BIN $DB_NAME -h $HOSTNAME_NODE1 -u ${DB_USER} --password=${DB_PASSWORD}
+echo "delete from relatedtest"                   | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD}
+echo "insert into relatedtest set value=$newval" | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD}
 
 sleep 1
 
