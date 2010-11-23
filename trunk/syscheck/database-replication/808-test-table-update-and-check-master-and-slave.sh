@@ -28,9 +28,9 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 
 newval=`perl -e 'print time'`
-echo "cleaning and inserting new val: $newval"
-echo "delete from test"                   | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD}
-echo "insert into test set value=$newval" | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD}
+echo "cleaning and inserting new val: $newval into HOSTNAME_NODE1:$HOSTNAME_NODE1"
+echo "delete from test"                   | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD} -h $HOSTNAME_NODE1
+echo "insert into test set value=$newval" | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD} -h $HOSTNAME_NODE1
 
 sleep 1
 echo "values from $HOSTNAME_NODE1"
