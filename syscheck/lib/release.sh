@@ -20,6 +20,15 @@ find . -name \*.sh -exec chmod 755 {} \;
 OUTPATH=../../releases/
 PROGPATH=${OUTPATH}/${progname}-${rel}
 
+echo "svn status locally:"
+svn status
+echo "tag in svn ( svn cp https://syscheck.svn.sourceforge.net/svnroot/syscheck/trunk/syscheck https://syscheck.svn.sourceforge.net/svnroot/syscheck/tags/${progname}-${rel}) (Y/n)"
+read tagsvn
+if [ "x$tagsvn" == "xy" -o "x$tagsvn" == "xY" -o "x$tagsvn" == "x" ] ; then
+        svn cp https://syscheck.svn.sourceforge.net/svnroot/syscheck/trunk/syscheck https://syscheck.svn.sourceforge.net/svnroot/syscheck/tags/${progname}-${rel}
+fi
+
+
 
 svn export . ${PROGPATH}
 perl -pi -e "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gi"  ${PROGPATH}/config/common.conf
