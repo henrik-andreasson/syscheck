@@ -1,0 +1,7 @@
+HELP="Script used to rsync configured files/dirs to other hosts"
+HELP_1="ok"
+HELP_2="The underlying script for making the transfers SYSCHECK_HOME/related-enabled/923-rsync-to-remote-machine.sh dont exist, read docs for guide howto enable it"
+HELP_3="check the config and run SYSCHECK_HOME/related-enabled/923-rsync-to-remote-machine.sh manually with the same options"
+DESCR_1="file transfered ok"
+DESCR_2="Could not find transfer script"
+DESCR_3="Failed to sync files (%s)"
