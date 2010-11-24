@@ -124,14 +124,14 @@ checkcrl () {
 }
 
 
-for (( i=0; i < ${#CANAME[@]} ; i++ )){
+for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
 
     tempdir=$(mktemp -d)
     trap 'rm -rf "$tempdir"' EXIT
 
     CRLFILE=${tempdir}/${CRL_NAME[$i]}
 
-    get ${CANAME[$i]} "${CRLFILE}"
+    get ${CRLCANAME[$i]} "${CRLFILE}"
     checkcrl "${CRLFILE}"
     if [ $? -ne 0 ] ; then
 	# check crl didn't pass the crl so we'll not publish this one and continue with the next
@@ -142,7 +142,7 @@ for (( i=0; i < ${#CANAME[@]} ; i++ )){
     if [ "x${REMOTE_HOST[$i]}" = "xlocalhost" ] ; then
 	cp -f ${CRLFILE} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	if [ $? -eq 0 ] ;then
-	    printlogmess $INFO $ERRNO_1 "$PUBL_DESCR_1" ${CANAME[$i]}
+	    printlogmess $INFO $ERRNO_1 "$PUBL_DESCR_1" ${CRLCANAME[$i]}
 	else
 	    printlogmess $ERROR $ERRNO_3 "$PUBL_DESCR_3" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	fi
