@@ -82,7 +82,7 @@ if [ $? -ne 0 ] ;   then
 fi  
 
 for (( i = 0 ;  i < "${#BACKUP_HOST[@]}" ; i++ )) ; do
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${FULLFILENAME} ${BACKUP_HOST[$i]} "${BACKUP_DIR[$i]}/${EXTRADIR}/" ${BACKUP_USER[$i]} 
+	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${FULLFILENAME} ${BACKUP_HOST[$i]} "${BACKUP_DIR[$i]}/${EXTRADIR}/" ${BACKUP_USER[$i]} ${BACKUP_SSHFROMKEY[$i]}
 	if [ $? -eq 0 ] ; then
 		printlogmess $INFO $BAK_ERRNO_1 "$BAK_DESCR_1"
 	else
