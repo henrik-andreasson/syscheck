@@ -1,6 +1,6 @@
 PUBL_HELP="Script to publish the CRL:s from the CA, supports local and remote publishing by SSH"
 
-PUBL_DESCR_1="Publish CRL run successfully (%s)"
+PUBL_DESCR_1="Publish CRL run successfully (%s) %s"
 PUBL_HELP_1="No action needed"
 
 PUBL_DESCR_2="Publish to remote host failed crl:(%s) host:(%s)"
@@ -18,8 +18,15 @@ PUBL_HELP_5="Probably some problem getting the file/or filerights"
 PUBL_DESCR_6="File size of CRL is 0 (%s)"
 PUBL_HELP_6="Probably some problem getting the file/or filerights"
 
-PUBL_DESCR_7="CRL is outdated %s (%s)"
+PUBL_DESCR_7="CRL has past error time %s (%s)"
 PUBL_HELP_7="This script cant get a new CRL, check the CA-logs"
 
 PUBL_DESCR_8="CRL:%s is published to host:%s"
 PUBL_HELP_8="no action needed"
+
+PUBL_DESCR_9="CRL has past warn time %s (%s)"
+PUBL_HELP_9="This script cant get a new CRL, check the CA-logs"
+
+PUBL_DESCR_10="Retrived and checked CRL (%s) %s"
+PUBL_HELP_10="No action needed"
+

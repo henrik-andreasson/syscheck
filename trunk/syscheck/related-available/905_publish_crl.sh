@@ -38,6 +38,8 @@ ERRNO_5=${SCRIPTID}5
 ERRNO_6=${SCRIPTID}6
 ERRNO_7=${SCRIPTID}7
 ERRNO_8=${SCRIPTID}8
+ERRNO_9=${SCRIPTID}8
+ERRNO_10=${SCRIPTID}8
 
 
 
@@ -57,10 +59,11 @@ get () {
     CRLFILE=$2
     cd ${EJBCA_HOME}
     printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLFILE"
-    ${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME "$CRLFILE"
+    CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME "$CRLFILE")
     if [ $? != 0 -o  ! -r $CRLFILE  ] ; then
         printlogmess $ERROR $ERRNO_6 "$PUBL_DESCR_6" "$CRLNAME/$CRLFILE"
     fi
+    printtoscreen $CMD
 
 }
 
@@ -88,7 +91,47 @@ put () {
 checkcrl () {
 
     CRLFILE=$1
+    WTIME=$2
+    ETIME=$2
 
+    wishour=$(echo $WTIME | grep -i "h")
+    wismin=$(echo $WTIME  | grep -i "m")
+    wdigits=$(echo $WTIME| perl -ane 'm/(\d+)/,print "$1"')
+    wunit="hours"
+    wcmdopts=""
+    if [ "x$wismin" != "x" ] ; then
+	wcmdopts="--return-in-minutes"
+	wunit="minutes"
+    elif [ "x$wishour" != "x" ] ; then
+#	TIME=$digits
+	wunit="hours"
+    else
+	# todo fail not known time
+	# default to use only number as before
+#	TIME=$digits
+	wunit="hours"
+    fi
+    WTIME=$wdigits
+
+    eishour=$(echo $ETIME | grep -i "h")
+    eismin=$(echo $ETIME  | grep -i "m")
+    edigits=$(echo $ETIME| perl -ane 'm/(\d+)/,print "$1"')
+    eunit="hours"
+    ecmdopts=""
+    if [ "x$eismin" != "x" ] ; then
+	ecmdopts="--return-in-minutes"
+	eunit="minutes"
+    elif [ "x$eishour" != "x" ] ; then
+#	TIME=$digits
+	eunit="hours"
+    else
+	# todo fail not known time
+	# default to use only number as before
+#	TIME=$digits
+	eunit="hours"
+    fi
+    ETIME=$edigits
+	
 
 # file not found where it should be
     if [ ! -f $CRLFILE ] ; then
@@ -112,13 +155,20 @@ checkcrl () {
 # now we can check the crl:s best before date is in the future with atleast HOURTHRESHOLD hours (defined in resources)
     TEMPDATE=`openssl crl -inform der -in $CRLFILE -nextupdate -noout`
     DATE=${TEMPDATE:11}
-    HOURSLEFT=`${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE"`
+    WTIMELEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" ${wcmdopts})
+    ETIMELEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" ${ecmdopts})
     
-    if [ "$HOURSLEFT" -lt "$HOURTHRESHOLD" ] ; then
-	printlogmess $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLFILE "hoursleft: ${HOURSLEFT} limit: ${HOURTHRESHOLD}"
+    if [ "$ETIMELEFT" -lt "$ETIME" ] ; then
+	printlogmess $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
 	return 7
+
+    elif [ "$WTIMELEFT" -lt "$WTIME" ] ; then
+	printlogmess $WARN $ERRNO_9 "$PUBL_DESCR_9" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	return 7
+
     else
-#	printlogmess $INFO $ERRNO_1 "$PUBL_DESCR_1" $CRLFILE
+	printlogmess $INFO $ERRNO_10 "$PUBL_DESCR_10" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	printtoscreen "$INFO $ERRNO_10 $PUBL_DESCR_10 $CRLFILE timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	return 0
     fi
 }
@@ -132,7 +182,8 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
     CRLFILE=${tempdir}/${CRL_NAME[$i]}
 
     get ${CRLCANAME[$i]} "${CRLFILE}"
-    checkcrl "${CRLFILE}"
+    echo "${CRLFILE} ${CRLWARNTIME[$i]} ${CRLERRORTIME[$i]}"
+    checkcrl "${CRLFILE}" ${CRLWARNTIME[$i]} ${CRLERRORTIME[$i]}
     if [ $? -ne 0 ] ; then
 	# check crl didn't pass the crl so we'll not publish this one and continue with the next
     	rm -rf $tempdir
@@ -142,7 +193,7 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
     if [ "x${REMOTE_HOST[$i]}" = "xlocalhost" ] ; then
 	cp -f ${CRLFILE} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	if [ $? -eq 0 ] ;then
-	    printlogmess $INFO $ERRNO_1 "$PUBL_DESCR_1" ${CRLCANAME[$i]}
+	    printlogmess $INFO $ERRNO_1 "$PUBL_DESCR_1" ${CRLCANAME[$i]} 
 	else
 	    printlogmess $ERROR $ERRNO_3 "$PUBL_DESCR_3" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	fi
