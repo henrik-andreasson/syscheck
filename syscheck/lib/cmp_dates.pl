@@ -3,6 +3,8 @@
 use Date::Manip;
 
 my $indate = $ARGV[0];
+my $returnMinutes = $ARGV[1];
+
 
 $now = localtime;
 
@@ -33,6 +35,12 @@ $nmon++;
 $date2 = Date_SecsSince1970($nmon,$nmday,$nyear,$nhour,$nmin,$nsec);
 
 # diff
-my $diff=int(($date1 - $date2)/3600);
+my $diff=0;
+if ( $returnMinutes eq "--return-in-minutes"){
+    $diff=int(($date1 - $date2)/60);
+}else{
+    $diff=int(($date1 - $date2)/3600);
+}
+
 
 print "$diff\n";
