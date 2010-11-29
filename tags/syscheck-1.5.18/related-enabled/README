@@ -1,0 +1,26 @@
+make links to the scripts you select to be active like this:
+
+cd related-enabled
+
+ln -s ../related-available/sc_01_diskusage.sh .
+ln -s ../related-available/sc_02_ejbca.sh .
+ln -s ../related-available/sc_03_memory-usage.sh .
+ln -s ../related-available/sc_04_pcsc_readers.sh .
+ln -s ../related-available/sc_05_pcscd.sh .
+ln -s ../related-available/sc_06_raid_check.sh .
+ln -s ../related-available/sc_07_syslog.sh .
+ln -s ../related-available/sc_08_crl_from_webserver.sh .
+ln -s ../related-available/sc_09_firewall.sh .
+ln -s ../related-available/sc_10_cluster_master_db.sh .
+ln -s ../related-available/sc_11_heartbeat.sh .
+ln -s ../related-available/sc_12_mysql.sh .
+ln -s ../related-available/sc_13_heartbeat-master.sh .
+ln -s ../related-available/sc_20_errors_ejbcalog.sh .
+ln -s ../related-available/sc_22_boks_replica.sh .
+ln -s ../related-available/sc_27_dss.sh .
+
+and so on ...
+
+or all:
+
+ln -s ../related-available/sc_*.sh .
