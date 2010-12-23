@@ -1,0 +1,10 @@
+HELP="grants access to the ejbca user"
+
+LEVEL_1=$INFO
+DESCR_1="Replication access rules inserted into mysql db ok"
+HELP_1="no action is needed"
+
+LEVEL_2=$INFO
+DESCR_2="failed to insert replication access rules into mysql db"
+HELP_2="run the script with sh -x $0 -s to find out more info"
+

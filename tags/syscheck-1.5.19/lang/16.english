@@ -1,0 +1,7 @@
+LDAP_HELP="Checks the ldap server to make sure it's running"
+
+LDAP_DESCR_1="LDAP directory server is running"
+LDAP_HELP_1="all ok"
+
+LDAP_DESCR_2="LDAP directory server is not running"
+LDAP_HELP_2="check you ldap server logs"

@@ -1,0 +1,20 @@
+ABOUT="Generic script to check a proc is running and try to restart those that's not"
+DESCR[0]="Process %s is running"
+HELP[0]="No action is needed"
+LEVEL[0]=$INFO
+ERRNO[0]=${SCRIPTID}0
+
+DESCR[1]="Process %s was not running, restart succeded"
+HELP[1]="If this happens regulary this need to be looked into"
+LEVEL[1]=$WARN
+ERRNO[1]=${SCRIPTID}1
+
+DESCR[2]="Process %s was not running, restart failed"
+HELP[2]="If this needs to be this handled manually"
+LEVEL[2]=$ERROR
+ERRNO[2]=${SCRIPTID}2
+
+DESCR[3]="Process %s was not running, no restart command defined"
+HELP[3]="No restart command defined, restart manually"
+LEVEL[3]=$ERROR
+ERRNO[3]=${SCRIPTID}3
