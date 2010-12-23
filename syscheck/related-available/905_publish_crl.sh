@@ -80,9 +80,9 @@ put () {
     $SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $REMOTEHOST $REMOTEDIR $SSHUSER $SSHKEY
 
     if [ $? = 0 ] ; then
-        printlogmess $INFO $ERRNO_8 "$PUBL_DESCR_8" $CRLNAME $CRLHOST 
+        printlogmess $INFO $ERRNO_8 "$PUBL_DESCR_8" $CRLNAME $REMOTEHOST 
     else
-	printlogmess $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLNAME $CRLHOST
+	printlogmess $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLNAME $REMOTEHOST
     fi
 }
 
