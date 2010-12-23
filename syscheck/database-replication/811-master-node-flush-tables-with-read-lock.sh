@@ -57,7 +57,7 @@ echo "Enter manually:"
 echo "FLUSH TABLES WITH READ LOCK;"
 echo "keep the console open until the last step is done"
 echo "then enter:"
-echo "UNLOCK TABLES"
+echo "UNLOCK TABLES;"
 
 $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then

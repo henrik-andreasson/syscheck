@@ -37,7 +37,7 @@ ERRNO_4="${SCRIPTID}4"
 
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-	echo "$SSH_HELP"
+	/bin/echo -e "$SSH_HELP"
 	echo "$ERRNO_1/$SSH_DESCR_1 - $SSH_HELP_1"
 	echo "$ERRNO_2/$SSH_DESCR_2 - $SSH_HELP_2"
 	echo "$ERRNO_3/$SSH_DESCR_3 - $SSH_HELP_3"
