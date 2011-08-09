@@ -71,6 +71,13 @@ $IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up
 if [ $? -eq 0 ] ; then 
     date > ${SYSCHECK_HOME}/var/this_node_has_the_vip
     printlogmess $INFO $ERRNO_1 "$ACTVIP_DESCR_1" "$?" 
+
+    arping -f -q -U ${IP_GATEWAY} -I ${IF_VIRTUAL} -s ${HOSTNAME_VIRTUAL}
+    if [ $? = 0 ] ; then
+	printlogmess $INFO $ERRNO_5 "$ACTVIP_DESCR_5" "$?"
+    else
+    	printlogmess $WARN $ERRNO_6 "$ACTVIP_DESCR_6" "$?"
+    fi
 else
     printlogmess $ERROR $ERRNO_3 "$ACTVIP_DESCR_3" "$?" 
 fi
