@@ -32,7 +32,7 @@ $date1 = Date_SecsSince1970($mon,$day,$year,$hour,$min,$sec);
 my ($nsec,$nmin,$nhour,$nmday,$nmon,$nyear,$nwday,$nyday,$isdst) = localtime(time);
 $nyear+=1900;
 $nmon++;
-$date2 = Date_SecsSince1970($nmon,$nmday,$nyear,$nhour,$nmin,$nsec);
+$date2 = Date_SecsSince1970GMT($nmon,$nmday,$nyear,$nhour,$nmin,$nsec);
 
 # diff
 my $diff=0;
