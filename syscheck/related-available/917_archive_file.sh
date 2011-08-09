@@ -159,8 +159,8 @@ transferFile(){
 	remoteFileName=`basename $baseFile`
 
 # transfer the file 
- 	printtoscreen "$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER"
- 	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER
+ 	printtoscreen "$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER ${SSHFROMKEY}"
+ 	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER ${SSHFROMKEY}
 	if [ $? != 0 ] ; then
                 printlogmess $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "${InTransitDir}/${IntransitFileName} $ArchiveServer ${ArchiveDir}/${remoteFileName}"
 		exit -1
