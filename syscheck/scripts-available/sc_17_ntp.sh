@@ -2,8 +2,8 @@
 # Script to check if the NTP client is running and is synchronized.
 # This script has been tested with the xntp rpm package on Suse Linux Enterprise Server 9.
 # Add the servers in the end of the file.
-# Usage:
-# checkntp '<server name or ip address>'
+# Usage:Just run it.
+# checkntp
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -54,7 +54,6 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" ] ; then
 fi
 
 checkntp () {
-	NTPSERVER=$1
 	DATE=`date +'%Y-%m-%d.%H.%m.%S'`
 	XNTPDPID=`ps -ef | grep ntpd | grep -v grep | awk '{print $2}'`
 	if [ x"$XNTPDPID" = "x" ]; then
@@ -62,19 +61,25 @@ checkntp () {
 		exit
 	fi	
 
-	# todo make one row, and no tempfile
-	STATUS=`${NTPBIN} -pn | grep ${NTPSERVER}`
+	# Get information about ntp
+	#SYSTEMPEER=`ntpdc -c sysinfo |egrep "system peer:"|awk '{print $3}'`
+	NTPSERVER=`${NTPBIN} -p| egrep "^\*"|awk '{print $1}'`
+	#NTPSERVER=`${NTPBIN} -p| egrep "LOCL"|awk '{print $1}'`
+	if [ x = $NTPSERVER}x ]
+	then
+		printlogmess $ERROR $NTP_ERRNO_4 "$NTP_DESCR_4" "$NTPSERVER" "$ERRCODE"
+		exit
+	fi
 
-	if [ "x${STATUS}" = "x" ]; then
+	if [ $NTPSERVER = 'LOCAL(0)' ]
+	then 
 		printlogmess $ERROR $NTP_ERRNO_3 "$NTP_DESCR_3" "$NTPSERVER" "$ERRCODE"
 	else		
 		printlogmess $INFO $NTP_ERRNO_1 "$NTP_DESCR_1" "$NTPSERVER"
-	fi	
+	fi 
 }
 
 
 # check with the IP:s of all ntp servers
 
-for (( i = 0 ;  i < ${#NTPHOST[@]} ; i++ )) ; do  
-	checkntp "${NTPHOST[$i]}"
-done
+checkntp
