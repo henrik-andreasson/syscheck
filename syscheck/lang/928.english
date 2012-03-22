@@ -1,0 +1,7 @@
+DSM_HELP="Check if backup went well "
+
+DSM_DESCR_1="Last TSM backup OK "
+DSM_HELP_1="Backup ok"
+
+DSM_DESCR_2="Last TSM backup fail, last god backup :"
+DSM_HELP_2="check error.log, probebly needing manual check, se manual"
