@@ -1,0 +1,13 @@
+HELP="Creates an empty ejbca db"
+
+LEVEL_1=$INFO
+DESCR_1="Created the db ok"
+HELP_1="no action is needed"
+
+LEVEL_2=$INFO
+DESCR_2="the db was already created "
+HELP_2="if you really want to create a new db the run: 801-drop-existing-and-create-empty-ejbca-db.sh"
+
+LEVEL_3=$ERROR
+DESCR_3="The db couldn't be created (%s)"
+HELP_3="Run the script with sh -x $0 -s to get max verbose output"

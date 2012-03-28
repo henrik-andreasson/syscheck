@@ -1,0 +1,8 @@
+RSA_AXM_HELP="Checks the RSA Access Manager server to make sure it's running"
+
+RSA_AXM_DESCR_1="RSA Access Manager is running"
+RSA_AXM_HELP_1="all ok"
+
+RSA_AXM_DESCR_2="At least one service is not running (%s) "
+RSA_AXM_HELP_2="check the rsa access manager server logs"
+
