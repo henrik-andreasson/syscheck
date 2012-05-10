@@ -52,6 +52,7 @@ fi
 
 
 echo "Are you sure you want to make this mysql server act as mysql slave?"
+echo "did you just restore a mysql dump from the current master into this host?"
 echo "enter 'im-really-sure' (without the '-') to continiue or ctrl-c to abort"
 read a
 if [ "x$a" != "xim really sure" ] ; then
@@ -60,8 +61,7 @@ if [ "x$a" != "xim really sure" ] ; then
 fi
 
 echo "now you need to run 810-show-mysql-master-status.sh on the master node"
-echo "For a first time setup (master has never had a slave) default file='' and pos=4 is the values to use"
-echo "then enter File and Position"
+echo "or obtain the File and Position somehow"
 
 LOGFILE=
 echo "Enter Log File default:[$LOGFILE]>"
@@ -76,6 +76,7 @@ read LOGPOS
 OUTFILE="$SYSCHECK_HOME/var/tmp_make-mysql-server-act-as-slave.sql"
 
 echo "STOP SLAVE;" > $OUTFILE
+echo "RESET SLAVE;" >> $OUTFILE
 if [ "x$THIS_NODE" = "xNODE1" ] ; then
 	echo "CHANGE MASTER TO MASTER_HOST='${HOSTNAME_NODE2}', MASTER_USER='${DBREP_USER}', MASTER_PASSWORD='${DBREP_PASSWORD}', MASTER_LOG_FILE='${LOGFILE}', MASTER_LOG_POS=${LOGPOS};" >> $OUTFILE
 elif [ "x$THIS_NODE" = "xNODE2" ] ; then
