@@ -26,21 +26,26 @@ my %mon2int = (	"Jan" => "1",
 $indate =~ m/(\w+)\ +(\d+) (\d+):(\d+):(\d+) (\d+)/gio;
 my ($strmon, $day, $hour, $min, $sec, $year) = ($1, $2, $3, $4, $5, $6);
 my $mon = $mon2int{$strmon};
-$date1 = Date_SecsSince1970($mon,$day,$year,$hour,$min,$sec);
+$date1 = Date_SecsSince1970GMT($mon,$day, $hour, $min, $sec, $year);
 
 # get now in secs
 my ($nsec,$nmin,$nhour,$nmday,$nmon,$nyear,$nwday,$nyday,$isdst) = localtime(time);
 $nyear+=1900;
 $nmon++;
 $date2 = Date_SecsSince1970GMT($nmon,$nmday,$nyear,$nhour,$nmin,$nsec);
+print "crldate: $date1\n";
+print "nowdate: $date2\n";
+my $diff =int($date1 - $date2);
+my $diff2=int($diff/60);
+my $diff3=int($diff/3600);
+print "diff(s): $diff\n";
+print "diff(m): $diff2\n";
+print "diff(h): $diff3\n";
 
-# diff
-my $diff=0;
 if ( $returnMinutes eq "--return-in-minutes"){
-    $diff=int(($date1 - $date2)/60);
+	print "$diff2\n";
 }else{
-    $diff=int(($date1 - $date2)/3600);
+	print "$diff3\n";
 }
 
 
-print "$diff\n";

@@ -22,13 +22,11 @@ PROGPATH=${OUTPATH}/${progname}-${rel}
 
 echo "svn status locally:"
 svn status
-echo "tag in svn ( svn cp https://syscheck.svn.sourceforge.net/svnroot/syscheck/trunk/syscheck https://syscheck.svn.sourceforge.net/svnroot/syscheck/tags/${progname}-${rel}) (Y/n)"
+echo "tag in svn (Y/n)"
 read tagsvn
-if [ "x$tagsvn" == "xy" -o "x$tagsvn" == "xY" -o "x$tagsvn" == "x" ] ; then
-        svn cp https://syscheck.svn.sourceforge.net/svnroot/syscheck/trunk/syscheck https://syscheck.svn.sourceforge.net/svnroot/syscheck/tags/${progname}-${rel}
+if [ "x$tagsvn" = "xy" -o "x$tagsvn" = "xY" -o "x$tagsvn" = "x" ] ; then
+        svn cp https://certificateservices.org/project/syscheck/svn/trunk/syscheck https://certificateservices.org/project/syscheck/svn/tags/${progname}-${rel}
 fi
-
-
 
 svn export . ${PROGPATH}
 perl -pi -e "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gi"  ${PROGPATH}/config/common.conf
