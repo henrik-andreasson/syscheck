@@ -26,26 +26,26 @@ SCRIPTID=18
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-SQLSELECT_ERRNO_1=${SCRIPTID}01
-SQLSELECT_ERRNO_2=${SCRIPTID}02
-SQLSELECT_ERRNO_3=${SCRIPTID}03
+ERRNO_1=${SCRIPTID}01
+ERRNO_2=${SCRIPTID}02
+ERRNO_3=${SCRIPTID}03
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $SQLSELECT_HELP"
-    echo "$SQLSELECT_ERRNO_1/$SQLSELECT_DESCR_1 - $SQLSELECT_HELP_1"
-    echo "$SQLSELECT_ERRNO_2/$SQLSELECT_DESCR_2 - $SQLSELECT_HELP_2"
+    echo "$0 $HELP"
+    echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+    echo "$ERRNO_2/$DESCR_2 - $HELP_2"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-
+status=`echo "SELECT * FROM $DB_TEST_TABLE LIMIT 1"|$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD 2>&1 > /dev/null`
 
 if [ $? -ne 0 ] ; then
-    printlogmess $ERROR $SQLSELECT_ERRNO_2 "$SQLSELECT_DESCR_2"  
+    printlogmess $ERROR $ERRNO_2 "$DESCR_2" 
     exit 3
 else
-    printlogmess $INFO $SQLSELECT_ERRNO_1 "$SQLSELECT_DESCR_1"
+    printlogmess $INFO $ERRNO_1 "$DESCR_1" 
 fi
 
