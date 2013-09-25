@@ -11,9 +11,9 @@ my $arg7 = shift @ARGV;
 my $arg8 = shift @ARGV;
 my $arg9 = shift @ARGV;
 
-open (PF, ">>/tmp/pf.tmp");
-print PF "str: $str args: $arg1 $arg2,$arg3,$arg4,$arg5,$arg6,$arg7,$arg8,$arg9,\n";
+#open (PF, ">>/tmp/pf.tmp");
+#print PF "str: $str args: $arg1 $arg2,$arg3,$arg4,$arg5,$arg6,$arg7,$arg8,$arg9,\n";
 my $outp = sprintf("$str", $arg1, $arg2,$arg3,$arg4,$arg5,$arg6,$arg7,$arg8,$arg9);
-print PF $outp . "\n";
+#print PF $outp . "\n";
 print $outp;
-close PF;
+#close PF;
