@@ -65,14 +65,13 @@ checkntp () {
 	#SYSTEMPEER=`ntpdc -c sysinfo |egrep "system peer:"|awk '{print $3}'`
 	NTPSERVER=`${NTPBIN} -p| egrep "^\*"|awk '{print $1}'`
 	#NTPSERVER=`${NTPBIN} -p| egrep "LOCL"|awk '{print $1}'`
-	if [ x = $NTPSERVER}x ]
-	then
+
+	if [ "x$NTPSERVER}x" = "x" ] ; then
 		printlogmess $ERROR $NTP_ERRNO_4 "$NTP_DESCR_4" "$NTPSERVER" "$ERRCODE"
 		exit
 	fi
 
-	if [ $NTPSERVER = 'LOCAL(0)' ]
-	then 
+        if [ "x$NTPSERVER" = "xLOCAL(0)" ] ; then
 		printlogmess $ERROR $NTP_ERRNO_3 "$NTP_DESCR_3" "$NTPSERVER" "$ERRCODE"
 	else		
 		printlogmess $INFO $NTP_ERRNO_1 "$NTP_DESCR_1" "$NTPSERVER"
