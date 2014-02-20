@@ -1,4 +1,4 @@
-DU_HELP="Script that checks for to much hard-disc usage, limit is:"
+DU_HELP="sc_01_diskusage.sh Script that checks for to much hard-disc usage, limit is:"
 DU_DESCR_1="Diskusage ok (%s is %s percent used: Limit is %s percent)"
 DU_HELP_1="No action is needed"
 DU_DESCR_2="Diskusage exceeded (%s is %s percent used: Limit is %s percent)"

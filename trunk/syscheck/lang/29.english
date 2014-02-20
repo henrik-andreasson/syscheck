@@ -1,4 +1,4 @@
-SIGNSRV_HELP="Script that connects to the signserver health check servlet to check the status of the signserver application. The health check servlet checks JVM memory, database connection and HSM connection."
+SIGNSRV_HELP="sc_29_signserver.sh Script that connects to the signserver health check servlet to check the status of the signserver application. The health check servlet checks JVM memory, database connection and HSM connection."
 
 SIGNSRV_DESCR_1="SIGNSERVER : %s"
 SIGNSRV_HELP_1="No action is needed"

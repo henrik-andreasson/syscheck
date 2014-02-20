@@ -1,4 +1,4 @@
-MEM_HELP="Script that checks that there is enough free memory. The limit is configured in the script, limit: "
+MEM_HELP="sc_03_memory-usage.sh Script that checks that there is enough free memory. The limit is configured in the script, limit: "
 MEM_DESCR_1="Memory limit exceded (Memory is %s KB used: Limit is %s KB)"
 MEM_HELP_1="system currently uses more than the configured limit, this can be a warning, but can also be a sign of a hard workning system without errors"
 MEM_DESCR_2="Memory limit ok (Memory is %s KB used: Limit is %s KB)"
