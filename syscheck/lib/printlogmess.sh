@@ -1,4 +1,5 @@
 #!/bin/sh
+#set -x
 
 # func to output debug when using -s or --screen
 printtoscreen() {
@@ -64,12 +65,3 @@ printlogmess(){
 
 }
 
-displayhelp() {
-
-    DATE=`date +"%Y%m%d %H:%M:%S"`
-    echo "$0 $ABOUT"
-    for (( i = 0 ;  i < ${#ERRNO[@]} ; i++ )) ; do
-	echo "${LEVEL[$i]}-${ERRNO[$i]}-${SYSTEMNAME} ${DATE} - ${DESCR[$i]}"
-	echo "   ${HELP[$i]}"
-    done
-}
