@@ -30,22 +30,34 @@ getconfig $SCRIPTID
 ERRNO_1=${SCRIPTID}01
 ERRNO_2=${SCRIPTID}02
 ERRNO_3=${SCRIPTID}03
+ERRNO_4=${SCRIPTID}04
+ERRNO_5=${SCRIPTID}05
 
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-	echo "$ECA_HELP"
-	echo "$ERRNO_1/$ECA_DESCR_1 - $ECA_HELP_1"
-	echo "$ERRNO_2/$ECA_DESCR_2 - $ECA_HELP_2"
-	echo "$ERRNO_3/$ECA_DESCR_3 - $ECA_HELP_3"
-	echo "${SCREEN_HELP}"
-	exit
+        echo "$ECA_HELP"
+        echo "$ERRNO_1/$ECA_DESCR_1 - $ECA_HELP_1"
+        echo "$ERRNO_2/$ECA_DESCR_2 - $ECA_HELP_2"
+        echo "$ERRNO_3/$ECA_DESCR_3 - $ECA_HELP_3"
+        echo "$ERRNO_4/$ECA_DESCR_4 - $ECA_HELP_4"
+        echo "$ERRNO_5/$ECA_DESCR_5 - $ECA_HELP_5"
+        echo "${SCREEN_HELP}"
+        exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
-fi 
+fi
 
 OUTPUT='/tmp/ejbcahealth.log'
 EJBCAHEALTHLOG='/tmp/ejbcahealth'
+URL="http://${EJBCA_HOSTNAME}:8080/ejbca/publicweb/healthcheck/ejbcahealth"
+
 cd /tmp
-wget http://${EJBCA_HOSTNAME}:8080/ejbca/publicweb/healthcheck/ejbcahealth -T ${EJBCA_TIMEOUT} -t 1 -o $OUTPUT 2>/dev/null
+if [ "x${CHECKTOOL}" = "xwget" ] ; then
+        ${CHECKTOOL} ${URL} -T ${EJBCA_TIMEOUT} -t 1 -o $OUTPUT 2>/dev/null
+elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
+        ${CHECKTOOL} ${URL} --connect-timeout ${EJBCA_TIMEOUT} --retry 1 -o $OUTPUT 2>/dev/null
+else
+        printlogmess $ERROR $ERRNO_5 "$ECA_DESCR_5"
+fi
 
 ERRORCATOUTPUT=`cat $OUTPUT | grep ERROR`
 ERRORECHOOUTPUT=`echo $ERRORCATOUTPUT`
@@ -61,7 +73,7 @@ else
    if [ "$ERRORECHOOUTPUT" = "" ]; then 
        printlogmess $ERROR $ERRNO_3 "$ECA_DESCR_3" 
      else
-       printlogmess $ERROR $ERRNO_2 "$ECA_DESCR_2"  "$ERRORECHOOUTPUT"
+       printlogmess $ERROR $ERRNO_4 "$ECA_DESCR_4" "$ERRORECHOOUTPUT"
    fi 
 fi
 
