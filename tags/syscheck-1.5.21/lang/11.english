@@ -1,0 +1,5 @@
+HA_HELP="Heartbeat checks"
+HA_DESCR_1="heartbeat is running"
+HA_HELP_1="No action is needed"
+HA_DESCR_2="heartbeat is NOT running"
+HA_HELP_2="heartbeat process needs to be (re)started, try: /etc/init.d/heartbeat restart"

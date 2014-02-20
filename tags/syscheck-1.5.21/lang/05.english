@@ -1,0 +1,5 @@
+PCSCD_HELP="check that pcscd is running"
+PCSCD_DESCR_1="pcscd is running"
+PCSCD_HELP_1="No action is needed"
+PCSCD_DESCR_2="pcscd is NOT running"
+PCSCD_HELP_1="pcscd needs to be restarted, if it dont start, run it with: /path/to/pcscd --foreground --debug"
