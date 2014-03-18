@@ -48,6 +48,7 @@ schelp () {
         echo "${SCRIPTID}11/$DESCR_11 - $HELP_11"
         echo "${SCRIPTID}12/$DESCR_12 - $HELP_12"
         echo "${SCRIPTID}13/$DESCR_13 - $HELP_13"
+        echo "${SCRIPTID}14/$DESCR_14 - $HELP_14"
         echo "${SCREEN_HELP}"
         exit
 }
@@ -64,15 +65,15 @@ elif [ "x$1" = "x-q" -o  "x$1" = "x--quiet" -o \
     "x$2" = "x-q" -o  "x$2" = "x--quiet"   ] ; then
         PRINTTOSCREEN=0
 fi
-
+DATE=`date +%Y%m%d-%H%M`
 DATAFILE="$SYSCHECK_HOME/var/${SCRIPTID}.out"
 OUTFILE="$SYSCHECK_HOME/var/${SCRIPTID}.sql"
+LOGFILE="$SYSCHECK_HOME/var/${DATE}_${SCRIPTID}.log"
 ERRFILE="$SYSCHECK_HOME/var/${SCRIPTID}.err"
 ###############
 # Error rutin
 Sub_Error(){
-if [ $ERR != 0 ]
-then
+if [ $ERR != 0 ] ; then
 ###echo $ERR
 echo "error in subrutin $1"
 ##cat ${ERRFILE}.$1
@@ -91,21 +92,28 @@ LEVEL=${LEVEL_11}
 DESCR=${DESCR_11}
 Sub_Error 11
 ###############
+# Check value on enviroment, cant  be null
+if [ -z  ${RUN_DELETE} ] ; then
+echo "Check value on RUN_DELETE in ../config/817.conf"
+exit
+fi
+###############
 # create backup before starting job
-if [ ${PRINTTOSCREEN} = 1 ]
-then
+if [ ${PRINTTOSCREEN} = 1 ] ; then
   echo "$SYSCHECK_HOME/related-enabled/904_make_mysql_db_backup.sh -y -b "
 fi
-$SYSCHECK_HOME/related-enabled/904_make_mysql_db_backup.sh -y -b 2>${ERRFILE}.12
+echo "`date`:Start ">>${LOGFILE} 
+echo "`date`:Create backup before clean crldata">>${LOGFILE} 
+$SYSCHECK_HOME/related-enabled/904_make_mysql_db_backup.sh -w -b 2>${ERRFILE}.12
 ERR=$?
 LEVEL=${LEVEL_12}
 DESCR=${DESCR_12}
 Sub_Error 12
 
+echo "`date`:End backup ">>${LOGFILE} 
 ##############
 # Create database for old crldatarecords
-if [ ${PRINTTOSCREEN} = 1 ]
-then
+if [ ${PRINTTOSCREEN} = 1 ] ; then
 echo "CREATE DATABASE IF NOT EXISTS crldata;"
 echo "USE CRLDATA;"
 echo "CREATE TABLE IF NOT EXISTS CRLDataLog LIKE ejbca.CRLData;" 
@@ -122,8 +130,8 @@ Sub_Error 1
 
 ##############
 # Copy table before clean for safty
-if [ ${PRINTTOSCREEN} = 1 ]
-then
+echo "`date`:Copy all rows from CRLData to CRLDataTmp table ">>${LOGFILE} 
+if [ ${PRINTTOSCREEN} = 1 ] ; then
 echo "CREATE TABLE IF NOT EXISTS CRLDataTmp LIKE CRLData;"
 echo "INSERT INTO CRLDataTmp SELECT * FROM CRLData;"
 echo ""
@@ -137,11 +145,11 @@ LEVEL=${LEVEL_2}
 DESCR=${DESCR_2}
 Sub_Error 2
 
+echo "`date`:DONE ">>${LOGFILE} 
 ##############
 # Get all issuerDN, need to now for deleteing for each issuerDN
 
-if [ ${PRINTTOSCREEN} = 1 ]
-then
+if [ ${PRINTTOSCREEN} = 1 ] ; then
 echo "select distinct issuerDN from CRLData ;"
 echo ""
 fi
@@ -153,63 +161,85 @@ LEVEL=${LEVEL_3}
 DESCR=${DESCR_3}
 Sub_Error 3
 
-############t#
+#############
+# Count total number of row:select count(*) from ejbca.CRLData;
+TOTAL_ROWS=`echo "select count(*) from ejbca.CRLData;"| $MYSQL_BIN $DB_NAME -h $HOSTNAME_NODE1 -u ${DB_USER} --password=${DB_PASSWORD} |grep -v count `
+TOTAL_SIZE=`echo "SELECT round(((data_length + index_length) / 1024 / 1024),2) \"Size in MB\" FROM information_schema.tables WHERE table_schema = DATABASE() and TABLE_NAME ='CRLData' order by data_length;"| $MYSQL_BIN $DB_NAME -h $HOSTNAME_NODE1 -u ${DB_USER} --password=${DB_PASSWORD}|egrep -v "Size"`
+echo "`date`:Totalnumber of row in ejbca.CRLData ;${TOTAL_ROWS} and size in Mb;${TOTAL_SIZE}">>${LOGFILE}
+#############
 # Get number of row to delete to desending from each issuerDN
 cat ${DATAFILE}|while read ISSUERDN
 do
-if [ ${PRINTTOSCREEN} = 1 ]
-then
-######echo "select cRLNumber from CRLData order by cRLNumber where issuerDN='${ISSUERDN}' and desc Limit ${ROW_SAVE};"
-echo "select cRLNumber from CRLData where issuerDN='${ISSUERDN}' order by cRLNumber desc Limit ${ROW_SAVE};"
-echo ""
-fi
-echo "USE $DB_NAME;" > ${OUTFILE}.4
-echo "select cRLNumber from CRLData where issuerDN='${ISSUERDN}' order by cRLNumber desc Limit ${ROW_SAVE};" >> ${OUTFILE}.4
-ROWNUM=`$MYSQL_BIN $DB_NAME -u ${DB_USER} --password=$DB_PASSWORD < ${OUTFILE}.4 |tail -1`  
-ERR=$?
-LEVEL=${LEVEL_4}
-DESCR=${DESCR_4}
-Sub_Error 4
+   ROWS=`echo "SELECT count(*) from CRLData where issuerDN='${ISSUERDN}';" | $MYSQL_BIN $DB_NAME -h $HOSTNAME_NODE1 -u ${DB_USER} --password=${DB_PASSWORD} |grep -v count `
+   if [ ${PRINTTOSCREEN} = 1 ] ; then
+      ######echo "select cRLNumber from CRLData order by cRLNumber where issuerDN='${ISSUERDN}' and desc Limit ${ROW_SAVE};"
+      echo "select cRLNumber from CRLData where issuerDN='${ISSUERDN}' order by cRLNumber desc Limit ${ROW_SAVE};"
+      echo ""
+   fi
+   echo "USE $DB_NAME;" > ${OUTFILE}.4
+   echo "select cRLNumber from CRLData where issuerDN='${ISSUERDN}' order by cRLNumber desc Limit ${ROW_SAVE};" >> ${OUTFILE}.4
+   ROWNUM=`$MYSQL_BIN $DB_NAME -u ${DB_USER} --password=$DB_PASSWORD < ${OUTFILE}.4 |tail -1`  
+   ERR=$?
+   LEVEL=${LEVEL_4}
+   DESCR=${DESCR_4}
+   Sub_Error 4
+   echo "`date`:Remove rows from ${ISSUERDN} current rows:${ROWS} delete until Crlnumber:${ROWNUM}">>${LOGFILE}
+   echo "`date`:Current rows;${ROWS} :Delete until Crlnumber:${ROWNUM} where issuer is:${ISSUERDN}">>${LOGFILE} 
 
-##############
+############o #
 # Copy row to crldata db
-if [ ${PRINTTOSCREEN} = 1 ]
-then
-echo "INSERT INTO crldata.CRLDataLog select * from CRLData where issuerDN=${ISSUERDN} and cRLNumber < ${ROWNUM};"
-echo ""
-fi
-echo "USE $DB_NAME;" > ${OUTFILE}.5
-echo "INSERT INTO crldata.CRLDataLog select * from CRLData where issuerDN='${ISSUERDN}' and cRLNumber < ${ROWNUM};" >> ${OUTFILE}.5
-$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < ${OUTFILE}.5
-##$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < ${OUTFILE}.5 >${ERRFILE}.5
-ERR=$?
-echo $ERR
-LEVEL=${LEVEL_5}
-DESCR=${DESCR_5}
-Sub_Error 5
+   if [ ${PRINTTOSCREEN} = 1 ] ; then
+      echo "INSERT INTO crldata.CRLDataLog select * from ejbca.CRLData where issuerDN=${ISSUERDN} and cRLNumber < ${ROWNUM} AND NOT EXISTS (SELECT * FROM crldata.CRLDataLog WHERE issuerDN=${ISSUERDN} and cRLNumber < ${ROWNUM});"
+      ##echo "INSERT INTO crldata.CRLDataLog select * from CRLData where issuerDN=${ISSUERDN} and cRLNumber < ${ROWNUM};"
+      echo ""
+   fi
+   if [ ${RUN_DELETE} = "Yes" ] ; then 
+      echo "USE $DB_NAME;" > ${OUTFILE}.5
+      echo "INSERT INTO crldata.CRLDataLog select * from ejbca.CRLData where issuerDN='${ISSUERDN}' and cRLNumber < ${ROWNUM} AND NOT EXISTS (SELECT * FROM crldata.CRLDataLog WHERE issuerDN='${ISSUERDN}' and cRLNumber < ${ROWNUM});" >> ${OUTFILE}.5
+      #echo "INSERT INTO crldata.CRLDataLog select * from CRLData where issuerDN='${ISSUERDN}' and cRLNumber < ${ROWNUM};" >> ${OUTFILE}.5
+      cat  ${OUTFILE}.5 >> ${LOGFILE}
+      $MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < ${OUTFILE}.5
+      ##$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < ${OUTFILE}.5 >${ERRFILE}.5
+      ERR=$?
+   else
+      echo "INSERT INTO crldata.CRLDataLog select * from ejbca.CRLData where issuerDN=${ISSUERDN} and cRLNumber < ${ROWNUM} AND NOT EXISTS (SELECT * FROM crldata.CRLDataLog WHERE issuerDN=${ISSUERDN} and cRLNumber < ${ROWNUM});" >> ${LOGFILE}
+      echo "INSERT INTO crldata.CRLDataLog select * from CRLData where issuerDN='${ISSUERDN}' and cRLNumber < ${ROWNUM};" >> ${LOGFILE}
+      ERR=$?
+   fi
+   LEVEL=${LEVEL_5} 
+   DESCR=${DESCR_5}
+   Sub_Error 5
 
 ##############
 # Delete row
-if [ ${PRINTTOSCREEN} = 1 ]
-then
-echo "delete from CRLData where  issuerDN=${ISSUERDN} and cRLNumber < ${ROWNUM};"
-echo ""
-fi
-echo "USE $DB_NAME;" > ${OUTFILE}.6
-echo "delete from CRLData where issuerDN='${ISSUERDN}' and cRLNumber < ${ROWNUM};" >> ${OUTFILE}.6
-$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < ${OUTFILE}.6  >${ERRFILE}.6
-ERR=$?
-echo $ERR
-LEVEL=${LEVEL_6}
-DESCR=${DESCR_6}
-Sub_Error 6
+   if [ ${PRINTTOSCREEN} = 1 ] ; then
+      echo "delete from CRLData where  issuerDN=${ISSUERDN} and cRLNumber < ${ROWNUM};"
+      echo ""
+   fi
+   if [ ${RUN_DELETE} = "Yes" ] ; then 
+      echo "USE $DB_NAME;" > ${OUTFILE}.6
+      echo "delete from CRLData where issuerDN='${ISSUERDN}' and cRLNumber < ${ROWNUM};" >> ${OUTFILE}.6 
+      cat  ${OUTFILE}.6 >>${LOGFILE}
+      $MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < ${OUTFILE}.6  >${ERRFILE}.6
+      ERR=$?
+   else
+      echo "delete from CRLData where issuerDN='${ISSUERDN}' and cRLNumber < ${ROWNUM};" >> ${LOGFILE}
+      ERR=$?
+   fi
+   LEVEL=${LEVEL_6}
+   DESCR=${DESCR_6}
+   Sub_Error 6
+   ROWS_AFTER=`echo "SELECT count(*) from CRLData where issuerDN='${ISSUERDN}';" | $MYSQL_BIN $DB_NAME -h $HOSTNAME_NODE1 -u ${DB_USER} --password=${DB_PASSWORD} |grep -v count `
+   echo "`date`:New value rows;${ROWS_AFTER}  where issuer is:${ISSUERDN}" >>${LOGFILE}
+   echo "`date`:Remove rows from ${ISSUERDN} done">>${LOGFILE}
+   echo "****************************************">>${LOGFILE}
+   echo "">>${LOGFILE}
 done
 ##############
 # Delet temp table
-if [ ${PRINTTOSCREEN} = 1 ]
-then
-echo "DROP TABLE IF EXISTS CRLDataTmp;"
-echo ""
+if [ ${PRINTTOSCREEN} = 1 ] ; then
+   echo "DROP TABLE IF EXISTS CRLDataTmp;"
+   echo ""
 fi
 echo "USE $DB_NAME;" > ${OUTFILE}.7
 echo "DROP TABLE IF EXISTS CRLDataTmp;">>${OUTFILE}.7
@@ -218,24 +248,39 @@ ERR=$?
 LEVEL=${LEVEL_7}
 DESCR=${DESCR_7}
 Sub_Error 7
-
+#######################
+# Count row after job
+TOTAL_ROWS_AFTER=`echo "select count(*) from ejbca.CRLData;"| $MYSQL_BIN $DB_NAME -h $HOSTNAME_NODE1 -u ${DB_USER} --password=${DB_PASSWORD} |grep -v count `
+TOTAL_SIZE_AFTER=`echo "SELECT round(((data_length + index_length) / 1024 / 1024),2) \"Size in MB\" FROM information_schema.tables WHERE table_schema = DATABASE() and TABLE_NAME ='CRLData' order by data_length;"| $MYSQL_BIN $DB_NAME -h $HOSTNAME_NODE1 -u ${DB_USER} --password=${DB_PASSWORD}|egrep -v "Size"`
+let REMOVE_ROWS=${TOTAL_ROWS}-${TOTAL_ROWS_AFTER}
+echo "`date`:Totalnumber of row removed: ${REMOVE_ROWS} remaing rows in ejbca.CRLData ;${TOTAL_ROWS_AFTER} and size after ${TOTAL_SIZE_AFTER}">>${LOGFILE}
 ##############
 # backup of crldata db
-
+echo "Run backup of crldatadb"
 MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPDIR}/${SUBDIR_YEARLY}/${MYSQLBACKUPFILE}"
-dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" crldata 2>&1 > ${MYSQLBACKUPFULLFILENAME} )
+##dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" crldata 2>&1 > ${MYSQLBACKUPFULLFILENAME} )
 ERR=$?
 LEVEL=${LEVEL_8}
 DESCR=${DESCR_8}
 Sub_Error 8
-gzip $MYSQLBACKUPFULLFILENAME
+##gzip $MYSQLBACKUPFULLFILENAME
 ERR=$?
 LEVEL=${LEVEL_9}
 DESCR=${DESCR_9}
 Sub_Error 9
 
-
+##############
+# backup after crlcleaning
+echo "`date`:Create backup after clean crldata">>${LOGFILE} 
+$SYSCHECK_HOME/related-enabled/904_make_mysql_db_backup.sh -w -b 2>${ERRFILE}.12
+ERR=$?
+LEVEL=${LEVEL_13}
+DESCR=${DESCR_13}
+Sub_Error 13
+echo "`date`:Backup end">>${LOGFILE} 
+echo "`date`:`ls -lhtr /backup/node1/mysql/weekly/|tail -2`">>${LOGFILE}
 ##############
 # If we got here, the job is finnish
 
-printlogmess $INFO ${SCRIPTID}13 "$DESCR_13 " 
+printlogmess $INFO ${SCRIPTID}14 "$DESCR_14 " 
+echo "`date`:$0 end">>${LOGFILE} 
