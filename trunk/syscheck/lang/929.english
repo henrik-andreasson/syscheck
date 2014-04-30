@@ -1,21 +1,8 @@
-SYNC_HELP="Check if DB in sync"
+HELP="Filter only some messages from a file"
 
- 
+DESCR_1="Filter ok"
+HELP_1="no action needed"
 
-SYNC_DESCR_1="DB in sync"
-
-SYNC_HELP_1="and updating databases"
-
- 
-
-SYNC_DESCR_2="DB not in sync, date of CRLData diff betwin nodes:"
-
-SYNC_HELP_2="check error.log, probebly needing manual sync, se manual"
-
- 
-
-SYNC_DESCR_3="Can not connect to mysqldatabas::"
-
-SYNC_HELP_3="Check if mysql is startade and user has a valid account."
-
+DESCR_2="Filter failed"
+HELP_2="try the commands manually"
 
