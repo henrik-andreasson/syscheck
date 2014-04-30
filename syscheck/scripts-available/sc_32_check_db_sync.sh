@@ -24,7 +24,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
-SCRIPTID=301
+SCRIPTID=32
 
 SYNC_ERRNO_1=${SCRIPTID}01
 SYNC_ERRNO_2=${SCRIPTID}02
