@@ -1,7 +1,8 @@
-DSM_HELP="Check if backup went well "
+HELP="Copy a file over to a central hub (might be used to expose some or all of syscheck results)"
 
-DSM_DESCR_1="Last TSM backup OK "
-DSM_HELP_1="Backup ok"
+DESCR_1="Transfer ok (file:%s result:%s)"
+HELP_1="no action needed"
 
-DSM_DESCR_2="Last TSM backup fail, last god backup :"
-DSM_HELP_2="check error.log, probebly needing manual check, se manual"
+DESCR_2="Could not transfer file:%s result:%s"
+HELP_2="try the transfer commands manually"
+
