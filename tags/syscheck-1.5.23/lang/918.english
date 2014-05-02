@@ -1,0 +1,7 @@
+SCALIVE_SRV_HELP="Passive server monitoring, all server that should be monitored should be listed in 918.conf and run sc_19.sh every x:th minute, example: if you run syscheck every 10:th minute set warn to 15(missed one log and some margin) and error to 25(missed one log and some margin)"
+SCALIVE_SRV_DESCR_1="machine(%s) has called in as it's supposed to (lastcall: %s)."
+SCALIVE_SRV_HELP_1="no action is needed"
+SCALIVE_SRV_DESCR_2="machine(%s) has not called in within error limit (lastcall: %s)"
+SCALIVE_SRV_HELP_2="two missed log messages, this needs attention"
+SCALIVE_SRV_DESCR_3="machine(%s) has not called in within warn limit (lastcall: %s)"
+SCALIVE_SRV_HELP_3="one missed log message, may be a glitch but should be checked"

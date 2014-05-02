@@ -1,0 +1,4 @@
+REMCMD_HELP="Takes a certificate and runs a configurable command at a remote host"
+REMCMD_DESCR_1="Remote command ran successfully (%s)"
+REMCMD_DESCR_2="Remote command failed (%s)"
+REMCMD_DESCR_3="File input error, failed (%s)"
