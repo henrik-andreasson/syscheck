@@ -1,51 +1,43 @@
 #!/usr/bin/perl
 
 use Date::Manip;
+use Date::Manip::Date;
 
-my $indate = $ARGV[0];
-my $returnMinutes = $ARGV[1];
+my $stringdate1 = $ARGV[0];
+my $stringdate2 = $ARGV[1];
+my $verbose     = $ARGV[2];
 
-
-$now = localtime;
-
-my %mon2int = (	"Jan" => "1",
-		"Feb" => "2",
-		"Mar" => "3",
-		"Apr" => "4",
-		"May" => "5",
-		"Jun" => "6",
-		"Jul" => "7",
-		"Aug" => "8",
-		"Sep" => "9",
-		"Oct" => "10",
-		"Nov" => "11",
-		"Dec" => "12");
-		
-
-# input crl date on the format: May 17 11:23:01 2006 GMT
-$indate =~ m/(\w+)\ +(\d+) (\d+):(\d+):(\d+) (\d+)/gio;
-my ($strmon, $day, $hour, $min, $sec, $year) = ($1, $2, $3, $4, $5, $6);
-my $mon = $mon2int{$strmon};
-$date1 = Date_SecsSince1970GMT($mon,$day, $hour, $min, $sec, $year);
-
-# get now in secs
-my ($nsec,$nmin,$nhour,$nmday,$nmon,$nyear,$nwday,$nyday,$isdst) = localtime(time);
-$nyear+=1900;
-$nmon++;
-$date2 = Date_SecsSince1970GMT($nmon,$nmday,$nyear,$nhour,$nmin,$nsec);
-print "crldate: $date1\n";
-print "nowdate: $date2\n";
-my $diff =int($date1 - $date2);
-my $diff2=int($diff/60);
-my $diff3=int($diff/3600);
-print "diff(s): $diff\n";
-print "diff(m): $diff2\n";
-print "diff(h): $diff3\n";
-
-if ( $returnMinutes eq "--return-in-minutes"){
-	print "$diff2\n";
-}else{
-	print "$diff3\n";
+printf "Input1: $stringdate1\n" if $verbose;
+my $date1  = new Date::Manip::Date;
+my $err1   = $date1->parse($stringdate1);
+if ( $err1 ne 0 ){
+	printf "parse error of crl timestamp";
+	exit;
 }
 
+printf "Input2: $stringdate2\n" if $verbose;
+my $date2  = new Date::Manip::Date;
+my $err2   = $date2->parse($stringdate2);
+if ( $err2 ne 0 ){
+        printf "parse error of now timestamp";
+        exit;
+}
 
+print "crl date in secs: " . $date1->printf('%s') . "\n" if $verbose;
+print "crl date parsed : " . $date1->printf("Now it is %Y-%m-%d %H:%M:%S %Z") . "\n" if $verbose;
+
+print "now date in secs: " . $date2->printf('%s') . "\n" if $verbose;
+print "now date parsed : " . $date2->printf("Now it is %Y-%m-%d %H:%M:%S %Z") . "\n" if $verbose;
+
+my $delta = $date2->calc($date1);
+printf $delta->printf("Delta: In %hv hours, %mv minutes, %sv seconds\n") if $verbose;
+
+my $deltasec = $delta->printf('%sdms');
+my $deltamin = int($deltasec/60);
+my $deltahour = int($deltasec/3600);
+
+print "delta sec:  $deltasec\n" if $verbose;
+print "delta min:  $deltamin\n" if $verbose;
+print "delta hrs:  $deltahour\n" if $verbose;
+
+print "$deltamin\n";
