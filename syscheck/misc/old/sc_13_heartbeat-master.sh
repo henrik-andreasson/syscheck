@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -49,9 +49,9 @@ fi
 #Check that no chain have policy accept.
 if grep -q "$HOSTNAME_VIRTUAL" $HAMAS_IP_ADDR_LIST
 then
-      printlogmess $INFO $HAMAS_ERRNO_1 "$HAMAS_DESCR_1"
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $HAMAS_ERRNO_1 "$HAMAS_DESCR_1"
 else
-      printlogmess $ERROR $HAMAS_ERRNO_2 "$HAMAS_DESCR_2"
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $HAMAS_ERRNO_2 "$HAMAS_DESCR_2"
 fi
 
 rm $HAMAS_IP_ADDR_LIST
