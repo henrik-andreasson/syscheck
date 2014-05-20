@@ -47,9 +47,9 @@ fi
 #Check that the primary node is active 
 if grep -q "Node1" $ACTIVENODE_FILE 
 then
-      printlogmess $INFO $CLU_ERRNO_1 "$CLU_DESCR_1"  
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $CLU_ERRNO_1 "$CLU_DESCR_1"  
 else
-      printlogmess $ERROR $CLU_ERRNO_2 "$CLU_DESCR_2"
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $CLU_ERRNO_2 "$CLU_DESCR_2"
 fi
 
 # TODO HARDCODED PATHs
@@ -58,9 +58,9 @@ diff -s /tmp/node1EjbcaDS.xml /usr/local/jboss/server/default/deploy/ejbca-ds.xm
 
 if grep -q "are identical" /tmp/diffres.txt
 then
-      printlogmess $INFO $CLU_ERRNO_3 "$CLU_DESCR_3"
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $CLU_ERRNO_3 "$CLU_DESCR_3"
 else
-      printlogmess $ERROR $CLU_ERRNO_4 "$CLU_DESCR_4"
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $CLU_ERRNO_4 "$CLU_DESCR_4"
 fi
 
 rm /tmp/node1EjbcaDS.xml
