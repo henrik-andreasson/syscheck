@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -43,9 +43,9 @@ fi
 # TODO check name of heartbeat
 pid=`$SYSCHECK_HOME/lib/proc_checker.sh $pidfile /usr/sbin/heartbeat` 
 if [ "x$pid" = "x" ] ; then
-    printlogmess $ERROR $HA_ERRNO_2 "$HA_DESCR_2"  
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $HA_ERRNO_2 "$HA_DESCR_2"  
     exit 3
 else
-    printlogmess $INFO $HA_ERRNO_1 "$HA_DESCR_1"
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $HA_ERRNO_1 "$HA_DESCR_1"
 fi
 
