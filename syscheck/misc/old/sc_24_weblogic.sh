@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -72,10 +72,10 @@ fi
 
 
 if [ $NUMBER_OF_NOT_RUNNING_PROCS -gt 0 ] ; then
-        printlogmess $ERROR $WEBLOGIC_ERRNO_3 "$WEBLOGIC_DESCR_2" "$NAMES_OF_NOT_RUNNING_PROCS"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $WEBLOGIC_ERRNO_3 "$WEBLOGIC_DESCR_2" "$NAMES_OF_NOT_RUNNING_PROCS"
 	exit 2
 else
-        printlogmess $INFO $WEBLOGIC_ERRNO_1 "$WEBLOGIC_DESCR_1"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $WEBLOGIC_ERRNO_1 "$WEBLOGIC_DESCR_1"
 	exit 0
 fi
 
