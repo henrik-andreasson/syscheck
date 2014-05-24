@@ -25,21 +25,25 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 ## Local definitions ##
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=09
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-FWALL_ERRNO_1=${SCRIPTID}01
-FWALL_ERRNO_2=${SCRIPTID}02
-FWALL_ERRNO_3=${SCRIPTID}03
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $FWALL_HELP"
-    echo "$FWALL_ERRNO_1/$FWALL_DESCR_1 - $FWALL_HELP_1"
-    echo "$FWALL_ERRNO_2/$FWALL_DESCR_2 - $FWALL_HELP_2"
-    echo "$FWALL_ERRNO_3/$FWALL_DESCR_3 - $FWALL_HELP_3"
+    echo "$0 $HELP"
+    echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+    echo "$ERRNO_2/$DESCR_2 - $HELP_2"
+    echo "$ERRNO_3/$DESCR_3 - $HELP_3"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
@@ -47,25 +51,32 @@ fi
 
 IPTABLES_TMP_FILE="/tmp/iptables.out"
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 $IPTABLES_BIN -L -n> $IPTABLES_TMP_FILE
-
+if [ $? -ne 0 ] ; then
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1"
+	exit
+fi
 FIREWALLFAILED="0"
 
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+# rule that must exist
 rule1check=`grep "$IPTABLES_RULE1" $IPTABLES_TMP_FILE`
 if [ "x$rule1check" = "x" ] ; then
-      FIREWALLFAILED=1
+	FIREWALLFAILED=1
 fi
 
-# 
+# rule that must not exist 
 rule2check=`grep "$IPTABLES_RULE2" $IPTABLES_TMP_FILE`
 if [ "x$rule2check" != "x" ] ; then
-      FIREWALLFAILED=1
+	FIREWALLFAILED=1
 fi
 
-if [ "$FIREWALLFAILED" = 1 ] ; then 
-	printlogmess $ERROR $FWALL_ERRNO_1 "$FWALL_DESCR_1"
+if [ $FIREWALLFAILED -ne 0 ] ; then
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 else
-	printlogmess $INFO $FWALL_ERRNO_3 "$FWALL_DESCR_3"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DESCR_3"
 fi
 
 rm $IPTABLES_TMP_FILE

@@ -5,4 +5,6 @@ DESCR_2="Temp sensor %s is NOT OK %s"
 HELP_2="Run manual test with hpasmcli"
 DESCR_3="FAN sensor %s is NOT OK %s"
 HELP_3="Run manual test with hpasmcli"
+DESCR_4="Tool not found: %s "
+HELP_4="Install or set path"
 

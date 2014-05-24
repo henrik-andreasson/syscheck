@@ -23,23 +23,27 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=02
+SCRIPTINDEX=01
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1=${SCRIPTID}01
-ERRNO_2=${SCRIPTID}02
-ERRNO_3=${SCRIPTID}03
-ERRNO_4=${SCRIPTID}04
-ERRNO_5=${SCRIPTID}05
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
+ERRNO_4=04
+ERRNO_5=05
+
+URL="http://${EJBCA_HOSTNAME}:8080/ejbca/publicweb/healthcheck/ejbcahealth"
+
 
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
         echo "$ECA_HELP"
-        echo "$ERRNO_1/$ECA_DESCR_1 - $ECA_HELP_1"
-        echo "$ERRNO_2/$ECA_DESCR_2 - $ECA_HELP_2"
-        echo "$ERRNO_3/$ECA_DESCR_3 - $ECA_HELP_3"
-        echo "$ERRNO_4/$ECA_DESCR_4 - $ECA_HELP_4"
-        echo "$ERRNO_5/$ECA_DESCR_5 - $ECA_HELP_5"
+        echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+        echo "$ERRNO_2/$DESCR_2 - $HELP_2"
+        echo "$ERRNO_3/$DESCR_3 - $HELP_3"
+        echo "$ERRNO_4/$DESCR_4 - $HELP_4"
+        echo "$ERRNO_5/$DESCR_5 - $HELP_5"
         echo "${SCREEN_HELP}"
         exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
@@ -47,38 +51,26 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
 fi
 
 OUTPUT='/tmp/ejbcahealth.log'
-EJBCAHEALTHLOG='/tmp/ejbcahealth'
-URL="http://${EJBCA_HOSTNAME}:8080/ejbca/publicweb/healthcheck/ejbcahealth"
 
 cd /tmp
 if [ "x${CHECKTOOL}" = "xwget" ] ; then
-        ${CHECKTOOL} ${URL} -T ${EJBCA_TIMEOUT} -t 1 -o $OUTPUT 2>/dev/null
+        ${CHECKTOOL} ${URL} -T ${EJBCA_TIMEOUT} -t 1 -O $OUTPUT 2>/dev/null
 elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
-        ${CHECKTOOL} ${URL} --connect-timeout ${EJBCA_TIMEOUT} --retry 1 -o $OUTPUT 2>/dev/null
+        ${CHECKTOOL} ${URL} --connect-timeout ${EJBCA_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
 else
-        printlogmess $ERROR $ERRNO_5 "$ECA_DESCR_5"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
 fi
 
-ERRORCATOUTPUT=`cat $OUTPUT | grep ERROR`
-ERRORECHOOUTPUT=`echo $ERRORCATOUTPUT`
+FULLOUTPUT=$(cat $OUTPUT)
+OKOUTPUT=$(cat $OUTPUT | grep ALLOK)
+ERROROUTPUT=$(cat $OUTPUT | grep ERROR)
 
-if [ -f $EJBCAHEALTHLOG ]; then
-        OKCATOUTPUT=`cat $EJBCAHEALTHLOG | grep ALLOK`
-        OKECHOOUTPUT=`echo $OKCATOUTPUT`
-fi
-
-if [ "$OKECHOOUTPUT" = ALLOK ]; then
-       printlogmess $INFO $ERRNO_1 "$ECA_DESCR_1" "$OKECHOOUTPUT"
-else
-   if [ "$ERRORECHOOUTPUT" = "" ]; then 
-       printlogmess $ERROR $ERRNO_3 "$ECA_DESCR_3" 
-     else
-       printlogmess $ERROR $ERRNO_4 "$ECA_DESCR_4" "$ERRORECHOOUTPUT"
-   fi 
-fi
-
-if [ -f $EJBCAHEALTHLOG ]; then
-        rm $EJBCAHEALTHLOG
+if [ "x$OKOUTPUT" != "x" ]; then
+       printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "$FULLOUTPUT"
+elif [ "x$ERROROUTPUT" != "x" ]; then 
+       printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FULLOUTPUT"
+elif [ "x$FULLOUTPUT" = "x" ] ; then
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" $FULLOUTPUT
 fi
 
 rm $OUTPUT

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Scripts that creates replication privilegdes for the slave db to the master.
 
@@ -67,14 +67,14 @@ fi
 if [ -x $SYSCHECK_HOME/related-enabled/904_make_mysql_db_backup.sh ] ; then
 	$SYSCHECK_HOME/related-enabled/904_make_mysql_db_backup.sh -s
 else
-	printlogmess $LEVEL_3 $ERRNO_3 "$DESCR_3"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_3 $ERRNO_3 "$DESCR_3"
 	exit
 fi
 	
 $MYSQLADMIN_BIN drop $DB_NAME -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
-	printlogmess $LEVEL_1 $ERRNO_1 "$DESCR_1"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
 else
-	printlogmess $LEVEL_2 $ERRNO_2 "$DESCR_2" "$?"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2" "$?"
 fi
 

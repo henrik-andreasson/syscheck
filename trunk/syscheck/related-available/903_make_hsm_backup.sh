@@ -52,12 +52,12 @@ tar -c --directory $HSMDIR -f $FULLFILENAME local
 if [ $? = 0 ] ; then
     gzip $FULLFILENAME
     if [ $? = 0 ] ; then
-	printlogmess $INFO $ERRNO_1 "$DESCR_1" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
     else
-	printlogmess $ERROR $ERRNO_2 "$DESCR_2"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
     fi  
 else
-    printlogmess $ERROR $ERRNO_2 "$DESCR_2"
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 fi 
 
 

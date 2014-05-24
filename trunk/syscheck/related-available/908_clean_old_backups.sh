@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -60,7 +60,7 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
     printtoscreen "deleteing ${FILENAME[$i]} ... "  
 
     if [ "x${DATESTR[$i]}" = "x" ] ; then
-    	printlogmess $ERROR $ERRNO_4 "$CLEANBAK_DESCR_4"
+    	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$CLEANBAK_DESCR_4"
 	exit
     fi
 
@@ -77,7 +77,7 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
 
     else
 
-	printlogmess $WARN $ERRNO_3 "$CLEANBAK_DESCR_3" "${FILENAME[$i]}"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_3 "$CLEANBAK_DESCR_3" "${FILENAME[$i]}"
 	printtoscreen "file ${FILENAME[$i]} did not exist before deleting "  
 	    
     fi
@@ -85,7 +85,7 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
 done
 
 if [ "x$ERR" = "x" ]  ; then
-    printlogmess $INFO $ERRNO_1 "$CLEANBAK_DESCR_1"
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$CLEANBAK_DESCR_1"
 else
-    printlogmess $WARN $ERRNO_2 "$CLEANBAK_DESCR_2" "$ERR"
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_2 "$CLEANBAK_DESCR_2" "$ERR"
 fi

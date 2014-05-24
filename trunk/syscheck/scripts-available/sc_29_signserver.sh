@@ -24,18 +24,23 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=29
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
+
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1=${SCRIPTID}01
-ERRNO_2=${SCRIPTID}02
-ERRNO_3=${SCRIPTID}03
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
 
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-	echo "$SIGNSRV_HELP"
-	echo "$ERRNO_1/$SIGNSRV_DESCR_1 - $SIGNSRV_HELP_1"
-	echo "$ERRNO_2/$SIGNSRV_DESCR_2 - $SIGNSRV_HELP_2"
-	echo "$ERRNO_3/$SIGNSRV_DESCR_3 - $SIGNSRV_HELP_3"
+	echo "$HELP"
+	echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+	echo "$ERRNO_2/$DESCR_2 - $HELP_2"
+	echo "$ERRNO_3/$DESCR_3 - $HELP_3"
 	echo "${SCREEN_HELP}"
 	exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
@@ -43,30 +48,28 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
 fi 
 
 OUTPUT='/tmp/signserverhealth.log'
-SIGNSERVERHEALTHLOG='/tmp/signserverhealth'
+URL="http://$SIGNSERVER_HOSTNAME:8080/signserver/healthcheck/signserverhealth"
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 cd /tmp
-wget http://$SIGNSERVER_HOSTNAME:8080/signserver/healthcheck/signserverhealth -T 10 -t 1 -o $OUTPUT 2>/dev/null
-
-ERRORCATOUTPUT=`cat $OUTPUT | grep ERROR`
-ERRORECHOOUTPUT=`echo $ERRORCATOUTPUT`
-
-if [ -f $SIGNSERVERHEALTHLOG ]; then
-        OKCATOUTPUT=`cat $SIGNSERVERHEALTHLOG | grep ALLOK`
-        OKECHOOUTPUT=`echo $OKCATOUTPUT`
-fi
-
-if [ "$OKECHOOUTPUT" = ALLOK ]; then
-       printlogmess $INFO $ERRNO_1 "$SIGNSRV_DESCR_1" "$OKECHOOUTPUT"
+if [ "x${CHECKTOOL}" = "xwget" ] ; then
+        ${CHECKTOOL} ${URL} -T ${GET_TIMEOUT} -t 1 -O $OUTPUT 2>/dev/null
+elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
+        ${CHECKTOOL} ${URL} --connect-timeout ${GET_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
 else
-   if [ "$ERRORECHOOUTPUT" = "" ]; then 
-       printlogmess $ERROR $ERRNO_3 "$SIGNSRV_DESCR_3" 
-     else
-       printlogmess $ERROR $ERRNO_2 "$SIGNSRV_DESCR_2"  "$ERRORECHOOUTPUT"
-   fi 
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+	exit
 fi
 
-if [ -f $SIGNSERVERHEALTHLOG ]; then
-        rm $SIGNSERVERHEALTHLOG
+FULLOUTPUT=$(cat $OUTPUT)
+OKOUTPUT=$(cat $OUTPUT | grep ALLOK)
+ERROROUTPUT=$(cat $OUTPUT | grep ERROR)
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+if [ "x$OKOUTPUT" != "x" ]; then
+       printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "$FULLOUTPUT"
+elif [ "x$ERROROUTPUT" != "x" ]; then 
+       printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FULLOUTPUT"
 fi
 
 rm $OUTPUT

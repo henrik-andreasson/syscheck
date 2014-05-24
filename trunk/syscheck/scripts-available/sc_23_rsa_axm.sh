@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -15,11 +15,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=23
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
@@ -27,9 +27,9 @@ SCRIPTID=23
 getlangfiles $SCRIPTID ;
 getconfig $SCRIPTID
 
-RSA_AXM_ERRNO_1=${SCRIPTID}01
-RSA_AXM_ERRNO_2=${SCRIPTID}02
-RSA_AXM_ERRNO_3=${SCRIPTID}03
+RSA_AXM_ERRNO_1=01
+RSA_AXM_ERRNO_2=02
+RSA_AXM_ERRNO_3=03
 
 
 # help
@@ -47,7 +47,7 @@ NUMBER_OF_NOT_RUNNING_PROCS=0
 NAMES_OF_NOT_RUNNING_PROCS=""
 
 pidfile=/opt/ctrust/server-60/var/aserver.pid
-pid=`cat ${pidfile} | cut -f2 -d\:`
+pid=$(cat ${pidfile} 2>/dev/null | cut -f2 -d\: )
 procname='DAuth'
 pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname` 
 if [ $? -ne 0 ] ; then 
@@ -60,7 +60,7 @@ if [ "x$pidinfo" = "x" ] ; then
 fi
 
 pidfile=/opt/ctrust/server-60/var/dispatcher.pid
-pid=`cat ${pidfile} | cut -f2 -d\:`
+pid=$(cat ${pidfile} 2>/dev/null | cut -f2 -d\: )
 procname='DDisp'
 pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname` 
 if [ $? -ne 0 ] ; then
@@ -75,7 +75,7 @@ fi
 
 
 pidfile=/opt/ctrust/server-60/var/eserver.pid
-pid=`cat ${pidfile} | cut -f2 -d\:`
+pid=$(cat ${pidfile} 2>/dev/null | cut -f2 -d\: )
 procname='DEnt'
 pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname` 
 if [ $? -ne 0 ] ; then
@@ -88,12 +88,13 @@ if [ "x$pidinfo" = "x" ] ; then
 	NAMES_OF_NOT_RUNNING_PROCS="$NAMES_OF_NOT_RUNNING_PROCS $procname"
 fi
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
 if [ $NUMBER_OF_NOT_RUNNING_PROCS -gt 0 ] ; then
-        printlogmess $ERROR $RSA_AXM_ERRNO_3 "$RSA_AXM_DESCR_2" $NAMES_OF_NOT_RUNNING_PROCS
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $RSA_AXM_ERRNO_3 "$RSA_AXM_DESCR_2" $NAMES_OF_NOT_RUNNING_PROCS
 	exit 2
 else
-        printlogmess $INFO $RSA_AXM_ERRNO_1 "$RSA_AXM_DESCR_1"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $RSA_AXM_ERRNO_1 "$RSA_AXM_DESCR_1"
 	exit 0
 fi
 

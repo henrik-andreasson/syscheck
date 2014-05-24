@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set SYSCHECK_HOME if not already set.
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Script will bring VIP online and make DefaultGateway aware of ARP change.
 
@@ -49,7 +49,7 @@ fi
 
 CHECK_VIP=`$IFCONFIG ${IF_VIRTUAL} | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL}`
 if [ "x${CHECK_VIP}" = "x" ] ; then
-        printlogmess $INFO $ERRNO_3 "$DEACTVIP_DESCR_3"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DEACTVIP_DESCR_3"
         exit
 fi
 
@@ -57,11 +57,11 @@ fi
 $IFCONFIG ${IF_VIRTUAL} down
 
 if [ $? -eq 0 ] ; then 
-    printlogmess $INFO $ERRNO_1 "$DEACTVIP_DESCR_1" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DEACTVIP_DESCR_1" "$?" 
     rm ${SYSCHECK_HOME}/var/this_node_has_the_vip
 
 else
-    printlogmess $ERROR $ERRNO_2 "$DEACTVIP_DESCR_2" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DEACTVIP_DESCR_2" "$?" 
 fi
 
 #ifconfig $IF_VIRTUAL del $HOSTNAME_VIRTUAL

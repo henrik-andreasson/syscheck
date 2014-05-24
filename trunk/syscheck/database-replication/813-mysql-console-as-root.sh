@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Scripts that creates replication privilegdes for the slave db to the master.
 

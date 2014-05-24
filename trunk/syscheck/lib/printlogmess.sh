@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #set -x
 
 # func to output debug when using -s or --screen
@@ -11,13 +11,20 @@ printtoscreen() {
   fi
 }
 
+addOneToIndex() {
+	SCRIPTINDEX=$1
+	countup=$(expr $SCRIPTINDEX + 1)
+        printf "%02d" $countup
+}
 
 # ex: printlogmess $LEVEL $SLOG_ERRNO_1 "$SLOG_DESCR_1"
 printlogmess(){
-        LEVEL=$1
-        ERRNO=$2
-        DESCR=$3
-        shift 3
+        SCRIPTID=$1
+        SCRIPTINDEX=$2
+        LEVEL=$3
+        ERRNO=$4
+        DESCR=$5
+        shift 5
         ARG1=$1
         ARG2=$2
         ARG3=$3
@@ -52,13 +59,13 @@ printlogmess(){
         MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
 
         if [ "x${PRINTTOSCREEN}" = "x1" ] ; then
-            echo "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}"
+            echo "${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}"
 	else
-	    logger -p local3.${SYSLOGLEVEL} "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
+	    logger -p local3.${SYSLOGLEVEL} "${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
         fi
 
 	if [ "x${SAVELASTSTATUS}" = "x1" ] ; then
-	    echo "${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}" >> ${SYSCHECK_HOME}/var/last_status
+	    echo "${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}" >> ${SYSCHECK_HOME}/var/last_status
 	fi
 
 

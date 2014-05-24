@@ -1,27 +1,29 @@
-README for system check scripts.
+README for syscheck scripts
+==============================
 
-Written by Philip Vendil 2006-05-17 and Henrik Andreasson 2008-12-03
+Authors
+------------
+
+Maintainter is Henrik Andreasson syscheck@han.pp.se
+
+Written by Henrik Andreasson, Philip Vendil and Joakim Bågnert
+
 
 INFO
 ---------------------------
-Homepage:                          http://wiki.ejbca.org/syscheck
-Download:                          https://sourceforge.net/project/showfiles.php?group_id=39716&package_id=58346
-Tracker for issues/improvements:   https://jira.primekey.se/secure/IssueNavigator.jspa?reset=true&mode=hide&sorter/order=DESC&sorter/field=priority&resolution=-1&pid=10000&fixfor=10325 (or http://jira.primekey.se -> Browse Projects -> EJBCA -> Components / Syscheck)
-
+Homepage:	(http://certificateservices.org/syscheck)
+Contact:	(http://certificateservices.org/contact)
 
 
 Info - Docs
 ---------------------------
 Syscheck doc (from lib/make-doc.sh) 
- - online http://docs.google.com/View?docID=dd9mfpsn_10gz3h4cf9
  - doc/syscheckdoc_x_y_z.odt (and pdf)
 
 Certificate and revocation Archival for EJBCA
- - online http://docs.google.com/View?docID=dd9mfpsn_7fmx3f7gt
  - doc/certificate_and_revovation_archival.odt (and pdf)
 
 Database replication for redundancy
- - http://docs.google.com/Doc?docid=dd9mfpsn_6ftnhgkq4&hl=en_GB
  - doc/database_replication_and_failover.odt (and pdf)
 
 
@@ -93,8 +95,12 @@ Each script within syscheck shall implement "-h" and "--help" to give syntax hel
 Run: ./scripts-available/sc_nn_foo.sh --help
 Eg: ./scripts-available/sc_04_pcsc_readers.sh --help
 
+Info - NEW Syscheck Sample output
+---------------------------
 
-Info - Syscheck Sample output
+
+
+Info - OLD Syscheck Sample output
 ---------------------------
 
 han@plup:/misc/src/syscheck/syscheck-trunk$ ./syscheck.sh -s
@@ -118,7 +124,7 @@ I-1801-PKI 20090328 22:54:36 plup: INFO - mysql is running and answering
 I-1903-PKI 20090328 22:54:36 plup: INFO - I'm alive
 
 
-Info - Format description:
+Info - OLD Format description:
 ---------------------------
 
 I-0101-PKI 20090328 22:54:23 plup: INFO - Diskusage ok (/ is 51 percent used: Limit is 95 percent)

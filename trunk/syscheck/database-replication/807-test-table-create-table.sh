@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Script that creates a test table on the master database.
 #the table is created in the EJBCA database and contains a int columnt test

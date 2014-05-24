@@ -24,21 +24,24 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=03
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1=${SCRIPTID}01
-ERRNO_2=${SCRIPTID}02
-ERRNO_3=${SCRIPTID}03
-ERRNO_4=${SCRIPTID}03
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
+ERRNO_4=03
 
 
 if [ "x$1" = "x--help" ] ; then
-    echo "$MEM_HELP mem: ${MEM_PERCENT}% / swap ${SWAP_PERCENT} %"
-    echo "${ERRNO_1}/${MEM_DESCR_1}"
-    echo "${ERRNO_2}/${MEM_DESCR_2}"
-    echo "${ERRNO_3}/${MEM_DESCR_3}"
-    echo "${ERRNO_4}/${MEM_DESCR_4}"
+    echo "$HELP mem: ${MEM_PERCENT}% / swap ${SWAP_PERCENT} %"
+    echo "${ERRNO_1}/${DESCR_1}"
+    echo "${ERRNO_2}/${DESCR_2}"
+    echo "${ERRNO_3}/${DESCR_3}"
+    echo "${ERRNO_4}/${DESCR_4}"
     echo "${SCREEN_HELP}"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
@@ -70,19 +73,26 @@ checkmem(){
     
     REALUSEDMEMORY=`expr $TOTALMEMORY - $MEMORYTOGETHER`
     
+    countup=$(expr $SCRIPTINDEX + 1)
+    SCRIPTINDEX=$(printf "%02d" $countup)
+ 
     if [ $REALUSEDMEMORY -gt $MEMORYLIMIT ] ; then
-        printlogmess $WARN $ERRNO_1 "$MEM_DESCR_1" "$REALUSEDMEMORY" "$MEMORYLIMIT"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_1 "$DESCR_1" "$REALUSEDMEMORY" "$MEMORYLIMIT"
     else
-        printlogmess $INFO $ERRNO_2 "$MEM_DESCR_2" "$REALUSEDMEMORY" "$MEMORYLIMIT"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_2 "$DESCR_2" "$REALUSEDMEMORY" "$MEMORYLIMIT"
     fi
     
+    countup=$(expr $SCRIPTINDEX + 1)
+    SCRIPTINDEX=$(printf "%02d" $countup)
+
     if [ $USEDSWAP -gt $SWAPLIMIT ] ; then
-        printlogmess $WARN $ERRNO_3 "$MEM_DESCR_3" "$USEDSWAP" "$SWAPLIMIT"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "$USEDSWAP" "$SWAPLIMIT"
     else
-        printlogmess $INFO $ERRNO_4 "$MEM_DESCR_4" "$USEDSWAP" "$SWAPLIMIT"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESCR_4" "$USEDSWAP" "$SWAPLIMIT"
 	
     fi
 }
 
 # max 80% of memory and 50% of swap 
 checkmem ${MEM_PERCENT} ${SWAP_PERCENT}
+

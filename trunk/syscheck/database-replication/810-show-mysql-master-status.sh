@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Scripts that creates replication privilegdes for the slave db to the master.
 
@@ -54,22 +54,22 @@ fi
 
 echo "SHOW MASTER STATUS;" | $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
-        printlogmess $LEVEL_1 $ERRNO_1 "$DESCR_1"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
 else
-        printlogmess $LEVEL_2 $ERRNO_2 "$DESCR_2"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2"
 fi
 
 echo "SHOW PROCESSLIST \G;" | $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
-        printlogmess $LEVEL_1 $ERRNO_1 "$DESCR_1"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
 else
-        printlogmess $LEVEL_2 $ERRNO_2 "$DESCR_2"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2"
 fi
 
 echo "SHOW SLAVE HOSTS; " | $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
-        printlogmess $LEVEL_1 $ERRNO_1 "$DESCR_1"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
 else
-        printlogmess $LEVEL_2 $ERRNO_2 "$DESCR_2"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2"
 fi
 

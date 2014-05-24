@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 procname=/usr/local/mysql/libexec/ndb_mgmd
 status=0
 

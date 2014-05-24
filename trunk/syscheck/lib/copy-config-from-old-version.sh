@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 oldconfigdir=$1 
 if [ "x$oldconfigdir" = "x" -o ! -f $oldconfigdir/01.conf ] ; then

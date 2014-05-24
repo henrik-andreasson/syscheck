@@ -50,9 +50,9 @@ for (( j=0; j < ${#REMOTE_HOSTNAME[@]} ; j++ )){
 	printtoscreen "Copying file: ${LOCAL_FILE[$j]} to:${REMOTE_HOSTNAME[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey: ${SSHKEY[$j]}"
 	SSHCOPYRES=$(${SYSCHECK_HOME}/related-enabled/906_ssh-copy-to-remote-machine.sh "${LOCAL_FILE[$j]}" ${REMOTE_HOSTNAME[$j]} ${REMOTE_DIR[$j]}/${REMOTE_FILE[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]})
 	if [ $? -ne 0 ] ; then
-      		printlogmess $ERROR $ERRNO_2 "$DESCR_2" ${LOCAL_FILE[$j]} "file: ${LOCAL_FILE[$j]} to:${REMOTE_HOSTNAME[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey: ${SSHKEY[$j]} result: ${SSHCOPYRES}"
+      		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" ${LOCAL_FILE[$j]} "file: ${LOCAL_FILE[$j]} to:${REMOTE_HOSTNAME[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey: ${SSHKEY[$j]} result: ${SSHCOPYRES}"
 	else
-		printlogmess $INFO $ERRNO_1 "$DESCR_1" ${LOCAL_FILE[$j]} ${SSHCOPYRES}
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" ${LOCAL_FILE[$j]} ${SSHCOPYRES}
 	fi
 }
 

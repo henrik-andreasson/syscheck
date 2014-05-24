@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 procname=/usr/local/mysql/libexec/ndbd
 status=0
 

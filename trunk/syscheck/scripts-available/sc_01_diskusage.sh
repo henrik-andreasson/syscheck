@@ -15,32 +15,27 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=01
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
  
-ERRNO_1="${SCRIPTID}01"
-ERRNO_2="${SCRIPTID}02"
-ERRNO_3="${SCRIPTID}03"
-
-DESCR_1="${DU_DESCR_1}"
-DESCR_2="${DU_DESCR_2}"
-DESCR_3="${DU_DESCR_3}"
+ERRNO_1="01"
+ERRNO_2="02"
+ERRNO_3="03"
 
 ### local conf ###
 
 
 if [ "x$1" = "x--help" ] ; then
-    echo "$DU_HELP ${DU_PERCENT}%)"
+    echo "$HELP ${DU_PERCENT}%)"
     echo "$ERRNO_1/$DESCR_1"
     echo "$ERRNO_2/$DESCR_2"
     echo "${SCREEN_HELP}"
@@ -51,25 +46,43 @@ fi
 
 
 diskusage () {
-	FILESYSTEM=$1
-	LIMIT=$2
+	FILESYSTEM=$1 
+	LIMIT=$2 
+	SCRIPTINDEX=$3
+
+	if [ "x${FILESYSTEM}" = "x" ] ; then
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No filesystem specified"
+		return -1
+	fi
+	if [ "x${LIMIT}" = "x" ] ; then
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No limit specified"
+		return -1
+	fi
+	if [ "x${SCRIPTINDEX}" = "x" ] ; then
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No script index specified"
+		return -1
+	fi
+	
+
 	DFPH=`df -Ph $FILESYSTEM 2>&1`
 
 	if [ $? -ne 0 ] ; then
-		printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$FILESYSTEM" "$DFPH"
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "$FILESYSTEM" "$DFPH"
 	else
 
   		PERCENT=`df -Ph $FILESYSTEM | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
 		if [ $PERCENT -gt $LIMIT ] ; then
-       	         	printlogmess $ERROR $ERRNO_2 "$DESCR_2" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+       	         	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
 		else
-                	printlogmess $INFO $ERRNO_1 "$DESCR_1" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+                	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 ${SCRIPTINDEX} "$DESCR_1" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
 		fi
 	fi
 }
 
 
 for (( i = 0 ;  i < ${#FILESYSTEM[@]} ; i++ )) ; do
-	diskusage ${FILESYSTEM[$i]}  ${USAGEPERCENT[$i]}
+	countup=$(expr $SCRIPTINDEX + 1)
+	SCRIPTINDEX=$(printf "%02d" $countup)
+	diskusage ${FILESYSTEM[$i]}  ${USAGEPERCENT[$i]} ${SCRIPTINDEX}
 done
 

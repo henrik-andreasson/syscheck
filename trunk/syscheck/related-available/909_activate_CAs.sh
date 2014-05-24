@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Script that test a connection against a test table on the master database.
 #This is the main script that should be runned as a cron-job.
@@ -60,9 +60,9 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
 	
 	returncode=`./bin/ejbca.sh ca activateca $NAME $PIN`
 	if [ $? -eq 0 ] ; then
-	    printlogmess $INFO $ERRNO_1 "$ACT_DESCR_1" "$NAME" 
+	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$ACT_DESCR_1" "$NAME" 
 	else
-	    printlogmess $ERROR $ERRNO_2 "$ACT_DESCR_2" "$NAME" 
+	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$ACT_DESCR_2" "$NAME" 
 	fi
 	
 done

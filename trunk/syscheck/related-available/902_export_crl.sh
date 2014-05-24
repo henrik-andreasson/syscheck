@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -50,7 +50,7 @@ fi
 
 
 if [ "x$1" = "x" -o ! -r "$1" ] ; then 
-	printlogmess $ERROR $ERRNO_3 "$DESCR_2"  
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_2"  
 	printtoscreen $ERROR $ERRNO_3 "$DESCR_2"
 	exit
 fi
@@ -61,32 +61,32 @@ date >> ${CRLLOG}
 
 CRLISSUER=`openssl crl -inform der -in $1 -issuer -noout`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 CRLISSUER2=`echo ${CRLISSUER} | perl -ane 's/\//_/gio,s/issuer=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 CRLLASTUPDATE=`openssl crl -inform der -in $1 -lastupdate -noout`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 CRLLASTUPDATE2=`echo ${CRLLASTUPDATE} | perl -ane 's/lastUpdate=//gio,s/\ /_/gio,s/:/./gio,print'`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 CRL=`openssl crl -inform der -in $1`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 CRLSTRING=`echo $CRL | perl -ane 's/\n//gio,print'`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 
@@ -100,9 +100,9 @@ OUTFILE="${OUTPATH2}/${CRLISSUER2}.crl"
 
 openssl crl -inform der -in $1 > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
-    printlogmess $INFO $ERRNO_1 "$DESCR_1" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?" 
 else
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
