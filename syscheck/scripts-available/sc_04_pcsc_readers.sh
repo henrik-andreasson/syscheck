@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -23,20 +23,24 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 SCRIPTID=04
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 
-PCL_ERRNO_1=${SCRIPTID}01
-PCL_ERRNO_2=${SCRIPTID}02
-PCL_ERRNO_3=${SCRIPTID}03
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $PCL_HELP"
-    echo "$PCL_ERRNO_1/$PCL_DESCR_1 - $PCL_HELP_1"
-    echo "$PCL_ERRNO_2/$PCL_DESCR_2 - $PCL_HELP_2"
-    echo "$PCL_ERRNO_3/$PCL_DESCR_3 - $PCL_HELP_3"
+    echo "$0 $HELP"
+    echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+    echo "$ERRNO_2/$DESCR_2 - $HELP_2"
+    echo "$ERRNO_3/$DESCR_3 - $HELP_3"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
@@ -46,18 +50,19 @@ CMD=`$SYSCHECK_HOME/lib/list_reader.pl 2>&1`
 
 ERRCHK=`echo $CMD| grep "locate Chipcard/PCSC.pm" ` 
 if [ "x$ERRCHK" != "x" ] ; then
-	printlogmess $WARN $PCL_ERRNO_3 "$PCL_DESCR_3" "$CMD"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $WARN $ERRNO_3 "$DESCR_3" "$CMD"
 	exit
 fi
 
 STATUS=`echo $CMD | perl -ane 'm/Number\ of\ attatched\ readers:\ (\d+)/gio, print $1'`
 
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "$PCSC_NUMBER_OF_READERS" = "$STATUS" ] ; then     
-        printlogmess $INFO $PCL_ERRNO_1 "$PCL_DESCR_1" "$STATUS" 
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$STATUS" 
 	
 else
 
-        printlogmess $ERROR $PCL_ERRNO_2 "$PCL_DESCR_2" "$STATUS"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$STATUS"
 fi
 

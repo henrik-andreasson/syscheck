@@ -22,13 +22,18 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # Import common resources
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=19
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1=${SCRIPTID}01 # boot (machine start)
-ERRNO_2=${SCRIPTID}02 # shutdown (machine stop)
-ERRNO_3=${SCRIPTID}03 # server "I'm alive" message
+ERRNO_1=01 # boot (machine start)
+ERRNO_2=02 # shutdown (machine stop)
+ERRNO_3=03 # server "I'm alive" message
 
 if [ "x$1" = "x--help" ] ; then
     echo "$SCALIVE_HELP"
@@ -42,4 +47,5 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
 fi 
 
 
-printlogmess $INFO $ERRNO_3 "$SCALIVE_DESCR_3"
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$SCALIVE_DESCR_3"

@@ -61,7 +61,7 @@ get () {
     printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLFILE"
     CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME "$CRLFILE")
     if [ $? != 0 -o  ! -r $CRLFILE  ] ; then
-        printlogmess $ERROR $ERRNO_6 "$PUBL_DESCR_6" "$CRLNAME/$CRLFILE"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$PUBL_DESCR_6" "$CRLNAME/$CRLFILE"
     fi
     printtoscreen $CMD
 
@@ -80,9 +80,9 @@ put () {
     $SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $REMOTEHOST $REMOTEDIR $SSHUSER $SSHKEY
 
     if [ $? = 0 ] ; then
-        printlogmess $INFO $ERRNO_8 "$PUBL_DESCR_8" $CRLNAME $REMOTEHOST 
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_8 "$PUBL_DESCR_8" $CRLNAME $REMOTEHOST 
     else
-	printlogmess $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLNAME $REMOTEHOST
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLNAME $REMOTEHOST
     fi
 }
 
@@ -135,20 +135,20 @@ checkcrl () {
 
 # file not found where it should be
     if [ ! -f $CRLFILE ] ; then
-	printlogmess $ERROR $ERRNO_4 "$PUBL_DESCR_4" $CRLFILE
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$PUBL_DESCR_4" $CRLFILE
         return 4
     fi
 
 # stat return check
     CRL_FILE_SIZE=`stat -c"%s" $CRLFILE`
     if [ $? -ne 0 ] ; then
-	printlogmess $ERROR $ERRNO_5 "$PUBL_DESCR_5" $CRLFILE
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$PUBL_DESCR_5" $CRLFILE
         return 5
     fi
 
 # crl of 0 size?
     if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-	printlogmess $ERROR $ERRNO_6 "$PUBL_DESCR_6" $CRLFILE
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$PUBL_DESCR_6" $CRLFILE
         return 6
     fi
 
@@ -159,15 +159,15 @@ checkcrl () {
     ETIMELEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" ${ecmdopts})
     
     if [ "$ETIMELEFT" -lt "$ETIME" ] ; then
-	printlogmess $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
 	return 7
 
     elif [ "$WTIMELEFT" -lt "$WTIME" ] ; then
-	printlogmess $WARN $ERRNO_9 "$PUBL_DESCR_9" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_9 "$PUBL_DESCR_9" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	return 7
 
     else
-	printlogmess $INFO $ERRNO_10 "$PUBL_DESCR_10" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_10 "$PUBL_DESCR_10" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	printtoscreen "$INFO $ERRNO_10 $PUBL_DESCR_10 $CRLFILE timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	return 0
     fi
@@ -193,9 +193,9 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
     if [ "x${REMOTE_HOST[$i]}" = "xlocalhost" ] ; then
 	cp -f ${CRLFILE} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	if [ $? -eq 0 ] ;then
-	    printlogmess $INFO $ERRNO_1 "$PUBL_DESCR_1" ${CRLCANAME[$i]} 
+	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$PUBL_DESCR_1" ${CRLCANAME[$i]} 
 	else
-	    printlogmess $ERROR $ERRNO_3 "$PUBL_DESCR_3" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
+	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$PUBL_DESCR_3" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	fi
 	
     else

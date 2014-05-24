@@ -57,9 +57,9 @@ SEND_ONLY_SCRIPT_IDS_FMT=$(echo ${SEND_ONLY_SCRIPT_IDS} | sed 's/ /|/g')
 egrep "^.?-(${SEND_ONLY_SCRIPT_IDS_FMT})" ${LOCAL_FILE}  > ${FILTERED_FILE}
 
 if [ $? = 0 ] ; then
-      printlogmess $INFO $ERRNO_1 "$DESCR_1" 
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
 else
-      printlogmess $ERROR $ERRNO_2 "$DESCR_2"
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 fi 
 
 

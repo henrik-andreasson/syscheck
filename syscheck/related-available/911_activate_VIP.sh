@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Script will bring VIP online and make DefaultGateway aware of ARP change.
 
@@ -57,28 +57,28 @@ IP_GATEWAY=`$ROUTE -n | awk '/0.0.0.0/'| awk '{print $2}' |awk '!/0.0.0.0/'`
 
 CHECK_VIP=`$IFCONFIG ${IF_VIRTUAL} | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL}` 
 if [ "x${CHECK_VIP}" != "x" ] ; then 
-	printlogmess $INFO $ERRNO_3 "$ACTVIP_DESCR_3"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$ACTVIP_DESCR_3"
 	exit
 fi
 
 res=`ping -c4 ${HOSTNAME_VIRTUAL} 2>&1`
 if [ $? -eq 0 ] ; then
-	printlogmess $ERROR $ERRNO_4 "$ACTVIP_DESCR_4" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$ACTVIP_DESCR_4" 
 	exit
 fi
 
 $IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up
 if [ $? -eq 0 ] ; then 
     date > ${SYSCHECK_HOME}/var/this_node_has_the_vip
-    printlogmess $INFO $ERRNO_1 "$ACTVIP_DESCR_1" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$ACTVIP_DESCR_1" "$?" 
 
     arping -f -q -U ${IP_GATEWAY} -I ${IF_VIRTUAL} -s ${HOSTNAME_VIRTUAL}
     if [ $? = 0 ] ; then
-	printlogmess $INFO $ERRNO_5 "$ACTVIP_DESCR_5" "$?"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_5 "$ACTVIP_DESCR_5" "$?"
     else
-    	printlogmess $WARN $ERRNO_6 "$ACTVIP_DESCR_6" "$?"
+    	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_6 "$ACTVIP_DESCR_6" "$?"
     fi
 else
-    printlogmess $ERROR $ERRNO_3 "$ACTVIP_DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ACTVIP_DESCR_3" "$?" 
 fi
 

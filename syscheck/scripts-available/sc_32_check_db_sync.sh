@@ -26,41 +26,40 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=32
 
-SYNC_ERRNO_1=${SCRIPTID}01
-SYNC_ERRNO_2=${SCRIPTID}02
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
+
+ERRNO_1=01
+ERRNO_2=02
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $SYNC_HELP"
-    echo "$SYNC_ERRNO_1/$SYNC_DESCR_1 - $SYNC_HELP_1"
-    echo "$SYNC_ERRNO_2/$SYNC_DESCR_2 - $SYNC_HELP_2"
+    echo "$0 $HELP"
+    echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+    echo "$ERRNO_2/$DESCR_2 - $HELP_2"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
-if [ ! -f $SYSCHECK_HOME/database-replication/808-test-table-update-and-check-master-and-slave.sh ]
-then
-echo " missing script, $SYSCHECK_HOME/database-replication/808-test-table-update-and-check-master-and-slave.sh"
-exit
+
+
+if [ ! -f $SYSCHECK_HOME/database-replication/808-test-table-update-and-check-master-and-slave.sh ] ; then
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX} "$ERROR" "$ERRNO_2" "$DESCR_2 missing script, database-replication/808-test-table-update-and-check-master-and-slave.sh"
+	exit
 fi
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 . $SYSCHECK_HOME/database-replication/808-test-table-update-and-check-master-and-slave.sh >/dev/null
-###echo $VALUE_NODE1 $VALUE_NODE2
 NODE1=`echo $VALUE_NODE1|awk '{print $2}'`
 NODE2=`echo $VALUE_NODE2|awk '{print $2}'`
-if [ $NODE1 != $NODE2 ]
-then
- 	sync=FAIL
-
-SYNCDATE=`perl -e "print scalar(localtime($NODE2))"|awk '{print $3,$2,$4,$5}'`
-fi
-
-# Sends an error to syslog if x"$sync" is FAIL.
-if [ "x$sync" = "xFAIL" ] ; then
-    printlogmess "$ERROR" "$SYNC_ERRNO_2" "$SYNC_DESCR_2 $LASTUPD_NODE1 /$LASTUPD_NODE2"
+if [ $NODE1 != $NODE2 ] ;  then
+	SYNCDATE=`perl -e "print scalar(localtime($NODE2))"|awk '{print $3,$2,$4,$5}'`
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   "$ERROR" "$ERRNO_2" "$DESCR_2 $LASTUPD_NODE1 /$LASTUPD_NODE2 $SYNCDATE"
 else
-    printlogmess "$INFO" "$SYNC_ERRNO_1" "$SYNC_DESCR_1"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   "$INFO" "$ERRNO_1" "$DESCR_1"
 fi
 

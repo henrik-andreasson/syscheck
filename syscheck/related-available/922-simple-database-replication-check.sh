@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Script that creates a test table on the master database.
 #the table is created in the EJBCA database and contains a int columnt test
@@ -81,17 +81,17 @@ if [ "x$valhost1" != "x" ] ; then
 	if [ "x$valhost2" != "x" ] ; then
 		if [ "x$valhost1" = "x$valhost2" ] ; then
 			#ok
-			printlogmess $LEVEL_1 $ERRNO_1 "$DESCR_1"
+			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
 		else
 			#failed, not the same values
-			printlogmess $LEVEL_2 $ERRNO_2 "$DESCR_2" "$valhost1" "$valhost2"
+			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2" "$valhost1" "$valhost2"
 		fi
 	else
 		#failed, no value from $valhost2
-		printlogmess $LEVEL_3 $ERRNO_3 "$DESCR_3" "$valhost2"
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_3 $ERRNO_3 "$DESCR_3" "$valhost2"
 	fi
 
 else
 	#failed, no value from $valhost1
-	printlogmess $LEVEL_4 $ERRNO_4 "$DESCR_4" "$valhost1"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_4 $ERRNO_4 "$DESCR_4" "$valhost1"
 fi

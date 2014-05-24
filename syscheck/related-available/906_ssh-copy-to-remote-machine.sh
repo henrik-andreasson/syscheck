@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # 
 # Set SYSCHECK_HOME if not already set.
 
@@ -53,7 +53,7 @@ fi
 # arg1, if you use regexps, be sure to use "" , ex: "*.txt" on the command line
 SSHFILE=
 if [ "x$1" = "x" ] ; then 
-    printlogmess $ERROR $ERRNO_2 "$SSH_DESCR_2"  
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$SSH_DESCR_2"  
     exit
 else
     SSHFILE="$1"
@@ -62,7 +62,7 @@ fi
 
 SSHHOST=
 if [ "x$2" = "x"  ] ; then 
-	printlogmess $ERROR $ERRNO_3 "$SSH_DESCR_3"  
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$SSH_DESCR_3"  
 	exit
 else
     SSHHOST=$2
@@ -89,8 +89,8 @@ fi
 
 runresult=`scp -r ${SSHTIMEOUT} ${SSHFROMKEY} ${SSHFILE} ${SSHTOUSER}${SSHHOST}:${SSHDIR} 2>&1`
 if [ $? -eq 0 ] ; then
-	printlogmess $INFO $ERRNO_1 "$SSH_DESCR_1" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$SSH_DESCR_1" 
 else
-	printlogmess $ERROR $ERRNO_4 "$SSH_DESCR_4" "$runresult"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$SSH_DESCR_4" "$runresult"
 	exit -1
 fi

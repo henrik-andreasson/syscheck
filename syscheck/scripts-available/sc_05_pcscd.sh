@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -23,19 +23,20 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 SCRIPTID=05
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
 
-PCSCD_ERRNO_1=${SCRIPTID}01
-PCSCD_ERRNO_2=${SCRIPTID}02
-PCSCD_ERRNO_3=${SCRIPTID}03
+ERRNO_1=01
+ERRNO_2=02
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $PCSCD_HELP"
-    echo "$PCSCD_ERRNO_1/$PCSCD_DESCR_1 - $PCSCD_HELP_1"
-    echo "$PCSCD_ERRNO_2/$PCSCD_DESCR_2 - $PCSCD_HELP_2"
-    echo "$PCSCD_ERRNO_3/$PCSCD_DESCR_3 - $PCSCD_HELP_3"
+    echo "$0 $HELP"
+    echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+    echo "$ERRNO_2/$DESCR_2 - $HELP_2"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
@@ -46,15 +47,14 @@ if [ -f $pidfile ] ; then
 	pid=`${SYSCHECK_HOME}/lib/proc_checker.sh $pidfile` 
 else
 	pid=`ps -ef | grep $procname | grep -v grep | awk '{print $2}'` 
-	if [ "x$pid" = "x" ] ; then
-		printlogmess $ERROR $PCSCD_ERRNO_2 "$PCSCD_DESCR_2"  
-		exit 3
-	fi
 fi
 
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
 if [ "x$pid" = "x" ] ; then
-	printlogmess $ERROR $PCSCD_ERRNO_2 "$PCSCD_DESCR_2"  
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
 else
-	printlogmess $INFO $PCSCD_ERRNO_1 "$PCSCD_DESCR_1"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1"
 fi
 

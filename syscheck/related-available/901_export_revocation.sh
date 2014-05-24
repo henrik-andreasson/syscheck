@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -48,7 +48,7 @@ fi
 
 
 if [ "x$1" = "x" -o ! -r "$1" ] ; then 
-	printlogmess $ERROR $ERRNO_2 "$DESCR_2"  
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
 	printtoscreen $ERROR $ERRNO_2 "$DESCR_2"
 	exit
 fi
@@ -58,20 +58,20 @@ fi
 date >> ${REVLOG} 
 CERTSERIAL=`openssl x509 -inform der -in $1 -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 
 CERTSUBJECT=`openssl x509 -inform der -in $1 -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 echo "CERTSERIAL: $CERTSERIAL" >> ${REVLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${REVLOG}
 CERT=`openssl x509 -inform der -in $1`
 if [ $? -ne 0 ] ; then 
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
 
@@ -81,9 +81,9 @@ echo                            >> ${REVLOG}
 OUTFILE="${OUTPATH2}/revoked-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in $1 > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
-    printlogmess $INFO $ERRNO_1 "$DESCR_1" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?" 
 else
-    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

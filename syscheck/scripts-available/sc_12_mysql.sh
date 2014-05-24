@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -15,37 +15,39 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=12
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 
 getlangfiles $SCRIPTID ;
 getconfig $SCRIPTID
 
-MYSQL_ERRNO_1=${SCRIPTID}01
-MYSQL_ERRNO_2=${SCRIPTID}02
-MYSQL_ERRNO_3=${SCRIPTID}03
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $MYSQL_HELP"
-    echo "$MYSQL_ERRNO_1/$MYSQL_DESCR_1 - $MYSQL_HELP_1"
-    echo "$MYSQL_ERRNO_2/$MYSQL_DESCR_2 - $MYSQL_HELP_2"
+    echo "$0 $HELP"
+    echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+    echo "$ERRNO_2/$DESCR_2 - $HELP_2"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
-
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 pid=`$SYSCHECK_HOME/lib/proc_checker.sh $pidfile $procname` 
 if [ "x$pid" = "x" ] ; then
-    printlogmess $ERROR $MYSQL_ERRNO_2 "$MYSQL_DESCR_2"  
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
     exit 3
 else
-    printlogmess $INFO $MYSQL_ERRNO_1 "$MYSQL_DESCR_1"
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1"
 fi
 

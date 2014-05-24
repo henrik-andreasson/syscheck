@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 checkpid(){
 	the_pid=$1

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -52,9 +52,9 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
 	printtoscreen "Deactivating CA :  ${CANAME[$i]} on node $HOSTNAME_NODE2"
 	returncode=`bin/ejbca.sh ca deactivateca ${CANAME[$i]} `
 	if [ $? -eq 0 ] ; then
-	    printlogmess $INFO $ERRNO_1 "$DEACT_DESCR_1" "$NAME" 
+	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DEACT_DESCR_1" "$NAME" 
 	else
-	    printlogmess $ERROR $ERRNO_2 "$DEACT_DESCR_2" "$NAME" 
+	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DEACT_DESCR_2" "$NAME" 
 	fi
 
 

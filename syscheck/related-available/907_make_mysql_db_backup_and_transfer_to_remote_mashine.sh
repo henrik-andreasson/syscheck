@@ -74,18 +74,18 @@ fi
 FULLFILENAME=`$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh --batch ${BACKUPARG}`
 
 if [ $? -ne 0 ] ; then
-    printlogmess $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
 fi 
 
 if [ $? -ne 0 ] ;   then
-    printlogmess $ERROR $BAK_ERRNO_3 "$BAK_DESCR_3"
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $BAK_ERRNO_3 "$BAK_DESCR_3"
 fi  
 
 for (( i = 0 ;  i < "${#BACKUP_HOST[@]}" ; i++ )) ; do
 	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${FULLFILENAME} ${BACKUP_HOST[$i]} "${BACKUP_DIR[$i]}/${EXTRADIR}/" ${BACKUP_USER[$i]} ${BACKUP_SSHFROMKEY[$i]}
 	if [ $? -eq 0 ] ; then
-		printlogmess $INFO $BAK_ERRNO_1 "$BAK_DESCR_1"
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $BAK_ERRNO_1 "$BAK_DESCR_1"
 	else
-		printlogmess $ERROR $BAK_ERRNO_4 "$BAK_DESCR_4"
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $BAK_ERRNO_4 "$BAK_DESCR_4"
 	fi
 done

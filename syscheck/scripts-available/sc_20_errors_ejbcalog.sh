@@ -22,14 +22,19 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=20
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-EEL_ERRNO_1=${SCRIPTID}01
-EEL_ERRNO_2=${SCRIPTID}02
-EEL_ERRNO_3=${SCRIPTID}03
+EEL_ERRNO_1=01
+EEL_ERRNO_2=02
+EEL_ERRNO_3=03
 
 # help
 if [ "x$1" = "x--help" ] ; then
@@ -43,16 +48,21 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
 fi
 
 if [ ! -f $EEL_SERVER_LOG_FILE ] ; then
-    printlogmess $WARN $EEL_ERRNO_3 "$EEL_DESCR_3"  $EEL_SERVER_LOG_FILE   
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $EEL_ERRNO_3 "$EEL_DESCR_3"  $EEL_SERVER_LOG_FILE   
     exit
 fi
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
+export EEL_SERVER_LOG_FILE
+export EEL_SERVER_LOG_LASTPOSITION
 
 NEWERRORS=`${SYSCHECK_HOME}/lib/tail_errors_from_ejbca_log.pl 2>/dev/null`
 
 if [ "x$NEWERRORS" = "x" ]; then
-    printlogmess $INFO $EEL_ERRNO_1 "$EEL_DESCR_1"
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $EEL_ERRNO_1 "$EEL_DESCR_1"
 else
     SHORTMESS=`echo $NEWERRORS | perl -ane 'm/Comment : (.*)/, print "$1\n"'`
-    printlogmess $ERROR $EEL_ERRNO_2 "$EEL_DESCR_2" "$SHORTMESS" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $EEL_ERRNO_2 "$EEL_DESCR_2" "$SHORTMESS" 
 fi
 

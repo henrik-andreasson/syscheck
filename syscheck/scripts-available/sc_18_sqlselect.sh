@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -21,14 +21,17 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=18
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1=${SCRIPTID}01
-ERRNO_2=${SCRIPTID}02
-ERRNO_3=${SCRIPTID}03
+ERRNO_1=01
+ERRNO_2=02
 
 # help
 if [ "x$1" = "x--help" ] ; then
@@ -40,12 +43,12 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
 fi
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 status=`echo "SELECT * FROM $DB_TEST_TABLE LIMIT 1"|$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD 2>&1 > /dev/null`
-
 if [ $? -ne 0 ] ; then
-    printlogmess $ERROR $ERRNO_2 "$DESCR_2" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" 
     exit 3
 else
-    printlogmess $INFO $ERRNO_1 "$DESCR_1" 
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
 fi
 

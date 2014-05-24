@@ -69,7 +69,7 @@ else
 fi
 
 if [ ! -d "${MYSQLBACKUPDIR}/${EXTRADIR}" ] ; then
-	printlogmess $ERROR $ERRNO_3 "$DESCR_3" "${MYSQLBACKUPDIR}/${EXTRADIR}"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "${MYSQLBACKUPDIR}/${EXTRADIR}"
 	exit 1
 fi
 
@@ -79,16 +79,16 @@ dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${DB_NAME} 2
 if [ $? = 0 ] ; then
   gzip $MYSQLBACKUPFULLFILENAME
   if [ $? = 0 ] ; then
-      printlogmess $INFO $ERRNO_1 "$DESCR_1" $MYSQLBACKUPFULLFILENAME.gz
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" $MYSQLBACKUPFULLFILENAME.gz
 
       if [ "x$BATCH" = "x1" ] ; then
  	     echo "$MYSQLBACKUPFULLFILENAME.gz"
       fi
   else
-      printlogmess $ERROR $ERRNO_2 "$DESCR_2" $MYSQLBACKUPFULLFILENAME
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" $MYSQLBACKUPFULLFILENAME
   fi  
 else
-  printlogmess $ERROR $ERRNO_4 "$DESCR_4" "$dumpret"
+  printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$dumpret"
 fi 
 
 

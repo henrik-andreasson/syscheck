@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # File containing COMMON definitions, use local script for local definitions !!!!
 # IMPORTANT, This file might be Very sensitive and contain PIN codes and passwords.
 # Make only readable by root.

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -61,4 +61,5 @@ date > ${SYSCHECK_HOME}/var/last_status
 for file in ${SYSCHECK_HOME}/scripts-enabled/sc_* ; do
 	$file
 done
+
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # 
 
 # Set SYSCHECK_HOME if not already set.
@@ -57,7 +57,7 @@ fi
 # arg1, if you use regexps, be sure to use "" , ex: "*.txt" on the command line
 FILES=
 if [ "x$1" = "x" ] ; then 
-    printlogmess $ERROR $ERRNO_2 "$DESCR_2"  
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
     exit
 else
     FILES="$1"
@@ -66,7 +66,7 @@ fi
 # arg2, SSHHOST is MANDATORY, to which host to rsync the files
 SSHHOST=
 if [ "x$2" = "x"  ] ; then 
-	printlogmess $ERROR $ERRNO_3 "$DESCR_3"  
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"  
 	exit
 else
     SSHHOST=$2
@@ -95,8 +95,8 @@ fi
 
 runresult=`rsync --recursive ${RSYNC_OPTIONS} -e "ssh ${SSHFROMKEY} ${SSHTOUSER}" ${FILES} ${SSHHOST}:${SSHDIR} 2>&1`
 if [ $? -eq 0 ] ; then
-	printlogmess $INFO $ERRNO_1 "$DESCR_1" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
 else
-	printlogmess $ERROR $ERRNO_4 "$DESCR_4" "$runresult"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$runresult"
 	exit -1
 fi

@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -15,11 +15,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=22
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
@@ -27,9 +27,9 @@ SCRIPTID=22
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-BOKS_REPLICA_ERRNO_1=${SCRIPTID}01
-BOKS_REPLICA_ERRNO_2=${SCRIPTID}02
-BOKS_REPLICA_ERRNO_3=${SCRIPTID}03
+BOKS_REPLICA_ERRNO_1=01
+BOKS_REPLICA_ERRNO_2=02
+BOKS_REPLICA_ERRNO_3=03
 
 
 # help
@@ -130,12 +130,13 @@ fi
 
 
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
 if [ $NUMBER_OF_NOT_RUNNING_PROCS -gt 0 ] ; then
-        printlogmess $ERROR $BOKS_REPLICA_ERRNO_3 "$BOKS_REPLICA_DESCR_2" $NAMES_OF_NOT_RUNNING_PROCS
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $BOKS_REPLICA_ERRNO_3 "$BOKS_REPLICA_DESCR_2" $NAMES_OF_NOT_RUNNING_PROCS
 	exit 2
 else
-        printlogmess $INFO $BOKS_REPLICA_ERRNO_1 "$BOKS_REPLICA_DESCR_1"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $BOKS_REPLICA_ERRNO_1 "$BOKS_REPLICA_DESCR_1"
 	exit 0
 fi
 

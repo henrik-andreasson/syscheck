@@ -70,14 +70,14 @@ fi
  
 
 if [ ! -d ${InTransitDir} ] ; then
-	printlogmess $ERROR $ERRNO_9 "$ARCHIVE_DESCR_9"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_9 "$ARCHIVE_DESCR_9"
 	exit -1
 fi
 
 # arg1 
 FileToArchive=
 if [ "x$1" = "x" ] ; then 
-	printlogmess $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"  
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"  
 	exit -1
 else
     FileToArchive=$1
@@ -86,7 +86,7 @@ fi
 # arg2 hostname 
 ArchiveServer=
 if [ "x$2" = "x"  ] ; then 
-	printlogmess $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"  
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"  
 	exit -1
 else
     ArchiveServer=$2
@@ -96,7 +96,7 @@ fi
 # arg3 mandatory, eg.: "/store/logs/hostname/" 
 ArchiveDir=
 if [ "x$3" = "x"  ] ; then 
-        printlogmess $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"
         exit -1
 else
 	ArchiveDir=$3
@@ -123,7 +123,7 @@ moveToIntransit() {
 	IntransitFileName=`basename $reultFromLocalClaim `
 
 	if [ "x${IntransitFileName}" = "x" ] ; then
-		printlogmess $ERROR $ERRNO_8 "$ARCHIVE_DESCR_8" ${IntransitFileName}
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_8 "$ARCHIVE_DESCR_8" ${IntransitFileName}
 		exit -1	
 	fi
 # move the file into the intransit dir and give it a unique name
@@ -136,10 +136,10 @@ moveToIntransit() {
 	fi
 
 	if [ $? != 0 ] ; then
-	 	printlogmess $ERROR $ERRNO_2 "$ARCHIVE_DESCR_2" ${file} ${InTransitDir}/${IntransitFileName} 
+	 	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$ARCHIVE_DESCR_2" ${file} ${InTransitDir}/${IntransitFileName} 
 		exit -1
 	else
-		printlogmess $INFO $ERRNO_7 "$ARCHIVE_DESCR_7" ${file} ${InTransitDir}/${IntransitFileName}
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_7 "$ARCHIVE_DESCR_7" ${file} ${InTransitDir}/${IntransitFileName}
 		echo "${IntransitFileName}"
 	fi
 }
@@ -152,7 +152,7 @@ transferFile(){
 	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX\" ${SSHTOUSER} ${SSHFROMKEY}"
 	reultFromClaim=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX" ${SSHTOUSER} ${SSHFROMKEY}`
 	if [ $? != 0 ] ; then
-                printlogmess $ERROR $ERRNO_4 "$ARCHIVE_DESCR_4" 
+                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$ARCHIVE_DESCR_4" 
 		exit -1
 	fi
 	baseFile=`echo $reultFromClaim | grep ${ShortFileName}`
@@ -162,25 +162,25 @@ transferFile(){
  	printtoscreen "$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER ${SSHFROMKEY}"
  	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER ${SSHFROMKEY}
 	if [ $? != 0 ] ; then
-                printlogmess $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "${InTransitDir}/${IntransitFileName} $ArchiveServer ${ArchiveDir}/${remoteFileName}"
+                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "${InTransitDir}/${IntransitFileName} $ArchiveServer ${ArchiveDir}/${remoteFileName}"
 		exit -1
 	fi
 
 	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"md5sum ${ArchiveDir}/${remoteFileName}\" ${SSHTOUSER} ${SSHFROMKEY}"
 	sshresult=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "md5sum ${ArchiveDir}/${remoteFileName}" ${SSHTOUSER} ${SSHFROMKEY}`
 	if [ $? != 0 ] ; then
-                printlogmess $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "md5sum check failed"
+                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "md5sum check failed"
 		exit -1
 	fi
 	remoteMD5sum=`echo $sshresult | cut -f1 -d\  `
 	localMD5sum=`md5sum ${InTransitDir}/${IntransitFileName} | cut -f1 -d\ `
 	if [ "x${remoteMD5sum}" = "x" -o "x${localMD5sum}" = "x" -o ${remoteMD5sum} != ${localMD5sum} ] ; then
-		printlogmess $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "md5sum check failed"
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$ARCHIVE_DESCR_5" "md5sum check failed"
                 exit -1
 	fi
 
 # return the filename
-        printlogmess $INFO $ERRNO_6 "$ARCHIVE_DESCR_6" "${InTransitDir}/${IntransitFileName} $ArchiveServer ${ArchiveDir}/${remoteFileName}"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_6 "$ARCHIVE_DESCR_6" "${InTransitDir}/${IntransitFileName} $ArchiveServer ${ArchiveDir}/${remoteFileName}"
 	echo "${remoteFileName}"
 }
 
@@ -200,10 +200,10 @@ archiveLocally() {
         printtoscreen "mv ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}"
         mv ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
 	if [ $? != 0 ] ; then
-	 	printlogmess $ERROR $ERRNO_2 "$ARCHIVE_DESCR_2" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName} 
+	 	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$ARCHIVE_DESCR_2" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName} 
 		exit -1
 	else
-		printlogmess $INFO $ERRNO_1 "$ARCHIVE_DESCR_1" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$ARCHIVE_DESCR_1" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
 	fi
 }
 

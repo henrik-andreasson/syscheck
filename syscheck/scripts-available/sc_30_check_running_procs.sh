@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -16,10 +16,11 @@ fi
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
 
-
-
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=30
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
@@ -39,28 +40,29 @@ fi
 
 for (( i = 0 ;  i < ${#PROCNAME[@]} ; i++ )) ; do
 
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh ${PIDFILE[$i]} ${PROCNAME[$i]}` 
     if [ "x$pidinfo" = "x" ] ; then
 
 	# try restart 
 	if [ "x${RESTARTCMD[$i]}" = "x" ] ; then
 	    # no restart cmd defined
-	    printlogmess ${LEVEL[3]} ${ERRNO[3]} "${DESCR[3]}" ${PROCNAME[$i]}
+	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" ${PROCNAME[$i]}
 	    continue
 	fi
 
+	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)	
 	eval ${RESTARTCMD[$i]}
-	
+
 	if [ $? -eq 0 ] ; then
 	# log restart success
-            printlogmess ${LEVEL[1]} ${ERRNO[1]} "${DESCR[1]}" ${PROCNAME[$i]}
+            printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_2 "$DESCR_2" ${PROCNAME[$i]}
 	else
 	# log restart fail
-            printlogmess  ${LEVEL[2]} ${ERRNO[2]} "${DESCR[2]}" ${PROCNAME[$i]}
+            printlogmess ${SCRIPTID} ${SCRIPTINDEX}    $ERROR $ERRNO_3 "$DESCR_3" ${PROCNAME[$i]}
 	fi
     else
-        printlogmess ${LEVEL[0]} ${ERRNO[0]} "${DESCR[0]}" ${PROCNAME[$i]}
-	printtoscreen "proc $i: ${PROCNAME[$i]} is running"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" ${PROCNAME[$i]}
     fi
 
 

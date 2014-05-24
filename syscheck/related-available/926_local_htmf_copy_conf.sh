@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -64,7 +64,7 @@ schelp () {
 if [ !- d ${BACKUP_DIR} ] ; then
 	mkdir -p ${BACKUP_DIR}
 	if [ $? -ne 0 ] ; then
-	    printlogmess $ERROR $ERRNO_3 "$DESCR_3" "${BACKUP_DIR}"
+	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "${BACKUP_DIR}"
 	    exit
 	fi
 fi
@@ -75,19 +75,19 @@ for (( j=0; j < ${#HTMF_FILE[@]} ; j++ )){
 	if [ "x${BACKUP}" = "xbackup" ] ; then
 		cp -f "${HTMF_FILE[$j]}" ${BACKUP_DIR}
 		if [ $? -ne 0 ] ; then
-	    		printlogmess $ERROR $ERRNO_2 "$DESCR_2" ${HTMF_FILE[$j]}
+	    		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" ${HTMF_FILE[$j]}
 	    		continue
 		else
-	    		printlogmess $INFO $ERRNO_1 "$DESCR_1" ${HTMF_FILE[$j]}
+	    		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" ${HTMF_FILE[$j]}
 		fi
 	else
 		localfilename=$(basename ${HTMF_FILE[$j]})
 		cp -f ${BACKUP_DIR}/${localfilename} "${HTMF_FILE[$j]}"
                 if [ $? -ne 0 ] ; then
-                        printlogmess $ERROR $ERRNO_2 "$DESCR_2" ${HTMF_FILE[$j]}
+                        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" ${HTMF_FILE[$j]}
                         continue
                 else
-                        printlogmess $INFO $ERRNO_1 "$DESCR_1" ${HTMF_FILE[$j]}
+                        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" ${HTMF_FILE[$j]}
                 fi
 
 	fi
