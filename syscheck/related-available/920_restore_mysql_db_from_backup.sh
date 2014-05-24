@@ -45,7 +45,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
 fi
 
 if [ "x$1" = "x" ] ; then
-	printlogmess $ERROR $DESCR_4 "$BAK_DESCR_4"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $DESCR_4 "$BAK_DESCR_4"
 	exit
 fi
 
@@ -62,7 +62,7 @@ echo "now we'll backup the current database before we restore the one you specif
 $SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s
 
 if [ $? -ne 0 ] ; then
-	printlogmess $LEVEL_1 $ERRNO_1 "$DESCR_1"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
 	exit
 fi 
 
@@ -70,8 +70,8 @@ fi
 echo "restoring the db from $1"
 zcat $1 | $MYSQL_BIN ${DB_NAME} -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
-	printlogmess $LEVEL_2 $ERRNO_2 "$DESCR_2" "$1"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2" "$1"
 else
-	printlogmess $LEVEL_3 $ERRNO_3 "$DESCR_3" "$1" "${MYSQLBACKUPFULLFILENAME}.gz"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_3 $ERRNO_3 "$DESCR_3" "$1" "${MYSQLBACKUPFULLFILENAME}.gz"
 fi
 
