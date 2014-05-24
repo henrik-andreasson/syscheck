@@ -1,9 +1,5 @@
 #!/bin/bash
 # Script to check if the NTP client is running and is synchronized.
-# This script has been tested with the xntp rpm package on Suse Linux Enterprise Server 9.
-# Add the servers in the end of the file.
-# Usage:Just run it.
-# checkntp
 
 # Set SYSCHECK_HOME if not already set.
 
@@ -20,9 +16,6 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
@@ -30,55 +23,64 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=17
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-NTP_ERRNO_1=${SCRIPTID}01
-NTP_ERRNO_2=${SCRIPTID}02
-NTP_ERRNO_3=${SCRIPTID}03
-NTP_ERRNO_4=${SCRIPTID}04
-NTP_ERRNO_5=${SCRIPTID}05
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
+ERRNO_4=04
+ERRNO_5=05
 
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $NTP_HELP"
-    echo "$NTP_ERRNO_1/$NTP_DESCR_1 - $NTP_HELP_1"
-    echo "$NTP_ERRNO_2/$NTP_DESCR_2 - $NTP_HELP_2"
-    echo "$NTP_ERRNO_3/$NTP_DESCR_3 - $NTP_HELP_3"
-    echo "$NTP_ERRNO_4/$NTP_DESCR_4 - $NTP_HELP_4"
-    echo "$NTP_ERRNO_5/$NTP_DESCR_5 - $NTP_HELP_5"
+    echo "$0 $HELP"
+    echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+    echo "$ERRNO_2/$DESCR_2 - $HELP_2"
+    echo "$ERRNO_3/$DESCR_3 - $HELP_3"
+    echo "$ERRNO_4/$DESCR_4 - $HELP_4"
+    echo "$ERRNO_5/$DESCR_5 - $HELP_5"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" ] ; then
     PRINTTOSCREEN=1
 fi
 
 checkntp () {
-	DATE=`date +'%Y-%m-%d.%H.%m.%S'`
+	NTPSERVER=$1
+	if [ "x${NTPSERVER}" = "x" ] ; then
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "ntpserver not set"
+		return
+	fi
+	
+	SCRIPTINDEX=$2 
+		
+        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	XNTPDPID=`ps -ef | grep ntpd | grep -v grep | awk '{print $2}'`
 	if [ x"$XNTPDPID" = "x" ]; then
-		printlogmess $ERROR $NTP_ERRNO_2 "$NTP_DESCR_2"
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 		exit
 	fi	
 
 	# Get information about ntp
-	#SYSTEMPEER=`ntpdc -c sysinfo |egrep "system peer:"|awk '{print $3}'`
-	NTPSERVER=`${NTPBIN} -p| egrep "^\*"|awk '{print $1}'`
-	#NTPSERVER=`${NTPBIN} -p| egrep "LOCL"|awk '{print $1}'`
-
-	if [ "x$NTPSERVER}x" = "x" ] ; then
-		printlogmess $ERROR $NTP_ERRNO_4 "$NTP_DESCR_4" "$NTPSERVER" "$ERRCODE"
-		exit
+        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+	result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*|\+)" )
+	if [ $? -ne 0 ] ; then
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
+        elif [ "x$NTPSERVER" = "xLOCAL(0)" ] ; then
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$NTPSERVER ($result)" 
+	else
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
 	fi
 
-        if [ "x$NTPSERVER" = "xLOCAL(0)" ] ; then
-		printlogmess $ERROR $NTP_ERRNO_3 "$NTP_DESCR_3" "$NTPSERVER" "$ERRCODE"
-	else		
-		printlogmess $INFO $NTP_ERRNO_1 "$NTP_DESCR_1" "$NTPSERVER"
-	fi 
 }
-
 
 # check with the IP:s of all ntp servers
 
-checkntp
+for (( i = 0 ;  i < ${#NTPSERVER[@]} ; i++ )) ; do
+	checkntp ${NTPSERVER[$i]} $SCRIPTINDEX
+done
+
