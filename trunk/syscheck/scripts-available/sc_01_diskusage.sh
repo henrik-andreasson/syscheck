@@ -48,7 +48,6 @@ fi
 diskusage () {
 	FILESYSTEM=$1 
 	LIMIT=$2 
-	SCRIPTINDEX=$3
 
 	if [ "x${FILESYSTEM}" = "x" ] ; then
 		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No filesystem specified"
@@ -56,10 +55,6 @@ diskusage () {
 	fi
 	if [ "x${LIMIT}" = "x" ] ; then
 		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No limit specified"
-		return -1
-	fi
-	if [ "x${SCRIPTINDEX}" = "x" ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No script index specified"
 		return -1
 	fi
 	
@@ -81,8 +76,7 @@ diskusage () {
 
 
 for (( i = 0 ;  i < ${#FILESYSTEM[@]} ; i++ )) ; do
-	countup=$(expr $SCRIPTINDEX + 1)
-	SCRIPTINDEX=$(printf "%02d" $countup)
+	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	diskusage ${FILESYSTEM[$i]}  ${USAGEPERCENT[$i]} ${SCRIPTINDEX}
 done
 

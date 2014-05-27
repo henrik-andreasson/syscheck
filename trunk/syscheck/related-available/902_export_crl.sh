@@ -24,12 +24,15 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=902
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1="${SCRIPTID}1"
-ERRNO_2="${SCRIPTID}2"
-ERRNO_3="${SCRIPTID}3"
+ERRNO_1="01"
+ERRNO_2="02"
+ERRNO_3="03"
 
 mkdir -p ${OUTPATH2}
 
@@ -52,41 +55,49 @@ fi
 if [ "x$1" = "x" -o ! -r "$1" ] ; then 
 	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_2"  
 	printtoscreen $ERROR $ERRNO_3 "$DESCR_2"
+	# no file as input
 	exit
 fi
 
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
 date >> ${CRLLOG} 
 
 CRLISSUER=`openssl crl -inform der -in $1 -issuer -noout`
 if [ $? -ne 0 ] ; then 
     printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    exit
 fi
 
 CRLISSUER2=`echo ${CRLISSUER} | perl -ane 's/\//_/gio,s/issuer=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
     printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    exit
 fi
 
 CRLLASTUPDATE=`openssl crl -inform der -in $1 -lastupdate -noout`
 if [ $? -ne 0 ] ; then 
     printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    exit
 fi
 
 CRLLASTUPDATE2=`echo ${CRLLASTUPDATE} | perl -ane 's/lastUpdate=//gio,s/\ /_/gio,s/:/./gio,print'`
 if [ $? -ne 0 ] ; then 
     printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    exit
 fi
 
 CRL=`openssl crl -inform der -in $1`
 if [ $? -ne 0 ] ; then 
     printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    exit
 fi
 
 CRLSTRING=`echo $CRL | perl -ane 's/\n//gio,print'`
 if [ $? -ne 0 ] ; then 
     printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    exit
 fi
 
 
@@ -94,10 +105,11 @@ echo "CRLSTRING: $CRLSTRING"          >> ${CRLLOG}
 echo "CRLLASTUPDATE: $CRLLASTUPDATE2" >> ${CRLLOG}
 echo "CRLISSUER: $CRLISSUER2"         >> ${CRLLOG}
 
-#OUTFILE="${OUTPATH2}/archived-crl-${DATE}-${CRLLASTUPDATE2}-${CRLISSUER2}"
+
 
 OUTFILE="${OUTPATH2}/${CRLISSUER2}.crl"
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 openssl crl -inform der -in $1 > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
     printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?" 
