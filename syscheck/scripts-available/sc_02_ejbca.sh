@@ -23,7 +23,9 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=02
-SCRIPTINDEX=01
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
@@ -61,6 +63,7 @@ else
         printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
 fi
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 FULLOUTPUT=$(cat $OUTPUT)
 OKOUTPUT=$(cat $OUTPUT | grep ALLOK)
 ERROROUTPUT=$(cat $OUTPUT | grep ERROR)

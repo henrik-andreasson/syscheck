@@ -15,9 +15,6 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
@@ -73,17 +70,15 @@ checkmem(){
     
     REALUSEDMEMORY=`expr $TOTALMEMORY - $MEMORYTOGETHER`
     
-    countup=$(expr $SCRIPTINDEX + 1)
-    SCRIPTINDEX=$(printf "%02d" $countup)
- 
+
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     if [ $REALUSEDMEMORY -gt $MEMORYLIMIT ] ; then
         printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_1 "$DESCR_1" "$REALUSEDMEMORY" "$MEMORYLIMIT"
     else
         printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_2 "$DESCR_2" "$REALUSEDMEMORY" "$MEMORYLIMIT"
     fi
     
-    countup=$(expr $SCRIPTINDEX + 1)
-    SCRIPTINDEX=$(printf "%02d" $countup)
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
     if [ $USEDSWAP -gt $SWAPLIMIT ] ; then
         printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "$USEDSWAP" "$SWAPLIMIT"

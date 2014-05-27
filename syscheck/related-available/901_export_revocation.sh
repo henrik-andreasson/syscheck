@@ -24,12 +24,15 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=901
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
 
-ERRNO_1="${SCRIPTID}1"
-ERRNO_2="${SCRIPTID}2"
-ERRNO_3="${SCRIPTID}3"
+ERRNO_1="01"
+ERRNO_2="02"
+ERRNO_3="03"
 
 mkdir -p ${OUTPATH2}
 
@@ -47,37 +50,47 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
 fi 
 
 
+### is there even a file as argument1 ?
 if [ "x$1" = "x" -o ! -r "$1" ] ; then 
 	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
 	printtoscreen $ERROR $ERRNO_2 "$DESCR_2"
 	exit
 fi
 
-
+# for inital checks
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
 date >> ${REVLOG} 
 CERTSERIAL=`openssl x509 -inform der -in $1 -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	# we really need a serial
+	exit
 fi
 
 
 CERTSUBJECT=`openssl x509 -inform der -in $1 -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	# also without subject we cant continiue
+	exit
 fi
 
 echo "CERTSERIAL: $CERTSERIAL" >> ${REVLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${REVLOG}
 CERT=`openssl x509 -inform der -in $1`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	# if we cant parse the cert
+	exit
 fi
+
 CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
 
 echo "CERTSTRING: $CERTSTRING " >> ${REVLOG}
 echo                            >> ${REVLOG}
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX) 
 OUTFILE="${OUTPATH2}/revoked-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in $1 > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
@@ -88,6 +101,7 @@ fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
     printtoscreen "Copying file: ${OUTFILE} to:${REMOTE_HOST[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey:${SSHKEY[$j]}"
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     ${SYSCHECK_HOME}/related-enabled/917_archive_file.sh ${OUTFILE} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}
 }
 
