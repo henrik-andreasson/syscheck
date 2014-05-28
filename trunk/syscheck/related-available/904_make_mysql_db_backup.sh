@@ -21,15 +21,19 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # Import common resources
 . $SYSCHECK_HOME/config/related-scripts.conf
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=904
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
 
-ERRNO_1="${SCRIPTID}1"
-ERRNO_2="${SCRIPTID}2"
-ERRNO_3="${SCRIPTID}3"
-ERRNO_4="${SCRIPTID}4"
+ERRNO_1="01"
+ERRNO_2="02"
+ERRNO_3="03"
+ERRNO_4="04"
 
 PRINTTOSCREEN=0
 
@@ -73,26 +77,23 @@ if [ ! -d "${MYSQLBACKUPDIR}/${EXTRADIR}" ] ; then
 	exit 1
 fi
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPDIR}/${EXTRADIR}/${MYSQLBACKUPFILE}"
 dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${DB_NAME} 2>&1 > ${MYSQLBACKUPFULLFILENAME} )
+if [ $? -ne 0 ] ; then
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$dumpret"
+	exit
+fi
 
-if [ $? = 0 ] ; then
-  gzip $MYSQLBACKUPFULLFILENAME
-  if [ $? = 0 ] ; then
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+gzip $MYSQLBACKUPFULLFILENAME
+if [ $? -eq  0 ] ; then
       printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" $MYSQLBACKUPFULLFILENAME.gz
-
-      if [ "x$BATCH" = "x1" ] ; then
- 	     echo "$MYSQLBACKUPFULLFILENAME.gz"
-      fi
-  else
-      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" $MYSQLBACKUPFULLFILENAME
-  fi  
 else
-  printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$dumpret"
-fi 
+      printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" $MYSQLBACKUPFULLFILENAME.gz
+fi
 
-
-
-
-
+if [ "x$BATCH" = "x1" ] ; then
+	echo "$MYSQLBACKUPFULLFILENAME.gz"
+fi
 
