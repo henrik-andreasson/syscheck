@@ -25,23 +25,26 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=906
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
 
 
-ERRNO_1="${SCRIPTID}1"
-ERRNO_2="${SCRIPTID}2"
-ERRNO_3="${SCRIPTID}3"
-ERRNO_4="${SCRIPTID}4"
+ERRNO_1="01"
+ERRNO_2="02"
+ERRNO_3="03"
+ERRNO_4="04"
 
 
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-	/bin/echo -e "$SSH_HELP"
-	echo "$ERRNO_1/$SSH_DESCR_1 - $SSH_HELP_1"
-	echo "$ERRNO_2/$SSH_DESCR_2 - $SSH_HELP_2"
-	echo "$ERRNO_3/$SSH_DESCR_3 - $SSH_HELP_3"
-	echo "$ERRNO_4/$SSH_DESCR_4 - $SSH_HELP_4"
+	/bin/echo -e "$HELP"
+	echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+	echo "$ERRNO_2/$DESCR_2 - $HELP_2"
+	echo "$ERRNO_3/$DESCR_3 - $HELP_3"
+	echo "$ERRNO_4/$DESCR_4 - $HELP_4"
 	echo "${SCREEN_HELP}"
 	exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
@@ -53,7 +56,7 @@ fi
 # arg1, if you use regexps, be sure to use "" , ex: "*.txt" on the command line
 SSHFILE=
 if [ "x$1" = "x" ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$SSH_DESCR_2"  
+    printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2"  
     exit
 else
     SSHFILE="$1"
@@ -62,7 +65,7 @@ fi
 
 SSHHOST=
 if [ "x$2" = "x"  ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$SSH_DESCR_3"  
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"  
 	exit
 else
     SSHHOST=$2
@@ -86,11 +89,11 @@ if [ "x$5" != "x"  ] ; then
 fi
 
 
-
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 runresult=`scp -r ${SSHTIMEOUT} ${SSHFROMKEY} ${SSHFILE} ${SSHTOUSER}${SSHHOST}:${SSHDIR} 2>&1`
 if [ $? -eq 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$SSH_DESCR_1" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$SSH_DESCR_4" "$runresult"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$runresult"
 	exit -1
 fi
