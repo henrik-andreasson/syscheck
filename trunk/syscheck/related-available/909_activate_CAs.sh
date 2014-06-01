@@ -71,7 +71,7 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
         if [ "x$error" = "x"  ] ; then
             printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "$NAME"
         else
-            printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$NAME" $error
+            printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$NAME" "$error"
 
         fi
         echo " --- "
