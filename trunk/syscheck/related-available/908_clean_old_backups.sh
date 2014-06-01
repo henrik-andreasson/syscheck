@@ -25,6 +25,9 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=908
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
 
@@ -59,6 +62,8 @@ ERR=""
 for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
     printtoscreen "deleteing ${FILENAME[$i]} ... "  
 
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
     if [ "x${DATESTR[$i]}" = "x" ] ; then
     	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$CLEANBAK_DESCR_4"
 	exit
@@ -84,6 +89,7 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
 	
 done
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "x$ERR" = "x" ]  ; then
     printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$CLEANBAK_DESCR_1"
 else
