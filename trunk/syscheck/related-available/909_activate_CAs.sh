@@ -27,20 +27,24 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=909
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
+
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
 
-ERRNO_1="${SCRIPTID}1"
-ERRNO_2="${SCRIPTID}2"
-ERRNO_3="${SCRIPTID}3"
+ERRNO_1="01"
+ERRNO_2="02"
+ERRNO_3="03"
 
 
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-    echo "$ACT_HELP"
-    echo "$ERRNO_1/$ACT_DESCR_1 - $ACT_HELP_1"
-    echo "$ERRNO_2/$ACT_DESCR_2 - $ACT_HELP_2"
-    echo "$ERRNO_3/$ACT_DESCR_3 - $ACT_HELP_3"
+    echo "$HELP"
+    echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+    echo "$ERRNO_2/$DESCR_2 - $HELP_2"
+    echo "$ERRNO_3/$DESCR_3 - $HELP_3"
     echo "${SCREEN_HELP}"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
@@ -50,20 +54,27 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
 fi 
 
 
-
 cd $EJBCA_HOME
 for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
-	NAME=${CANAME[$i]}
-	PIN=${CAPIN[$i]}
-  
-	printtoscreen "Activating CA :  $NAME (./bin/ejbca.sh ca activateca $NAME $PIN)"
-	
-	returncode=`./bin/ejbca.sh ca activateca $NAME $PIN`
-	if [ $? -eq 0 ] ; then
-	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$ACT_DESCR_1" "$NAME" 
-	else
-	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$ACT_DESCR_2" "$NAME" 
-	fi
-	
+        NAME=${CANAME[$i]}
+        PIN=${CAPIN[$i]}
+
+        if [ "x${PIN}" = "x" ] ; then
+                printtoscreen "Activating CA: $NAME, no PIN in config will prompt for it"
+        else
+                printtoscreen "Activating CA: $NAME (./bin/ejbca.sh ca activateca $NAME )"
+        fi
+
+        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+        ./bin/ejbca.sh ca activateca $NAME $PIN | tee ${SYSCHECK_HOME}/var/$0.output
+        error=$(grep -v "Enter authorization code:" ${SYSCHECK_HOME}/var/$0.output)
+        if [ "x$error" = "x"  ] ; then
+            printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "$NAME"
+        else
+            printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$NAME" $error
+
+        fi
+        echo " --- "
+
 done
 
