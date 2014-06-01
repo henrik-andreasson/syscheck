@@ -26,20 +26,25 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 
 ## local definitions ##
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=905
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
-ERRNO_1=${SCRIPTID}1
-ERRNO_2=${SCRIPTID}2
-ERRNO_3=${SCRIPTID}3
-ERRNO_4=${SCRIPTID}4
-ERRNO_5=${SCRIPTID}5
-ERRNO_6=${SCRIPTID}6
-ERRNO_7=${SCRIPTID}7
-ERRNO_8=${SCRIPTID}8
-ERRNO_9=${SCRIPTID}8
-ERRNO_10=${SCRIPTID}8
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
+ERRNO_4=04
+ERRNO_5=05
+ERRNO_6=06
+ERRNO_7=07
+ERRNO_8=08
+ERRNO_9=09
+ERRNO_10=10
 
 
 
@@ -157,6 +162,8 @@ checkcrl () {
     DATE=${TEMPDATE:11}
     WTIMELEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" ${wcmdopts})
     ETIMELEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" ${ecmdopts})
+
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     
     if [ "$ETIMELEFT" -lt "$ETIME" ] ; then
 	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
@@ -181,15 +188,20 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
 
     CRLFILE=${tempdir}/${CRL_NAME[$i]}
 
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     get ${CRLCANAME[$i]} "${CRLFILE}"
+
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     echo "${CRLFILE} ${CRLWARNTIME[$i]} ${CRLERRORTIME[$i]}"
     checkcrl "${CRLFILE}" ${CRLWARNTIME[$i]} ${CRLERRORTIME[$i]}
+
     if [ $? -ne 0 ] ; then
 	# check crl didn't pass the crl so we'll not publish this one and continue with the next
     	rm -rf $tempdir
 	continue
     fi
 	
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX) 
     if [ "x${REMOTE_HOST[$i]}" = "xlocalhost" ] ; then
 	cp -f ${CRLFILE} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	if [ $? -eq 0 ] ;then
@@ -199,6 +211,7 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
 	fi
 	
     else
+        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     	put ${REMOTE_HOST[$i]} ${CRLFILE} ${CRLTO_DIR[$i]} ${SSHKEY[$i]}  ${SSHUSER[$i]}
 	
     fi
