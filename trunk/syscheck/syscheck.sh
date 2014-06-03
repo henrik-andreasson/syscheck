@@ -62,4 +62,13 @@ for file in ${SYSCHECK_HOME}/scripts-enabled/sc_* ; do
 	$file
 done
 
+# run the filter command
+if [ "x${FILTER_SYSCHECK_AFTER_RUN}" = "x1" ] ; then
+	${SYSCHECK_HOME}/related-enabled/929_filter_syscheck_messages.sh
+fi
+
+# transfer syscheck status to remote machine
+if [ "x${SEND_SYSCHECK_RESULT_TO_REMOTE_MACHINE_AFTER_FILTER}" = "x1" ] ;then
+	${SYSCHECK_HOME}/related-available/930_send_filtered_result_to_remote_machine.sh
+fi
 
