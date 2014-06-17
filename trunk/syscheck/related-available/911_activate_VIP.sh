@@ -17,32 +17,31 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/related-scripts.conf
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=911
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID 
 
-ERRNO_1="${SCRIPTID}1"
-ERRNO_2="${SCRIPTID}2"
-ERRNO_3="${SCRIPTID}3"
-ERRNO_4="${SCRIPTID}4"
+ERRNO_1="01"
+ERRNO_2="02"
+ERRNO_3="03"
+ERRNO_4="04"
 
 
 
 PRINTTOSCREEN=
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-	echo "$ACTVIP_HELP"
-	echo "$ERRNO_1/$ACTVIP_DESCR_1 - $ACTVIP_HELP_1"
-	echo "$ERRNO_2/$ACTVIP_DESCR_2 - $ACTVIP_HELP_2"
-	echo "$ERRNO_3/$ACTVIP_DESCR_3 - $ACTVIP_HELP_3"
+	echo "$HELP"
+	echo "$ERRNO_1/$DESCR_1 - $HELP_1"
+	echo "$ERRNO_2/$DESCR_2 - $HELP_2"
+	echo "$ERRNO_3/$DESCR_3 - $HELP_3"
 	echo "${SCREEN_HELP}"
 	exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
@@ -53,32 +52,36 @@ fi
 
 IP_GATEWAY=`$ROUTE -n | awk '/0.0.0.0/'| awk '{print $2}' |awk '!/0.0.0.0/'`
 
-
-
-CHECK_VIP=`$IFCONFIG ${IF_VIRTUAL} | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL}` 
-if [ "x${CHECK_VIP}" != "x" ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$ACTVIP_DESCR_3"
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+res=$($IFCONFIG ${IF_VIRTUAL} 2>&1 | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL} ) 
+if [ "x$res" != "x" ] ; then 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DESCR_3" "$res"
 	exit
 fi
 
-res=`ping -c4 ${HOSTNAME_VIRTUAL} 2>&1`
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+res=$(ping -c4 ${HOSTNAME_VIRTUAL} )
 if [ $? -eq 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$ACTVIP_DESCR_4" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$res" 
 	exit
 fi
 
-$IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up
-if [ $? -eq 0 ] ; then 
-    date > ${SYSCHECK_HOME}/var/this_node_has_the_vip
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$ACTVIP_DESCR_1" "$?" 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+res=($IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up)
+if [ $? -ne 0 ] ; then 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$res" 
+	exit
+fi
 
-    arping -f -q -U ${IP_GATEWAY} -I ${IF_VIRTUAL} -s ${HOSTNAME_VIRTUAL}
-    if [ $? = 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_5 "$ACTVIP_DESCR_5" "$?"
-    else
-    	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_6 "$ACTVIP_DESCR_6" "$?"
-    fi
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+date > ${SYSCHECK_HOME}/var/this_node_has_the_vip
+printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+res=$(arping -f -q -U ${IP_GATEWAY} -I ${IF_VIRTUAL} -s ${HOSTNAME_VIRTUAL} )
+if [ $? -ne 0 ] ; then
+    	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_6 "$DESCR_6" "$res"
 else
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ACTVIP_DESCR_3" "$?" 
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_5 "$DESCR_5" 
 fi
 
