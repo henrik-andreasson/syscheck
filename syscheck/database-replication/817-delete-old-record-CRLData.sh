@@ -28,7 +28,12 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/database-replication.conf
 
-SCRIPTID=`basename $0|cut -d"-" -f1`
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
+SCRIPTID=817
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID || exit 1;
 getconfig $SCRIPTID || exit 1;
 schelp () {
@@ -110,6 +115,7 @@ LEVEL=${LEVEL_12}
 DESCR=${DESCR_12}
 Sub_Error 12
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 echo "`date`:End backup ">>${LOGFILE} 
 ##############
 # Create database for old crldatarecords
@@ -129,6 +135,7 @@ DESCR=${DESCR_1}
 Sub_Error 1
 
 ##############
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 # Copy table before clean for safty
 echo "`date`:Copy all rows from CRLData to CRLDataTmp table ">>${LOGFILE} 
 if [ ${PRINTTOSCREEN} = 1 ] ; then

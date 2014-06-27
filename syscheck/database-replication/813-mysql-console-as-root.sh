@@ -18,6 +18,11 @@ fi
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
+SCRIPTID=813
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 
 ## Import common definitions ##
