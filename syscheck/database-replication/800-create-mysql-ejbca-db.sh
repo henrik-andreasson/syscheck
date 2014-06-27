@@ -24,6 +24,9 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 . $SYSCHECK_HOME/config/database-replication.conf
 
 SCRIPTID=800
+
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID || exit 1;
 getconfig $SCRIPTID || exit 1;
 
@@ -56,6 +59,7 @@ elif [ "x$1" = "x-q" -o  "x$1" = "x--quiet" -o \
 	PRINTTOSCREEN=0
 fi 
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 echo "select * from UserData" | $MYSQL_BIN $DB_NAME -u root --password="$MYSQLROOT_PASSWORD" >/dev/null 2>/dev/null
 if [ $? -ne 0 ] ; then
 	$MYSQLADMIN_BIN create $DB_NAME -u root --password="$MYSQLROOT_PASSWORD" 

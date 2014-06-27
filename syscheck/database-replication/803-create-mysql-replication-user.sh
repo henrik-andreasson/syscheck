@@ -23,7 +23,12 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/database-replication.conf
 
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTID=803
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
 getlangfiles $SCRIPTID || exit 1;
 getconfig $SCRIPTID || exit 1;
 
@@ -58,6 +63,7 @@ echo "GRANT REPLICATION SLAVE ON *.* to '${DBREP_USER}'@'${HOSTNAME_NODE2}' IDEN
 echo "GRANT REPLICATION SLAVE ON *.* to '${DBREP_USER}'@'${HOSTNAME_VIRTUAL}' IDENTIFIED BY '${DBREP_PASSWORD}';" >> $OUTFILE
 echo "select * from user where user like '%${DBREP_USER}%'" >> $OUTFILE
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" <  $OUTFILE
 if [ $? -eq 0 ] ; then
 	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"

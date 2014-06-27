@@ -24,6 +24,9 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 . $SYSCHECK_HOME/config/database-replication.conf
 
 SCRIPTID=801
+
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID || exit 1;
 getconfig $SCRIPTID || exit 1;
 
@@ -71,6 +74,7 @@ else
 	exit
 fi
 	
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 $MYSQLADMIN_BIN drop $DB_NAME -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
 	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"

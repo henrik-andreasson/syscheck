@@ -15,6 +15,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
+SCRIPTID=806
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 
 
@@ -108,8 +113,10 @@ $Id: ejbca-ds-node1.xml.templ,v 1.1 2006-10-30 17:14:44 kinneh Exp $
 </datasources>
 __EOT__
 if [ $? -eq 0 ] ; then
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" 
 	echo "ejbca-ds.xml in jboss switched host to ${HOSTNAME_NODE}"
 	echo "remember to restart jboss when you want the change to take effect"
 else
-	echo "failed to change ejbca-ds.xml in jboss"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2"
 fi
+
