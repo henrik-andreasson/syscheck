@@ -69,7 +69,7 @@ diskusage () {
 		if [ $PERCENT -gt $LIMIT ] ; then
        	         	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
 		else
-                	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 ${SCRIPTINDEX} "$DESCR_1" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+                	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1  "$DESCR_1" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
 		fi
 	fi
 }
