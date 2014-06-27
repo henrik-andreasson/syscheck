@@ -23,7 +23,12 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/database-replication.conf
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=804
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID || exit 1;
 getconfig $SCRIPTID || exit 1;
 
@@ -65,6 +70,7 @@ OUTFILE="$SYSCHECK_HOME/var/tmp_make-mysql-server-act-as-master.sql"
 echo "SLAVE STOP;" > $OUTFILE
 echo "RESET MASTER;" >> $OUTFILE
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" < $OUTFILE
 if [ $? -eq 0 ] ; then
         printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
