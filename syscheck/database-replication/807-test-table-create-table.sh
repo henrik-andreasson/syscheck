@@ -20,12 +20,14 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/database-replication.conf
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
+SCRIPTID=807
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
 
 OUTFILE="$SYSCHECK_HOME/var/tmp_create-test-table.sql"
 
@@ -37,4 +39,10 @@ echo "INSERT INTO test SET value='1';"  >> $OUTFILE
 echo "creating the test table:"
 
 $MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < $OUTFILE
+if [ $? -eq 0 ] ; then
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
+else
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2" "$?"
+fi
+
 rm $OUTFILE

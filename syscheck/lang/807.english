@@ -1,0 +1,8 @@
+HELP="Create test table in database"
+
+DESCR_1="Table created successfully"
+HELP_1="no action is needed"
+
+DESCR_2="Failed to create table"
+HELP_2="run command manually"
+
