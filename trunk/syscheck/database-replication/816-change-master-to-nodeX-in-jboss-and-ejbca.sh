@@ -29,6 +29,12 @@ if [ "$DO_DATASOURCE_FAILOVER" == "false" ] ; then
 
 fi
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
+SCRIPTID=816
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 
 if [ "x$1" = "xnode1" ] ; then
 	HOSTNAME_NODE=$HOSTNAME_NODE1
@@ -78,10 +84,9 @@ perl -pi -e \"s/#database.password=ejbca/database.password=${mysqlejbcapass}/\" 
 grep "database.password=${mysqlejbcapass}" ${EJBCA_HOME}/conf/database.properties || RET=9
 
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ $RET -eq 0 ] ; then
-	echo "ejbca-ds.xml in jboss switched host to ${HOSTNAME_NODE}"
-	echo "remember to restart jboss when you want the change to take effect"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1"
 else
-	echo "failed to change all settings for database node in ejbca-ds.xml and/or database.properties"
-	echo "returncode: ${RET}"
+	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" $RET
 fi

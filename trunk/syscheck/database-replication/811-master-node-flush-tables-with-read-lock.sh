@@ -23,7 +23,12 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/database-replication.conf
 
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=811
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID || exit 1;
 getconfig $SCRIPTID || exit 1;
 
@@ -51,7 +56,6 @@ elif [ "x$1" = "x-q" -o  "x$1" = "x--quiet" -o \
 fi 
 
 
-
 echo "Connecting to localhost, ARE YOU SURE THIS HOST IS ACTING AS MASTER"
 echo "Enter manually:"
 echo "FLUSH TABLES WITH READ LOCK;"
@@ -59,6 +63,7 @@ echo "keep the console open until the last step is done"
 echo "then enter:"
 echo "UNLOCK TABLES;"
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
         printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
