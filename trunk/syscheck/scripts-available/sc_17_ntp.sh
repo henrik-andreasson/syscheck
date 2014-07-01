@@ -67,11 +67,9 @@ checkntp () {
 
 	# Get information about ntp
         SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-	result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*|\+)" )
-	if [ $? -ne 0 ] ; then
+        result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*|\+)" )
+        if [ "x${result}" = "x" ] ; then
 		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
-        elif [ "x$NTPSERVER" = "xLOCAL(0)" ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$NTPSERVER ($result)" 
 	else
 		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
 	fi
