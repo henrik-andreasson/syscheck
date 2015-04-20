@@ -28,6 +28,10 @@ SCRIPTINDEX=00
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
+ERRNO_1=01
+ERRNO_2=02
+ERRNO_3=03
+
 
 # help
 if [ "x$1" = "x--help" ] ; then
