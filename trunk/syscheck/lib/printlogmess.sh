@@ -50,25 +50,71 @@ printlogmess(){
                 exit;
         fi
 
-        DESCR_W_ARGS=`${SYSCHECK_HOME}/lib/printf.pl "$LONGLEVEL - $DESCR" "$ARG1" "$ARG2" "$ARG3" "$ARG4" "$ARG5" "$ARG6" "$ARG7" "$ARG8" "$ARG9"  `
 
         DATE=`date +"%Y%m%d %H:%M:%S"`
         HOST=`hostname `
-
+        SEC1970NANO=$(date +"%s.%N")
+        HOST=$(hostname )
+	    DESCR_W_ARGS=`${SYSCHECK_HOME}/lib/printf.pl "$LONGLEVEL - $DESCR" "$ARG1" "$ARG2" "$ARG3" "$ARG4" "$ARG5" "$ARG6" "$ARG7" "$ARG8" "$ARG9"  `
         MESSAGE0="${HOST}: ${DESCR_W_ARGS}"
-        MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
+      	MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
+		JSONSTRING="{ 'FROM': 'SYSCHECK', 'SYSCHECK_VERSION': '${SYSCHECK_VERSION}, 'LOGFMT': 'JSON-1.0', 'SCRIPTID': '${SCRIPTID}', 'SCRIPTINDEX': '${SCRIPTINDEX}', 'LEVEL': '${LEVEL}', 'ERRNO': '${ERRNO}', 'SYSTEMNAME': '${SYSTEMNAME}', 'DATE': '${DATE}', 'HOSTNAME': '${HOST}', 'SEC1970NANO': '${SEC1970NANO}', 'LONGLEVEL':  '$LONGLEVEL', 'DESCRIPTION': '$DESCR', 'EXTRAARG1':   '$ARG1', 'EXTRAARG2':   '$ARG2', 'EXTRAARG3':   '$ARG3', 'EXTRAARG4':   '$ARG4', 'EXTRAARG5':   '$ARG5', 'EXTRAARG6':   '$ARG6', 'EXTRAARG7':   '$ARG7', 'EXTRAARG8':   '$ARG8', 'EXTRAARG9':   '$ARG9', 'LEGACYFMT':   '${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}' }"
 
-        if [ "x${PRINTTOSCREEN}" = "x1" ] ; then
-            echo "${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}"
-	else
-	    logger -p local3.${SYSLOGLEVEL} "${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
-        fi
+		NEWFMTSTRING="${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
+		OLDFMTSTRING="${LEVEL}-${SCRIPTID}${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
 
-	if [ "x${SAVELASTSTATUS}" = "x1" ] ; then
-	    echo "${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE0}" >> ${SYSCHECK_HOME}/var/last_status
-	fi
+	    if [ "x${PRINTTOSCREEN}" = "x1" ] ; then
+			if [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xJSON" ] ; then
+				printf "${JSONSTRING}\n"
+			elif [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xNEWFMT" ] ; then
+				printf "${NEWFMTSTRING}\n"
+			elif [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xOLDFMT" ] ; then
+				printf "${OLDFMTSTRING}\n"
+			else
+				printf "unknown format PRINTTOSCREEN_OUTPUTTYPE: ${PRINTTOSCREEN_OUTPUTTYPE}"
+				exit -1
+			fi	
+	    fi
 
+	    if [ "x${PRINTTOFILE}" != "x" ] ; then
+			if [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xJSON" ] ; then
+				printf "${JSONSTRING}\n" >> ${PRINTTOFILE}
+			elif [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xNEWFMT" ] ; then
+				printf "${NEWFMTSTRING}\n"  >> ${PRINTTOFILE}
+			elif [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xOLDFMT" ] ; then
+				printf "${OLDFMTSTRING}\n"  >> ${PRINTTOFILE}
+			else
+				printf "unknown format PRINTTOFILE_OUTPUTTYPE: ${PRINTTOFILE_OUTPUTTYPE}"
+				exit -1
+			fi	
+		fi
 
+		if [ "x${SENDTOSYSLOG}" != "x" ] ; then
+			if [ "x${SENDTOSYSLOG_OUTPUTTYPE}" = "xJSON" ] ; then
+				printf "${JSONSTRING}\n"   | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL} 
+			elif [ "x${SENDTOSYSLOG_OUTPUTTYPE}" = "xNEWFMT" ] ; then
+				printf "${NEWFMTSTRING}\n" | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL} 
+			elif [ "x${SENDTOSYSLOG_OUTPUTTYPE}" = "xOLDFMT" ] ; then
+				printf "${OLDFMTSTRING}\n" | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL} 
+			else
+				printf "unknown format SENDTOSYSLOG_OUTPUTTYPE: ${SENDTOSYSLOG_OUTPUTTYPE}"
+				exit -1
+			fi	
+		fi
+		
+		if [ "x${SAVELASTSTATUS}" = "x1" ] ; then
+			if [ "x${SAVELASTSTATUS_OUTPUTTYPE}" = "xJSON" ] ; then
+				printf "${JSONSTRING}\n"   >> ${SYSCHECK_HOME}/var/last_status
+			elif [ "x${SAVELASTSTATUS_OUTPUTTYPE}" = "xNEWFMT" ] ; then
+				printf "${NEWFMTSTRING}\n" >> ${SYSCHECK_HOME}/var/last_status
+			elif [ "x${SAVELASTSTATUS_OUTPUTTYPE}" = "xOLDFMT" ] ; then
+				printf "${NEWFMTSTRING}\n" >> ${SYSCHECK_HOME}/var/last_status
+			else
+				printf "unknown format SAVELASTSTATUS_OUTPUTTYPE: ${SAVELASTSTATUS_OUTPUTTYPE}"
+				exit -1
+			fi	
+		fi
+		
 
 }
 

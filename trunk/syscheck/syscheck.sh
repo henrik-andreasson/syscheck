@@ -34,7 +34,7 @@ PRINTTOSCREEN=
 
 help () {
         echo "$HELP"
-        echo "$0 -c|--cert <certfile-in-der-format> [-s|--screen] [-h|--help]"
+        echo "$0 [-s|--screen] [-h|--help]"
         echo "$ERRNO_1/$REMCMD_DESCR_1 - $REMCMD_HELP_1"
         echo "$ERRNO_2/$REMCMD_DESCR_2 - $REMCMD_HELP_2"
         echo "$ERRNO_3/$REMCMD_DESCR_3 - $REMCMD_HELP_3"
