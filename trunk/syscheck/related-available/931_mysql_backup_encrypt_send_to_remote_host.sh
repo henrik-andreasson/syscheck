@@ -84,6 +84,7 @@ res=$(/opt/certificate-services/bin/openenc.sh encrypt ${FULLFILENAME} /backup/t
 if [ $? -ne 0 ] ;   then
     printlogmess $SCRIPTID $SCRIPTINDEX $ERROR $ERRNO_3 "$DESCR_3" $res
 fi  
+rm /backup/to-archive/encback.lock
 
 
 FILETRANS=1
