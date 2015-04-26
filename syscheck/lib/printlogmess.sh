@@ -58,7 +58,7 @@ printlogmess(){
 	    DESCR_W_ARGS=`${SYSCHECK_HOME}/lib/printf.pl "$LONGLEVEL - $DESCR" "$ARG1" "$ARG2" "$ARG3" "$ARG4" "$ARG5" "$ARG6" "$ARG7" "$ARG8" "$ARG9"  `
         MESSAGE0="${HOST}: ${DESCR_W_ARGS}"
       	MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
-		JSONSTRING="{ 'FROM': 'SYSCHECK', 'SYSCHECK_VERSION': '${SYSCHECK_VERSION}, 'LOGFMT': 'JSON-1.0', 'SCRIPTID': '${SCRIPTID}', 'SCRIPTINDEX': '${SCRIPTINDEX}', 'LEVEL': '${LEVEL}', 'ERRNO': '${ERRNO}', 'SYSTEMNAME': '${SYSTEMNAME}', 'DATE': '${DATE}', 'HOSTNAME': '${HOST}', 'SEC1970NANO': '${SEC1970NANO}', 'LONGLEVEL':  '$LONGLEVEL', 'DESCRIPTION': '$DESCR', 'EXTRAARG1':   '$ARG1', 'EXTRAARG2':   '$ARG2', 'EXTRAARG3':   '$ARG3', 'EXTRAARG4':   '$ARG4', 'EXTRAARG5':   '$ARG5', 'EXTRAARG6':   '$ARG6', 'EXTRAARG7':   '$ARG7', 'EXTRAARG8':   '$ARG8', 'EXTRAARG9':   '$ARG9', 'LEGACYFMT':   '${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}' }"
+		JSONSTRING="{ \"FROM\": \"SYSCHECK\", \"SYSCHECK_VERSION\": \"${SYSCHECK_VERSION}\", \"LOGFMT\": \"JSON-1.0\", \"SCRIPTID\": \"${SCRIPTID}\", \"SCRIPTINDEX\": \"${SCRIPTINDEX}\", \"LEVEL\": \"${LEVEL}\", \"ERRNO\": \"${ERRNO}\", \"SYSTEMNAME\": \"${SYSTEMNAME}\", \"DATE\": \"${DATE}\", \"HOSTNAME\": \"${HOST}\", \"SEC1970NANO\": \"${SEC1970NANO}\", \"LONGLEVEL\":  \"$LONGLEVEL\", \"DESCRIPTION\": \"$DESCR\", \"EXTRAARG1\":   \"$ARG1\", \"EXTRAARG2\":   \"$ARG2\", \"EXTRAARG3\":   \"$ARG3\", \"EXTRAARG4\":   \"$ARG4\", \"EXTRAARG5\":   \"$ARG5\", \"EXTRAARG6\":   \"$ARG6\", \"EXTRAARG7\":   \"$ARG7\", \"EXTRAARG8\":   \"$ARG8\", \"EXTRAARG9\":   \"$ARG9\", \"LEGACYFMT\":   \"${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}\" }"
 
 		NEWFMTSTRING="${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
 		OLDFMTSTRING="${LEVEL}-${SCRIPTID}${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
@@ -78,11 +78,11 @@ printlogmess(){
 
 	    if [ "x${PRINTTOFILE}" != "x" ] ; then
 			if [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xJSON" ] ; then
-				printf "${JSONSTRING}\n" >> ${PRINTTOFILE}
+				printf "${JSONSTRING}\n" >> ${PRINTTOFILE_FILENAME}
 			elif [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xNEWFMT" ] ; then
-				printf "${NEWFMTSTRING}\n"  >> ${PRINTTOFILE}
+				printf "${NEWFMTSTRING}\n"  >> ${PRINTTOFILE_FILENAME}
 			elif [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xOLDFMT" ] ; then
-				printf "${OLDFMTSTRING}\n"  >> ${PRINTTOFILE}
+				printf "${OLDFMTSTRING}\n"  >> ${PRINTTOFILE_FILENAME}
 			else
 				printf "unknown format PRINTTOFILE_OUTPUTTYPE: ${PRINTTOFILE_OUTPUTTYPE}"
 				exit -1
@@ -108,7 +108,7 @@ printlogmess(){
 			elif [ "x${SAVELASTSTATUS_OUTPUTTYPE}" = "xNEWFMT" ] ; then
 				printf "${NEWFMTSTRING}\n" >> ${SYSCHECK_HOME}/var/last_status
 			elif [ "x${SAVELASTSTATUS_OUTPUTTYPE}" = "xOLDFMT" ] ; then
-				printf "${NEWFMTSTRING}\n" >> ${SYSCHECK_HOME}/var/last_status
+				printf "${OLDFMTSTRING}\n" >> ${SYSCHECK_HOME}/var/last_status
 			else
 				printf "unknown format SAVELASTSTATUS_OUTPUTTYPE: ${SAVELASTSTATUS_OUTPUTTYPE}"
 				exit -1

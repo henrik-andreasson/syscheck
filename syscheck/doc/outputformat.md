@@ -1,9 +1,50 @@
 README for syscheck output
 ==============================
 
-from version 1.6 the output format has changes to support pushing messages to icinga/nagios (and mayby other monitoring solutions also).
+in version 1.7 JSON output format was added.
 
-Info - NEW Syscheck Sample output
+in version 1.6 the output format has changes to support pushing messages to icinga/nagios (and mayby other monitoring solutions also).
+
+
+Info - JSON Syscheck Sample output
+---------------------------
+
+{ "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "01", "SCRIPTINDEX": "01", "LEVEL": "E", "ERRNO": "02", "SYSTEMNAME": "PKI", "DATE": "20150426 20:59:32", "HOSTNAME": "bang", "SEC1970NANO": "1430074772.388541169", "LONGLEVEL":  "ERROR", "DESCRIPTION": "Diskusage exceeded ( is  percent used: Limit is  percent)", "EXTRAARG1":   "/", "EXTRAARG2":   "99", "EXTRAARG3":   "75", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "01-01-E-02-PKI 20150426 20:59:32 bang: ERROR - Diskusage exceeded (/ is 99 percent used: Limit is 75 percent)" }
+{ "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "01", "SCRIPTINDEX": "02", "LEVEL": "E", "ERRNO": "02", "SYSTEMNAME": "PKI", "DATE": "20150426 20:59:32", "HOSTNAME": "bang", "SEC1970NANO": "1430074772.416035932", "LONGLEVEL":  "ERROR", "DESCRIPTION": "Diskusage exceeded ( is  percent used: Limit is  percent)", "EXTRAARG1":   "/backup", "EXTRAARG2":   "99", "EXTRAARG3":   "75", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "01-02-E-02-PKI 20150426 20:59:32 bang: ERROR - Diskusage exceeded (/backup is 99 percent used: Limit is 75 percent)" }
+{ "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "02", "SCRIPTINDEX": "01", "LEVEL": "E", "ERRNO": "04", "SYSTEMNAME": "PKI", "DATE": "20150426 20:59:32", "HOSTNAME": "bang", "SEC1970NANO": "1430074772.483664082", "LONGLEVEL":  "ERROR", "DESCRIPTION": "EJBCA : application server unavailable", "EXTRAARG1":   "", "EXTRAARG2":   "", "EXTRAARG3":   "", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "02-01-E-04-PKI 20150426 20:59:32 bang: ERROR - EJBCA : application server unavailable" }
+{ "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "03", "SCRIPTINDEX": "01", "LEVEL": "I", "ERRNO": "02", "SYSTEMNAME": "PKI", "DATE": "20150426 20:59:32", "HOSTNAME": "bang", "SEC1970NANO": "1430074772.521154236", "LONGLEVEL":  "INFO", "DESCRIPTION": "Memory limit ok (Memory is  KB used: Limit is  KB)", "EXTRAARG1":   "3825580", "EXTRAARG2":   "13079398", "EXTRAARG3":   "", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "03-01-I-02-PKI 20150426 20:59:32 bang: INFO - Memory limit ok (Memory is 3825580 KB used: Limit is 13079398 KB)" }
+
+
+Info - JSON Format description:
+---------------------------
+
+{
+   "FROM":"SYSCHECK",
+   "SYSCHECK_VERSION":"trunk",
+   "LOGFMT":"JSON-1.0",
+   "SCRIPTID":"30",
+   "SCRIPTINDEX":"01",
+   "LEVEL":"I",
+   "ERRNO":"01",
+   "SYSTEMNAME":"PKI",
+   "DATE":"20150426 20:59:34",
+   "HOSTNAME":"bang",
+   "SEC1970NANO":"1430074774.745658970",
+   "LONGLEVEL":"INFO",
+   "DESCRIPTION":"Process  is running",
+   "EXTRAARG1":"apache2",
+   "EXTRAARG2":"",
+   "EXTRAARG3":"",
+   "EXTRAARG4":"",
+   "EXTRAARG5":"",
+   "EXTRAARG6":"",
+   "EXTRAARG7":"",
+   "EXTRAARG8":"",
+   "EXTRAARG9":"",
+   "LEGACYFMT":"30-01-I-01-PKI 20150426 20:59:34 bang: INFO - Process apache2 is running"
+}
+
+Info - NEWFMT Syscheck Sample output
 ---------------------------
 /opt/certificate-services/syscheck]$ ./console_syscheck.sh 
 01-01-I-01-PKI 20140904 09:27:19 hostname: INFO - Diskusage ok (/ is 3 percent used: Limit is 75 percent)
@@ -63,7 +104,7 @@ Info - NEW Syscheck Sample output
 31-112-I-01-PKI 20140904 09:27:26 hostname: INFO - Sensor of FAN(#5) IS in normal operation (NORMAL/30%) is OK 
 31-113-I-01-PKI 20140904 09:27:26 hostname: INFO - Sensor of FAN(#6) IS in normal operation (NORMAL/13%) is OK 
 
-Info - NEW Format description:
+Info - NEWFMT Format description:
 ---------------------------
 
 01-01-I-01-PKI 20140904 09:27:19 hostname: INFO - Diskusage ok (/ is 3 percent used: Limit is 75 percent)
@@ -90,7 +131,7 @@ Info - NEW Format description:
 
 
 
-Info - OLD Syscheck Sample output
+Info - OLDFMT Syscheck Sample output
 ---------------------------
 
 han@plup:/misc/src/syscheck/syscheck-trunk$ ./syscheck.sh -s
@@ -114,7 +155,7 @@ I-1801-PKI 20090328 22:54:36 plup: INFO - mysql is running and answering
 I-1903-PKI 20090328 22:54:36 plup: INFO - I'm alive
 
 
-Info - OLD Format description:
+Info - OLDFMT Format description:
 ---------------------------
 
 I-0101-PKI 20090328 22:54:23 plup: INFO - Diskusage ok (/ is 51 percent used: Limit is 95 percent)
