@@ -25,6 +25,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next available number)
 SCRIPTID=923
+SCRIPTINDEX=00
 
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID

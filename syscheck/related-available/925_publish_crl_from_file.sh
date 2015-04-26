@@ -31,6 +31,8 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 ## local definitions ##
 SCRIPTID=925
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 

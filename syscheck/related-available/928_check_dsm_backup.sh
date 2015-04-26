@@ -23,6 +23,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=928
+SCRIPTINDEX=00
 
 DSM_ERRNO_1=${SCRIPTID}01
 DSM_ERRNO_2=${SCRIPTID}02

@@ -24,6 +24,7 @@ set -e
 
 ## local definitions ##
 SCRIPTID=917
+SCRIPTINDEX=00
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID

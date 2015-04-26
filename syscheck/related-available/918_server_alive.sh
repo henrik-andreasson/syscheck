@@ -23,6 +23,8 @@ set -e
 . $SYSCHECK_HOME/config/related-scripts.conf
 
 SCRIPTID=918
+SCRIPTINDEX=00
+
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 

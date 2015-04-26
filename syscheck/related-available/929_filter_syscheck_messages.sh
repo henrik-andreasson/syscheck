@@ -22,6 +22,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 . $SYSCHECK_HOME/config/related-scripts.conf
 
 SCRIPTID=929
+SCRIPTINDEX=00
 
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
