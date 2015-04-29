@@ -1,0 +1,6 @@
+HELP="Activate the CA:s (automaticlly enter PIN codes)"
+DESCR_1="Activate CA:s run successfully"
+HELP_1="All is ok"
+
+DESCR_2="Activate CA failed (%s/%s)"
+HELP_2="Could be problems accessing the application server, or token is not available  %s"

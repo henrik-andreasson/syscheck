@@ -1,0 +1,10 @@
+HELP="Check the firewall is configured and running"
+
+DESCR_1="Cant get status from iptables."
+HELP_1="check manually with iptables -L -n or maybe restart the firewall with /etc/init.d/firewall start"
+
+DESCR_2="Firewall doesn't seem to have the correct ruleset configured."
+HELP_2="Maybe something went wrong loading the firewall ruleset, because some very basic rules are'nt present "
+
+DESCR_3="Firewall is up and configured properly"
+HELP_3="No action is needed"

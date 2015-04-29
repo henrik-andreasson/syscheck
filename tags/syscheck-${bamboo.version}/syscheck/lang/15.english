@@ -1,0 +1,7 @@
+HELP="Check apache process is up and running"
+
+DESCR_1="Apache webserver is running"
+HELP_1="server is running and serving web pages"
+
+DESCR_2="Apache webserver is not running"
+HELP_2="check apache error.log, it is not running"

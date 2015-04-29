@@ -1,0 +1,10 @@
+HELP="Switch mysql server in ejbca-ds.xml"
+
+LEVEL_1=$INFO
+DESCR_1="Mysql server changed in jboss/ejbca-ds.xml to %s"
+HELP_1="no action is needed"
+
+LEVEL_2=$ERROR
+DESCR_2="Failed to change mysql server in jboss/ejbca-ds.xml to %s"
+HELP_2="check that jboss/ejbca-ds.xml exist and content"
+
