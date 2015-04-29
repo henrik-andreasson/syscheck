@@ -60,9 +60,14 @@ checkcrl () {
                 printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No minutes configured"
 		return
 	fi
+	CRLHOSTNAME=$3
+	if [ "x$CRLHOSTNAME" != "x" ] ; then
+		HOSTNAMEARG="--header=Host: $CRLHOSTNAME"
+	fi
+
 	cd /tmp
 	outname=`mktemp`
-	wget ${CRLNAME} --no-check-certificate -T 10 -t 1 -O $outname -o /dev/null
+	wget ${CRLNAME} ${HOSTNAMEARG} -T 10 -t 1 -O $outname -o /dev/null
 	if [ $? -ne 0 ] ; then
 		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"	
 		return 1
@@ -97,9 +102,9 @@ checkcrl () {
 		return 5
 	fi
 	if [ $CRLMINSLEFT -lt $LIMITMINUTES ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (CRL Mins left :$CRLMINSLEFT/ Limit: $MINUTES)" 
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (CRL Mins left: $CRLMINSLEFT/ Limit: $LIMITMINUTES)" 
 	else
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2" "$CRLNAME (CRL Mins left :$CRLMINSLEFT/ Limit: $MINUTES)"
+		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2" "$CRLNAME (CRL Mins left: $CRLMINSLEFT/ Limit: $LIMITMINUTES)"
 	fi
 	rm "$outname" 
 }
@@ -109,6 +114,6 @@ export TZ=UTC
 
 for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-    checkcrl ${CRLS[$i]} ${MINUTES[$i]}
+    checkcrl ${CRLS[$i]} ${CRLHOSTNAME[$i]} ${MINUTES[$i]}
 done
 
