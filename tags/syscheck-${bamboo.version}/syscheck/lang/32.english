@@ -1,7 +1,0 @@
-HELP="Check if DB in sync"
-
-DESCR_1="DB in sync"
-HELP_1="and updating databases"
-
-DESCR_2="DB not in sync, date of CertificateData diff betwin nodes:"
-HELP_2="check error.log, probebly needing manual sync, se manual"

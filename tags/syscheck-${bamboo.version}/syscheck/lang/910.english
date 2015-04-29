@@ -1,7 +1,0 @@
-HELP="Deactivate the CA:s"
-
-DESCR_1="Deactivate CA:s run successfully"
-HELP_1="All is ok"
-
-DESCR_2="Deactivate CA failed (%s) "
-HELP_2="Could be problems accessing the application server, or token is not available  %s"

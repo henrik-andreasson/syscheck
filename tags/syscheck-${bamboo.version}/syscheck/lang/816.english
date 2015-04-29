@@ -1,8 +1,0 @@
-HELP="changes datasource in both ejbca/conf/database.properties and jboss/server/default/deploy/ejbca-ds.xml"
-
-DESCR_1="Changed all files, ok"
-HELP_1="no action needed"
-
-DESCR_2="Failed to change all or some files %s"
-HELP_2="run the script with sh -x $0 -s to find out more info"
-

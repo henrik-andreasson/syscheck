@@ -1,5 +1,0 @@
-HELP="Mysql server checks"
-DESCR_1="mysql is running"
-HELP_1="No action is needed"
-DESCR_2="mysql is NOT running"
-HELP_2="mysql is not running, try /etc/init.d/mysql stop, wait, /etc/init.d/mysql start"

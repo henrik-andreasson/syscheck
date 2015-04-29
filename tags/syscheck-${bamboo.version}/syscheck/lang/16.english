@@ -1,7 +1,0 @@
-HELP="Checks the ldap server to make sure it's running"
-
-DESCR_1="LDAP directory server is running"
-HELP_1="all ok"
-
-DESCR_2="LDAP directory server is not running"
-HELP_2="check you ldap server logs"
