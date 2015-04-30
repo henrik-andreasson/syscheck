@@ -1,0 +1,58 @@
+HELP="Delete records from crldata, keep default 20 record in crltable, see config file 817.conf"
+
+LEVEL_10=$ERROR
+DESCR_10="No Value in ROW_SAVE"
+HELP_10="Check scripts config file "
+
+LEVEL_11=$ERROR
+DESCR_11="The value is less then 5"
+HELP_11="Check  scripts config file "
+
+LEVEL_12=$ERROR
+DESCR_12="Can't make a backup" 
+HELP_12="Check permisson and dbuser"
+
+LEVEL_1=$ERROR
+DESCR_1="Cant create database crldata and table CRLDataTmp already exist" 
+HELP_1="Check database and logs "
+
+LEVEL_2=$ERROR
+DESCR_2="Cant create temp table CRLDataTMP"
+HELP_2="Check database and logs "
+
+LEVEL_3=$ERROR
+DESCR_3="Can't get uniq issuerDN from CRLData "
+HELP_3="Check database and logs "
+
+LEVEL_4=$ERROR
+DESCR_4="Can't get row number from CRLData for each issuerDN"
+HELP_4="Check database and logs "
+
+LEVEL_5=$ERROR
+DESCR_5="Can't copy CRLData to db crldata.CRLDatalog for each issuerDN "
+HELP_5="Check database and logs "
+
+LEVEL_6=$ERROR
+DESCR_6="Cant delete record from CRLData for uniq issuerDN"
+HELP_6="Check database and logs "
+
+LEVEL_7=$ERROR
+DESCR_7="Can't delete temp table CRLDataTmp"
+HELP_7="Check permission in db "
+
+LEVEL_7=$ERROR
+DESCR_7="Delete to crlnumber "
+HELP_7="Delet ok "
+
+LEVEL_8=$ERROR
+DESCR_8="Can't create backup of crldata db"
+HELP_8="Check permission "
+
+LEVEL_9=$ERROR
+DESCR_9="Can't zip dbbackup "
+HELP_9="Check permission  "
+
+LEVEL_13=$INFO
+DESCR_13="Delete to crlnumber, restart jboss and check sync "
+HELP_13="Delet ok "
+

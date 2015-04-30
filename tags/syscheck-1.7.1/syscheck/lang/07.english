@@ -1,0 +1,13 @@
+HELP="check to see that syslog is running and delivers messages ok"
+
+DESCR_1="loggmessage did not come throu SYSLOG"
+HELP_1="syslog is running but the messages dont comes throu to local file, restart and/or check config file"
+
+DESCR_2="no pid file found and syslog not found in ps-table"
+HELP_2="not even the pid-file os syslog was found, try a restart"
+
+DESCR_3="syslog is not running"
+HELP_3="the process was not found amoung running processes"
+
+DESCR_4="Syslog is running and delivers messages"
+HELP_4="No action is needed"

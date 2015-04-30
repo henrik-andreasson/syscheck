@@ -1,0 +1,8 @@
+HELP="Filter only some messages from a file"
+
+DESCR_1="Filter ok"
+HELP_1="no action needed"
+
+DESCR_2="Filter failed"
+HELP_2="try the commands manually"
+
