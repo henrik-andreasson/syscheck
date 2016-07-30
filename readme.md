@@ -1,30 +1,6 @@
 README for syscheck scripts
 ==============================
 
-Authors
-------------
-
-Maintainter is Henrik Andreasson syscheck@han.pp.se
-
-Written by Henrik Andreasson, Philip Vendil and Joakim Bågnert
-
-
-INFO
----------------------------
-Homepage:	(http://certificateservices.org/syscheck)
-Contact:	(http://certificateservices.org/contact)
-
-
-Info - Docs
----------------------------
-Syscheck doc (from lib/make-doc.sh) 
- - doc/syscheckdoc_x_y_z.odt (and pdf)
-
-Certificate and revocation Archival for EJBCA
- - doc/certificate_and_revovation_archival.odt (and pdf)
-
-Database replication for redundancy
- - doc/database_replication_and_failover.odt (and pdf)
 
 
 DESCRIPTION
@@ -146,4 +122,20 @@ With Variable width:
 35-38. Level spelled out
 39-41. " - " Separator
 42 - . Message
+
+
+Authors
+------------
+
+Maintainter is Henrik Andreasson github@han.pp.se
+
+Contributors: 
+* Philip Vendil
+* Joakim Bågnert
+* Tomas Gustafsson
+
+INFO
+---------------------------
+Homepage:	(http://github.com/henrik-andreasson/syscheck)
+
 
