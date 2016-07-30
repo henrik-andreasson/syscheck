@@ -133,8 +133,10 @@ I-1903-PKI 20090328 22:54:36 plup: INFO - I'm alive
 Info - OLD Format description:
 ---------------------------
 
-I-0101-PKI 20090328 22:54:23 plup: INFO - Diskusage ok (/ is 51 percent used: Limit is 95 percent)
 
+        I-0101-PKI 20090328 22:54:23 plup: INFO - Diskusage ok (/ is 51 percent used: Limit is 95 percent)
+
+```
 With fixed width:
 1. "I" - Can be I for INFO, W for Warning or E for Error
 2. "-" Separator
@@ -152,7 +154,7 @@ With Variable width:
 35-38. Level spelled out
 39-41. " - " Separator
 42 - . Message
-
+```
 
 Authors
 ------------
