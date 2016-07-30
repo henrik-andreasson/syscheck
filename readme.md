@@ -76,11 +76,23 @@ Configuration
 
 Each script has a config under config/
 
+
+Output
+=====================
+
+File
+------------
+
+syscheck can write to a local file, this can be collected by filebeat to be managed in ELK.
+
 Syslog
 ------------
 
-We've been running with the TCP feature of syslog-ng for a higer level of reliability for som time now, it works nice.
-Rsyslog(http://www.rsyslog.com/doc-rsyslog_secure_tls.html), the new default syslog of debian, is the first syslog implementation to native support SSL, we plan to switch to rsyslog up the road to make sure the messages are kept confidential during transport (you still can use any syslog implementation though).
+Sycheck will send messages to a local syslog server, that server can of course route the messages to a central syslog.
+
+[Rsyslog](http://www.rsyslog.com/doc-rsyslog_secure_tls.html) has native support for SSL, use this to make sure the messages are kept confidential during transport.
+
+You still can use any syslog implementation.
 
 
 Database-replication
@@ -100,6 +112,10 @@ Eg: ./scripts-available/sc_04_pcsc_readers.sh --help
 
 Message format
 ==========================
+
+Info - JSON Syscheck Sample output
+---------------------------
+
 
 Info - NEW Syscheck Sample output
 ---------------------------
