@@ -1,6 +1,5 @@
-README for syscheck scripts
-==============================
-
+README for Syscheck
+=====================
 
 
 DESCRIPTION
@@ -19,43 +18,69 @@ errorcodes are defined in the local sc_file
 defines that may be useful to more than the local script resides in resources.sh
 
 
-INSTALLATION Syscheck
----------------------------
+INSTALLATION 
+==========================
 untar the distribution in a suitable directory (default /usr/local/syscheck).
 Then edit resource.sh and config/xxx.conf (where xxx is ther scriptid) to fit your needs.
 
+syscheck-scripts
+-------------------
+
 Enable scripts by making a soft link (ln -s) in "scripts-enabled" to "scripts-available" where all 
 scripts reside.
+
 enable one script: 
-# cd scripts-enabled 
-# ln -s ../scripts-available/sc_01_disk_usage.sh .
+
+        # cd scripts-enabled 
+        # ln -s ../scripts-available/sc_01_disk_usage.sh .
 
 enable all script: 
-# cd scripts-enabled 
-# ln -s ../scripts-available/* .
 
-make a test-run by doing: ./syscheck.sh -s if it works out good (All is OK), then go ahead and try
-./sysheck.sh then check your syslog-logs 
+        # cd scripts-enabled 
+        # ln -s ../scripts-available/* .
 
-We've been running with the TCP feature of syslog-ng for a higer level of reliability for som time now, it works nice.
-Rsyslog(http://www.rsyslog.com/doc-rsyslog_secure_tls.html), the new default syslog of debian, is the first syslog implementation to native support SSL, we plan to switch to rsyslog up the road to make sure the messages are kept confidential during transport (you still can use any syslog implementation though).
+make a test-run by doing:
+
+        ./syscheck.sh -s
+
+ if it works out good (All is OK), then go ahead and try
+
+        ./sysheck.sh 
+
+then check your syslog-logs 
+
 
 Related scripts
 ---------------------------
+
 Related scripts are other scripts not intended to be run every x min like the core syscheck script but maybe by cron every now and then, maybe by a admin manually to perform a maintenece task.
 
 To list the available scripts look in related-available
-# ls  related-available
+
+        ls  related-available
 
 To find out more about a certain script run with "-h" as argument: 
-# related-available/900_export_cert.sh -h
+
+        related-available/900_export_cert.sh -h
 
 To enable a script:
-# cd related-enabled
-# ln -s ../related-available/900_export_cert.sh .
+
+        cd related-enabled
+        ln -s ../related-available/900_export_cert.sh .
 
 Why should you only use related scripts from "related-enabled"?
  - Those are configured and tested on this particular installation, so do make it a habit to run stuff only from "related-enabled"
+
+Configuration
+==================
+
+Each script has a config under config/
+
+Syslog
+------------
+
+We've been running with the TCP feature of syslog-ng for a higer level of reliability for som time now, it works nice.
+Rsyslog(http://www.rsyslog.com/doc-rsyslog_secure_tls.html), the new default syslog of debian, is the first syslog implementation to native support SSL, we plan to switch to rsyslog up the road to make sure the messages are kept confidential during transport (you still can use any syslog implementation though).
 
 
 Database-replication
@@ -66,10 +91,15 @@ Read database_replication_and_failover.pdf for more info.
 
 HELP
 ---------------------------
+
 Each script within syscheck shall implement "-h" and "--help" to give syntax help and a decription of errorcodes:
 
 Run: ./scripts-available/sc_nn_foo.sh --help
 Eg: ./scripts-available/sc_04_pcsc_readers.sh --help
+
+
+Message format
+==========================
 
 Info - NEW Syscheck Sample output
 ---------------------------
@@ -79,7 +109,7 @@ Info - NEW Syscheck Sample output
 Info - OLD Syscheck Sample output
 ---------------------------
 
-han@plup:/misc/src/syscheck/syscheck-trunk$ ./syscheck.sh -s
+```
 I-0101-PKI 20090328 22:54:23 plup: INFO - Diskusage ok (/ is 51 percent used: Limit is 95 percent)
 E-0203-PKI 20090328 22:54:23 plup: ERROR - EJBCA : Application Server is unavailable
 I-0302-PKI 20090328 22:54:23 plup: INFO - Memory limit ok (Memory is 869492 KB used: Limit is 1613286 KB)
@@ -98,7 +128,7 @@ E-1602-PKI 20090328 22:54:36 plup: ERROR - LDAP directory server is not running
 E-1703-PKI 20090328 22:54:36 plup: ERROR - ntpd can't synchronize a server
 I-1801-PKI 20090328 22:54:36 plup: INFO - mysql is running and answering
 I-1903-PKI 20090328 22:54:36 plup: INFO - I'm alive
-
+```
 
 Info - OLD Format description:
 ---------------------------
