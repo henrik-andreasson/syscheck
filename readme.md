@@ -116,6 +116,7 @@ Message format
 Info - JSON Syscheck Sample output
 ---------------------------
 
+```
 { "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "01", "SCRIPTINDEX": "01", "LEVEL": "I", "ERRNO": "01", "SYSTEMNAME": "PKI", "DATE": "20160706 03:09:52", "HOSTNAME": "ca1.lab.certificateservices.org", "SEC1970NANO": "1467767392.379420331", "LONGLEVEL":  "INFO", "DESCRIPTION": "Diskusage ok ( is  percent used: Limit is  percent)", "EXTRAARG1":   "/", "EXTRAARG2":   "33", "EXTRAARG3":   "75", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "01-01-I-01-PKI 20160706 03:09:52 ca1.lab.certificateservices.org: INFO - Diskusage ok (/ is 33 percent used: Limit is 75 percent)" }
 { "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "01", "SCRIPTINDEX": "02", "LEVEL": "I", "ERRNO": "01", "SYSTEMNAME": "PKI", "DATE": "20160706 03:09:52", "HOSTNAME": "ca1.lab.certificateservices.org", "SEC1970NANO": "1467767392.423384892", "LONGLEVEL":  "INFO", "DESCRIPTION": "Diskusage ok ( is  percent used: Limit is  percent)", "EXTRAARG1":   "/backup", "EXTRAARG2":   "1", "EXTRAARG3":   "75", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "01-02-I-01-PKI 20160706 03:09:52 ca1.lab.certificateservices.org: INFO - Diskusage ok (/backup is 1 percent used: Limit is 75 percent)" }
 { "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "01", "SCRIPTINDEX": "03", "LEVEL": "I", "ERRNO": "01", "SYSTEMNAME": "PKI", "DATE": "20160706 03:09:52", "HOSTNAME": "ca1.lab.certificateservices.org", "SEC1970NANO": "1467767392.462480498", "LONGLEVEL":  "INFO", "DESCRIPTION": "Diskusage ok ( is  percent used: Limit is  percent)", "EXTRAARG1":   "/var/lib", "EXTRAARG2":   "11", "EXTRAARG3":   "75", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "01-03-I-01-PKI 20160706 03:09:52 ca1.lab.certificateservices.org: INFO - Diskusage ok (/var/lib is 11 percent used: Limit is 75 percent)" }
@@ -129,11 +130,12 @@ Info - JSON Syscheck Sample output
 { "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "17", "SCRIPTINDEX": "01", "LEVEL": "E", "ERRNO": "02", "SYSTEMNAME": "PKI", "DATE": "20160706 03:09:53", "HOSTNAME": "ca1.lab.certificateservices.org", "SEC1970NANO": "1467767393.788459700", "LONGLEVEL":  "ERROR", "DESCRIPTION": "ntpd is NOT running.", "EXTRAARG1":   "", "EXTRAARG2":   "", "EXTRAARG3":   "", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "17-01-E-02-PKI 20160706 03:09:53 ca1.lab.certificateservices.org: ERROR - ntpd is NOT running." }
 { "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "19", "SCRIPTINDEX": "01", "LEVEL": "I", "ERRNO": "03", "SYSTEMNAME": "PKI", "DATE": "20160706 03:09:53", "HOSTNAME": "ca1.lab.certificateservices.org", "SEC1970NANO": "1467767393.806163697", "LONGLEVEL":  "INFO", "DESCRIPTION": "I'm alive", "EXTRAARG1":   "", "EXTRAARG2":   "", "EXTRAARG3":   "", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "19-01-I-03-PKI 20160706 03:09:53 ca1.lab.certificateservices.org: INFO - I'm alive" }
 { "FROM": "SYSCHECK", "SYSCHECK_VERSION": "trunk", "LOGFMT": "JSON-1.0", "SCRIPTID": "20", "SCRIPTINDEX": "00", "LEVEL": "W", "ERRNO": "03", "SYSTEMNAME": "PKI", "DATE": "20160706 03:09:53", "HOSTNAME": "ca1.lab.certificateservices.org", "SEC1970NANO": "1467767393.819028143", "LONGLEVEL":  "WARNING", "DESCRIPTION": "Cant find the specified ejbca log ", "EXTRAARG1":   "/var/log/jboss/server.log", "EXTRAARG2":   "", "EXTRAARG3":   "", "EXTRAARG4":   "", "EXTRAARG5":   "", "EXTRAARG6":   "", "EXTRAARG7":   "", "EXTRAARG8":   "", "EXTRAARG9":   "", "LEGACYFMT":   "20-00-W-03-PKI 20160706 03:09:53 ca1.lab.certificateservices.org: WARNING - Cant find the specified ejbca log /var/log/jboss/server.log" }
-
+```
 
 Info - NEW Syscheck Sample output
 ---------------------------
 
+```
 01-01-I-01-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Diskusage ok (/ is 33 percent used: Limit is 75 percent)
 01-02-I-01-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Diskusage ok (/backup is 1 percent used: Limit is 75 percent)
 01-03-I-01-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Diskusage ok (/var/lib is 11 percent used: Limit is 75 percent)
@@ -151,7 +153,7 @@ rm: cannot remove ‘/tmp/ejbcahealth.log’: No such file or directory
 17-01-E-02-PKI 20160706 03:09:15 ca1.lab.certificateservices.org: ERROR - ntpd is NOT running.
 19-01-I-03-PKI 20160706 03:09:15 ca1.lab.certificateservices.org: INFO - I'm alive
 20-00-W-03-PKI 20160706 03:09:15 ca1.lab.certificateservices.org: WARNING - Cant find the specified ejbca log /var/log/jboss/server.log
-
+```
 
 Info - OLD Syscheck Sample output
 ---------------------------
