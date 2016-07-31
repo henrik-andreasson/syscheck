@@ -140,11 +140,7 @@ Info - NEW Syscheck Sample output
 01-02-I-01-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Diskusage ok (/backup is 1 percent used: Limit is 75 percent)
 01-03-I-01-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Diskusage ok (/var/lib is 11 percent used: Limit is 75 percent)
 01-04-I-01-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Diskusage ok (/var/log is 1 percent used: Limit is 75 percent)
-cat: /tmp/ejbcahealth.log: No such file or directory
-cat: /tmp/ejbcahealth.log: No such file or directory
-cat: /tmp/ejbcahealth.log: No such file or directory
 02-01-E-04-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: ERROR - EJBCA : application server unavailable
-rm: cannot remove ‘/tmp/ejbcahealth.log’: No such file or directory
 03-01-I-02-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Memory limit ok (Memory is -318196 KB used: Limit is 801065 KB)
 03-02-I-03-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Swap limit ok (Swap is 9168 KB used: Limit is 1548286 KB)
 07-01-I-04-PKI 20160706 03:09:14 ca1.lab.certificateservices.org: INFO - Syslog is running and delivers messages
@@ -154,6 +150,34 @@ rm: cannot remove ‘/tmp/ejbcahealth.log’: No such file or directory
 19-01-I-03-PKI 20160706 03:09:15 ca1.lab.certificateservices.org: INFO - I'm alive
 20-00-W-03-PKI 20160706 03:09:15 ca1.lab.certificateservices.org: WARNING - Cant find the specified ejbca log /var/log/jboss/server.log
 ```
+
+Description:
+
+
+        01-01-I-01-PKI 20160706 03:09:13 ca1.lab.certificateservices.org: INFO - Diskusage ok (/ is 33 percent used: Limit is 75 percent)
+
+| Position | example | description |
+|----------|---------|-------------|
+| 1-2      | 01      | SCRIPTID    |
+| 3        | -       | Separator   |
+| 4-5      | 01      | SCRIPTINDEX |
+| 6        | -       | Separator   |
+| 7        | I       | I for INFO, W for Warning or E for Error |
+| 8        | -       | Separator   |
+| 9-10     | 01      | Status code |
+| 11       | -       | Separator   |
+| 12-14    | PKI     | System ID   |
+| 15       | " "     | Separator   |
+| 16-32    | 20160706 03:09:13 | Date and time YYYYMMDD HH:MM:SS |
+| 33       | " "     | Separator   |
+| 34-64    | ca1.lab.certificateservices.org: | Systemname |
+| 65       | ":"     | Separator   |
+| 66       | " "     | Separator   |
+| 67-70    | INFO    | Level spelled out |
+| 71       | " - "   | Separator   |
+| 72-      | Diskusage ok (/ is 33 percent used: Limit is 75 percent) | Message |
+
+
 
 Info - OLD Syscheck Sample output
 ---------------------------
