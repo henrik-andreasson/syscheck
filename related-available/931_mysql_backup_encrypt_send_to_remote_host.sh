@@ -29,6 +29,7 @@ ERRNO_1="01"
 ERRNO_2="02"
 ERRNO_3="03"
 ERRNO_4="04"
+ERRNO_5="05"
 
 getlangfiles $SCRIPTID 
 getconfig $SCRIPTID
@@ -41,6 +42,7 @@ schelp () {
 	echo "$BAK_ERRNO_2/$BAK_DESCR_2 - $BAK_HELP_2"
 	echo "$BAK_ERRNO_3/$BAK_DESCR_3 - $BAK_HELP_3"
 	echo "$BAK_ERRNO_4/$BAK_DESCR_4 - $BAK_HELP_4"
+	echo "$BAK_ERRNO_5/$BAK_DESCR_5 - $BAK_HELP_5"
 	echo "${SCREEN_HELP}"
 	exit
 }
@@ -79,16 +81,37 @@ if [ $? -ne 0 ] ; then
     printlogmess $SCRIPTID $SCRIPTINDEX $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
 fi 
 
-touch /backup/to-archive/encback.lock
-res=$(/opt/certificate-services/bin/openenc.sh encrypt ${FULLFILENAME} /backup/to-archive/)
+# lock file check/wait
+if [ -f ${TOARCHIVE_DIR}/encback.lock ] ; then
+
+    lockFileIsChangedAt=$(stat --format="%Z" ${TOARCHIVE_DIR}/encback.lock)
+    nowSec=$(date +"%s")
+    let diff="$nowSec-$lockFileIsChangedAt"
+    while [ $diff -lt ${LOCKFILE_MAX_WAIT_SEC} ] ; do
+        printtoscreen "Lockfile (${TOARCHIVE_DIR}/encback.lock) exist, waiting for maximum ${LOCKFILE_MAX_WAIT_SEC} sec, now at $diff "
+        sleep 1
+        nowSec=$(date +"%s")
+        let diff="$nowSec-$lockFileIsChangedAt"
+    done
+
+    lockFileIsChangedAtHuman=$(stat --format="%z" ${TOARCHIVE_DIR}/encback.lock)    
+    printlogmess $SCRIPTID $SCRIPTINDEX $WARN $ERRNO_5 "$DESCR_5" $lockFileIsChangedAtHuman
+    rm ${TOARCHIVE_DIR}/encback.lock
+fi
+
+touch ${TOARCHIVE_DIR}/encback.lock
+res=$(${OPENENC_TOOL} encrypt ${FULLFILENAME} ${TOARCHIVE_DIR})
 if [ $? -ne 0 ] ;   then
     printlogmess $SCRIPTID $SCRIPTINDEX $ERROR $ERRNO_3 "$DESCR_3" $res
 fi  
-rm /backup/to-archive/encback.lock
+rm ${TOARCHIVE_DIR}/encback.lock
 
 
 FILETRANS=1
-for TRANSFERFILENAME in $(find /backup/to-archive/ -type f ) ; do
+for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do
+    if [ "x${TRANSFERFILENAME}" = "xencback.log" ] ; then
+        continue;
+    fi 
 	for (( i = 0 ;  i < "${#BACKUP_HOST[@]}" ; i++ )) ; do
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 		$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${TRANSFERFILENAME} ${BACKUP_HOST[$i]} "${BACKUP_DIR[$i]}/${EXTRADIR}/" ${BACKUP_USER[$i]} ${BACKUP_SSHFROMKEY[$i]}

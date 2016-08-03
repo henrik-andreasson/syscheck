@@ -10,3 +10,6 @@ DESCR_3="Compression of the backup failed (%s) "
 
 HELP_4="Could not send the backup."
 DESCR_4="Could not send the backup, maybe connection problem or problem logging in (%s) "
+
+HELP_5="Other encrypt process might have terminated wrong, this do not happen under normal situations."
+DESCR_5="Removed stale encrypt lock file, it was created at: %s."
