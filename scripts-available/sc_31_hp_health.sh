@@ -131,8 +131,36 @@ if [ ! -x $HP_HEALTH_TOOL ] ; then
     exit
 fi
 
+lockfilewait () {
+        LOCKFILE=$1
 
+# lock file check/wait
+    if [ -f ${LOCKFILE} ] ; then
+
+    lockFileIsChangedAt=$(stat --format="%Z" ${LOCKFILE})
+    nowSec=$(date +"%s")
+    let diff="$nowSec-$lockFileIsChangedAt"
+    while [ $diff -lt ${LOCKFILE_MAX_WAIT_SEC} ] ; do
+        printtoscreen "Lockfile (${LOCKFILE}) exist, waiting for maximum ${LOCKFILE_MAX_WAIT_SEC} sec, now at $diff "
+        sleep 1
+        nowSec=$(date +"%s")
+        let diff="$nowSec-$lockFileIsChangedAt"
+    done
+
+    lockFileIsChangedAtHuman=$(stat --format="%z" ${LOCKFILE})    
+    printlogmess $SCRIPTID $SCRIPTINDEX $WARN $ERRNO_5 "$DESCR_5" $lockFileIsChangedAtHuman
+    rm ${LOCKFILE}
+fi
+
+
+}
+
+LOCKFILE="${SYSCHECK_HOME}/var/${SCRIPTID}.lock"
+lockfilewait ${LOCKFILE}
+
+touch ${LOCKFILE}
 hppsu
 hptemp
 hpfans
+rm ${LOCKFILE}
 
