@@ -1,0 +1,9 @@
+HELP="Get info from db"
+
+DESCR_1="Selected info from DB (command:%s)"
+HELP_1="no action needed"
+
+DESCR_2="Could not get info from db: %s"
+HELP_2="try the commands manually"
+
+
