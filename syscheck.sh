@@ -69,6 +69,11 @@ fi
 
 # transfer syscheck status to remote machine
 if [ "x${SEND_SYSCHECK_RESULT_TO_REMOTE_MACHINE_AFTER_FILTER}" = "x1" ] ;then
-	${SYSCHECK_HOME}/related-available/930_send_filtered_result_to_remote_machine.sh
+	${SYSCHECK_HOME}/related-enabled/930_send_filtered_result_to_remote_machine.sh
+fi
+
+# transfer syscheck status as a message
+if [ "x${SEND_SYSCHECK_RESULT_AS_MESSAGE}" = "x1" ] ;then
+	${SYSCHECK_HOME}/related-enabled/932_send_result_as_message.sh
 fi
 

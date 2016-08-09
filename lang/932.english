@@ -1,0 +1,9 @@
+HELP="Send syscheck result as a message over to a central hub "
+
+DESCR_1="Transfer ok (command:%s result:%s)"
+HELP_1="no action needed"
+
+DESCR_2="Could not send message: %s result:%s"
+HELP_2="try the transfer commands manually"
+
+
