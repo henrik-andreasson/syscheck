@@ -54,6 +54,7 @@ fi
 
 SEND_ONLY_SCRIPT_IDS_FMT=$(echo ${SEND_ONLY_SCRIPT_IDS} | sed 's/ /|/g')
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
 egrep "^.?-(${SEND_ONLY_SCRIPT_IDS_FMT})" ${LOCAL_FILE}  > ${FILTERED_FILE}
 
