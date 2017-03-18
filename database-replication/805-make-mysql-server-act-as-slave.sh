@@ -87,7 +87,7 @@ if [ "x$THIS_NODE" = "xNODE1" ] ; then
 elif [ "x$THIS_NODE" = "xNODE2" ] ; then
 	echo "CHANGE MASTER TO MASTER_HOST='${HOSTNAME_NODE1}', MASTER_USER='${DBREP_USER}', MASTER_PASSWORD='${DBREP_PASSWORD}', MASTER_LOG_FILE='${LOGFILE}', MASTER_LOG_POS=${LOGPOS};" >> $OUTFILE
 else
-	echo "syscheck resources.sh 'THIS_NODE' is not NODE1 or NODE2 ($THIS_NODE)"
+	echo "syscheck common.conf 'THIS_NODE' is not NODE1 or NODE2 ($THIS_NODE)"
 	exit
 fi
 

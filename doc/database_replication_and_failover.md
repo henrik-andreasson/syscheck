@@ -22,7 +22,7 @@ Configure master- and slave-hosts ipaddresses
 Set THIS_NODE to NODE1(master) or NODE2(slave)  and IP-addresses to node1 and node2
 on node1 AND node2 run:
 
-        smartcard20-node1:/usr/local/syscheck # vi config/common.conf (was resources.sh )
+        smartcard20-node1:/usr/local/syscheck # vi config/common.conf 
 
 ```
 #IP address or hostname to primary and secondary cluster nodes. 
@@ -82,7 +82,7 @@ Verify that the database name, username, and password to access the database is 
 on node1 AND node2 run:
 
 ```
-smartcard20-node1:/usr/local/syscheck # vi config/common.conf (was resources.sh )
+smartcard20-node1:/usr/local/syscheck # vi config/common.conf
 DB_NAME=ejbca
 DB_USER=ejbca
 DB_PASSWORD="foo123"

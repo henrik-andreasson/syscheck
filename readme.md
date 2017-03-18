@@ -10,18 +10,16 @@ and sends it's result to syslog for further processing
 The main script is 'syscheck.sh' that performs all subsystem checks with
 a filename starting with "sc_" in the scripts-enebled directory. 
 
-The script 'syscheck.sh -s' performs the same checks but echoes
-the output to the terminal and syslog.
+The script 'syscheck.sh -s' performs the same checks but echoes the output to the terminal.
 
 All message are described in lang/syscheck.<lang>
-errorcodes are defined in the local sc_file 
-defines that may be useful to more than the local script resides in resources.sh
-
+errorcodes are defined in the local sc_ files 
+config for each script is in config/<scriptid>.conf
 
 INSTALLATION 
 ==========================
 untar the distribution in a suitable directory (default /usr/local/syscheck).
-Then edit resource.sh and config/xxx.conf (where xxx is ther scriptid) to fit your needs.
+Then edit config/common.conf config/xxx.conf (where xxx is ther scriptid) to fit your needs.
 
 syscheck-scripts
 -------------------
