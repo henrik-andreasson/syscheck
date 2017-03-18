@@ -32,6 +32,9 @@ ERRNO_2=02
 ERRNO_3=03
 ERRNO_4=04
 ERRNO_5=05
+ERRNO_6=06
+ERRNO_7=07
+ERRNO_8=08
 
 # help
 if [ "x$1" = "x--help" ] ; then
@@ -41,6 +44,9 @@ if [ "x$1" = "x--help" ] ; then
     echo "$ERRNO_3/$DESCR_3 - $HELP_3"
     echo "$ERRNO_4/$DESCR_4 - $HELP_4"
     echo "$ERRNO_5/$DESCR_5 - $HELP_5"
+    echo "$ERRNO_6/$DESCR_6 - $HELP_6"
+    echo "$ERRNO_7/$DESCR_7 - $HELP_7"
+    echo "$ERRNO_8/$DESCR_8 - $HELP_8"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
@@ -52,61 +58,83 @@ checkcrl () {
 
 	CRLNAME=$1
 	if [ "x$CRLNAME" = "x" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No CRL Configured"
+                printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No CRL Configured"
 		return
-	fi
-	LIMITMINUTES=$2
-	if [ "x$LIMITMINUTES" = "x" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No minutes configured"
-		return
-	fi
-	CRLHOSTNAME=$3
-	if [ "x$CRLHOSTNAME" != "x" ] ; then
-		HOSTNAMEARG="--header=Host: $CRLHOSTNAME"
 	fi
 
+
+# Limitminutes is now optional, if not configured the limits is crl WARN: validity/2 ERROR: validity/4 eg: CRL is valid to 12h, warn will be 6h and error 3h
+	LIMITMINUTES=$2
+	ERRMINUTES=$3
+	
+
+	
 	cd /tmp
 	outname=`mktemp`
-	wget ${CRLNAME} ${HOSTNAMEARG} -T 10 -t 1 -O $outname -o /dev/null
-	if [ $? -ne 0 ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"	
-		return 1
-	fi
+    if [ "x${CHECKTOOL}" = "xwget" ] ; then
+        ${CHECKTOOL} ${CRLNAME}  -T ${TIMEOUT} -t ${RETRIES}           -O $outname -o /dev/null
+        if [ $? -ne 0 ] ; then
+            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
+        return 1
+        fi
+
+    elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
+        ${CHECKTOOL} ${CRLNAME} --retry ${RETRIES} --connect-timeout ${TIMEOUT} --output $outname 2>/dev/null
+        if [ $? -ne 0 ] ; then
+            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
+        return 1
+        fi
+    else
+        printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+    fi
+
 	
 # file not found where it should be
 	if [ ! -f $outname ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME"
+		printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME"
 		return 2
 	fi
 
 	CRL_FILE_SIZE=`stat -c"%s" $outname`
 # stat return check
 	if [ $? -ne 0 ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
+		printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
 		return 3
 	fi
 
 # crl of 0 size?
 	if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
+		printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
 		return 4
 	fi
 
-# now we can check the crl:s best before date is in the future with atleast HOURTHRESHOLD hours (defined in resources)
-	TEMPDATE=`openssl crl -inform der -in $outname -nextupdate -noout`
-	DATE=${TEMPDATE:11}
-	CRLMINSLEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" "$(date -u +"%Y-%m-%d %H:%M:%S %Z")")
-	
-	if [ "x$CRLMINSLEFT" = "x" ] ; then 
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file)"
-		return 5
-	fi
-	if [ $CRLMINSLEFT -lt $LIMITMINUTES ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (CRL Mins left: $CRLMINSLEFT/ Limit: $LIMITMINUTES)" 
-	else
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2" "$CRLNAME (CRL Mins left: $CRLMINSLEFT/ Limit: $LIMITMINUTES)"
-	fi
-	rm "$outname" 
+
+	LASTUPDATE=$(openssl crl -inform der -in $outname -lastupdate -noout | sed 's/lastUpdate=//')
+	NEXTUPDATE=$(openssl crl -inform der -in $outname -nextupdate -noout | sed 's/nextUpdate=//')
+
+	if [ "x$LIMITMINUTES" != "x" ] ; then
+        ARGWARNMIN="--warnminutes=$LIMITMINUTES"
+    fi
+    if [ "x$ERRMINUTES" != "x" ] ; then
+        ARGERRMIN="--errorminutes=$ERRMINUTES"
+    fi
+    
+    CRLMESSAGE=$(${SYSCHECK_HOME}/lib/cmp_dates.py "$LASTUPDATE" "$NEXTUPDATE" ${ARGWARNMIN} ${ARGERRMIN} )
+    CRLCHECK=$?
+    if [ "x$CRLCHECK" = "x" ] ; then 
+            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file)"
+    elif [ $CRLCHECK -eq 3 ] ; then
+            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" "$CRLNAME: ${CRLMESSAGE}"
+    elif [ $CRLCHECK -eq 2 ] ; then
+            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_7 "$DESCR_7" "$CRLNAME: ${CRLMESSAGE}"
+    elif [ $CRLCHECK -eq 1 ] ; then
+            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_8 "$DESCR_8" "$CRLNAME: ${CRLMESSAGE}"
+    elif [ $CRLCHECK -eq 0 ] ; then
+            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2" "$CRLNAME: ${CRLMESSAGE}"
+    else
+            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME: problem calculating validity"
+    fi
+    rm "$outname" 
 }
 
 #force Timezone to UTC
@@ -114,6 +142,6 @@ export TZ=UTC
 
 for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-    checkcrl ${CRLS[$i]} ${CRLHOSTNAME[$i]} ${MINUTES[$i]}
+    checkcrl ${CRLS[$i]} ${MINUTES[$i]} ${ERRMIN[$i]}
 done
 

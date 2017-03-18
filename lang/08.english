@@ -1,9 +1,9 @@
-HELP="check the status of CRL, both that you can get it and that its valid"
+HELP="check the status of CRL, both that it can be downloaden and that its valid"
 
-DESCR_1=" CRL %s creation have failed"
+DESCR_1="CRL %s creation have failed"
 HELP_1="either the server is not up, it dont produce CRL:s, it dont validate or the CRL is old "
 
-DESCR_2=" CRL %s is updated"
+DESCR_2="%s"
 HELP_2="No action is needed"
 
 DESCR_3="Unable to get CRL %s from webserver "
@@ -14,4 +14,13 @@ HELP_4="Check discusage, try manually to get CRL"
 
 DESCR_5="Configuration error: %s"
 HELP_5="Check config"
+
+DESCR_6="CRL has past the EXPIRE date: %s"
+HELP_6="Systems will probably fail due to this, urgent troubleshooting needed"
+
+DESCR_7="CRL has past the ERROR level: %s"
+HELP_7="Systems will soon fail if not fixed, urgent troubleshooting needed"
+
+DESCR_8="CRL has past the WARN level: %s"
+HELP_8="Systems will soon fail if not fixed, urgent troubleshooting needed"
 
