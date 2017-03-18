@@ -1,0 +1,5 @@
+HELP="This is syscheck, getroot.sh it ask for a reson to get root, logs it then"
+DESC_1="User: %s is getting root reason: %s"
+DESC_2="User: %s is getting root reason: %s"
+DESC_3="User: %s is getting root, with syscheck on hold reason: %s"
+DESC_4="User: %s is done with root reason: %s"
