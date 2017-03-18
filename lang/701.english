@@ -1,0 +1,4 @@
+HELP="This is syscheck, loogbook.sh it ask for a entry then logs it."
+HELP_1=Logmessage
+DESCR_1="User: %s ; Logentry: %s"
+
