@@ -57,9 +57,9 @@ for (( i=0; i < ${#FileName[@]} ; i++ )){
 		printtoscreen $SYSCHECK_HOME/related-available/917_archive_file.sh ${KEEPORG} "${fn}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 		$SYSCHECK_HOME/related-available/917_archive_file.sh ${KEEPORG} "${fn}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 		if [ $? != 0 ] ; then
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$AMLB_DESCR_2" "${fn}" "${ToServerDir[$i]}" 
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$AMLB_DESCR_2" "${fn}" "${ToServerDir[$i]}" 
 		else
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$AMLB_DESCR_1" "${fn}" "${ToServerDir[$i]}"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$AMLB_DESCR_1" "${fn}" "${ToServerDir[$i]}"
 		fi
 	fi
 
@@ -67,9 +67,9 @@ for (( i=0; i < ${#FileName[@]} ; i++ )){
 		printtoscreen $SYSCHECK_HOME/related-available/917_archive_file.sh "${fn}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 		$SYSCHECK_HOME/related-available/917_archive_file.sh "${fn}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 		if [ $? != 0 ] ; then
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$AMLB_DESCR_2" "${fn}" "${ToServerDir[$i]}" 
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$AMLB_DESCR_2" "${fn}" "${ToServerDir[$i]}" 
 		else
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$AMLB_DESCR_1" "${fn}" "${ToServerDir[$i]}"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$AMLB_DESCR_1" "${fn}" "${ToServerDir[$i]}"
 		fi
 	fi
  done

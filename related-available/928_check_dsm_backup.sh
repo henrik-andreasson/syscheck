@@ -52,8 +52,8 @@ LAST=`egrep "${SERACH_STRING}" ${LOGFILE}|awk '{print $1,$2}'|tail -1`
 dsm=FAIL
 fi
 if [ "x$dsm" = "xFAIL" ] ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   "$ERROR" "$DSM_ERRNO_2" "$DSM_DESCR_2 $LAST"
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   "$ERROR" "$DSM_ERRNO_2" "$DSM_DESCR_2 $LAST"
 else
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   "$INFO" "$DSM_ERRNO_1" "$DSM_DESCR_1 "
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   "$INFO" "$DSM_ERRNO_1" "$DSM_DESCR_1 "
 fi
 

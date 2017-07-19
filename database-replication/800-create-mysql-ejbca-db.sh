@@ -64,12 +64,12 @@ echo "select * from UserData" | $MYSQL_BIN $DB_NAME -u root --password="$MYSQLRO
 if [ $? -ne 0 ] ; then
 	$MYSQLADMIN_BIN create $DB_NAME -u root --password="$MYSQLROOT_PASSWORD" 
 	if [ $? -ne 0 ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_3 $ERRNO_3 "$DESCR_3"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_3 $ERRNO_3 "$DESCR_3"
 	else
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
 	fi
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2"
 fi
 
 

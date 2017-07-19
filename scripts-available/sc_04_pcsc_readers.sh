@@ -50,7 +50,7 @@ CMD=`$SYSCHECK_HOME/lib/list_reader.pl 2>&1`
 
 ERRCHK=`echo $CMD| grep "locate Chipcard/PCSC.pm" ` 
 if [ "x$ERRCHK" != "x" ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $WARN $ERRNO_3 "$DESCR_3" "$CMD"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $WARN $ERRNO_3 "$DESCR_3" "$CMD"
 	exit
 fi
 
@@ -59,10 +59,10 @@ STATUS=`echo $CMD | perl -ane 'm/Number\ of\ attatched\ readers:\ (\d+)/gio, pri
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "$PCSC_NUMBER_OF_READERS" = "$STATUS" ] ; then     
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$STATUS" 
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$STATUS" 
 	
 else
 
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$STATUS"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$STATUS"
 fi
 

@@ -48,7 +48,7 @@ fi
 
 
 if [ ! -f $SYSCHECK_HOME/database-replication/808-test-table-update-and-check-master-and-slave.sh ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX} "$ERROR" "$ERRNO_2" "$DESCR_2 missing script, database-replication/808-test-table-update-and-check-master-and-slave.sh"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} "$ERROR" "$ERRNO_2" "$DESCR_2 missing script, database-replication/808-test-table-update-and-check-master-and-slave.sh"
 	exit
 fi
 
@@ -58,8 +58,8 @@ NODE1=`echo $VALUE_NODE1|awk '{print $2}'`
 NODE2=`echo $VALUE_NODE2|awk '{print $2}'`
 if [ $NODE1 != $NODE2 ] ;  then
 	SYNCDATE=`perl -e "print scalar(localtime($NODE2))"|awk '{print $3,$2,$4,$5}'`
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   "$ERROR" "$ERRNO_2" "$DESCR_2 $LASTUPD_NODE1 /$LASTUPD_NODE2 $SYNCDATE"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   "$ERROR" "$ERRNO_2" "$DESCR_2 $LASTUPD_NODE1 /$LASTUPD_NODE2 $SYNCDATE"
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   "$INFO" "$ERRNO_1" "$DESCR_1"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   "$INFO" "$ERRNO_1" "$DESCR_1"
 fi
 

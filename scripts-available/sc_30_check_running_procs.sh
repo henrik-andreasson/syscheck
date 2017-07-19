@@ -51,7 +51,7 @@ for (( i = 0 ;  i < ${#PROCNAME[@]} ; i++ )) ; do
 	# try restart 
 	if [ "x${RESTARTCMD[$i]}" = "x" ] ; then
 	    # no restart cmd defined
-	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" ${PROCNAME[$i]}
+	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" ${PROCNAME[$i]}
 	    continue
 	fi
 
@@ -60,13 +60,13 @@ for (( i = 0 ;  i < ${#PROCNAME[@]} ; i++ )) ; do
 
 	if [ $? -eq 0 ] ; then
 	# log restart success
-            printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_2 "$DESCR_2" ${PROCNAME[$i]}
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_2 "$DESCR_2" ${PROCNAME[$i]}
 	else
 	# log restart fail
-            printlogmess ${SCRIPTID} ${SCRIPTINDEX}    $ERROR $ERRNO_3 "$DESCR_3" ${PROCNAME[$i]}
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}    $ERROR $ERRNO_3 "$DESCR_3" ${PROCNAME[$i]}
 	fi
     else
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" ${PROCNAME[$i]}
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" ${PROCNAME[$i]}
     fi
 
 

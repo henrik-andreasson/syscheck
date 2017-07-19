@@ -19,7 +19,6 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
-
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=17
 
@@ -52,7 +51,7 @@ fi
 checkntp () {
 	NTPSERVER=$1
 	if [ "x${NTPSERVER}" = "x" ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "ntpserver not set"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "ntpserver not set"
 		return
 	fi
 	
@@ -61,7 +60,7 @@ checkntp () {
         SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	XNTPDPID=`ps -ef | grep ntpd | grep -v grep | awk '{print $2}'`
 	if [ x"$XNTPDPID" = "x" ]; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 		exit
 	fi	
 
@@ -69,9 +68,9 @@ checkntp () {
         SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
         result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*|\+)" )
         if [ "x${result}" = "x" ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
 	else
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
 	fi
 
 }

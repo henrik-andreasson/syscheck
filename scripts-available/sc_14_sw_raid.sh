@@ -55,13 +55,13 @@ swraidcheck () {
         STATUSfault=`echo $COMMAND | grep 'fault' `
         if [ "x$STATUSactive" != "x" ] ; then
 		# ok
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$ARRAY / $DISC"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$ARRAY / $DISC"
         elif [ "x$STATUSfault" != "x" ] ; then
 		# fault
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$ARRAY / $DISC ($COMMAND)"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$ARRAY / $DISC ($COMMAND)"
         else
 		# failed some other way
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$ARRAY / $DISC ($COMMAND)"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$ARRAY / $DISC ($COMMAND)"
 
         fi
 }

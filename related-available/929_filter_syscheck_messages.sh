@@ -59,9 +59,9 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 egrep "^.?-(${SEND_ONLY_SCRIPT_IDS_FMT})" ${LOCAL_FILE}  > ${FILTERED_FILE}
 
 if [ $? = 0 ] ; then
-      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
+      printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
 else
-      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
+      printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 fi 
 
 

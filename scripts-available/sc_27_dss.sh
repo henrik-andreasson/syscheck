@@ -50,7 +50,7 @@ fi
 
 
 if [ ! -f $SIGNSERVER_HOME/bin/signserver.sh ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4"
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4"
     exit
 fi
 cd $SIGNSERVER_HOME
@@ -59,10 +59,10 @@ OUTPUT=`$SIGNSERVER_HOME/bin/signserver.sh getstatus all 1 | grep "Status : Acti
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "$OUTPUT" = "2" ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1"  
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1"  
 elif [ "$OUTPUT" = "1" ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARNING $ERRNO_2 "$DESCR_2"  
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARNING $ERRNO_2 "$DESCR_2"  
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
 fi
 

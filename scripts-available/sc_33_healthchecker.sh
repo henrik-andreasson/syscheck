@@ -74,13 +74,13 @@ for (( i = 0 ;  i < ${#HEALTHCHECKURL[@]} ; i++ )) ; do
 			printtoscreen ${FULLSTATUS}
 		fi
 	else
-	        printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3"
+	        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3"
 	fi
 
 	if [ "x$STATUS" != "xALLOK" ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "${HEALTHCHECK_APP[$i]}" "$STATUS"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "${HEALTHCHECK_APP[$i]}" "$STATUS"
 	else
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO  $ERRNO_1 "$DESCR_1" "${HEALTHCHECK_APP[$i]}"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO  $ERRNO_1 "$DESCR_1" "${HEALTHCHECK_APP[$i]}"
 	fi
 
 	if [ "x${PRINTFULL}" = "x1" ] ; then

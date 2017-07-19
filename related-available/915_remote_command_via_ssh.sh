@@ -52,7 +52,7 @@ fi
 # arg1
 SSHHOST=
 if [ "x$1" = "x"  ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $SSHCMD_ERRNO_2 "$SSHCMD_DESCR_2"  
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $SSHCMD_ERRNO_2 "$SSHCMD_DESCR_2"  
 	exit -1
 else
     SSHHOST=$1
@@ -62,7 +62,7 @@ fi
 # arg2 mandatory, eg.: "ls /tmp/file" (tip: ssh will return with the returncode of the command executed on the other side of the ssh tunnel)
 SSHCMD=
 if [ "x$2" = "x"  ] ; then 
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $SSHCMD_ERRNO_3 "$SSHCMD_DESCR_3"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $SSHCMD_ERRNO_3 "$SSHCMD_DESCR_3"
         exit -1
 else
 	SSHCMD=$2
@@ -94,8 +94,8 @@ else
 fi
 
 if [ $retcode -eq 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $SSHCMD_ERRNO_1 "$SSHCMD_DESCR_1" "${SSHTOUSER}${SSHHOST} ${SSHCMD}"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $SSHCMD_ERRNO_1 "$SSHCMD_DESCR_1" "${SSHTOUSER}${SSHHOST} ${SSHCMD}"
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $SSHCMD_ERRNO_4 "$SSHCMD_DESCR_4" "$retcode"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $SSHCMD_ERRNO_4 "$SSHCMD_DESCR_4" "$retcode"
 	exit $retcode
 fi

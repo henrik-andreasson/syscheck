@@ -55,33 +55,33 @@ IP_GATEWAY=`$ROUTE -n | awk '/0.0.0.0/'| awk '{print $2}' |awk '!/0.0.0.0/'`
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 res=$($IFCONFIG ${IF_VIRTUAL} 2>&1 | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL} ) 
 if [ "x$res" != "x" ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DESCR_3" "$res"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DESCR_3" "$res"
 	exit
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 res=$(ping -c4 ${HOSTNAME_VIRTUAL} )
 if [ $? -eq 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$res" 
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$res" 
 	exit
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 res=($IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up)
 if [ $? -ne 0 ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$res" 
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$res" 
 	exit
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 date > ${SYSCHECK_HOME}/var/this_node_has_the_vip
-printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
+printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 res=$(arping -f -q -U ${IP_GATEWAY} -I ${IF_VIRTUAL} -s ${HOSTNAME_VIRTUAL} )
 if [ $? -ne 0 ] ; then
-    	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_6 "$DESCR_6" "$res"
+    	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_6 "$DESCR_6" "$res"
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_5 "$DESCR_5" 
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_5 "$DESCR_5" 
 fi
 

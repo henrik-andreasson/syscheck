@@ -1,5 +1,5 @@
 #!/bin/bash 
-
+set -x 
 # Set SYSCHECK_HOME if not already set.
 
 # 1. First check if SYSCHECK_HOME is set then use that
@@ -30,11 +30,11 @@ getconfig $SCRIPTID
 
 ERRNO_1=01
 ERRNO_2=02
-ERRNO_3=03
+
 
 # help
 if [ "x$1" = "x--help" ] ; then
-    echo "$0 $HELP"
+    echo "Syscheck for $NAME - $HELP"
     echo "$ERRNO_1/$DESCR_1 - $HELP_1"
     echo "$ERRNO_2/$DESCR_2 - $HELP_2"
     exit
@@ -45,9 +45,9 @@ fi
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 pid=`$SYSCHECK_HOME/lib/proc_checker.sh $pidfile $procname` 
 if [ "x$pid" = "x" ] ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
     exit 3
 else
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1"
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1"
 fi
 

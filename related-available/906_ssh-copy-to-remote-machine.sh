@@ -56,7 +56,7 @@ fi
 # arg1, if you use regexps, be sure to use "" , ex: "*.txt" on the command line
 SSHFILE=
 if [ "x$1" = "x" ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2"  
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2"  
     exit
 else
     SSHFILE="$1"
@@ -65,7 +65,7 @@ fi
 
 SSHHOST=
 if [ "x$2" = "x"  ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"  
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"  
 	exit
 else
     SSHHOST=$2
@@ -92,8 +92,8 @@ fi
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 runresult=`scp -r ${SSHTIMEOUT} ${SSHFROMKEY} ${SSHFILE} ${SSHTOUSER}${SSHHOST}:${SSHDIR} 2>&1`
 if [ $? -eq 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$runresult"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$runresult"
 	exit -1
 fi

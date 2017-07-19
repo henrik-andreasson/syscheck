@@ -54,10 +54,10 @@ send_syslog_msg(){
 	sleep 1
 	tail -1000 $localsyslogfile | grep "$0, syscheck test message: $chkvalue"   > /dev/null
 	if [ $? -ne 0 ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1"   
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1"   
 		exit 1;
 	else
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_4 "$DESCR_4"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_4 "$DESCR_4"
 
 	fi	
 }
@@ -66,7 +66,7 @@ send_syslog_msg(){
 
 syslog=`$SYSCHECK_HOME/lib/proc_checker.sh $pidfile $procname` 
 if [ "x$syslog" = "x" ] ; then
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
 	exit 2;
 fi
 

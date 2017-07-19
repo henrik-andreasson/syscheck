@@ -56,7 +56,7 @@ while true; do
     -h|--help )   help;shift;;
     --) break ;;
     * ) 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3"
 	printtoscreen $ERROR $ERRNO_3 "$REMCMD_DESCR_3"
 	exit 1
       ;;
@@ -64,7 +64,7 @@ while true; do
 done
 
 if [ ! -r "$CERTFILE" ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3"  
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3"  
 	printtoscreen $ERROR $ERRNO_3 "$REMCMD_DESCR_3"
 	exit
 fi
@@ -72,32 +72,32 @@ fi
 
 CERTSERIAL=`openssl x509 -inform der -in ${CERTFILE} -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?"
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?"
 fi
 
 CERTDN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?" 
 fi
 
 CERTUID=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/uid=(.*?)\//gio, print "$1"'`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$REMCMD_DESCR_3" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$REMCMD_DESCR_3" "$?" 
 fi
 
 CERTCN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/cn=(.*?)\//gio, print "$1"'`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?" 
 fi
 
 CERTSN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/serialnumber=(.*?)\//gio, print "$1"'`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?" 
 fi
 
 CERTSTRING=`openssl x509 -inform der -in ${CERTFILE}| perl -ane 's/\n//gio,print'`
 if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$REMCMD_DESCR_3" "$?" 
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

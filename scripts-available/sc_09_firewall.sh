@@ -24,7 +24,6 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 . $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 ## Local definitions ##
-
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=09
 
@@ -54,7 +53,7 @@ IPTABLES_TMP_FILE="/tmp/iptables.out"
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 $IPTABLES_BIN -L -n> $IPTABLES_TMP_FILE
 if [ $? -ne 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1"
 	exit
 fi
 FIREWALLFAILED="0"
@@ -74,9 +73,9 @@ if [ "x$rule2check" != "x" ] ; then
 fi
 
 if [ $FIREWALLFAILED -ne 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DESCR_3"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DESCR_3"
 fi
 
 rm $IPTABLES_TMP_FILE

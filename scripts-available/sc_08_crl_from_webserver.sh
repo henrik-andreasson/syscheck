@@ -58,7 +58,7 @@ checkcrl () {
 
 	CRLNAME=$1
 	if [ "x$CRLNAME" = "x" ] ; then
-                printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No CRL Configured"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No CRL Configured"
 		return
 	fi
 
@@ -74,37 +74,37 @@ checkcrl () {
     if [ "x${CHECKTOOL}" = "xwget" ] ; then
         ${CHECKTOOL} ${CRLNAME}  -T ${TIMEOUT} -t ${RETRIES}           -O $outname -o /dev/null
         if [ $? -ne 0 ] ; then
-            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
         return 1
         fi
 
     elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
         ${CHECKTOOL} ${CRLNAME} --retry ${RETRIES} --connect-timeout ${TIMEOUT} --output $outname 2>/dev/null
         if [ $? -ne 0 ] ; then
-            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
         return 1
         fi
     else
-        printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
     fi
 
 	
 # file not found where it should be
 	if [ ! -f $outname ] ; then
-		printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME"
 		return 2
 	fi
 
 	CRL_FILE_SIZE=`stat -c"%s" $outname`
 # stat return check
 	if [ $? -ne 0 ] ; then
-		printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
 		return 3
 	fi
 
 # crl of 0 size?
 	if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-		printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
 		return 4
 	fi
 
@@ -122,17 +122,17 @@ checkcrl () {
     CRLMESSAGE=$(${SYSCHECK_HOME}/lib/cmp_dates.py "$LASTUPDATE" "$NEXTUPDATE" ${ARGWARNMIN} ${ARGERRMIN} )
     CRLCHECK=$?
     if [ "x$CRLCHECK" = "x" ] ; then 
-            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file)"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file)"
     elif [ $CRLCHECK -eq 3 ] ; then
-            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" "$CRLNAME: ${CRLMESSAGE}"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" "$CRLNAME: ${CRLMESSAGE}"
     elif [ $CRLCHECK -eq 2 ] ; then
-            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_7 "$DESCR_7" "$CRLNAME: ${CRLMESSAGE}"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_7 "$DESCR_7" "$CRLNAME: ${CRLMESSAGE}"
     elif [ $CRLCHECK -eq 1 ] ; then
-            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_8 "$DESCR_8" "$CRLNAME: ${CRLMESSAGE}"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_8 "$DESCR_8" "$CRLNAME: ${CRLMESSAGE}"
     elif [ $CRLCHECK -eq 0 ] ; then
-            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2" "$CRLNAME: ${CRLMESSAGE}"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2" "$CRLNAME: ${CRLMESSAGE}"
     else
-            printlogmess ${NAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME: problem calculating validity"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME: problem calculating validity"
     fi
     rm "$outname" 
 }

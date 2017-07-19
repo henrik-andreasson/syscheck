@@ -50,11 +50,11 @@ diskusage () {
 	LIMIT=$2 
 
 	if [ "x${FILESYSTEM}" = "x" ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No filesystem specified"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No filesystem specified"
 		return -1
 	fi
 	if [ "x${LIMIT}" = "x" ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No limit specified"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "No limit specified"
 		return -1
 	fi
 	
@@ -62,14 +62,14 @@ diskusage () {
 	DFPH=`df -Ph $FILESYSTEM 2>&1`
 
 	if [ $? -ne 0 ] ; then
-		printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "$FILESYSTEM" "$DFPH"
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "$FILESYSTEM" "$DFPH"
 	else
 
   		PERCENT=`df -Ph $FILESYSTEM | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
 		if [ $PERCENT -gt $LIMIT ] ; then
-       	         	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+       	         	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
 		else
-                	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1  "$DESCR_1" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
+                	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1  "$DESCR_1" "$FILESYSTEM" "$PERCENT" "$LIMIT" 
 		fi
 	fi
 }

@@ -82,7 +82,7 @@ if [ $ERR != 0 ] ; then
 ###echo $ERR
 echo "error in subrutin $1"
 ##cat ${ERRFILE}.$1
-printlogmess ${SCRIPTID} ${SCRIPTINDEX}   ${LEVEL} ${SCRIPTID}$1 "${DESCR}"
+printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} ${LEVEL} ${SCRIPTID}$1 "${DESCR}"
 exit $ERR
 fi
 }
@@ -289,5 +289,5 @@ echo "`date`:`ls -lhtr /backup/node1/mysql/weekly/|tail -2`">>${LOGFILE}
 ##############
 # If we got here, the job is finnish
 
-printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${SCRIPTID}14 "$DESCR_14 " 
+printlogmess ${SCRIPTNAME} ${SCRIPTID}14 "$DESCR_14 " 
 echo "`date`:$0 end">>${LOGFILE} 

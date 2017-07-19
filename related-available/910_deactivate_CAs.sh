@@ -57,9 +57,9 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
         ./bin/ejbca.sh ca deactivateca $NAME | tee ${SYSCHECK_HOME}/var/$0.output
         error=$(cat ${SYSCHECK_HOME}/var/$0.output)
         if [ "x$error" = "x"  ] ; then
-	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NAME" 
+	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NAME" 
 	else
-	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$NAME" "$error"
+	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$NAME" "$error"
 	fi
 
 

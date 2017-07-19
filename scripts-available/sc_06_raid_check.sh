@@ -61,9 +61,9 @@ raiddiskcheck () {
         COMMAND=`echo "controller slot=${xSLOT} pd all show" | $HPTOOL | grep "$DISCID"`
         STATUS=`echo $COMMAND | grep "OK"`
         if [ "x$STATUS" != "x" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$COMMAND"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$COMMAND"
         else
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$COMMAND disc: $DISCID slot: $xSLOT"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$COMMAND disc: $DISCID slot: $xSLOT"
         fi
 }
 
@@ -77,18 +77,18 @@ raidlogiccheck () {
 	STATUS=`echo $COMMAND | grep "OK"`
 
 	if [ "x$STATUS" != "x" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DESCR_3" "$COMMAND"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$DESCR_3" "$COMMAND"
 
         elif [ "xRebuilding" = "x$COMMAND" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$COMMAND"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$COMMAND"
 	else 
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "$COMMAND LD:$LDID slot: $xSLOT"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "$COMMAND LD:$LDID slot: $xSLOT"
 	fi
 }
 
 
 if [ ! -x $HPTOOL ] ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" $HPTOOL
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" $HPTOOL
     exit
 fi
 

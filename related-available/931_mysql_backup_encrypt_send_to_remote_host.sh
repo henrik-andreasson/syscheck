@@ -78,7 +78,7 @@ fi
 FULLFILENAME=`$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh --batch ${BACKUPARG}`
 
 if [ $? -ne 0 ] ; then
-    printlogmess $SCRIPTID $SCRIPTINDEX $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
+    printlogmess ${SCRIPTNAME} ${SCRIPTID $SCRIPTINDEX $ERROR $BAK_ERRNO_2 "$BAK_DESCR_2"
 fi 
 
 # lock file check/wait
@@ -95,14 +95,14 @@ if [ -f ${TOARCHIVE_DIR}/encback.lock ] ; then
     done
 
     lockFileIsChangedAtHuman=$(stat --format="%z" ${TOARCHIVE_DIR}/encback.lock)    
-    printlogmess $SCRIPTID $SCRIPTINDEX $WARN $ERRNO_5 "$DESCR_5" $lockFileIsChangedAtHuman
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} $SCRIPTINDEX $WARN $ERRNO_5 "$DESCR_5" $lockFileIsChangedAtHuman
     rm ${TOARCHIVE_DIR}/encback.lock
 fi
 
 touch ${TOARCHIVE_DIR}/encback.lock
 res=$(${OPENENC_TOOL} encrypt ${FULLFILENAME} ${TOARCHIVE_DIR})
 if [ $? -ne 0 ] ;   then
-    printlogmess $SCRIPTID $SCRIPTINDEX $ERROR $ERRNO_3 "$DESCR_3" $res
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} $SCRIPTINDEX $ERROR $ERRNO_3 "$DESCR_3" $res
 fi  
 rm ${TOARCHIVE_DIR}/encback.lock
 
@@ -116,9 +116,9 @@ for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 		$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${TRANSFERFILENAME} ${BACKUP_HOST[$i]} "${BACKUP_DIR[$i]}/${EXTRADIR}/" ${BACKUP_USER[$i]} ${BACKUP_SSHFROMKEY[$i]}
 		if [ $? -eq 0 ] ; then 
-			printlogmess $SCRIPTID $SCRIPTINDEX $INFO $ERRNO_1 "$DESCR_1" "${TRANSFERFILENAME}"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} $SCRIPTINDEX $INFO $ERRNO_1 "$DESCR_1" "${TRANSFERFILENAME}"
 		else
-			printlogmess $SCRIPTID $SCRIPTINDEX $ERROR $ERRNO_4 "$DESCR_4" "${TRANSFERFILENAME}"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} $SCRIPTINDEX $ERROR $ERRNO_4 "$DESCR_4" "${TRANSFERFILENAME}"
 			FILETRANS=0
 		fi
 	done

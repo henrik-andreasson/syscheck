@@ -58,16 +58,16 @@ hppsu () {
 
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
         if [ "x$STATUSPSU1" != "x" -a "x$CONDPSU1" != "x" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "PSU1"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "PSU1"
         else
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "PSU1 $STATUSPSU1 $CONDPSU1"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "PSU1 $STATUSPSU1 $CONDPSU1"
         fi
 	
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
         if [ "x$STATUSPSU2" != "x" -a "x$CONDPSU2" != "x" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "PSU2"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "PSU2"
         else
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "PSU2 $STATUSPSU2 $CONDPSU2"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "PSU2 $STATUSPSU2 $CONDPSU2"
         fi
 }
 
@@ -81,28 +81,28 @@ hptemp () {
 
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 		if [ "x${TEMPNO}" = "x#16" -o "x${TEMPNO}" = "x#17" -o "x${TEMPNO}" = "x#18" -o "x${TEMPNO}" = "x#27" -o "x${TEMPNO}" = "x#28" ] ; then
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "TEMP ${TEMPNO} ${TEMPNAME} is known not to give any reading ($tempinput)"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "TEMP ${TEMPNO} ${TEMPNAME} is known not to give any reading ($tempinput)"
 			continue
 		fi
 
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 		if [ "x${TEMPVAL}" = "x" ] ; then
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "TEMP Command did not return any value for CURRENT temp ($tempinput
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "TEMP Command did not return any value for CURRENT temp ($tempinput
 )"
 			continue
 		fi
 
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 		if [ "x${TEMPLIMIT}" = "x" ] ; then
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "TEMP Command did not return any value for LIMIT temp ($tempinput)"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "TEMP Command did not return any value for LIMIT temp ($tempinput)"
 			continue
 		fi
 
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	        if [ ${TEMPVAL} -gt ${TEMPLIMIT} ] ; then
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "TEMP ${TEMPNO} ${TEMPNAME} Current: ${TEMPVAL} Limit: ${TEMPLIMIT} (celsius)"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "TEMP ${TEMPNO} ${TEMPNAME} Current: ${TEMPVAL} Limit: ${TEMPLIMIT} (celsius)"
 	        else
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "TEMP ${TEMPNO} ${TEMPNAME} Current: ${TEMPVAL} Limit: ${TEMPLIMIT} (celsius)"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "TEMP ${TEMPNO} ${TEMPNAME} Current: ${TEMPVAL} Limit: ${TEMPLIMIT} (celsius)"
 		fi
 	done
 }
@@ -119,15 +119,15 @@ hpfans () {
 
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	        if [ "x${FANSPEED}" !=  "xNORMAL" ] ; then
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "FAN(${FANNO}) NOT in normal operation (${FANSPEED}/${FANPERCENT})"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "FAN(${FANNO}) NOT in normal operation (${FANSPEED}/${FANPERCENT})"
 	        else
-			printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "FAN(${FANNO}) IS in normal operation (${FANSPEED}/${FANPERCENT})"
+			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "FAN(${FANNO}) IS in normal operation (${FANSPEED}/${FANPERCENT})"
 		fi
 	done
 }
 
 if [ ! -x $HP_HEALTH_TOOL ] ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_4 "$DESCR_4" $HP_HEALTH_TOOL
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_4 "$DESCR_4" $HP_HEALTH_TOOL
     exit
 fi
 
@@ -148,7 +148,7 @@ lockfilewait () {
     done
 
     lockFileIsChangedAtHuman=$(stat --format="%z" ${LOCKFILE})    
-    printlogmess $SCRIPTID $SCRIPTINDEX $WARN $ERRNO_5 "$DESCR_5" $lockFileIsChangedAtHuman
+    printlogmess ${SCRIPTNAME} ${SCRIPTID $SCRIPTINDEX $WARN $ERRNO_5 "$DESCR_5" $lockFileIsChangedAtHuman
     rm ${LOCKFILE}
 fi
 

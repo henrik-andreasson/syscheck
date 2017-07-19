@@ -48,7 +48,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
 fi
 
 if [ ! -f $EEL_SERVER_LOG_FILE ] ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $EEL_ERRNO_3 "$EEL_DESCR_3"  $EEL_SERVER_LOG_FILE   
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $EEL_ERRNO_3 "$EEL_DESCR_3"  $EEL_SERVER_LOG_FILE   
     exit
 fi
 
@@ -60,9 +60,9 @@ export EEL_SERVER_LOG_LASTPOSITION
 NEWERRORS=`${SYSCHECK_HOME}/lib/tail_errors_from_ejbca_log.pl 2>/dev/null`
 
 if [ "x$NEWERRORS" = "x" ]; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $EEL_ERRNO_1 "$EEL_DESCR_1"
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $EEL_ERRNO_1 "$EEL_DESCR_1"
 else
     SHORTMESS=`echo $NEWERRORS | perl -ane 'm/Comment : (.*)/, print "$1\n"'`
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $EEL_ERRNO_2 "$EEL_DESCR_2" "$SHORTMESS" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $EEL_ERRNO_2 "$EEL_DESCR_2" "$SHORTMESS" 
 fi
 

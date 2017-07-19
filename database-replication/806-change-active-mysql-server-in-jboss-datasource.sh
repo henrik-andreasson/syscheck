@@ -113,10 +113,10 @@ $Id: ejbca-ds-node1.xml.templ,v 1.1 2006-10-30 17:14:44 kinneh Exp $
 </datasources>
 __EOT__
 if [ $? -eq 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" 
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" 
 	echo "ejbca-ds.xml in jboss switched host to ${HOSTNAME_NODE}"
 	echo "remember to restart jboss when you want the change to take effect"
 else
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2"
 fi
 

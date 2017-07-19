@@ -65,7 +65,7 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
     if [ "x${DATESTR[$i]}" = "x" ] ; then
-    	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$CLEANBAK_DESCR_4"
+    	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$CLEANBAK_DESCR_4"
 	exit
     fi
 
@@ -82,7 +82,7 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
 
     else
 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_3 "$CLEANBAK_DESCR_3" "${FILENAME[$i]}"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_3 "$CLEANBAK_DESCR_3" "${FILENAME[$i]}"
 	printtoscreen "file ${FILENAME[$i]} did not exist before deleting "  
 	    
     fi
@@ -91,7 +91,7 @@ done
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "x$ERR" = "x" ]  ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$CLEANBAK_DESCR_1"
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$CLEANBAK_DESCR_1"
 else
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_2 "$CLEANBAK_DESCR_2" "$ERR"
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_2 "$CLEANBAK_DESCR_2" "$ERR"
 fi

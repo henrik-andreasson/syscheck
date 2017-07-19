@@ -50,7 +50,7 @@ fi
 # Make sure you add quotation marks for the first argument when adding new files that should be copied, for exampel.
 
 if [ ! -f ${SYSCHECK_HOME}/related-enabled/923-rsync-to-remote-machine.sh ] ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
     exit
 fi
 
@@ -58,10 +58,10 @@ for (( j=0; j < ${#LOCAL_PATH[@]} ; j++ )){
 	printtoscreen "Copying file: ${LOCAL_PATH[$j]} to:${REMOTE_HOST[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey: ${SSHKEY[$j]}"
 	${SYSCHECK_HOME}/related-enabled/923-rsync-to-remote-machine.sh "${LOCAL_PATH[$j]}" ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}
 	if [ $? -eq 0 ] ; then
-	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "${LOCAL_PATH[$j]} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}"  
+	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "${LOCAL_PATH[$j]} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}"  
 	
 	else
-	    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "${LOCAL_PATH[$j]} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}"   
+	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "${LOCAL_PATH[$j]} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}"   
 	    
 	fi
 	

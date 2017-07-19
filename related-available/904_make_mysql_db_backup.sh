@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -o errexit   # no commands must ever return != 0
+set -o pipefail  # all commands in a pipe must not fail
+set -o noclobber # dont overwrite files
+#set -o xtrace   # debug
+
 # Set SYSCHECK_HOME if not already set.
 
 # 1. First check if SYSCHECK_HOME is set then use that
@@ -27,13 +32,12 @@ SCRIPTID=904
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-getlangfiles $SCRIPTID 
-getconfig $SCRIPTID
+initscript $SCRIPTID 
+
 
 ERRNO_1="01"
 ERRNO_2="02"
 ERRNO_3="03"
-ERRNO_4="04"
 
 PRINTTOSCREEN=0
 
@@ -72,28 +76,34 @@ else
 	EXTRADIR=${TYPE}
 fi
 
+
 if [ ! -d "${MYSQLBACKUPDIR}/${EXTRADIR}" ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "${MYSQLBACKUPDIR}/${EXTRADIR}"
-	exit 1
+    printlogmess ${SCRIPTNAME}  ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "${MYSQLBACKUPDIR}/${EXTRADIR}"
+    exit 1
 fi
 
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPDIR}/${EXTRADIR}/${MYSQLBACKUPFILE}"
-dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${DB_NAME} 2>&1 > ${MYSQLBACKUPFULLFILENAME} )
-if [ $? -ne 0 ] ; then
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$dumpret"
-	exit
-fi
 
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-gzip $MYSQLBACKUPFULLFILENAME
-if [ $? -eq  0 ] ; then
-      printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" $MYSQLBACKUPFULLFILENAME.gz
-else
-      printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" $MYSQLBACKUPFULLFILENAME.gz
-fi
+for (( i = 0 ;  i < ${#DBNAME[@]} ; i++ )) ; do
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+    
+    DATESTR=$(date +${DATESTING})
+    MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPDIR}/${EXTRADIR}/${DBNAME[$i]}-${DATESTR}.gz"
+    DATESTART=$(date +"%s")
+    dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${MYSQLDUMP_OPTIONS} ${DB_NAME} ${MYSQLDUMP_TABLES} |& gzip > ${MYSQLBACKUPFULLFILENAME} 2>&1)
+    retcode=$?
+    DATEDONE=$(date +"%s")
+    let TIMETOCOMPLEATE="$DATEDONE - $DATESTART" || true # not to stop script
+    filesize=$(stat -c "%s" "$MYSQLBACKUPFULLFILENAME")
+ 
+    if [ $retcode -eq 0 ] ; then
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO  $ERRNO_1 "$DESCR_1" "$MYSQLBACKUPFULLFILENAME" $TIMETOCOMPLEATE $filesize
+    else
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$MYSQLBACKUPFULLFILENAME" $TIMETOCOMPLEATE $filesize "$dumpret"
+    fi
 
-if [ "x$BATCH" = "x1" ] ; then
-	echo "$MYSQLBACKUPFULLFILENAME.gz"
-fi
+    if [ "x$BATCH" = "x1" ] ; then
+        echo "$MYSQLBACKUPFULLFILENAME"
+    fi
+
+done
 

@@ -57,7 +57,7 @@ if [ "x${CHECKTOOL}" = "xwget" ] ; then
 elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
         ${CHECKTOOL} ${URL} --connect-timeout ${GET_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
 else
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
 	exit
 fi
 
@@ -67,9 +67,9 @@ ERROROUTPUT=$(cat $OUTPUT | grep ERROR)
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "x$OKOUTPUT" != "x" ]; then
-       printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "$FULLOUTPUT"
+       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "$FULLOUTPUT"
 elif [ "x$ERROROUTPUT" != "x" ]; then 
-       printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FULLOUTPUT"
+       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FULLOUTPUT"
 fi
 
 rm $OUTPUT

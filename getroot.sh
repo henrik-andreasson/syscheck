@@ -52,7 +52,7 @@ if [ -f  ${SYSCHECK_HOME}/var/syscheck-on-hold ] ; then
 	if [ "x${SYSCHECKONHOLDDONE}" = "xy" -o "x$SYSCHECKONHOLDDONE" = "xY" ] ; then
 		REASON=$(cat ${SYSCHECK_HOME}/var/syscheck-on-hold)
 		sudo rm ${SYSCHECK_HOME}/var/syscheck-on-hold
-		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESC_4" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
+		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESC_4" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
 		printf "${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 ${ExecutingUserName} (${ExecutingUserId}) $DESC_4 $REASON\n" 
 		sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESC_4" "${ExecutingUserName}" "$REASON"
 		exit
@@ -71,11 +71,11 @@ fi
 read -e -i "y" -r -p "stop any new syscheck scripts Y/n?" SYSCHECKONHOLD
 
 if [ "x$SYSCHECKONHOLD" = "xy" -o "x$SYSCHECKONHOLD" = "xY" ] ; then
-    sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_3 "$DESC_3" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
+    sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_3 "$DESC_3" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
     sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh      ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_3 "$DESC_3" "${ExecutingUserName}" "$REASON"
 	printf "$(date):${REASON}:${ExecutingUserName}" | sudo tee ${SYSCHECK_HOME}/var/syscheck-on-hold > /dev/null
 else
-    sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESC_1" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
+    sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESC_1" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
     sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESC_1" "${ExecutingUserName}" "$REASON"
 fi
 
@@ -86,7 +86,7 @@ if [ -f  ${SYSCHECK_HOME}/var/syscheck-on-hold ] ; then
 	if [ "x${SYSCHECKONHOLDDONE}" = "xy" -o "x$SYSCHECKONHOLDDONE" = "xY" ] ; then
 		REASON=$(cat ${SYSCHECK_HOME}/var/syscheck-on-hold)
 		sudo rm ${SYSCHECK_HOME}/var/syscheck-on-hold
-		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESC_4" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
+		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESC_4" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
 		sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESC_4" "${ExecutingUserName}" "$REASON"
 		printf "${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 $DESC_4 ${ExecutingUserName} (${ExecutingUserId}) $REASON\n" 
 		exit

@@ -53,9 +53,9 @@ printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca createcrl"
 CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca createcrl 2>&1)
 RES=$(echo "$CMD" | grep "CRLs have been created.")
 if [ "x$RES" = "x"  ] ; then
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$CMD"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$CMD"
 else
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$CMD"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$CMD"
 fi
 printtoscreen $CMD
 

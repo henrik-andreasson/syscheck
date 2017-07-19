@@ -52,7 +52,7 @@ fi
 
 ### is there even a file as argument1 ?
 if [ "x$1" = "x" -o ! -r "$1" ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
 	printtoscreen $ERROR $ERRNO_2 "$DESCR_2"
 	exit
 fi
@@ -63,7 +63,7 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 date >> ${REVLOG} 
 CERTSERIAL=`openssl x509 -inform der -in $1 -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 	# we really need a serial
 	exit
 fi
@@ -71,7 +71,7 @@ fi
 
 CERTSUBJECT=`openssl x509 -inform der -in $1 -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 	# also without subject we cant continiue
 	exit
 fi
@@ -80,7 +80,7 @@ echo "CERTSERIAL: $CERTSERIAL" >> ${REVLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${REVLOG}
 CERT=`openssl x509 -inform der -in $1`
 if [ $? -ne 0 ] ; then 
-	printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 	# if we cant parse the cert
 	exit
 fi
@@ -94,9 +94,9 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 OUTFILE="${OUTPATH2}/revoked-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in $1 > ${OUTFILE}
 if [ $? -eq 0 ] ; then 
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?" 
 else
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

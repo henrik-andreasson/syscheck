@@ -60,8 +60,8 @@ fi
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 echo "SHOW SLAVE STATUS;" | $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD" 
 if [ $? -eq 0 ] ; then
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 $ERRNO_1 "$DESCR_1"
 else
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 $ERRNO_2 "$DESCR_2"
 fi
 
