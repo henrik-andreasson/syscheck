@@ -20,7 +20,7 @@ addOneToIndex() {
 
 #        sendlogmess "${SCRIPTID}-${SCRIPTINDEX}" "${HOST}"  "${DESCR_W_ARGS}"
 sendlogmess(){
-    set -x
+#    set -x
     SCRIPTNAME=$1
     SCRIPTID=$2
     SCRIPTINDEX=$3
@@ -29,7 +29,6 @@ sendlogmess(){
 
 
     if [ "x${SENDTO_OP5}" != "x1" -a "x${SENDTO_ICINGA}" != "x1" ] ; then
-        echo "not sending monitoring messages"
         return
     fi
 
