@@ -1,0 +1,12 @@
+
+HELP="check dell system fans"
+
+DESCR_1="Fan is OK %s"
+HELP_1="No action is needed"
+
+DESCR_2="Fan is not OK %s"
+HELP_2="Change fan as soon as possible"
+
+DESCR_6="TOOL not installed at: %s"
+HELP_6="the tool is not installed, install the tool to get working reports"
+
