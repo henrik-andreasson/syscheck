@@ -1,0 +1,13 @@
+HELP="Check Redis VIP"
+
+DESCR_1="server is OK at %s:%s (%s)"
+HELP_1="All is ok"
+
+DESCR_2="server is not responding %s:%s (%s)"
+HELP_2="check the redis server is not responding"
+
+DESCR_3="Input Arg problem %s"
+HELP_3="Check config"
+
+DESCR_4="redis-cli is not found"
+HELP_4="install/configure redis-cli in config"
