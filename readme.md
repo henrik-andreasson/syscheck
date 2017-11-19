@@ -8,33 +8,79 @@ The system check scripts controls the overall health of the system
 and sends it's result to syslog for further processing
 
 The main script is 'syscheck.sh' that performs all subsystem checks with
-a filename starting with "sc_" in the scripts-enebled directory. 
+a filename starting with "sc_" in the scripts-enebled directory.
 
 The script 'syscheck.sh -s' performs the same checks but echoes the output to the terminal.
 
 All message are described in lang/syscheck.<lang>
-errorcodes are defined in the local sc_ files 
-config for each script is in config/<scriptid>.conf
+errorcodes are defined in the local sc_ files
 
-INSTALLATION 
+Authors
+------------
+
+Maintainter is Henrik Andreasson github@han.pp.se
+
+Contributors:
+* Philip Vendil
+* Joakim Bågnert
+* Tomas Gustafsson
+
+
+INFO
+---------------------------
+Homepage:	(http://github.com/henrik-andreasson/syscheck)
+
+Patches are welcome via email or pull requests, please state if you want your name in the contributors list.
+
+License is GPL 2.
+
+INSTALLATION
 ==========================
+
+manually
+---------
 untar the distribution in a suitable directory (default /usr/local/syscheck).
 Then edit config/common.conf config/xxx.conf (where xxx is ther scriptid) to fit your needs.
+
+packaged (rpm and deb)
+----------------------
+
+Download the rpm/deb from github
+
+rpm -Uvh syscheck-<version>.rpm
+
+dpkg -i syscheck-<version>.deb
+
+
+
+Configuration Management
+=========================
+
+ansible
+----------------
+syscheck is configurable with ansible.
+for more info see the misc/ansible directory.
+
+manually
+----------
+
+Each script has a config under config/
+
 
 syscheck-scripts
 -------------------
 
-Enable scripts by making a soft link (ln -s) in "scripts-enabled" to "scripts-available" where all 
+Enable scripts by making a soft link (ln -s) in "scripts-enabled" to "scripts-available" where all
 scripts reside.
 
-enable one script: 
+enable one script:
 
-        # cd scripts-enabled 
+        # cd scripts-enabled
         # ln -s ../scripts-available/sc_01_disk_usage.sh .
 
-enable all script: 
+enable all script:
 
-        # cd scripts-enabled 
+        # cd scripts-enabled
         # ln -s ../scripts-available/* .
 
 make a test-run by doing:
@@ -43,9 +89,9 @@ make a test-run by doing:
 
  if it works out good (All is OK), then go ahead and try
 
-        ./sysheck.sh 
+        ./sysheck.sh
 
-then check your syslog-logs 
+then check your syslog-logs
 
 
 Related scripts
@@ -57,7 +103,7 @@ To list the available scripts look in related-available
 
         ls  related-available
 
-To find out more about a certain script run with "-h" as argument: 
+To find out more about a certain script run with "-h" as argument:
 
         related-available/900_export_cert.sh -h
 
@@ -68,12 +114,6 @@ To enable a script:
 
 Why should you only use related scripts from "related-enabled"?
  - Those are configured and tested on this particular installation, so do make it a habit to run stuff only from "related-enabled"
-
-Configuration
-==================
-
-Each script has a config under config/
-
 
 Output
 =====================
@@ -227,18 +267,113 @@ With Variable width:
 42 - . Message
 ```
 
-Authors
-------------
+LOGBOOK Tool
+=============
 
-Maintainter is Henrik Andreasson github@han.pp.se
+Log book is a tool to log activities by the operators, it may be trouble shooting,
+handover of problems/incidents to next operator or any important info.
 
-Contributors: 
-* Philip Vendil
-* Joakim Bågnert
-* Tomas Gustafsson
+Help:
 
-INFO
----------------------------
-Homepage:	(http://github.com/henrik-andreasson/syscheck)
+```
+$ ./logbook.sh -h
+./logbook.sh: Tool to log messages to syscheck
+
+This is syscheck, loogbook.sh it ask for a entry then logs it.
+./logbook.sh [ -r <days> |  -p ] (read is default)
+```
+
+to post an entry, it is a single line, need more lines, just run again.
+```
+$ ./logbook.sh -p
+./logbook.sh: Tool to log messages to syscheck
+
+Enter any type of info that needs to be logged into the logbook (max 160 chars)
+> Fault tracing the server is slow
+
+```
 
 
+read the log, press enter to see next day, ctrl-c to exit
+
+```
+$ ./logbook.sh -r
+./logbook.sh: Tool to log messages to syscheck
+
+Logentries for: 20171119
+701-00-I-7011-PKI 20171119 11:54:28 vroom: INFO - User: han ; Logentry: Fault tracing the server is slow
+end-of-entries, press enter to see next day
+Logentries for: 20171118
+end-of-entries, press enter to see next day
+Logentries for: 20171117
+end-of-entries, press enter to see next day
+Logentries for: 20171116
+700-00-I-7003-PKI 20171116 15:48:23 vroom: INFO - User: han is getting root, with syscheck on hold reason: Change #363636 - update keystore 47
+700-00-I-7004-PKI 20171116 15:48:31 vroom: INFO - User: han is done with root reason: Change #363636 - update keystore 47
+end-of-entries, press enter to see next day
+Logentries for: 20171115
+end-of-entries, press enter to see next day^C
+```
+
+read the log x days and exit (put it in your .bashrc maybe)
+```
+$ ./logbook.sh -r 7
+./logbook.sh: Tool to log messages to syscheck
+
+Logentries for: 20171119
+701-00-I-7011-PKI 20171119 11:54:28 vroom: INFO - User: han ; Logentry: Fault tracing the server is slow
+Logentries for: 20171118
+Logentries for: 20171117
+Logentries for: 20171116
+700-00-I-7003-PKI 20171116 15:48:23 vroom: INFO - User: han is getting root, with syscheck on hold reason: Change #363636 - update keystore 47
+700-00-I-7004-PKI 20171116 15:48:31 vroom: INFO - User: han is done with root reason: Change #363636 - update keystore 47
+701-00-I-7011-PKI 20171116 15:49:21 vroom: INFO - User: han ; Logentry: ny var det konstigt
+Logentries for: 20171115
+Logentries for: 20171114
+Logentries for: 20171113
+```
+
+
+GetRoot Tool
+===============
+
+Small tool to log why you need root before getting access.
+This is of course in no way enforceable but still easy to follow up
+if operators do not log their reason. As an incentive getroot manages
+putting syscheck on hold for the operator.
+
+Becoming root
+```
+$ ./getroot.sh
+./getroot.sh: Tool to log changes and to pause syscheck
+
+Please state a short but clear reason why you need root
+> Change CHG123456 - update the version of syscheck
+stop any new syscheck scripts Y/n?y
+[sudo] password for han:
+root@vroom:~# #do upgrade
+root@vroom:~# # now all syscheck batch jobs will not run
+root@vroom:~# # exit when ready
+root@vroom:~# exit
+logout
+Syscheck is on hold, are you done Y/n?y
+
+Becoming root, keeping syscheck on-hold.
+```
+$ ./getroot.sh
+./getroot.sh: Tool to log changes and to pause syscheck
+
+Please state a short but clear reason why you need root
+> Change CHG123456 - update the version of syscheck
+stop any new syscheck scripts Y/n?y
+root@vroom:~# exit
+logout
+Syscheck is on hold, are you done Y/n?n
+```
+
+Next time getroot is started, is asks if your done
+```
+$ ./getroot.sh
+Syscheck is on hold, are you done Y/n?y
+700 00 I 7004 han (1000) User:  is done with root reason:  Sun Nov 19 12:32:52 CET 2017:upgrade sytscheck:han
+```

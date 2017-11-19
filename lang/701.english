@@ -2,3 +2,9 @@ HELP="This is syscheck, loogbook.sh it ask for a entry then logs it."
 HELP_1=Logmessage
 DESCR_1="User: %s ; Logentry: %s"
 
+LOGBOOK_GREETING="Tool to log messages to syscheck"
+DONT_RUN_AS_ROOT="Do not run as root, the tool is for becoming root"
+LOGBOOK_NEW_ENTRY="Enter any type of info that needs to be logged into the logbook, max"
+LOGBOOK_EMPTY_ENTRY="no message to post, exiting"
+LOGBOOK_ENTRIES_FOR_DATE="Logentries for"
+LOGBOOK_END_OF_ENTRIES_PRESS_ENTER="end-of-entries, press enter to see next day"
