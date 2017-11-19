@@ -5,8 +5,8 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/usr/local/syscheck"
@@ -26,7 +26,7 @@ SCRIPTID=36
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-getlangfiles $SCRIPTID 
+getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 
@@ -109,9 +109,9 @@ temp_check () {
 	printverbose "$TEMP_INFO"
 
         if [ "x$temp_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "tempid: $tempid status: $temp_status degrees: $temp_degrees"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "tempid: $tempid status: $temp_status degrees: $temp_degrees"
         else
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "temp NOTOK $TEMP_INFO"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "temp NOTOK $TEMP_INFO"
         fi
 }
 
@@ -134,9 +134,9 @@ psu_check () {
         printverbose "$PSU_INFO"
 
         if [ "x$psu_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "PSU id: $id status: $psu_status watts: $psu_watts"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "PSU id: $id status: $psu_status watts: $psu_watts"
         else
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "PSU id: $id NOTOK $PSU_INFO"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "PSU id: $id NOTOK $PSU_INFO"
         fi
 }
 
@@ -145,7 +145,7 @@ power_consumption_check () {
         id="$1"
 	SCRIPTINDEX=$2
 
-# omreport chassis pwrmonitoring  -fmt ssv 
+# omreport chassis pwrmonitoring  -fmt ssv
 #Index;Status;Probe Name;Reading;Warning Threshold;Failure Threshold
 #2;Ok;System Board Pwr Consumption;70 W;420 W;462 W
 
@@ -161,15 +161,15 @@ power_consumption_check () {
 	printverbose "$POWER_INFO"
 
         if [ "x$power_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "powerid: $id status: $power_status watts: $power_watts"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "powerid: $id status: $power_status watts: $power_watts"
         else
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "power NOTOK $POWER_INFO"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "power NOTOK $POWER_INFO"
         fi
 }
 
 
 if [ ! -x $DELLTOOL ] ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" $DELLTOOL
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" $DELLTOOL
     exit
 fi
 
@@ -192,4 +192,3 @@ for (( i = 0 ;  i < ${#PSU[@]} ; i++ )) ; do
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	psu_check "${PSU[$i]}" $SCRIPTINDEX
 done
-
