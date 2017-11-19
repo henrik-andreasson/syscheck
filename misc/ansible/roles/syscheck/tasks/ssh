@@ -1,0 +1,14 @@
+---
+# - debug: var=vars
+
+ - include_vars: /etc/ansible/common_vars.yml
+
+ - name: generate ssh key for backup
+   command: ssh-keygen -f {{syscheck_ssh_key}} -N "" -q creates={{syscheck_ssh_key}}
+
+ - name: read the ssh publickey 
+   command: ssh-keygen -f {{syscheck_ssh_key}} -y
+   register: sshkey
+
+ - name: public key, to be added to authorized_key where ever syscheck needs to login to
+   debug: msg="{{sshkey.stdout_lines[0]}}"

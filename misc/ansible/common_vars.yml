@@ -1,0 +1,4 @@
+---
+ mysql_root_pass: foobar123
+ webclitool: curl
+

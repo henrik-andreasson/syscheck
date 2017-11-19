@@ -1,0 +1,295 @@
+---
+ syscheck_home: "/opt/syscheck"
+ cs_environment_file: /etc/syscheck.conf
+
+ syscheck_ssh_key: /root/.ssh/id_rsa
+
+ syscheck_backup_dir: /backup/mysql
+
+ syscheck_backup_sub_dirs:
+  - default
+  - daily
+  - weekly
+  - monthly
+  - yearly
+
+# enable/disable scripts with true/false
+# check also if config is needed below
+
+ enable_sc_01_diskusage:       true 
+ enable_sc_02_ejbca:           true
+ enable_sc_03_memory_usage:    true 
+ enable_sc_04_pcsc_readers:    false
+ enable_sc_05_pcscd:           false
+ enable_sc_06_raid_check:      false
+ enable_sc_07_syslog:          true 
+ enable_sc_08_crl_from_webserver: false
+ enable_sc_09_firewall:        true 
+ enable_sc_12_mysql:           true 
+ enable_sc_14_sw_raid:         false 
+ enable_sc_15_apache:          false
+ enable_sc_16_ldap:            false
+ enable_sc_17_ntp:             true 
+ enable_sc_18_sqlselect:       true 
+ enable_sc_19_alive:           true 
+ enable_sc_20_errors_ejbcalog: true
+ enable_sc_22_boks_replica:    false
+ enable_sc_23_rsa_axm:         false
+ enable_sc_27_dss:             false
+ enable_sc_28_check_vip:       false
+ enable_sc_29_signserver:      false
+ enable_sc_30_check_running_procs: false
+ enable_sc_31_hp_health:       false
+ enable_sc_32_check_db_sync:   false
+ enable_sc_33_healthchecker:   false
+
+ enable_900_export_cert:            false
+ enable_901_export_revocation:      false
+ enable_902_export_crl:             false
+ enable_903_make_hsm_backup:        false
+ enable_904_make_mysql_db_backup:   true
+ enable_905_publish_crl:            false
+ enable_906_ssh_copy_to_remote_machine:                          true
+ enable_907_make_mysql_db_backup_and_transfer_to_remote_mashine: false
+ enable_908_clean_old_backups:      true
+ enable_909_activate_CAs:           false
+ enable_910_deactivate_CAs:         false
+ enable_911_activate_VIP:           false
+ enable_912_deactivate_VIP:         false
+ enable_913_copy_ejbca_conf:        false
+ enable_914_compare_master_slave_db:     false
+ enable_915_remote_command_via_ssh:      false
+ enable_916_archive_access_manager_logs: false
+ enable_917_archive_file:                false
+ enable_918_server_alive:                false
+ enable_919_certpublisher_remotecommand:  false
+ enable_920_restore_mysql_db_from_backup: true
+ enable_921_copy_htmf_conf:               false
+ enable_922_simple_database_replication_check:       false
+ enable_923_rsync_to_remote_machine:                 false
+ enable_924_backup_this_machine_to_remote_machine:   false
+ enable_925_publish_crl_from_file:                   false
+ enable_926_local_htmf_copy_conf:                    false
+ enable_927_create_crls:                             true
+ enable_928_check_dsm_backup:                        false
+ enable_929_filter_syscheck_messages:                true
+ enable_930_send_filtered_result_to_remote_machine:  true
+ enable_931_mysql_backup_encrypt_send_to_remote_host: true
+
+ webclitool: curl
+
+ sc_01_disks: 4
+ sc_01_path_0: "/"
+ sc_01_proc_0: "70"
+ sc_01_path_1: "/var/lib"
+ sc_01_proc_1: "70"
+ sc_01_path_2: "/var/log"
+ sc_01_proc_2: "70"
+ sc_01_path_3: "/backup"
+ sc_01_proc_3: "60"
+
+ sc_03_mem: 85
+ sc_03_swap: 77
+
+ sc_06_slot: 0
+ sc_06_ld_0: "logicaldrive 1"
+ sc_06_ld_1: "logicaldrive 2"
+ sc_06_pd_0: "physicaldrive 1I:1:1"
+ sc_06_pd_1: "physicaldrive 1I:1:2"
+ sc_06_pd_2: "physicaldrive 1I:1:3"
+ sc_06_pd_3: "physicaldrive 1I:1:4"
+
+ sc_07_logfile: "/var/log/messages"
+ sc_07_pidfile: "/var/run/syslogd.pid"
+ sc_07_procname: "rsyslogd"
+
+ sc_08_crls:
+  - { id: "0", cdp: "http://localhost/crl/eIDCA.crl" }
+  - { id: "1", cdp: "http://localhost/crl/eSignCA.crl" }
+  - { id: "2", cdp: "http://localhost/crl/eSignCA.crl" }
+
+ sc_08_crl_tool: "curl"
+ sc_08_crl_limit: "24"
+
+ sc_09_iptables_binary: "/sbin/iptables"
+ sc_09_rule_must_exist: "ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8443 ctstate NEW"
+ sc_09_rule_must_not_exist: "ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:23 ctstate NEW"
+
+ sc_12_mysqld_pid: "/var/lib/mysql/mysqld.pid"
+ sc_12_mysqld_procname: "/usr/sbin/mysqld"
+
+ sc_15_apache_pidfile: "/var/run/httpd/httpd.pid"
+ sc_15_apache_procname: "httpd"
+
+ sc_16_ldap_pidfile: "/var/run/slapd.pid"
+ sc_16_ldap_procname: "slapd"
+
+ sc_17_ntp_ntpq_bin: "/sbin/ntpq"
+ sc_17_ntp_servers:
+   - { id: "0", host: "0.pool.ntp.org" }
+   - { id: "1", host: "1.pool.ntp.org" }
+
+ sc_18_sqlselect1: "SELECT * FROM $DB_TEST_TABLE LIMIT 1"
+
+ sc_20_errors_ejbcalog_file: "/var/log/wildfly/server.log"
+ sc_20_errors_ejbcalog_lastpos_file: "/var/tmp/wildfly_server_default_log_server.log.lastposision"
+
+ sc_30_check_running_procs: 3
+ sc_30_check_running_procs_procname_0: "tomcat-admin"
+ sc_30_check_running_procs_restart_0: "/etc/init.d/tomcat-admin restart"
+ sc_30_check_running_procs_pidfile_0: ""
+
+ sc_30_check_running_procs_procname_1: "tomcat-public"
+ sc_30_check_running_procs_restart_1: "/etc/init.d/tomcat-public restart"
+ sc_30_check_running_procs_pidfile_1: ""
+    
+ sc_30_check_running_procs_procname_2: "tomcat-worker"
+ sc_30_check_running_procs_restart_2: "/etc/init.d/tomcat-worker restart"
+ sc_30_check_running_procs_pidfile_2: ""
+    
+ 
+ syscheck_930_remote_monitoring:
+  - { id: 0,
+      hostname:   host1.tld,
+      remotedir:  "/monitoring/{{inventory_hostname}}",
+      remotefile: "syscheck.log",
+      remoteuser: host,
+      sshkey:     /root/.ssh/id_rsa,
+      localfile: "${SYSCHECK_HOME}/var/last_status_filtered" }
+
+
+
+ syscheck_931_remote_backup:
+   - {id: "0", hostname: "host1.domain.com", remotedir:  "/backup/host1.domain.com/default", remoteuser: "remuser1", sshkey:     "/root/.ssh/id_rsa"}
+   - {id: "1", hostname: "host2.domain.com", remotedir:  "/backup/host2.domain.com/default", remoteuser: "remuser2", sshkey:     "/root/.ssh/id_rsa"}
+
+ syscheck_cron_setup:
+   syscheck_batch_run:
+     name: "regular syscheck every 10 minutes"
+     job: "{{syscheck_home}}/syscheck.sh"
+     min:  "1,11,21,31,41,51"
+     hour: "*"
+     weekday: "*"
+     day:     "*"
+     month:   "*"
+   syscheck_backup_default:
+     name: "default, local backup ten past 6,12 and 18"
+     job: "{{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh"
+     min:  10
+     hour: "6,12,18"
+     weekday: "7"
+     day:     "*"
+     month:   "*"
+   syscheck_backup_daily:
+     name: "daily, local backup 0:10  every day"
+     job: "{{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh"
+     min:  10
+     hour: "6,12,18"
+     weekday: "7"
+     day:     "*"
+     month:   "*"
+   syscheck_backup_week:
+     name: "weekly backup 1:10 every week"
+     job:     "{{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh"
+     min:  10
+     hour: 1
+     weekday: "7"
+     day:     "*"
+     month:   "*"    
+   syscheck_backup_monthly:
+     name: "monthly backup 2:10 every 1:th day of month"
+     job:     "{{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh"
+     min:  10
+     hour: 2
+     weekday: "*"
+     day:     "1"
+     month:   "*"
+   syscheck_backup_yearly:
+     name:    "yearly 11:50 1:th of jan"
+     job:     "{{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh"
+     min:     50
+     hour:    11
+     weekday: "*"
+     day:     "1"
+     month:   "1"
+   syscheck_run_createcrls:
+     name:    "create crl, every hour"
+     job:     "{{syscheck_home}}/related-enabled/927_create_crls.sh"
+     min:     3
+     hour:    "*"
+     weekday: "*"
+     day:     "*"
+     month:   "*"
+   syscheck_backup_encrypted:
+     name:    "13:30 every day encrypted backup"
+     job:     "{{syscheck_home}}/related-enabled/931_mysql_backup_encrypt_send_to_remote_host.sh"
+     min:     "30"
+     hour:    "13"
+     weekday: "*"
+     day:     "*"
+     month:   "*"
+   syscheck_backup_clean:
+     name:    "14:30 every day clean old backup"
+     job:     "{{syscheck_home}}/related-enabled/908_clean_old_backups.sh"
+     min:     "30"
+     hour:    "14"
+     weekday: "*"
+     day:     "*"
+     month:   "*"
+
+ syscheck_max_message_length: 160
+ syscheck_system_name: CSLAB
+ cs_ejbca_home: /opt/ejbca
+ cs_jboss_home: /opt/wildfly
+ syscheck_ca_name1: CA1
+ syscheck_ca_pin1: 1111
+ syscheck_ca_name2: CA2
+ syscheck_ca_pin2: 2222
+ syscheck_ca_name3: CA3
+ syscheck_ca_pin3: 3333
+ syscheck_ca_name4: CA4
+ syscheck_ca_pin4: 4444
+ syscheck_ca_name5: CA5
+ syscheck_ca_pin5: 5555
+ syscheck_ca_name6: CA6
+ syscheck_ca_pin6: 6666
+ syscheck_ca_name7: CA7
+ syscheck_ca_pin7: 7777
+ syscheck_db_name: ejbca
+ syscheck_db_username: ejbca
+ syscheck_db_password: foo123
+ syscheck_db_testtable: CertificateData
+ syscheck_db_repl_user: ejbca
+ syscheck_db_repl_pass: foo123
+ syscheck_db_mysql_bin_path: /bin/mysql
+ syscheck_db_mysqladmin_bin_path: /bin/mysqladmin
+ syscheck_db_mysqldump_bin_path: /bin/mysqldump
+ syscheck_hostip_node1: 1.1.2.4
+ syscheck_hostip_node2: 1.1.1.3
+ syscheck_vip_ip: 1.2.3.4
+ syscheck_vip_netmask: 255.255.255.0
+ syscheck_vip_interfacename: eth0
+ syscheck_filter_result_after_run: 1
+ syscheck_send_result_to_remote_machine: 1
+
+ # 1= enabled 0=disabled
+ syscheck_sendto_file: "1"
+
+ # "OLDFMT", "NEWFMT" or "JSON"
+ syscheck_file_outputtype: "JSON"
+
+ syscheck_sendto_filename: "/var/log/syscheck.log"
+
+ # shall messages be sent to syslog?
+ # 1 to activate 0 to deactivate
+ syscheck_sendto_syslog: "0"
+ 
+ # "OLDFMT", "NEWFMT" or "JSON"
+ syscheck_syslog_outputtype: "JSON"
+
+ syscheck_syslog_facillity: "local3"
+
+ # "OLDFMT", "NEWFMT" or "JSON"
+ syscheck_screen_outputtype: "NEWFMT"
+
+ 

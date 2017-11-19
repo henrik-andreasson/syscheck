@@ -1,0 +1,589 @@
+---
+# - debug: var=vars
+
+ - include_vars: common_vars.yml
+
+ - name: create syscheck backup dirs
+   file: path="{{syscheck_backup_dir}}/{{item}}" state=directory owner=root group=root mode=0755
+   with_items: "{{syscheck_backup_sub_dirs}}"
+
+# - copy: src=disable-script.sh                         dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
+# - copy: src=enable-script.sh                          dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
+# - copy: src=mk-template-sc_01.sh                      dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
+# - copy: src=mk-template-sc_06.sh                      dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
+# - copy: src=mk-template-sc_08.sh                      dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
+# - copy: src=mk-template-sc_17_ntp.sh                  dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
+# - copy: src=mk-template-sc_30_check_running_procs.sh  dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
+
+
+ - name: add cron jobs
+   cron: name="{{item.value.name}}" minute="{{item.value.min}}" hour="{{item.value.hour}}" day="{{item.value.day}}" weekday="{{item.value.weekday}}" month="{{item.value.month}}" state=present job="{{item.value.job}}"
+   with_dict: "{{syscheck_cron_setup}}" 
+   
+ - file: src={{syscheck_home}}/scripts-available/sc_01_diskusage.sh dest={{syscheck_home}}/scripts-enabled/sc_01_diskusage.sh state=link
+   when: enable_sc_01_diskusage
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_01_diskusage.sh state=absent
+   when: not enable_sc_01_diskusage
+
+ - file: src={{syscheck_home}}/scripts-available/sc_02_ejbca.sh dest={{syscheck_home}}/scripts-enabled/sc_02_ejbca.sh state=link
+   when: enable_sc_02_ejbca
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_02_ejbca.sh state=absent
+   when: not enable_sc_02_ejbca
+
+ - file: src={{syscheck_home}}/scripts-available/sc_03_memory-usage.sh dest={{syscheck_home}}/scripts-enabled/sc_03_memory-usage.sh state=link
+   when: enable_sc_03_memory_usage
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_03_memory-usage.sh state=absent
+   when: not enable_sc_03_memory_usage
+
+ - file: src={{syscheck_home}}/scripts-available/sc_04_pcsc_readers.sh dest={{syscheck_home}}/scripts-enabled/sc_04_pcsc_readers.sh state=link
+   when: enable_sc_04_pcsc_readers
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_04_pcsc_readers.sh state=absent
+   when: not enable_sc_04_pcsc_readers
+
+ - file: src={{syscheck_home}}/scripts-available/sc_05_pcscd.sh dest={{syscheck_home}}/scripts-enabled/sc_05_pcscd.sh state=link
+   when: enable_sc_05_pcscd
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_05_pcscd.sh state=absent
+   when: not enable_sc_05_pcscd
+
+ - file: src={{syscheck_home}}/scripts-available/sc_06_raid_check.sh dest={{syscheck_home}}/scripts-enabled/sc_06_raid_check.sh state=link
+   when: enable_sc_06_raid_check
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_06_raid_check.sh state=absent
+   when: not enable_sc_06_raid_check
+
+ - file: src={{syscheck_home}}/scripts-available/sc_07_syslog.sh dest={{syscheck_home}}/scripts-enabled/sc_07_syslog.sh state=link
+   when: enable_sc_07_syslog
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_07_syslog.sh state=absent
+   when: not enable_sc_07_syslog
+
+ - file: src={{syscheck_home}}/scripts-available/sc_08_crl_from_webserver.sh dest={{syscheck_home}}/scripts-enabled/sc_08_crl_from_webserver.sh state=link
+   when: enable_sc_08_crl_from_webserver
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_08_crl_from_webserver.sh state=absent
+   when: not enable_sc_08_crl_from_webserver
+
+ - file: src={{syscheck_home}}/scripts-available/sc_09_firewall.sh dest={{syscheck_home}}/scripts-enabled/sc_09_firewall.sh state=link
+   when: enable_sc_09_firewall
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_09_firewall.sh state=absent
+   when: not enable_sc_09_firewall
+
+ - file: src={{syscheck_home}}/scripts-available/sc_12_mysql.sh dest={{syscheck_home}}/scripts-enabled/sc_12_mysql.sh state=link
+   when: enable_sc_12_mysql
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_12_mysql.sh state=absent
+   when: not enable_sc_12_mysql
+
+ - file: src={{syscheck_home}}/scripts-available/sc_14_sw_raid.sh dest={{syscheck_home}}/scripts-enabled/sc_14_sw_raid.sh state=link
+   when: enable_sc_14_sw_raid
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_14_sw_raid.sh state=absent
+   when: not enable_sc_14_sw_raid
+
+ - file: src={{syscheck_home}}/scripts-available/sc_15_apache.sh dest={{syscheck_home}}/scripts-enabled/sc_15_apache.sh state=link
+   when: enable_sc_15_apache
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_15_apache.sh state=absent
+   when: not enable_sc_15_apache
+
+ - file: src={{syscheck_home}}/scripts-available/sc_16_ldap.sh dest={{syscheck_home}}/scripts-enabled/sc_16_ldap.sh state=link
+   when: enable_sc_16_ldap
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_16_ldap.sh state=absent
+   when: not enable_sc_16_ldap
+
+ - file: src={{syscheck_home}}/scripts-available/sc_17_ntp.sh dest={{syscheck_home}}/scripts-enabled/sc_17_ntp.sh  state=link
+   when: enable_sc_17_ntp
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_17_ntp.sh state=absent
+   when: not enable_sc_17_ntp
+
+ - file: src={{syscheck_home}}/scripts-available/sc_18_sqlselect.sh dest={{syscheck_home}}/scripts-enabled/sc_18_sqlselect.sh state=link
+   when: enable_sc_18_sqlselect
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_18_sqlselect.sh state=absent
+   when: not enable_sc_18_sqlselect
+
+ - file: src={{syscheck_home}}/scripts-available/sc_19_alive.sh dest={{syscheck_home}}/scripts-enabled/sc_19_alive.sh state=link
+   when: enable_sc_19_alive
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_19_alive.sh state=absent
+   when: not enable_sc_19_alive
+
+ - file: src={{syscheck_home}}/scripts-available/sc_20_errors_ejbcalog.sh dest={{syscheck_home}}/scripts-enabled/sc_20_errors_ejbcalog.sh state=link
+   when: enable_sc_20_errors_ejbcalog
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_20_errors_ejbcalog.sh state=absent
+   when: not enable_sc_20_errors_ejbcalog
+
+ - file: src={{syscheck_home}}/scripts-available/sc_22_boks_replica.sh dest={{syscheck_home}}/scripts-enabled/sc_22_boks_replica.sh state=link
+   when: enable_sc_22_boks_replica
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_22_boks_replica.sh state=absent
+   when: not enable_sc_22_boks_replica
+
+ - file: src={{syscheck_home}}/scripts-available/sc_23_rsa_axm.sh dest={{syscheck_home}}/scripts-enabled/sc_23_rsa_axm.sh state=link
+   when: enable_sc_23_rsa_axm
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_23_rsa_axm.sh state=absent
+   when: not enable_sc_23_rsa_axm
+
+ - file: src={{syscheck_home}}/scripts-available/sc_27_dss.sh dest={{syscheck_home}}/scripts-enabled/sc_27_dss.sh state=link
+   when: enable_sc_27_dss
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_27_dss.sh state=absent
+   when: not enable_sc_27_dss
+
+ - file: src={{syscheck_home}}/scripts-available/sc_28_check_vip.sh dest={{syscheck_home}}/scripts-enabled/sc_28_check_vip.sh state=link
+   when: enable_sc_28_check_vip
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_28_check_vip.sh state=absent
+   when: not enable_sc_28_check_vip
+
+ - file: src={{syscheck_home}}/scripts-available/sc_29_signserver.sh dest={{syscheck_home}}/scripts-enabled/sc_29_signserver.sh state=link
+   when: enable_sc_29_signserver
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_29_signserver.sh state=absent
+   when: not enable_sc_29_signserver
+
+ - file: src={{syscheck_home}}/scripts-available/sc_30_check_running_procs.sh dest={{syscheck_home}}/scripts-enabled/sc_30_check_running_procs.sh state=link
+   when: enable_sc_30_check_running_procs
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_30_check_running_procs.sh state=absent
+   when: not enable_sc_30_check_running_procs
+
+ - file: src={{syscheck_home}}/scripts-available/sc_31_hp_health.sh dest={{syscheck_home}}/scripts-enabled/sc_31_hp_health.sh state=link
+   when: enable_sc_31_hp_health
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_31_hp_health.sh state=absent
+   when: not enable_sc_31_hp_health
+
+ - file: src={{syscheck_home}}/scripts-available/sc_32_check_db_sync.sh dest={{syscheck_home}}/scripts-enabled/sc_32_check_db_sync.sh state=link
+   when: enable_sc_32_check_db_sync
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_32_check_db_sync.sh state=absent
+   when: not enable_sc_32_check_db_sync
+
+ - file: src={{syscheck_home}}/scripts-available/sc_33_healthchecker.sh dest={{syscheck_home}}/scripts-enabled/sc_33_healthchecker.sh state=link
+   when: enable_sc_33_healthchecker
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_33_healthchecker.sh state=absent
+   when: not enable_sc_33_healthchecker
+
+####### # related 
+
+ - file: src={{syscheck_home}}/related-available/900_export_cert.sh dest={{syscheck_home}}/related-enabled/900_export_cert.sh state=link
+   when: enable_900_export_cert
+
+ - file: path={{syscheck_home}}/related-enabled/900_export_cert.sh state=absent
+   when: not enable_900_export_cert
+
+ - file: src={{syscheck_home}}/related-available/901_export_revocation.sh dest={{syscheck_home}}/related-enabled/901_export_revocation.sh state=link
+   when: enable_901_export_revocation
+
+ - file: path={{syscheck_home}}/related-enabled/901_export_revocation.sh state=absent
+   when: not enable_901_export_revocation
+
+ - file: src={{syscheck_home}}/related-available/902_export_crl.sh dest={{syscheck_home}}/related-enabled/902_export_crl.sh state=link
+   when: enable_902_export_crl
+
+ - file: path={{syscheck_home}}/related-enabled/902_export_crl.sh state=absent
+   when: not enable_902_export_crl
+
+ - file: src={{syscheck_home}}/related-available/903_make_hsm_backup.sh dest={{syscheck_home}}/related-enabled/903_make_hsm_backup.sh state=link
+   when: enable_903_make_hsm_backup
+
+ - file: path={{syscheck_home}}/related-enabled/903_make_hsm_backup.sh state=absent
+   when: not enable_903_make_hsm_backup
+
+ - file: src={{syscheck_home}}/related-available/904_make_mysql_db_backup.sh dest={{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh state=link
+   when: enable_904_make_mysql_db_backup
+
+ - file: path={{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh state=absent
+   when: not enable_904_make_mysql_db_backup
+
+ - file: src={{syscheck_home}}/related-available/905_publish_crl.sh dest={{syscheck_home}}/related-enabled/905_publish_crl.sh state=link
+   when: enable_905_publish_crl
+
+ - file: path={{syscheck_home}}/related-enabled/905_publish_crl.sh state=absent
+   when: not enable_905_publish_crl
+
+ - file: src={{syscheck_home}}/related-available/906_ssh-copy-to-remote-machine.sh dest={{syscheck_home}}/related-enabled/906_ssh-copy-to-remote-machine.sh state=link
+   when: enable_906_ssh_copy_to_remote_machine
+
+ - file: path={{syscheck_home}}/related-enabled/906_ssh-copy-to-remote-machine.sh state=absent
+   when: not enable_906_ssh_copy_to_remote_machine
+
+ - file: src={{syscheck_home}}/related-available/907_make_mysql_db_backup_and_transfer_to_remote_mashine.sh dest={{syscheck_home}}/related-enabled/907_make_mysql_db_backup_and_transfer_to_remote_mashine.sh state=link
+   when: enable_907_make_mysql_db_backup_and_transfer_to_remote_mashine
+
+ - file: path={{syscheck_home}}/related-enabled/907_make_mysql_db_backup_and_transfer_to_remote_mashine.sh state=absent
+   when: not enable_907_make_mysql_db_backup_and_transfer_to_remote_mashine
+
+ - file: src={{syscheck_home}}/related-available/908_clean_old_backups.sh dest={{syscheck_home}}/related-enabled/908_clean_old_backups.sh state=link
+   when: enable_908_clean_old_backups
+
+ - file: path={{syscheck_home}}/related-enabled/908_clean_old_backups.sh state=absent
+   when: not enable_908_clean_old_backups
+
+ - file: src={{syscheck_home}}/related-available/909_activate_CAs.sh dest={{syscheck_home}}/related-enabled/909_activate_CAs.sh state=link
+   when: enable_909_activate_CAs
+
+ - file: path={{syscheck_home}}/related-enabled/909_activate_CAs.sh state=absent
+   when: not enable_909_activate_CAs
+
+ - file: src={{syscheck_home}}/related-available/910_deactivate_CAs.sh dest={{syscheck_home}}/related-enabled/910_deactivate_CAs.sh state=link
+   when: enable_910_deactivate_CAs
+
+ - file: path={{syscheck_home}}/related-enabled/910_deactivate_CAs.sh state=absent
+   when: not enable_910_deactivate_CAs
+
+ - file: src={{syscheck_home}}/related-available/911_activate_VIP.sh dest={{syscheck_home}}/related-enabled/911_activate_VIP.sh state=link
+   when: enable_911_activate_VIP
+
+ - file: path={{syscheck_home}}/related-enabled/911_activate_VIP.sh state=absent
+   when: not enable_911_activate_VIP
+
+ - file: src={{syscheck_home}}/related-available/912_deactivate_VIP.sh dest={{syscheck_home}}/related-enabled/912_deactivate_VIP.sh state=link
+   when: enable_912_deactivate_VIP
+
+ - file: path={{syscheck_home}}/related-enabled/912_deactivate_VIP.sh state=absent
+   when: not enable_912_deactivate_VIP
+
+ - file: src={{syscheck_home}}/related-available/913_copy_ejbca_conf.sh dest={{syscheck_home}}/related-enabled/913_copy_ejbca_conf.sh state=link
+   when: enable_913_copy_ejbca_conf
+
+ - file: path={{syscheck_home}}/related-enabled/913_copy_ejbca_conf.sh state=absent
+   when: not enable_913_copy_ejbca_conf
+
+ - file: src={{syscheck_home}}/related-available/914_compare_master_slave_db.sh dest={{syscheck_home}}/related-enabled/914_compare_master_slave_db.sh state=link
+   when: enable_914_compare_master_slave_db
+
+ - file: path={{syscheck_home}}/related-enabled/914_compare_master_slave_db.sh state=absent
+   when: not enable_914_compare_master_slave_db
+
+ - file: src={{syscheck_home}}/related-available/915_remote_command_via_ssh.sh dest={{syscheck_home}}/related-enabled/915_remote_command_via_ssh.sh state=link
+   when: enable_915_remote_command_via_ssh
+
+ - file: path={{syscheck_home}}/related-enabled/915_remote_command_via_ssh.sh state=absent
+   when: not enable_915_remote_command_via_ssh
+
+ - file: src={{syscheck_home}}/related-available/916_archive_access_manager_logs.sh dest={{syscheck_home}}/related-enabled/916_archive_access_manager_logs.sh state=link
+   when: enable_916_archive_access_manager_logs
+
+ - file: path={{syscheck_home}}/related-enabled/916_archive_access_manager_logs.sh state=absent
+   when: not enable_916_archive_access_manager_logs
+
+ - file: src={{syscheck_home}}/related-available/917_archive_file.sh dest={{syscheck_home}}/related-enabled/917_archive_file.sh state=link
+   when: enable_917_archive_file
+
+ - file: path={{syscheck_home}}/related-enabled/917_archive_file.sh state=absent
+   when: not enable_917_archive_file
+
+ - file: src={{syscheck_home}}/related-available/918_server_alive.sh dest={{syscheck_home}}/related-enabled/918_server_alive.sh state=link
+   when: enable_918_server_alive
+
+ - file: path={{syscheck_home}}/related-enabled/918_server_alive.sh state=absent
+   when: not enable_918_server_alive
+
+ - file: src={{syscheck_home}}/related-available/919_certpublisher_remotecommand.sh dest={{syscheck_home}}/related-enabled/919_certpublisher_remotecommand.sh state=link
+   when: enable_919_certpublisher_remotecommand
+
+ - file: path={{syscheck_home}}/related-enabled/919_certpublisher_remotecommand.sh state=absent
+   when: not enable_919_certpublisher_remotecommand
+
+ - file: src={{syscheck_home}}/related-available/920_restore_mysql_db_from_backup.sh dest={{syscheck_home}}/related-enabled/920_restore_mysql_db_from_backup.sh state=link
+   when: enable_920_restore_mysql_db_from_backup
+
+ - file: path={{syscheck_home}}/related-enabled/920_restore_mysql_db_from_backup.sh state=absent
+   when: not enable_920_restore_mysql_db_from_backup
+
+ - file: src={{syscheck_home}}/related-available/921_copy_htmf_conf.sh dest={{syscheck_home}}/related-enabled/921_copy_htmf_conf.sh state=link
+   when: enable_921_copy_htmf_conf
+
+ - file: path={{syscheck_home}}/related-enabled/921_copy_htmf_conf.sh state=absent
+   when: not enable_921_copy_htmf_conf
+
+ - file: src={{syscheck_home}}/related-available/922-simple-database-replication-check.sh dest={{syscheck_home}}/related-enabled/922-simple-database-replication-check.sh state=link
+   when: enable_922_simple_database_replication_check
+
+ - file: path={{syscheck_home}}/related-enabled/922-simple-database-replication-check.sh state=absent
+   when: not enable_922_simple_database_replication_check
+
+ - file: src={{syscheck_home}}/related-available/923-rsync-to-remote-machine.sh dest={{syscheck_home}}/related-enabled/923-rsync-to-remote-machine.sh state=link
+   when: enable_923_rsync_to_remote_machine
+
+ - file: path={{syscheck_home}}/related-enabled/923-rsync-to-remote-machine.sh state=absent
+   when: not enable_923_rsync_to_remote_machine
+
+ - file: src={{syscheck_home}}/related-available/924-backup-this-machine-to-remote-machine.sh dest={{syscheck_home}}/related-enabled/924-backup-this-machine-to-remote-machine.sh state=link
+   when: enable_924_backup_this_machine_to_remote_machine
+
+ - file: path={{syscheck_home}}/related-enabled/924-backup-this-machine-to-remote-machine.sh state=absent
+   when: not enable_924_backup_this_machine_to_remote_machine
+
+ - file: src={{syscheck_home}}/related-available/925_publish_crl_from_file.sh dest={{syscheck_home}}/related-enabled/925_publish_crl_from_file.sh state=link
+   when: enable_925_publish_crl_from_file
+
+ - file: path={{syscheck_home}}/related-enabled/925_publish_crl_from_file.sh state=absent
+   when: not enable_925_publish_crl_from_file
+
+ - file: src={{syscheck_home}}/related-available/926_local_htmf_copy_conf.sh dest={{syscheck_home}}/related-enabled/926_local_htmf_copy_conf.sh state=link
+   when: enable_926_local_htmf_copy_conf
+
+ - file: path={{syscheck_home}}/related-enabled/926_local_htmf_copy_conf.sh state=absent
+   when: not enable_926_local_htmf_copy_conf
+
+ - file: src={{syscheck_home}}/related-available/927_create_crls.sh dest={{syscheck_home}}/related-enabled/927_create_crls.sh state=link
+   when: enable_927_create_crls
+
+ - file: path={{syscheck_home}}/related-enabled/927_create_crls.sh state=absent
+   when: not enable_927_create_crls
+
+ - file: src={{syscheck_home}}/related-available/928_check_dsm_backup.sh dest={{syscheck_home}}/related-enabled/928_check_dsm_backup.sh state=link
+   when: enable_928_check_dsm_backup
+
+ - file: path={{syscheck_home}}/related-enabled/928_check_dsm_backup.sh state=absent
+   when: not enable_928_check_dsm_backup
+
+ - file: src={{syscheck_home}}/related-available/929_filter_syscheck_messages.sh dest={{syscheck_home}}/related-enabled/929_filter_syscheck_messages.sh state=link
+   when: enable_929_filter_syscheck_messages
+
+ - file: path={{syscheck_home}}/related-enabled/929_filter_syscheck_messages.sh state=absent
+   when: not enable_929_filter_syscheck_messages
+
+ - file: src={{syscheck_home}}/related-available/930_send_filtered_result_to_remote_machine.sh dest={{syscheck_home}}/related-enabled/930_send_filtered_result_to_remote_machine.sh state=link
+   when: enable_930_send_filtered_result_to_remote_machine
+
+ - file: path={{syscheck_home}}/related-enabled/930_send_filtered_result_to_remote_machine.sh state=absent
+   when: not enable_930_send_filtered_result_to_remote_machine
+
+ - file: src={{syscheck_home}}/related-available/931_mysql_backup_encrypt_send_to_remote_host.sh dest={{syscheck_home}}/related-enabled/931_mysql_backup_encrypt_send_to_remote_host.sh state=link
+   when: enable_931_mysql_backup_encrypt_send_to_remote_host
+
+ - file: path={{syscheck_home}}/related-enabled/931_mysql_backup_encrypt_send_to_remote_host.sh state=absent
+   when: not enable_931_mysql_backup_encrypt_send_to_remote_host
+
+ - template: src=00.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+
+ - template: src=01.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_01_diskusage
+
+ - template: src=02.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_02_ejbca
+
+ - template: src=03.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_03_memory_usage
+
+ - template: src=04.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_04_pcsc_readers
+
+ - template: src=05.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_05_pcscd
+
+ - template: src=06.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_06_raid_check
+
+ - template: src=07.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_07_syslog
+
+ - template: src=08.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_08_crl_from_webserver
+
+ - template: src=09.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_09_firewall
+
+ - template: src=10.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+ - template: src=11.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+
+ - template: src=12.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_12_mysql
+
+ - template: src=13.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+
+ - template: src=14.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_14_sw_raid
+
+ - template: src=15.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_15_apache
+
+ - template: src=16.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_16_ldap
+
+ - template: src=17.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_17_ntp
+
+ - template: src=18.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_18_sqlselect
+
+ - template: src=19.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_19_alive
+
+ - template: src=20.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_20_errors_ejbcalog
+
+ - template: src=22.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_22_boks_replica
+
+ - template: src=23.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_23_rsa_axm
+
+ - template: src=24.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+
+ - template: src=27.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_27_dss
+
+ - template: src=28.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_28_check_vip
+
+ - template: src=29.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_29_signserver
+
+ - template: src=30.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_30_check_running_procs
+
+ - template: src=31.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_31_hp_health
+
+ - template: src=32.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_32_check_db_sync
+
+ - template: src=33.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
+   when: enable_sc_33_healthchecker
+
+ - template: src=800.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=801.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=802.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=803.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=804.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=805.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=806.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=807.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=808.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=809.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=810.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=811.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=812.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=813.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=814.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=815.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=816.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=817.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+
+ - template: src=900.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_900_export_cert
+
+ - template: src=901.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_901_export_revocation
+
+ - template: src=902.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_902_export_crl
+
+ - template: src=903.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_903_make_hsm_backup
+
+ - template: src=904.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_904_make_mysql_db_backup
+
+ - template: src=905.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_905_publish_crl
+
+ - template: src=906.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_906_ssh_copy_to_remote_machine
+
+ - template: src=907.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_907_make_mysql_db_backup_and_transfer_to_remote_mashine
+
+ - template: src=908.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_908_clean_old_backups
+
+ - template: src=909.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_909_activate_CAs
+
+ - template: src=910.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_910_deactivate_CAs
+
+ - template: src=911.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_911_activate_VIP
+
+ - template: src=912.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_912_deactivate_VIP
+
+ - template: src=913.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_913_copy_ejbca_conf
+
+ - template: src=914.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_914_compare_master_slave_db
+
+ - template: src=915.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_915_remote_command_via_ssh
+
+ - template: src=916.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_916_archive_access_manager_logs
+
+ - template: src=917.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_917_archive_file
+
+ - template: src=918.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_918_server_alive
+
+ - template: src=919.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_919_certpublisher_remotecommand
+
+ - template: src=920.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_920_restore_mysql_db_from_backup
+
+ - template: src=921.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_921_copy_htmf_conf
+
+ - template: src=922.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_922_simple_database_replication_check
+
+ - template: src=923.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_923_rsync_to_remote_machine
+
+ - template: src=924.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_924_backup_this_machine_to_remote_machine
+
+ - template: src=925.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_925_publish_crl_from_file
+
+ - template: src=926.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_926_local_htmf_copy_conf
+
+ - template: src=927.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_927_create_crls
+
+ - template: src=928.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_928_check_dsm_backup
+
+ - template: src=929.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_929_filter_syscheck_messages
+
+ - template: src=930.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_930_send_filtered_result_to_remote_machine
+
+ - template: src=931.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+   when: enable_931_mysql_backup_encrypt_send_to_remote_host
+
+ - template: src=common.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=database-replication.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=related-scripts.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+ - template: src=syscheck-scripts.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
+
+ - name: generate ssh key for backup
+   command: ssh-keygen -f {{syscheck_ssh_key}} -N "" -q creates={{syscheck_ssh_key}}
+
+ - name: read the ssh publickey 
+   command: ssh-keygen -f {{syscheck_ssh_key}} -y
+   register: sshkey
+
+ - name: public key, to be added to authorized_key where ever syscheck needs to login to
+   debug: msg="{{sshkey.stdout_lines[0]}}"
+

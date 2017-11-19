@@ -1,0 +1,15 @@
+---
+my_ipaddress: 192.168.99.12
+galera_ipaddresses: "192.168.99.11,192.168.99.12,192.168.99.13"
+galera_cluster_name: lcso-ca
+innodb_buffert_pool_size: 1G
+
+
+ntpservers:                    ['192.168.99.11']
+
+use_ibmmq_jars: "no"
+ 
+mysql_ejbca_db_user: ejbca
+mysql_ejbca_db_pass: foo124 
+mysql_ejbca_db_name: ejbca
+
