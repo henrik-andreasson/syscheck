@@ -7,8 +7,8 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/usr/local/syscheck"
@@ -37,38 +37,38 @@ ERRNO_2="${SCRIPTID}2"
 ERRNO_3="${SCRIPTID}3"
 ERRNO_4="${SCRIPTID}4"
 
-printf "$0: Tool to log changes and to pause syscheck\n\n"
+printf "$0: ${GETROOT_INTRO}\n\n"
 
 ExecutingUserName=$(whoami)
 ExecutingUserId=$(id -u)
 
 if [ "x${ExecutingUserName}" = "xroot" ] ; then
-    printf "Do not run as root\n"
+    printf "${DONT_RUN_AS_ROOT}\n"
     exit
 fi
 
 if [ -f  ${SYSCHECK_HOME}/var/syscheck-on-hold ] ; then
-	read -e -i "y" -r -p "Syscheck is on hold, are you done Y/n?" SYSCHECKONHOLDDONE
+	read -e -i "y" -r -p "${ASK_TO_REMOVE_SYSCHECK_ONHOLD} Y/n?" SYSCHECKONHOLDDONE
 	if [ "x${SYSCHECKONHOLDDONE}" = "xy" -o "x$SYSCHECKONHOLDDONE" = "xY" ] ; then
 		REASON=$(cat ${SYSCHECK_HOME}/var/syscheck-on-hold)
 		sudo rm ${SYSCHECK_HOME}/var/syscheck-on-hold
 		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESC_4" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
-		printf "${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 ${ExecutingUserName} (${ExecutingUserId}) $DESC_4 $REASON\n" 
+		printf "${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 ${ExecutingUserName} (${ExecutingUserId}) $DESC_4 $REASON\n"
 		sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESC_4" "${ExecutingUserName}" "$REASON"
 		exit
 	fi
 fi
 
-printf "Please state a short but clear reason why you need root\n"
-read -e -i "Change # - " -r -p "> " REASON
+printf "${WHY_GET_ROOT}\n"
+read -e -i "${TEMPLATE_WHY}" -r -p "> " REASON
 
-if [ "x$REASON" = "xChange #123 - Update ntp server ip" ] ; then
+if [ "x$REASON" = "x${TEMPLATE_WHY}" ] ; then
         REASON="NOREASON"
 elif [ "x$REASON" = "x" ] ; then
 	REASON="NOREASON"
 fi
 
-read -e -i "y" -r -p "stop any new syscheck scripts Y/n?" SYSCHECKONHOLD
+read -e -i "y" -r -p "${SET_SYSCHECK_ONHOLD} Y/n?" SYSCHECKONHOLD
 
 if [ "x$SYSCHECKONHOLD" = "xy" -o "x$SYSCHECKONHOLD" = "xY" ] ; then
     sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh "${SCRIPTNAME}" "${SCRIPTID}" ${SCRIPTINDEX} $INFO $ERRNO_3 "$DESC_3" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
@@ -82,7 +82,7 @@ fi
 sudo su -
 
 if [ -f  ${SYSCHECK_HOME}/var/syscheck-on-hold ] ; then
-	read -e -i "y" -r -p "Syscheck is on hold, are you done Y/n?" SYSCHECKONHOLDDONE
+	read -e -i "y" -r -p "${ASK_TO_REMOVE_SYSCHECK_ONHOLD} Y/n?" SYSCHECKONHOLDDONE
 	if [ "x${SYSCHECKONHOLDDONE}" = "xy" -o "x$SYSCHECKONHOLDDONE" = "xY" ] ; then
 		sudo rm ${SYSCHECK_HOME}/var/syscheck-on-hold
 		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh "${SCRIPTNAME}" "${SCRIPTID}" "${SCRIPTINDEX}" "$INFO" "$ERRNO_4" "$DESC_4" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
@@ -90,4 +90,3 @@ if [ -f  ${SYSCHECK_HOME}/var/syscheck-on-hold ] ; then
 		exit
 	fi
 fi
-
