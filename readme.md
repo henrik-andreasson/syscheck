@@ -351,12 +351,14 @@ Please state a short but clear reason why you need root
 > Change CHG123456 - update the version of syscheck
 stop any new syscheck scripts Y/n?y
 [sudo] password for han:
-root@vroom:~# #do upgrade
-root@vroom:~# # now all syscheck batch jobs will not run
-root@vroom:~# # exit when ready
-root@vroom:~# exit
+# #do upgrade
+# # now all syscheck batch jobs will not run
+# # exit when ready
+# exit
 logout
 Syscheck is on hold, are you done Y/n?y
+
+```
 
 Becoming root, keeping syscheck on-hold.
 ```
