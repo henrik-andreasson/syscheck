@@ -82,8 +82,8 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
 
     else
 
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_3 "$CLEANBAK_DESCR_3" "${FILENAME[$i]}"
-	printtoscreen "file ${FILENAME[$i]} did not exist before deleting "  
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$CLEANBAK_DESCR_3" "${FILENAME[$i]}"
+        printtoscreen "file ${FILENAME[$i]} did not exist before deleting "  
 	    
     fi
 	
