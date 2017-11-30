@@ -82,9 +82,9 @@ fan_check () {
 	printverbose "$FAN_INFO"
 
         if [ "x$fan_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "fanid: $fanid status: $fan_status"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "fanid: $fanid status: $fan_status"
         else
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "fan NOTOK $FAN_INFO"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "fan NOTOK $FAN_INFO"
         fi
 }
 
@@ -109,7 +109,7 @@ temp_check () {
 	printverbose "$TEMP_INFO"
 
         if [ "x$temp_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "tempid: $tempid status: $temp_status degrees: $temp_degrees"
+                printlogmess ${SCRIPTNAME} ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "tempid: $tempid status: $temp_status degrees: $temp_degrees"
         else
                 printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "temp NOTOK $TEMP_INFO"
         fi
