@@ -16,22 +16,22 @@
 # enable/disable scripts with true/false
 # check also if config is needed below
 
- enable_sc_01_diskusage:       true 
+ enable_sc_01_diskusage:       true
  enable_sc_02_ejbca:           true
- enable_sc_03_memory_usage:    true 
+ enable_sc_03_memory_usage:    true
  enable_sc_04_pcsc_readers:    false
  enable_sc_05_pcscd:           false
  enable_sc_06_raid_check:      false
- enable_sc_07_syslog:          true 
+ enable_sc_07_syslog:          true
  enable_sc_08_crl_from_webserver: false
- enable_sc_09_firewall:        true 
- enable_sc_12_mysql:           true 
- enable_sc_14_sw_raid:         false 
+ enable_sc_09_firewall:        true
+ enable_sc_12_mysql:           true
+ enable_sc_14_sw_raid:         false
  enable_sc_15_apache:          false
  enable_sc_16_ldap:            false
- enable_sc_17_ntp:             true 
- enable_sc_18_sqlselect:       true 
- enable_sc_19_alive:           true 
+ enable_sc_17_ntp:             true
+ enable_sc_18_sqlselect:       true
+ enable_sc_19_alive:           true
  enable_sc_20_errors_ejbcalog: true
  enable_sc_22_boks_replica:    false
  enable_sc_23_rsa_axm:         false
@@ -91,13 +91,21 @@
  sc_03_mem: 85
  sc_03_swap: 77
 
- sc_06_slot: 0
- sc_06_ld_0: "logicaldrive 1"
- sc_06_ld_1: "logicaldrive 2"
- sc_06_pd_0: "physicaldrive 1I:1:1"
- sc_06_pd_1: "physicaldrive 1I:1:2"
- sc_06_pd_2: "physicaldrive 1I:1:3"
- sc_06_pd_3: "physicaldrive 1I:1:4"
+sc_06_hpraid_tool: /usr/sbin/hpacucli
+sc_06_hpriad_slot: 0
+
+#logical drives
+sc_06_hpraid_ldrives:
+ - { id: "0", ldriveid: "logicaldrive 1" }
+ - { id: "1", ldriveid: "logicaldrive 2" }
+
+#physical drives
+sc_06_hpraid_pdrives:
+ - { id: "0", pdriveid: "physicaldrive 1I:1:1" }
+ - { id: "1", pdriveid: "physicaldrive 1I:1:2" }
+ - { id: "2", pdriveid: "physicaldrive 1I:1:3" }
+ - { id: "3", pdriveid: "physicaldrive 1I:1:4" }
+
 
  sc_07_logfile: "/var/log/messages"
  sc_07_pidfile: "/var/run/syslogd.pid"
@@ -134,20 +142,34 @@
  sc_20_errors_ejbcalog_file: "/var/log/wildfly/server.log"
  sc_20_errors_ejbcalog_lastpos_file: "/var/tmp/wildfly_server_default_log_server.log.lastposision"
 
- sc_30_check_running_procs: 3
- sc_30_check_running_procs_procname_0: "tomcat-admin"
- sc_30_check_running_procs_restart_0: "/etc/init.d/tomcat-admin restart"
- sc_30_check_running_procs_pidfile_0: ""
+ sc_30_check_running_procs:
+  - { id: "0", procname: "tomcat-admin", restart: "/etc/init.d/tomcat-admin restart", pidfile: "" }
+  - { id: "1", procname: "tomcat-public", restart: "/etc/init.d/tomcat-public restart", pidfile: "" }
+  - { id: "2", procname: "tomcat-worker", restart: "/etc/init.d/tomcat-worker restart", pidfile: "" }
 
- sc_30_check_running_procs_procname_1: "tomcat-public"
- sc_30_check_running_procs_restart_1: "/etc/init.d/tomcat-public restart"
- sc_30_check_running_procs_pidfile_1: ""
-    
- sc_30_check_running_procs_procname_2: "tomcat-worker"
- sc_30_check_running_procs_restart_2: "/etc/init.d/tomcat-worker restart"
- sc_30_check_running_procs_pidfile_2: ""
-    
- 
+ sc_34_redis_cli: /usr/bin/redis-cli
+
+ sc_34_redis:
+  - { id: "0", ip: "10.0.0.1", port: "6379", pw: "foo123" }
+  - { id: "1", ip: "10.0.0.2", port: "6379", pw: "foo123" }
+  - { id: "2", ip: "10.0.0.3", port: "6379", pw: "foo123" }
+  - { id: "3", ip: "10.0.0.4", port: "6379", pw: "foo123" }
+
+ sc_35_dell_health_tool: /opt/dell/srvadmin/bin/omreport
+ sc_35_dell_raid_controller: 0
+
+#logical drives
+ sc_35_dell_health_ldrives:
+  - { id: "0", ldriveid: "0" }
+
+#physical drives
+ sc_35_dell_health_pdrives:
+  - { id: "0", pdriveid: "0:1:0" }
+  - { id: "1", pdriveid: "0:1:1" }
+  - { id: "2", pdriveid: "0:1:2" }
+  - { id: "3", pdriveid: "0:1:3" }
+
+
  syscheck_930_remote_monitoring:
   - { id: 0,
       hostname:   host1.tld,
@@ -195,7 +217,7 @@
      hour: 1
      weekday: "7"
      day:     "*"
-     month:   "*"    
+     month:   "*"
    syscheck_backup_monthly:
      name: "monthly backup 2:10 every 1:th day of month"
      job:     "{{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh"
@@ -283,7 +305,7 @@
  # shall messages be sent to syslog?
  # 1 to activate 0 to deactivate
  syscheck_sendto_syslog: "0"
- 
+
  # "OLDFMT", "NEWFMT" or "JSON"
  syscheck_syslog_outputtype: "JSON"
 
@@ -291,5 +313,3 @@
 
  # "OLDFMT", "NEWFMT" or "JSON"
  syscheck_screen_outputtype: "NEWFMT"
-
- 

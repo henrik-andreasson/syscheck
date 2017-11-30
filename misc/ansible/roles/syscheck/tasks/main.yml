@@ -7,19 +7,10 @@
    file: path="{{syscheck_backup_dir}}/{{item}}" state=directory owner=root group=root mode=0755
    with_items: "{{syscheck_backup_sub_dirs}}"
 
-# - copy: src=disable-script.sh                         dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
-# - copy: src=enable-script.sh                          dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
-# - copy: src=mk-template-sc_01.sh                      dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
-# - copy: src=mk-template-sc_06.sh                      dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
-# - copy: src=mk-template-sc_08.sh                      dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
-# - copy: src=mk-template-sc_17_ntp.sh                  dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
-# - copy: src=mk-template-sc_30_check_running_procs.sh  dest={{syscheck_home}}/misc/ owner=root group=root mode=0755
-
-
  - name: add cron jobs
    cron: name="{{item.value.name}}" minute="{{item.value.min}}" hour="{{item.value.hour}}" day="{{item.value.day}}" weekday="{{item.value.weekday}}" month="{{item.value.month}}" state=present job="{{item.value.job}}"
-   with_dict: "{{syscheck_cron_setup}}" 
-   
+   with_dict: "{{syscheck_cron_setup}}"
+
  - file: src={{syscheck_home}}/scripts-available/sc_01_diskusage.sh dest={{syscheck_home}}/scripts-enabled/sc_01_diskusage.sh state=link
    when: enable_sc_01_diskusage
 
@@ -176,7 +167,16 @@
  - file: path={{syscheck_home}}/scripts-enabled/sc_33_healthchecker.sh state=absent
    when: not enable_sc_33_healthchecker
 
-####### # related 
+ - file: path={{syscheck_home}}/scripts-enabled/sc_34_redis.sh state=absent
+   when: not enable_sc_34_redis
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_35_dell_raid.sh state=absent
+   when: not enable_sc_35_dell_raid
+
+ - file: path={{syscheck_home}}/scripts-enabled/sc_36_dell_health.sh state=absent
+   when: not enable_sc_35_dell_health
+
+####### # related
 
  - file: src={{syscheck_home}}/related-available/900_export_cert.sh dest={{syscheck_home}}/related-enabled/900_export_cert.sh state=link
    when: enable_900_export_cert
@@ -457,6 +457,15 @@
  - template: src=33.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
    when: enable_sc_33_healthchecker
 
+ - template: src=34.conf dest="{{syscheck_home}}/config" owner=root group=root mode=0440
+   when: enable_sc_34_redis
+
+ - template: src=35.conf dest="{{syscheck_home}}/config" owner=root group=root mode=0440
+   when: enable_sc_35_dell_raid
+
+ - template: src=36.conf dest="{{syscheck_home}}/config" owner=root group=root mode=0440
+   when: not enable_sc_36_dell_health
+
  - template: src=800.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
  - template: src=801.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
  - template: src=802.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
@@ -580,10 +589,9 @@
  - name: generate ssh key for backup
    command: ssh-keygen -f {{syscheck_ssh_key}} -N "" -q creates={{syscheck_ssh_key}}
 
- - name: read the ssh publickey 
+ - name: read the ssh publickey
    command: ssh-keygen -f {{syscheck_ssh_key}} -y
    register: sshkey
 
  - name: public key, to be added to authorized_key where ever syscheck needs to login to
    debug: msg="{{sshkey.stdout_lines[0]}}"
-
