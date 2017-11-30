@@ -5,8 +5,8 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -58,7 +58,11 @@ cd /tmp
 if [ "x${CHECKTOOL}" = "xwget" ] ; then
         ${CHECKTOOL} ${URL} -T ${EJBCA_TIMEOUT} -t 1 -O $OUTPUT 2>/dev/null
 elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
-        ${CHECKTOOL} ${URL} --connect-timeout ${EJBCA_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
+        runres=$(${CHECKTOOL} ${URL} -s -S --connect-timeout ${EJBCA_TIMEOUT} --retry 1 --output $OUTPUT 2>&1)
+        if [ $? -ne 0 ] ; then
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$runres"
+                exit
+        fi
 else
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
 fi
@@ -70,11 +74,10 @@ ERROROUTPUT=$(cat $OUTPUT | grep ERROR)
 
 if [ "x$OKOUTPUT" != "x" ]; then
        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "$FULLOUTPUT"
-elif [ "x$ERROROUTPUT" != "x" ]; then 
+elif [ "x$ERROROUTPUT" != "x" ]; then
        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FULLOUTPUT"
 elif [ "x$FULLOUTPUT" = "x" ] ; then
 	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" $FULLOUTPUT
 fi
 
 rm $OUTPUT
-

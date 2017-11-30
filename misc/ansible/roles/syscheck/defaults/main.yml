@@ -91,16 +91,16 @@
  sc_03_mem: 85
  sc_03_swap: 77
 
-sc_06_hpraid_tool: /usr/sbin/hpacucli
-sc_06_hpriad_slot: 0
+ sc_06_hpraid_tool: "/usr/sbin/hpacucli"
+ sc_06_hpriad_slot: 0
 
 #logical drives
-sc_06_hpraid_ldrives:
+ sc_06_hpraid_ldrives:
  - { id: "0", ldriveid: "logicaldrive 1" }
  - { id: "1", ldriveid: "logicaldrive 2" }
 
 #physical drives
-sc_06_hpraid_pdrives:
+ sc_06_hpraid_pdrives:
  - { id: "0", pdriveid: "physicaldrive 1I:1:1" }
  - { id: "1", pdriveid: "physicaldrive 1I:1:2" }
  - { id: "2", pdriveid: "physicaldrive 1I:1:3" }

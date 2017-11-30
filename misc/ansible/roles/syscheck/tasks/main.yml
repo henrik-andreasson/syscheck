@@ -7,6 +7,12 @@
    file: path="{{syscheck_backup_dir}}/{{item}}" state=directory owner=root group=root mode=0755
    with_items: "{{syscheck_backup_sub_dirs}}"
 
+ - name: copy new syscheck rpm
+   copy: src=syscheck-1.8.1b1-1.x86_64.rpm dest=/var/tmp/
+
+ - name: install new syscheck rpm
+   yum: name=/var/tmp/syscheck-1.8.1-1.x86_64.rpm state=installed
+   
  - name: add cron jobs
    cron: name="{{item.value.name}}" minute="{{item.value.min}}" hour="{{item.value.hour}}" day="{{item.value.day}}" weekday="{{item.value.weekday}}" month="{{item.value.month}}" state=present job="{{item.value.job}}"
    with_dict: "{{syscheck_cron_setup}}"
