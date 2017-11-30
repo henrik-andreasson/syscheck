@@ -9,7 +9,7 @@ if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 	source /etc/syscheck.conf
     else
 # 3. last resort use default path
-	SYSCHECK_HOME="/usr/local/syscheck"
+	SYSCHECK_HOME="/opt/syscheck"
     fi
 fi
 
