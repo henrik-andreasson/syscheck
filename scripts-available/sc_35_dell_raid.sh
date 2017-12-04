@@ -5,8 +5,8 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -26,7 +26,7 @@ SCRIPTID=35
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-getlangfiles $SCRIPTID 
+getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 
@@ -90,9 +90,9 @@ raiddiskcheck () {
 	printverbose "pdisk: $pdisk controller: $controller $DISK_INFO"
 
         if [ "x$STATUS" != "x" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "disk: ${pdisk} contoller: ${controller} OK"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "disk: ${pdisk} contoller: ${controller} OK"
         else
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "disk: ${pdisk} contoller: ${controller} NOTOK $DISK_INFO"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "disk: ${pdisk} contoller: ${controller} NOTOK $DISK_INFO"
         fi
 }
 
@@ -118,15 +118,15 @@ raidlogiccheck () {
 	printverbose "vdisk: $vdisk controller: $controller $VDISK_INFO"
 
 	if [ "x$vdisk_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_3 "$DESCR_3" "controller: $controller vdisk: $vdisk OK"
-	else 
-                printlogmess ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_4 "$DESCR_4" "controller: $controller vdisk: $vdisk NOT OK $VDISK_INFO"
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_3 "$DESCR_3" "controller: $controller vdisk: $vdisk OK"
+	else
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_4 "$DESCR_4" "controller: $controller vdisk: $vdisk NOT OK $VDISK_INFO"
 	fi
 }
 
 
 if [ ! -x $DELLTOOL ] ; then
-    printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" $DELLTOOL
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" $DELLTOOL
     exit
 fi
 
@@ -140,6 +140,3 @@ for (( i = 0 ;  i < ${#LOGICALDRIVE[@]} ; i++ )) ; do
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	raidlogiccheck "${LOGICALDRIVE[$i]}" $CONTROLLER $SCRIPTINDEX
 done
-
-
-

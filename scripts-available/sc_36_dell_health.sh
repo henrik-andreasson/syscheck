@@ -72,7 +72,7 @@ fan_check () {
 #Index;Status;Probe Name;Reading;Minimum Warning Threshold;Maximum Warning Threshold;Minimum Failure Threshold;Maximum Failure Threshold
 #0;Ok;System Board Fan2A;7200 RPM;840 RPM;[N/A];600 RPM;[N/A]
 
-        COMMAND=$(omreport chassis fans index=${fanid} -fmt ssv| grep "^${fanid}" | head -1)
+        COMMAND=$(${DELLTOOL} chassis fans index=${fanid} -fmt ssv| grep "^${fanid}" | head -1)
 
         fan_status=$(echo $COMMAND | cut -f2 -d\; )
         fan_name=$(echo $COMMAND | cut -f3 -d\; )
@@ -98,7 +98,7 @@ temp_check () {
 #Index;Status;Probe Name;Reading;Minimum Warning Threshold;Maximum Warning Threshold;Minimum Failure Threshold;Maximum Failure Threshold
 #0;Ok;System Board Inlet Temp;27.0 C;3.0 C;40.0 C;-7.0 C;42.0 C
 
-        COMMAND=$(omreport chassis temps index=${tempid} -fmt ssv| grep "^${tempid}" | head -1)
+        COMMAND=$(${DELLTOOL} chassis temps index=${tempid} -fmt ssv| grep "^${tempid}" | head -1)
 
         temp_status=$(echo $COMMAND | cut -f2 -d\; )
         temp_name=$(echo $COMMAND | cut -f3 -d\; )
@@ -124,7 +124,7 @@ psu_check () {
 # 0;Ok;PS1 Status;AC;432 W;350 W;07.18.7F;Presence Detected;Yes
 
 
-        COMMAND=$(omreport chassis pwrsupplies -fmt ssv | grep "^${id}" | head -1)
+        COMMAND=$(${DELLTOOL} chassis pwrsupplies -fmt ssv | grep "^${id}" | head -1)
 
         psu_status=$(echo $COMMAND | cut -f2 -d\; )
         psu_name=$(echo $COMMAND | cut -f3 -d\; )
@@ -150,7 +150,7 @@ power_consumption_check () {
 #2;Ok;System Board Pwr Consumption;70 W;420 W;462 W
 
 
-        COMMAND=$(omreport chassis pwrmonitoring  -fmt ssv | grep "^${id}" | head -1)
+        COMMAND=$(${DELLTOOL} chassis pwrmonitoring  -fmt ssv | grep "^${id}" | head -1)
 
         power_status=$(echo $COMMAND | cut -f2 -d\; )
         power_name=$(echo $COMMAND | cut -f3 -d\; )
