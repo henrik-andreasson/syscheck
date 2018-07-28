@@ -1,0 +1,11 @@
+HELP="Monitor certificates validity"
+
+DESCR_1="File: %s subj: %s days until expiry: %s"
+HELP_1="no action needed"
+
+DESCR_2="File: %s subj: %s days until expiry: %s"
+HELP_2="schedule replacement soon"
+
+DESCR_3="File: %s subj: %s days until expiry: %s"
+HELP_3="Certificate indicent is close"
+
