@@ -11,6 +11,16 @@ printtoscreen() {
   fi
 }
 
+# func to output debug when using -v or --verbose
+printverbose() {
+  IFS=$'\n'
+  if [ "x$PRINTVERBOSESCREEN" = "x1" ] ; then
+        echo "$*"
+  fi
+}
+
+
+
 addOneToIndex() {
 	SCRIPTINDEX=$1
 	countup=$(expr $SCRIPTINDEX + 1)
@@ -72,17 +82,13 @@ sendlogmess(){
 #    curl -u 'status_update:mysecret' -H 'content-type: application/json' -d '{"host_name":"example_host_1","service_description":"Example service", "status_code":"2","plugin_output":"Example issue has occurred"}' 'https://monitorserver/api/command/PROCESS_SERVICE_CHECK_RESULT'
         check_source=$xHOSTNAME
         plugin_output=$MESSAGE
-        op5_user="root"
-        op5_pass="foo123x"
-        op5_http_api_url="https://monitorserver/api/command/PROCESS_SERVICE_CHECK_RESULT"
         check_name="sc_$SCRIPTNAME_$SCRIPTID_$SCRIPTINDEX"
 
-        sendresult=$(curl --silent --show-error -u "$op5_user:$op5_pass" --no-progress-bar -H 'content-type: application/json' -d "{\"host_name\":\"$xHOSTNAME\",\"service_description\":\"$check_name\", \"status_code\":\"$status_code\",\"plugin_output\":\"$MESSAGE\"}" "$op5_http_api_url/PROCESS_SERVICE_CHECK_RESULT" 2>&1)
+        sendresult=$(curl --silent --show-error -u "${OP5_USER}:${OP5_PASS}" --no-progress-bar -H 'content-type: application/json' -d "{\"host_name\":\"$xHOSTNAME\",\"service_description\":\"$check_name\", \"status_code\":\"$status_code\",\"plugin_output\":\"$MESSAGE\"}" "${OP5_API_URL}/PROCESS_SERVICE_CHECK_RESULT" 2>&1)
 
         isresultok=$(echo "$sendresult" | grep "Successfully submitted" )
 
         if [ "x$isresultok" = "x" ] ; then
-#        curl -k -s -u $icinga_user:$icinga_pass -H 'Accept: application/json' -X POST "$icinga_http_api_url/process-check-result?host=admin3.st.certificateservices.se' -d '{ "exit_status": 0, "plugin_output": "PING CRITICAL - Packet loss = 100%", "check_source": "admin3.st.certificateservices.se" }'
             echo "not ok ($sendresult)"
         else
             echo "ok ($sendresult)"
@@ -93,17 +99,10 @@ sendlogmess(){
 
     if [ "x${SENDTO_ICINGA}" = "x1" ] ; then
 
-#    curl ': curl -k -s -u root:foo123 -H 'Accept: application/json' -X POST 'https://192.168.21.151:5665/v1/actions/process-check-result?host=admin3.st.certificateservices.se!ping4' -d '{ "exit_status": 2, "plugin_output": "PING CRITICAL - Packet loss = 100%", "check_source": "admin3.st.certificateservices.se" }'
-
-
-    #curl -k -s -u root:foo123 -H 'Accept: application/json' -X POST 'https://192.168.21.151:5665/v1/actions/process-check-result?host=admin3.st.certificateservices.se' -d '{ "exit_status": 0, "plugin_output": "PING CRITICAL - Packet loss = 100%", "check_source": "admin3.st.certificateservices.se" }'
         check_source=$xHOSTNAME
         plugin_output=$MESSAGE
-        icinga_user="root"
-        icinga_pass="foo123"
-        icinga_http_api_url="https://192.168.21.151:5665/v1/actions/"
         check_name="sc_$SCRIPTID_$SCRIPTINDEX"
-        curl -k -s -u $icinga_user:$icinga_pass -H 'Accept: application/json' -X POST "$icinga_http_api_url/process-check-result?host=admin3.st.certificateservices.se" -d '{ "exit_status": 0, "plugin_output": "PING CRITICAL - Packet loss = 100%", "check_source": "admin3.st.certificateservices.se" }'
+        curl -k -s -u "${ICINGA_USER}:${ICINGA_PASS}" -H 'Accept: application/json' -X POST "${ICINGA_API_URL}/process-check-result?host=${xHOSTNAME}" -d '{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }'
 
     fi
 
@@ -166,6 +165,7 @@ printlogmess(){
 
         DATE=`date +"%Y%m%d %H:%M:%S"`
         HOST=`hostname `
+        SEC1970=$(date +"%s")
         SEC1970NANO=$(date +"%s.%N")
         HOST=$(hostname )
         DESCR_W_ARGS=$(${SYSCHECK_HOME}/lib/printf.pl "$LONGLEVEL - $SCRIPTNAME $DESCR"  "$ARG1" "$ARG2" "$ARG3" "$ARG4" "$ARG5" "$ARG6" "$ARG7" "$ARG8" "$ARG9")
@@ -173,7 +173,7 @@ printlogmess(){
       	MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
       	NEWFMTSTRING="${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
         OLDFMTSTRING="${LEVEL}-${SCRIPTID}${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
-        JSONSTRING="{ \"FROM\": \"SYSCHECK\", \"SYSCHECK_VERSION\": \"${SYSCHECK_VERSION}\", \"LOGFMT\": \"JSON-1.1\", \"SCRIPTNAME\": \"${SCRIPTNAME}\", \"SCRIPTID\": \"${SCRIPTID}\", \"SCRIPTINDEX\": \"${SCRIPTINDEX}\", \"LEVEL\": \"${LEVEL}\", \"ERRNO\": \"${ERRNO}\", \"SYSTEMNAME\": \"${SYSTEMNAME}\", \"DATE\": \"${DATE}\", \"HOSTNAME\": \"${HOST}\", \"SEC1970NANO\": \"${SEC1970NANO}\", \"LONGLEVEL\":  \"$LONGLEVEL\", \"DESCRIPTION\": \"$DESCR\", \"EXTRAARG1\":   \"$ARG1\", \"EXTRAARG2\":   \"$ARG2\", \"EXTRAARG3\":   \"$ARG3\", \"EXTRAARG4\":   \"$ARG4\", \"EXTRAARG5\":   \"$ARG5\", \"EXTRAARG6\":   \"$ARG6\", \"EXTRAARG7\":   \"$ARG7\", \"EXTRAARG8\":   \"$ARG8\", \"EXTRAARG9\":   \"$ARG9\", \"LEGACYFMT\":   \"${NEWFMTSTRING}\" }"
+        JSONSTRING="{ \"FROM\": \"SYSCHECK\", \"SYSCHECK_VERSION\": \"${SYSCHECK_VERSION}\", \"LOGFMT\": \"JSON-1.2\", \"SCRIPTNAME\": \"${SCRIPTNAME}\", \"SCRIPTID\": \"${SCRIPTID}\", \"SCRIPTINDEX\": \"${SCRIPTINDEX}\", \"LEVEL\": \"${LEVEL}\", \"ERRNO\": \"${ERRNO}\", \"SYSTEMNAME\": \"${SYSTEMNAME}\", \"DATE\": \"${DATE}\", \"HOSTNAME\": \"${HOST}\", \"SEC1970\": \"${SEC1970}\", \"SEC1970NANO\": \"${SEC1970NANO}\", \"LONGLEVEL\":  \"$LONGLEVEL\", \"DESCRIPTION\": \"$DESCR\", \"EXTRAARG1\":   \"$ARG1\", \"EXTRAARG2\":   \"$ARG2\", \"EXTRAARG3\":   \"$ARG3\", \"EXTRAARG4\":   \"$ARG4\", \"EXTRAARG5\":   \"$ARG5\", \"EXTRAARG6\":   \"$ARG6\", \"EXTRAARG7\":   \"$ARG7\", \"EXTRAARG8\":   \"$ARG8\", \"EXTRAARG9\":   \"$ARG9\", \"LEGACYFMT\":   \"${NEWFMTSTRING}\" }"
 
         if [ "x${SENDTO_OP5}" = "x1" -o "x${SENDTO_ICINGA}" = "x1" ] ; then
             sendlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} "${HOST}"  "${DESCR_W_ARGS}"
@@ -282,7 +282,7 @@ logbookmess(){
 		OLDFMTSTRING="${LEVEL}-${SCRIPTID}${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
 
 		if [ "x${LOGBOOK_OUTPUTTYPE}" = "xJSON" ] ; then
-           LOGBOOK_JSONSTRING="{ \"FROM\": \"SYSCHECK\", \"SYSCHECK_VERSION\": \"${SYSCHECK_VERSION}\", \"LOGFMT\": \"LOGBOOK-1.0\", \"SCRIPTID\": \"${SCRIPTID}\", \"SCRIPTINDEX\": \"${SCRIPTINDEX}\", \"LEVEL\": \"${LEVEL}\", \"ERRNO\": \"${ERRNO}\", \"SYSTEMNAME\": \"${SYSTEMNAME}\", \"DATE\": \"${DATE}\", \"HOSTNAME\": \"${HOST}\", \"SEC1970NANO\": \"${SEC1970NANO}\", \"LONGLEVEL\":  \"$LONGLEVEL\", \"DESCRIPTION\": \"$DESCR\", \"USERNAME\":   \"$ARG1\", \"LOGENTRY\":   \"$ARG2\", \"LEGACYFMT\":   \"${NEWFMTSTRING}\" }"
+           LOGBOOK_JSONSTRING="{ \"FROM\": \"SYSCHECK\", \"SYSCHECK_VERSION\": \"${SYSCHECK_VERSION}\", \"LOGFMT\": \"LOGBOOK-1.1\", \"SCRIPTID\": \"${SCRIPTID}\", \"SCRIPTINDEX\": \"${SCRIPTINDEX}\", \"LEVEL\": \"${LEVEL}\", \"ERRNO\": \"${ERRNO}\", \"SYSTEMNAME\": \"${SYSTEMNAME}\", \"DATE\": \"${DATE}\", \"HOSTNAME\": \"${HOST}\", \"SEC1970NANO\": \"${SEC1970NANO}\", \"LONGLEVEL\":  \"$LONGLEVEL\", \"DESCRIPTION\": \"$DESCR\", \"USERNAME\":   \"$ARG1\", \"LOGENTRY\":   \"$ARG2\", \"LEGACYFMT\":   \"${NEWFMTSTRING}\", \"SEC1970\": \"${SEC1970}\"  }"
        		printf "${LOGBOOK_JSONSTRING}\n" >> ${LOGBOOK_FILENAME}
 
 		elif [ "x${LOGBOOK_OUTPUTTYPE}" = "xNEWFMT" ] ; then
