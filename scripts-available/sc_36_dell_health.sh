@@ -186,7 +186,7 @@ done
 
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-power_consumption_check 2 $SCRIPTINDEX
+power_consumption_check "${PWRID}" $SCRIPTINDEX
 
 for (( i = 0 ;  i < ${#PSU[@]} ; i++ )) ; do
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
