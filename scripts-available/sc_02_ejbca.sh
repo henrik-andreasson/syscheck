@@ -58,7 +58,7 @@ cd /tmp
 if [ "x${CHECKTOOL}" = "xwget" ] ; then
         ${CHECKTOOL} ${URL} -T ${EJBCA_TIMEOUT} -t 1 -O $OUTPUT 2>/dev/null
 elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
-        runres=$(${CHECKTOOL} ${URL} -s -S --connect-timeout ${EJBCA_TIMEOUT} --retry 1 --output $OUTPUT 2>&1)
+        runres=$(${CHECKTOOL} ${URL} -s -S --connect-timeout ${EJBCA_TIMEOUT} --max-time ${EJBCA_TIMEOUT} --retry 1 --output $OUTPUT 2>&1)
         if [ $? -ne 0 ] ; then
                 printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$runres"
                 exit
