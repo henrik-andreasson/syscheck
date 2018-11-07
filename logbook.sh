@@ -82,7 +82,7 @@ if [ "x$POST" = "x1" ] ; then
     if [ "x$LOGENTRY" = "x" ] ; then
         printf "${LOGBOOK_EMPTY_ENTRY}\n"
     else
-        sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "${ExecutingUserName}" "$LOGENTRY"
+        su - root -c "${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 \"$DESCR_1\" \"${ExecutingUserName}\" \"$LOGENTRY\""
     fi
 fi
 
@@ -93,13 +93,13 @@ if [ $DAYS -gt 1 ] ; then
     datestr=$(date +"%Y%m%d" -d "now - $i day")
     printf "${LOGBOOK_ENTRIES_FOR_DATE}: $datestr\n"
     if [ ${LOGBOOK_OUTPUTTYPE} = "JSON" ] ; then
-      LOGENTRIES=$(sudo grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME})
+      LOGENTRIES=$(grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME})
       IFS=$'\n'
       for row in $LOGENTRIES ; do
         echo $row |  python -c 'import json,sys;obj=json.load(sys.stdin);print obj["LEGACYFMT"]';
       done
     else
-      sudo grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME}
+      grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME}
     fi
     let i="i + 1"
   done
@@ -109,14 +109,14 @@ else
     while [ true ] ; do
       datestr=$(date +"%Y%m%d" -d "now - $daysago day")
       printf "${LOGBOOK_ENTRIES_FOR_DATE}: $datestr\n"
-      if [ ${LOGBOOK_OUTPUTTYPE} = "JSON" ] ; then
-        LOGENTRIES=$(sudo grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME})
+      if [ "x${LOGBOOK_OUTPUTTYPE}" = "xJSON" ] ; then
+        LOGENTRIES=$(grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME})
         IFS=$'\n'
         for row in $LOGENTRIES ; do
           echo $row |  python -c 'import json,sys;obj=json.load(sys.stdin);print obj["LEGACYFMT"]';
         done
       else
-        sudo grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME}
+        grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME}
       fi
       let daysago="daysago + 1"
       printf "${LOGBOOK_END_OF_ENTRIES_PRESS_ENTER}"
