@@ -28,8 +28,9 @@ echo "git status locally:"
 git status
 echo "tag in git (Y/n)"
 read tag
-if [ "x$tag" = "xy" -o "x$tag" = "xY" -o "x$tag" = "x" ] ; then
+if [ "x$tag" = $"xy" -o "x$tag" = "xY" -o "x$tag" = "x" ] ; then
         git tag ${progname}-${rel}
+	git push origin "${progname}-${rel}"
 fi
 
 cp -r . ${PROGPATH}
