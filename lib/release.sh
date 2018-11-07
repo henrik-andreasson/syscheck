@@ -17,18 +17,22 @@ fi
 
 find . -name \*.sh -exec chmod 755 {} \;
 
-OUTPATH=../../releases/
+OUTPATH=../releases/
 PROGPATH=${OUTPATH}/${progname}-${rel}
 
-echo "svn status locally:"
-svn status
-echo "tag in svn (Y/n)"
-read tagsvn
-if [ "x$tagsvn" = "xy" -o "x$tagsvn" = "xY" -o "x$tagsvn" = "x" ] ; then
-        svn cp https://certificateservices.org/project/syscheck/svn/trunk/syscheck https://certificateservices.org/project/syscheck/svn/tags/${progname}-${rel}
+if [ ! -d "${OUTPATH}" ] ; then
+    mkdir -p "${OUTPATH}"
 fi
 
-svn export . ${PROGPATH}
+echo "git status locally:"
+git status
+echo "tag in git (Y/n)"
+read tag
+if [ "x$tag" = "xy" -o "x$tag" = "xY" -o "x$tag" = "x" ] ; then
+        git tag ${progname}-${rel}
+fi
+
+cp -r . ${PROGPATH}
 perl -pi -e "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gi"  ${PROGPATH}/config/common.conf
 find ${PROGPATH} -name \*.sh -exec chmod 755 {} \;
 find ${PROGPATH}/scripts-available/ -name \*.sh -exec chmod 755 {} \;
@@ -39,12 +43,14 @@ find ${PROGPATH}/ -name \*\.pl -exec chmod 755 {} \;
 
 zipname="${progname}-${rel}.zip"
 cd ${OUTPATH}
-zip -r ${zipname} ${progname}-${rel}
-
+zip --exclude "${progname}-${rel}/.git/*" -r ${zipname} ${progname}-${rel}
 
 md5sum ${zipname}          > ${zipname}.md5
 sha1sum ${zipname}         > ${zipname}.sha1
 gpg -o ${zipname}.gpg -sab   ${zipname} 
+
+cd ${progname}-${rel} ; ./misc/make-rpm-deb.sh -v ${rel}
+
 
 cd $orgdir
 ls -la ${PROGPATH} ${OUTPATH}/${zipname} ${OUTPATH}/${zipname}.md5 ${OUTPATH}/${zipname}.sha1 ${OUTPATH}/${zipname}.gpg

@@ -22,8 +22,8 @@ done
 
 rm -f *rpm
 
-fpm -s dir -t rpm -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck .
-fpm -s dir -t deb -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck .
+fpm -s dir -t rpm -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package=../ . 
 
-#fpm -s dir -t deb -n syscheck -v 1.8  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck . 
+fpm -s dir -t deb -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package=../ .
+
 
