@@ -65,19 +65,23 @@ checkntp () {
 	fi	
 
 	# Get information about ntp
-        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-        result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*|\+)" )
-        if [ "x${result}" = "x" ] ; then
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
-	else
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
-	fi
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+    result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*)" )
+    STATUS=${STATUS:-$result}
 
 }
 
 # check with the IP:s of all ntp servers
 
+STATUS=""
+
 for (( i = 0 ;  i < ${#NTPSERVER[@]} ; i++ )) ; do
-	checkntp ${NTPSERVER[$i]} $SCRIPTINDEX
+    checkntp ${NTPSERVER[$i]} $SCRIPTINDEX
 done
+
+if [ "x${result}" = "x" ] ; then
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
+else
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
+fi
 
