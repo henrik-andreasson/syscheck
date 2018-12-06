@@ -74,7 +74,7 @@ raiddiskcheck () {
 #ID;Status;Name;State;Power Status;Bus Protocol;Media;Part of Cache Pool;Remaining Rated Write Endurance;Failure Predicted;Revision;Driver Version;Model Number;T10 PI Capable;Certified;Encryption Capable;Encrypted;Progress;Mirror Set ID;Capacity;Used RAID Disk Space;Available RAID Disk Space;Hot Spare;Vendor ID;Product ID;Serial No.;Part Number;Negotiated Speed;Capable Speed;PCIe Negotiated Link Width;PCIe Maximum Link Width;Sector Size;Device Write Cache;Manufacture Day;Manufacture Week;Manufacture Year;SAS Address;Non-RAID HDD Disk Cache Policy;Disk Cache Policy;Form Factor ;Sub Vendor;ISE Capable
 # 0:1:0;Ok;Physical Disk 0:1:0;Online;Spun Up;SATA;HDD;Not Applicable;Not Applicable;No;GA6E;Not Applicable;Not Applicable;No;Yes;No;Not Applicable;Not Applicable;0;931.00 GB (999653638144 bytes);931.00 GB (999653638144 bytes);0.00 GB (0 bytes);No;DELL(tm);ST1000NM0033-9ZM173;Z1W5YDAE;TH0W69TH2123369M00VJA0;6.00 Gbps;6.00 Gbps;Not Applicable;Not Applicable;512B;Not Applicable;Not Available;Not Available;Not Available;4433221106000000;Not Applicable;Not Applicable;Not Available;Not Available;No
 
-        COMMAND=$(omreport storage pdisk controller=${controller} pdisk=${pdisk} -fmt ssv| grep "^${pdisk}" | head -1)
+        COMMAND=$(${DELLTOOL} storage pdisk controller=${controller} pdisk=${pdisk} -fmt ssv| grep "^${pdisk}" | head -1)
 
         STATUS=$(echo $COMMAND | cut -f2 -d\; )
         disk_name=$(echo $COMMAND | cut -f3 -d\; )
@@ -106,7 +106,7 @@ raidlogiccheck () {
 #omreport storage vdisk controller=0 vdisk=0 -fmt ssv | grep ^0 | head -1
 #0;Ok;vd1;Ready;Not Assigned;No;RAID-10;1,862.00 GB (1999307276288 bytes);No;Not Applicable;/dev/sda;SATA;HDD;Read Ahead;Write Back;Not Applicable;64 KB;Unchanged
 
-        COMMAND=$(omreport storage vdisk controller=${controller} vdisk=${vdisk} -fmt ssv| grep "^${vdisk}" | head -1)
+        COMMAND=$(${DELLTOOL} storage vdisk controller=${controller} vdisk=${vdisk} -fmt ssv| grep "^${vdisk}" | head -1)
         vdisk_status=$(echo $COMMAND | cut -f2 -d\; )
         vdisk_state=$(echo $COMMAND | cut -f4 -d\; )
         vdisk_layout=$(echo $COMMAND | cut -f7 -d\; )
