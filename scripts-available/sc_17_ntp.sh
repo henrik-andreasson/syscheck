@@ -50,14 +50,13 @@ fi
 
 checkntp () {
 	NTPSERVER=$1
+	SCRIPTINDEX=$2 
 	if [ "x${NTPSERVER}" = "x" ] ; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "ntpserver not set"
 		return
 	fi
 	
-	SCRIPTINDEX=$2 
-		
-        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
 	XNTPDPID=`ps -ef | grep ntpd | grep -v grep | awk '{print $2}'`
 	if [ x"$XNTPDPID" = "x" ]; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
@@ -65,19 +64,24 @@ checkntp () {
 	fi	
 
 	# Get information about ntp
-        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-        result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*|\+)" )
-        if [ "x${result}" = "x" ] ; then
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
-	else
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
-	fi
+    result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*)" )
+    STATUS=${STATUS:-$result}
 
 }
 
 # check with the IP:s of all ntp servers
 
+STATUS=""
+
 for (( i = 0 ;  i < ${#NTPSERVER[@]} ; i++ )) ; do
-	checkntp ${NTPSERVER[$i]} $SCRIPTINDEX
+    checkntp ${NTPSERVER[$i]} $SCRIPTINDEX
 done
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
+if [ "x${result}" = "x" ] ; then
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
+else
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
+fi
 
