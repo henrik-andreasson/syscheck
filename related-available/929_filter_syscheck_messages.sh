@@ -5,8 +5,8 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -24,7 +24,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 SCRIPTID=929
 SCRIPTINDEX=00
 
-getlangfiles $SCRIPTID 
+getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 ERRNO_1="${SCRIPTID}1"
@@ -49,23 +49,18 @@ if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     "x$2" = "x-s" -o  "x$2" = "x--screen"   ] ; then
     PRINTTOSCREEN=1
-fi 
+fi
 
 
 SEND_ONLY_SCRIPT_IDS_FMT=$(echo ${SEND_ONLY_SCRIPT_IDS} | sed 's/ /|/g')
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
-egrep "^.?-(${SEND_ONLY_SCRIPT_IDS_FMT})" ${LOCAL_FILE}  > ${FILTERED_FILE}
+egrep "(${SEND_ONLY_SCRIPT_IDS_FMT})-" ${LOCAL_FILE}  > ${FILTERED_FILE}
+
 
 if [ $? = 0 ] ; then
-      printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" 
+      printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1"
 else
       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
-fi 
-
-
-
-
-
-
+fi
