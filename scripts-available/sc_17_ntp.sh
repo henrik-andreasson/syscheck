@@ -6,8 +6,8 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -50,28 +50,33 @@ fi
 
 checkntp () {
 	NTPSERVER=$1
-	SCRIPTINDEX=$2 
+	SCRIPTINDEX=$2
 	if [ "x${NTPSERVER}" = "x" ] ; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "ntpserver not set"
 		return
 	fi
-	
+
 
 	XNTPDPID=`ps -ef | grep ntpd | grep -v grep | awk '{print $2}'`
 	if [ x"$XNTPDPID" = "x" ]; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 		exit
-	fi	
+	fi
 
 	# Get information about ntp
-    result=$(echo "peers" | ${NTPBIN} -n 2>&1| grep ${NTPSERVER} | egrep "^(\*)" )
-    STATUS=${STATUS:-$result}
-
+        result=$( ${NTPBIN} -np 2>&1| grep ${NTPSERVER} | egrep '^\*' )
+	if [ "x${result}" != "x" ] ; then
+		synchost=$(echo $result | awk '{print $1}')
+		syncoffset=$(echo $result | awk '{print $8}')
+		STATUS="$synchost $syncoffset"
+	fi
 }
 
 # check with the IP:s of all ntp servers
 
-STATUS=""
+# default is to asume that no server is in sync
+# then we loop over all servers until we find one in sync
+STATUS="no server is in sync"
 
 for (( i = 0 ;  i < ${#NTPSERVER[@]} ; i++ )) ; do
     checkntp ${NTPSERVER[$i]} $SCRIPTINDEX
@@ -79,9 +84,8 @@ done
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
-if [ "x${result}" = "x" ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$NTPSERVER ($result)" 
+if [ "x${STATUS}" == "xno server is in sync" ] ; then
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$STATUS" "$synchost" "$syncoffset"
 else
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NTPSERVER"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$STATUS" "$synchost" "$syncoffset"
 fi
-
