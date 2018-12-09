@@ -7,8 +7,8 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -45,12 +45,13 @@ if [ "x$1" = "x--help" -o "x$1" = "x-h" ] ; then
         exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
-fi 
+fi
 
 
 
 printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca createcrl"
-CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca createcrl 2>&1)
+CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca createcrl 2>&1 | tr -d '\n'  | tr -d '\r')
+
 RES=$(echo "$CMD" | grep "CRLs have been created.")
 if [ "x$RES" = "x"  ] ; then
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$CMD"
@@ -58,4 +59,3 @@ else
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$CMD"
 fi
 printtoscreen $CMD
-
