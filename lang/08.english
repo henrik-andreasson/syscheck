@@ -24,3 +24,5 @@ HELP_7="Systems will soon fail if not fixed, urgent troubleshooting needed"
 DESCR_8="CRL has past the WARN level: %s"
 HELP_8="Systems will soon fail if not fixed, urgent troubleshooting needed"
 
+DESCR_9="CRL summary problems: %s"
+HELP_9="Systems will soon fail if not fixed, urgent troubleshooting needed"

@@ -5,8 +5,8 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -47,6 +47,7 @@ if [ "x$1" = "x--help" ] ; then
     echo "$ERRNO_6/$DESCR_6 - $HELP_6"
     echo "$ERRNO_7/$DESCR_7 - $HELP_7"
     echo "$ERRNO_8/$DESCR_8 - $HELP_8"
+    echo "$ERRNO_9/$DESCR_9 - $HELP_9"
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
@@ -59,6 +60,7 @@ checkcrl () {
 	CRLNAME=$1
 	if [ "x$CRLNAME" = "x" ] ; then
                 printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No CRL Configured"
+		STATUS=$(addOneToIndex $STATUS)
 		return
 	fi
 
@@ -66,51 +68,68 @@ checkcrl () {
 # Limitminutes is now optional, if not configured the limits is crl WARN: validity/2 ERROR: validity/4 eg: CRL is valid to 12h, warn will be 6h and error 3h
 	LIMITMINUTES=$2
 	ERRMINUTES=$3
-	
 
-	
+
+
 	cd /tmp
 	outname=`mktemp`
     if [ "x${CHECKTOOL}" = "xwget" ] ; then
         ${CHECKTOOL} ${CRLNAME}  -T ${TIMEOUT} -t ${RETRIES}           -O $outname -o /dev/null
         if [ $? -ne 0 ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
-        return 1
+	    STATUS=$(addOneToIndex $STATUS)
+            return 1
         fi
 
     elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
         ${CHECKTOOL} ${CRLNAME} --retry ${RETRIES} --connect-timeout ${TIMEOUT} --output $outname 2>/dev/null
         if [ $? -ne 0 ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
-        return 1
+	    STATUS=$(addOneToIndex $STATUS)
+            return 1
         fi
     else
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+	    STATUS=$(addOneToIndex $STATUS)
     fi
 
-	
+
 # file not found where it should be
 	if [ ! -f $outname ] ; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME"
+		STATUS=$(addOneToIndex $STATUS)
 		return 2
 	fi
 
 	CRL_FILE_SIZE=`stat -c"%s" $outname`
 # stat return check
 	if [ $? -ne 0 ] ; then
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"
+		STATUS=$(addOneToIndex $STATUS)
 		return 3
 	fi
 
 # crl of 0 size?
 	if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"	
+		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"
+		STATUS=$(addOneToIndex $STATUS)
 		return 4
 	fi
 
 
 	LASTUPDATE=$(openssl crl -inform der -in $outname -lastupdate -noout | sed 's/lastUpdate=//')
+  if [ "x${LASTUPDATE}" = "x" ] ; then
+          printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file,lastupdate)"
+          STATUS=$(addOneToIndex $STATUS)
+          GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$CRLNAME (Cant parse file,lastupdate)"
+  fi
+
 	NEXTUPDATE=$(openssl crl -inform der -in $outname -nextupdate -noout | sed 's/nextUpdate=//')
+  if [ "x${NEXTUPDATE}" = "x" ] ; then
+          printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file,nextupdate)"
+          STATUS=$(addOneToIndex $STATUS)
+          GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$CRLNAME (Cant parse file,nextupdate)"
+  fi
 
 	if [ "x$LIMITMINUTES" != "x" ] ; then
         ARGWARNMIN="--warnminutes=$LIMITMINUTES"
@@ -118,30 +137,52 @@ checkcrl () {
     if [ "x$ERRMINUTES" != "x" ] ; then
         ARGERRMIN="--errorminutes=$ERRMINUTES"
     fi
-    
+
     CRLMESSAGE=$(${SYSCHECK_HOME}/lib/cmp_dates.py "$LASTUPDATE" "$NEXTUPDATE" ${ARGWARNMIN} ${ARGERRMIN} )
     CRLCHECK=$?
-    if [ "x$CRLCHECK" = "x" ] ; then 
+    STATUS=$(expr "$STATUS + 1")
+    if [ "x$CRLCHECK" = "x" ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file)"
+            STATUS=$(addOneToIndex $STATUS)
+            GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$CRLNAME (Cant parse file)"
     elif [ $CRLCHECK -eq 3 ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" "$CRLNAME: ${CRLMESSAGE}"
+            STATUS=$(addOneToIndex $STATUS)
+            GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} ${CRLMESSAGE}"
     elif [ $CRLCHECK -eq 2 ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_7 "$DESCR_7" "$CRLNAME: ${CRLMESSAGE}"
+            STATUS=$(addOneToIndex $STATUS)
+            GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} ${CRLMESSAGE}"
     elif [ $CRLCHECK -eq 1 ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_8 "$DESCR_8" "$CRLNAME: ${CRLMESSAGE}"
+            STATUS=$(addOneToIndex $STATUS)
+            GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} ${CRLMESSAGE}"
     elif [ $CRLCHECK -eq 0 ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2" "$CRLNAME: ${CRLMESSAGE}"
     else
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME: problem calculating validity"
+            STATUS=$(expr "$STATUS + 1")
+            GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} problem calculating validity"
     fi
-    rm "$outname" 
+    rm "$outname"
 }
 
 #force Timezone to UTC
 export TZ=UTC
+
+# global status for all crl:s (0 is ok)
+STATUS=00
+GLOBALERRMESSAGE=""
 
 for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     checkcrl ${CRLS[$i]} ${MINUTES[$i]} ${ERRMIN[$i]}
 done
 
+# send the summary message (00)
+SCRIPTINDEX=00
+if [ "x${STATUS}" == "x00" ] ; then
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2"
+else
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_9 "$DESCR_9" "${GLOBALERRMESSAGE}"
+fi
