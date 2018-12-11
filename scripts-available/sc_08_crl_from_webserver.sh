@@ -35,6 +35,7 @@ ERRNO_5=05
 ERRNO_6=06
 ERRNO_7=07
 ERRNO_8=08
+ERRNO_9=09
 
 # help
 if [ "x$1" = "x--help" ] ; then
@@ -60,6 +61,7 @@ checkcrl () {
 	CRLNAME=$1
 	if [ "x$CRLNAME" = "x" ] ; then
                 printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No CRL Configured"
+            	GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_3 $CRLNAME"
 		STATUS=$(addOneToIndex $STATUS)
 		return
 	fi
@@ -78,6 +80,7 @@ checkcrl () {
         if [ $? -ne 0 ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
 	    STATUS=$(addOneToIndex $STATUS)
+            GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_3 $CRLNAME"
             return 1
         fi
 
@@ -85,12 +88,14 @@ checkcrl () {
         ${CHECKTOOL} ${CRLNAME} --retry ${RETRIES} --connect-timeout ${TIMEOUT} --output $outname 2>/dev/null
         if [ $? -ne 0 ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
+            GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_3 $CRLNAME"
 	    STATUS=$(addOneToIndex $STATUS)
             return 1
         fi
     else
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
 	    STATUS=$(addOneToIndex $STATUS)
+            GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_3 $CRLNAME"
     fi
 
 
@@ -98,6 +103,7 @@ checkcrl () {
 	if [ ! -f $outname ] ; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME"
 		STATUS=$(addOneToIndex $STATUS)
+          	GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_1 $CRLNAME"
 		return 2
 	fi
 
@@ -106,6 +112,7 @@ checkcrl () {
 	if [ $? -ne 0 ] ; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"
 		STATUS=$(addOneToIndex $STATUS)
+          	GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_4 $CRLNAME"
 		return 3
 	fi
 
@@ -113,6 +120,7 @@ checkcrl () {
 	if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"
 		STATUS=$(addOneToIndex $STATUS)
+          	GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_4 $CRLNAME"
 		return 4
 	fi
 
