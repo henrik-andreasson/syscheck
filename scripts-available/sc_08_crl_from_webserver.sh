@@ -62,7 +62,7 @@ checkcrl () {
   if [ "x$CRLNAME" = "x" ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "No CRL Configured"
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_3 $CRLNAME"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     return
   fi
 
@@ -96,7 +96,7 @@ checkcrl () {
     ${CHECKTOOL} ${CRLNAME}  -T ${TIMEOUT} -t ${RETRIES}    ${CHECK_HOST_ARG1} "${CHECK_HOST_ARG2}"      -O $outname -o /dev/null
     if [ $? -ne 0 ] ; then
       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
-      STATUS=$(addOneToIndex $STATUS)
+      ERRSTATUS=$(expr $ERRSTATUS + 1)
       GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_3 $CRLNAME"
       return 1
     fi
@@ -107,12 +107,12 @@ checkcrl () {
     if [ $? -ne 0 ] ; then
       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$CRLNAME"
       GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_3 $CRLNAME"
-      STATUS=$(addOneToIndex $STATUS)
+      ERRSTATUS=$(expr $ERRSTATUS + 1)
       return 1
     fi
   else
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_3 $CRLNAME"
   fi
 
@@ -120,7 +120,7 @@ checkcrl () {
   # file not found where it should be
   if [ ! -f $outname ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_1 $CRLNAME"
     return 2
   fi
@@ -129,7 +129,7 @@ checkcrl () {
   # stat return check
   if [ $? -ne 0 ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_4 $CRLNAME"
     return 3
   fi
@@ -137,7 +137,7 @@ checkcrl () {
   # crl of 0 size?
   if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$CRLNAME"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$DESCR_4 $CRLNAME"
     return 4
   fi
@@ -146,38 +146,37 @@ checkcrl () {
   LASTUPDATE=$(openssl crl -inform der -in $outname -lastupdate -noout | sed 's/lastUpdate=//')
   if [ "x${LASTUPDATE}" = "x" ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file,lastupdate)"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$CRLNAME (Cant parse file,lastupdate)"
   fi
 
   NEXTUPDATE=$(openssl crl -inform der -in $outname -nextupdate -noout | sed 's/nextUpdate=//')
   if [ "x${NEXTUPDATE}" = "x" ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file,nextupdate)"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$CRLNAME (Cant parse file,nextupdate)"
   fi
 
   CRLMESSAGE=$(${SYSCHECK_HOME}/lib/cmp_dates.py "$LASTUPDATE" "$NEXTUPDATE" ${ARGWARNMIN} ${ARGERRMIN} )
   CRLCHECK=$?
-  STATUS=$(expr "$STATUS + 1")
   if [ "x$CRLCHECK" = "x" ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME (Cant parse file)"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$CRLNAME (Cant parse file)"
 
   elif [ $CRLCHECK -eq 3 ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$DESCR_6" "$CRLNAME: ${CRLMESSAGE}"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} ${CRLMESSAGE}"
 
   elif [ $CRLCHECK -eq 2 ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_7 "$DESCR_7" "$CRLNAME: ${CRLMESSAGE}"
-    STATUS=$(addOneToIndex $STATUS)
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} ${CRLMESSAGE}"
 
   elif [ $CRLCHECK -eq 1 ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_8 "$DESCR_8" "$CRLNAME: ${CRLMESSAGE}"
-    STATUS=$(addOneToIndex $STATUS)
+    WARNSTATUS=$(expr $WARNSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} ${CRLMESSAGE}"
 
   elif [ $CRLCHECK -eq 0 ] ; then
@@ -185,7 +184,7 @@ checkcrl () {
 
   else
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_1 "$DESCR_1" "$CRLNAME: problem calculating validity"
-    STATUS=$(expr "$STATUS + 1")
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} problem calculating validity"
   fi
   rm "$outname"
@@ -194,8 +193,9 @@ checkcrl () {
 #force Timezone to UTC
 export TZ=UTC
 
-# global status for all crl:s (0 is ok)
-STATUS=00
+# global ERRSTATUS for all crl:s (0 is ok)
+ERRSTATUS=0
+WARNSTATUS=0
 GLOBALERRMESSAGE=""
 
 for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
@@ -225,8 +225,10 @@ done
 
 # send the summary message (00)
 SCRIPTINDEX=00
-if [ "x${STATUS}" == "x00" ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2"
-else
+if [ "x${ERRSTATUS}" != "x0" ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_9 "$DESCR_9" "${GLOBALERRMESSAGE}"
+elif [ "x${WARNSTATUS}" != "x0" ] ; then
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_9 "$DESCR_9" "${GLOBALERRMESSAGE}"
+else
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_2 "$DESCR_2"
 fi
