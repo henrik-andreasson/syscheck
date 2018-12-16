@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -15,15 +13,16 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-set -e 
-
-
-
 # Import common resources
 . $SYSCHECK_HOME/config/related-scripts.conf
 
-## local definitions ##
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=archive_file
+
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=917
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
 getlangfiles $SCRIPTID
@@ -61,42 +60,42 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     "x$2" = "x-s" -o  "x$2" = "x--screen"   ] ; then
     shift
     PRINTTOSCREEN=1
-fi 
+fi
 
 KeepOrg=
 if [ "x$1" =  "x--keep-org"  ] ; then
     shift
     KeepOrg=1
 fi
- 
+
 
 if [ ! -d ${InTransitDir} ] ; then
 	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_9 "$ARCHIVE_DESCR_9"
 	exit -1
 fi
 
-# arg1 
+# arg1
 FileToArchive=
-if [ "x$1" = "x" ] ; then 
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"  
+if [ "x$1" = "x" ] ; then
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"
 	exit -1
 else
     FileToArchive=$1
 fi
 
-# arg2 hostname 
+# arg2 hostname
 ArchiveServer=
-if [ "x$2" = "x"  ] ; then 
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"  
+if [ "x$2" = "x"  ] ; then
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"
 	exit -1
 else
     ArchiveServer=$2
 fi
 
 
-# arg3 mandatory, eg.: "/store/logs/hostname/" 
+# arg3 mandatory, eg.: "/store/logs/hostname/"
 ArchiveDir=
-if [ "x$3" = "x"  ] ; then 
+if [ "x$3" = "x"  ] ; then
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$ARCHIVE_DESCR_3"
         exit -1
 else
@@ -105,14 +104,14 @@ fi
 
 # arg4 optional, if not specified the executing user will be used
 SSHTOUSER=
-if [ "x$4" != "x"  ] ; then 
+if [ "x$4" != "x"  ] ; then
     SSHTOUSER="$4"
 fi
 
 
 # arg5 optional , if not specified the default key will be used
 SSHFROMKEY=
-if [ "x$5" != "x"  ] ; then 
+if [ "x$5" != "x"  ] ; then
     SSHFROMKEY="$5"
 fi
 
@@ -125,7 +124,7 @@ moveToIntransit() {
 
 	if [ "x${IntransitFileName}" = "x" ] ; then
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_8 "$ARCHIVE_DESCR_8" ${IntransitFileName}
-		exit -1	
+		exit -1
 	fi
 # move the file into the intransit dir and give it a unique name
 	if [ "x${KeepOrg}" = "x" ] ; then
@@ -137,7 +136,7 @@ moveToIntransit() {
 	fi
 
 	if [ $? != 0 ] ; then
-	 	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$ARCHIVE_DESCR_2" ${file} ${InTransitDir}/${IntransitFileName} 
+	 	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$ARCHIVE_DESCR_2" ${file} ${InTransitDir}/${IntransitFileName}
 		exit -1
 	else
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_7 "$ARCHIVE_DESCR_7" ${file} ${InTransitDir}/${IntransitFileName}
@@ -153,13 +152,13 @@ transferFile(){
 	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX\" ${SSHTOUSER} ${SSHFROMKEY}"
 	reultFromClaim=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX" ${SSHTOUSER} ${SSHFROMKEY}`
 	if [ $? != 0 ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$ARCHIVE_DESCR_4" 
+                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$ARCHIVE_DESCR_4"
 		exit -1
 	fi
 	baseFile=`echo $reultFromClaim | grep ${ShortFileName}`
 	remoteFileName=`basename $baseFile`
 
-# transfer the file 
+# transfer the file
  	printtoscreen "$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER ${SSHFROMKEY}"
  	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER ${SSHFROMKEY}
 	if [ $? != 0 ] ; then
@@ -188,7 +187,7 @@ transferFile(){
 archiveLocally() {
 	remoteFileName=$1
 	if [ "x${remoteFileName}" = "x" ] ; then exit -1 ; fi
-	IntransitFileName=$2 
+	IntransitFileName=$2
 	if [ "x${IntransitFileName}" = "x" ] ; then exit -1 ; fi
 # ensure local file is uniq (should be, but just in case)
 	i=0
@@ -201,7 +200,7 @@ archiveLocally() {
         printtoscreen "mv ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}"
         mv ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
 	if [ $? != 0 ] ; then
-	 	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$ARCHIVE_DESCR_2" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName} 
+	 	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$ARCHIVE_DESCR_2" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
 		exit -1
 	else
 		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$ARCHIVE_DESCR_1" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
@@ -217,11 +216,11 @@ for file in ${FileToArchive} ; do
 	printtoscreen $ARCHIVE_PTS_1 $file
 # it the file really there ?
 	if [ ! -r $file ] ;  then
-                printtoscreen "$ARCHIVE_PTS_3" $file 
+                printtoscreen "$ARCHIVE_PTS_3" $file
 		continue
 	fi
 
-# get new filenames 
+# get new filenames
 	infile=`basename $file`
 	datestr=`date +"%Y-%m-%d_%H.%M.%S"`
 	ShortFileName="${datestr}_orgname__${infile}__"
@@ -240,4 +239,3 @@ for file in $(ls ${InTransitDir}/* 2>/dev/null) ; do
         reFile=`transferFile ${infile} ${infile} `
         archiveLocally ${reFile} ${infile}
 done
-

@@ -22,7 +22,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 SCRIPTID=24
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-scripts.conf
+source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 getlangfiles $SCRIPTID ;
 getconfig $SCRIPTID

@@ -1,12 +1,10 @@
-#!/bin/bash 
-
-# Set SYSCHECK_HOME if not already set.
+#!/bin/bash
 
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -15,16 +13,19 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
+## Import common definitions ##
+source $SYSCHECK_HOME/config/syscheck-scripts.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=rsa_axm
+
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=23
 
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-scripts.conf
-
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 RSA_AXM_ERRNO_1=01
@@ -49,8 +50,8 @@ NAMES_OF_NOT_RUNNING_PROCS=""
 pidfile=/opt/ctrust/server-60/var/aserver.pid
 pid=$(cat ${pidfile} 2>/dev/null | cut -f2 -d\: )
 procname='DAuth'
-pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname` 
-if [ $? -ne 0 ] ; then 
+pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname`
+if [ $? -ne 0 ] ; then
         NUMBER_OF_NOT_RUNNING_PROCS=`expr $NUMBER_OF_NOT_RUNNING_PROCS + 1`
         NAMES_OF_NOT_RUNNING_PROCS="$NAMES_OF_NOT_RUNNING_PROCS $procname"
 fi
@@ -62,7 +63,7 @@ fi
 pidfile=/opt/ctrust/server-60/var/dispatcher.pid
 pid=$(cat ${pidfile} 2>/dev/null | cut -f2 -d\: )
 procname='DDisp'
-pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname` 
+pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname`
 if [ $? -ne 0 ] ; then
         NUMBER_OF_NOT_RUNNING_PROCS=`expr $NUMBER_OF_NOT_RUNNING_PROCS + 1`
         NAMES_OF_NOT_RUNNING_PROCS="$NAMES_OF_NOT_RUNNING_PROCS $procname"
@@ -77,7 +78,7 @@ fi
 pidfile=/opt/ctrust/server-60/var/eserver.pid
 pid=$(cat ${pidfile} 2>/dev/null | cut -f2 -d\: )
 procname='DEnt'
-pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname` 
+pidinfo=`${SYSCHECK_HOME}/lib/proc_checker.sh $pid $procname`
 if [ $? -ne 0 ] ; then
         NUMBER_OF_NOT_RUNNING_PROCS=`expr $NUMBER_OF_NOT_RUNNING_PROCS + 1`
         NAMES_OF_NOT_RUNNING_PROCS="$NAMES_OF_NOT_RUNNING_PROCS $procname"
@@ -97,4 +98,3 @@ else
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $RSA_AXM_ERRNO_1 "$RSA_AXM_DESCR_1"
 	exit 0
 fi
-

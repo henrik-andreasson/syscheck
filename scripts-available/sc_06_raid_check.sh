@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -15,18 +13,19 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 ## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-scripts.conf
+source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=raidcheck
+
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=06
 
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-getlangfiles $SCRIPTID 
+getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 
@@ -73,7 +72,7 @@ raidlogiccheck () {
 	xSLOT="$2"
 	SCRIPTINDEX=$3
 
-        COMMAND=`echo "controller slot=${xSLOT} ld all show" | $HPTOOL | grep "$LDID"` 
+        COMMAND=`echo "controller slot=${xSLOT} ld all show" | $HPTOOL | grep "$LDID"`
 	STATUS=`echo $COMMAND | grep "OK"`
 
 	if [ "x$STATUS" != "x" ] ; then
@@ -81,7 +80,7 @@ raidlogiccheck () {
 
         elif [ "xRebuilding" = "x$COMMAND" ] ; then
                 printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$COMMAND"
-	else 
+	else
                 printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$DESCR_5" "$COMMAND LD:$LDID slot: $xSLOT"
 	fi
 }
@@ -102,6 +101,3 @@ for (( i = 0 ;  i < ${#LOGICALDRIVE[@]} ; i++ )) ; do
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	raidlogiccheck "${LOGICALDRIVE[$i]}" $SLOT $SCRIPTINDEX
 done
-
-
-

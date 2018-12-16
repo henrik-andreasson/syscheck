@@ -1,5 +1,4 @@
 #!/bin/bash
-# Set SYSCHECK_HOME if not already set.
 
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
@@ -15,7 +14,10 @@ fi
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-scripts.conf
+source $SYSCHECK_HOME/config/syscheck-scripts.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=mysql
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=12
@@ -23,8 +25,7 @@ SCRIPTID=12
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-
-getlangfiles $SCRIPTID ;
+getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 ERRNO_1=01

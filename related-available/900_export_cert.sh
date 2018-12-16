@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -15,8 +13,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-## Import common definitions ##
+# Import common definitions #
 . $SYSCHECK_HOME/config/related-scripts.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=export_cert
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=900
@@ -43,11 +44,11 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     "x$2" = "x-s" -o  "x$2" = "x--screen"   ] ; then
     PRINTTOSCREEN=1
     shift
-fi 
+fi
 
 
-if [ "x$1" = "x" -o ! -r "$1" ] ; then 
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"  
+if [ "x$1" = "x" -o ! -r "$1" ] ; then
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
 	printtoscreen $ERROR $ERRNO_3 "$DESCR_3"
 	exit
 fi
@@ -57,33 +58,33 @@ if [ ! -f $1 ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
     exit
 else
-	CERTFILE=$1	
+	CERTFILE=$1
 fi
 
 if [ ! -d ${OUTPATH2} ] ; then
     mkdir -p ${OUTPATH2}
 fi
 
-date >> ${CERTLOG} 
+date >> ${CERTLOG}
 CERTSERIAL=`openssl x509 -inform der -in ${CERTFILE} -serial -noout | sed 's/serial=//'`
-if [ $? -ne 0 ] ; then 
+if [ $? -ne 0 ] ; then
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
-    exit; 
+    exit;
 fi
 
 CERTSUBJECT=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
-if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+if [ $? -ne 0 ] ; then
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
 fi
 
 echo "CERTSERIAL: $CERTSERIAL" >> ${CERTLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${CERTLOG}
 CERT=`openssl x509 -inform der -in ${CERTFILE}`
-if [ $? -ne 0 ] ; then 
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+if [ $? -ne 0 ] ; then
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
 fi
 
-# putting the base64 string in the log (livrem och hängslen)
+# putting the base64 string in the log (livrem och hï¿½ngslen)
 CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
 echo "CERTSTRING: $CERTSTRING " >> ${CERTLOG}
 echo                            >> ${CERTLOG}
@@ -91,10 +92,10 @@ echo                            >> ${CERTLOG}
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 OUTFILE="${OUTPATH2}/archived-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in ${CERTFILE} > ${OUTFILE}
-if [ $? -eq 0 ] ; then 
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?" 
+if [ $? -eq 0 ] ; then
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?"
 else
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

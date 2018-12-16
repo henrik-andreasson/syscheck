@@ -5,13 +5,11 @@ set -o pipefail  # all commands in a pipe must not fail
 set -o noclobber # dont overwrite files
 #set -o xtrace   # debug
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -20,11 +18,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 # Import common resources
 . $SYSCHECK_HOME/config/related-scripts.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=mysqlbackup
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=904
@@ -32,7 +30,7 @@ SCRIPTID=904
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-initscript $SCRIPTID 
+initscript $SCRIPTID
 
 
 ERRNO_1="01"
@@ -71,7 +69,7 @@ done
 
 EXTRADIR=
 if [ "x${TYPE}" = "x" ] ; then
-	EXTRADIR=${SUBDIR_DEFAULT}	
+	EXTRADIR=${SUBDIR_DEFAULT}
 else
 	EXTRADIR=${TYPE}
 fi
@@ -85,7 +83,7 @@ fi
 
 for (( i = 0 ;  i < ${#DBNAME[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-    
+
     DATESTR=$(date +${DATESTING})
     MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPDIR}/${EXTRADIR}/${DBNAME[$i]}-${DATESTR}.gz"
     DATESTART=$(date +"%s")
@@ -94,7 +92,7 @@ for (( i = 0 ;  i < ${#DBNAME[@]} ; i++ )) ; do
     DATEDONE=$(date +"%s")
     let TIMETOCOMPLEATE="$DATEDONE - $DATESTART" || true # not to stop script
     filesize=$(stat -c "%s" "$MYSQLBACKUPFULLFILENAME")
- 
+
     if [ $retcode -eq 0 ] ; then
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO  $ERRNO_1 "$DESCR_1" "$MYSQLBACKUPFULLFILENAME" $TIMETOCOMPLEATE $filesize
     else
@@ -106,4 +104,3 @@ for (( i = 0 ;  i < ${#DBNAME[@]} ; i++ )) ; do
     fi
 
 done
-

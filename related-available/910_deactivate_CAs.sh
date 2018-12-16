@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -15,11 +13,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/related-scripts.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=deactivate_ca
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=910
@@ -46,7 +44,7 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     "x$2" = "x-s" -o  "x$2" = "x--screen"   ] ; then
     PRINTTOSCREEN=1
     shift
-fi 
+fi
 
 
 cd $EJBCA_HOME
@@ -57,11 +55,10 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
         ./bin/ejbca.sh ca deactivateca $NAME | tee ${SYSCHECK_HOME}/var/$0.output
         error=$(cat ${SYSCHECK_HOME}/var/$0.output)
         if [ "x$error" = "x"  ] ; then
-	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NAME" 
+	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$NAME"
 	else
 	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$NAME" "$error"
 	fi
 
 
 done
-

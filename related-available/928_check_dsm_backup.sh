@@ -1,14 +1,10 @@
 #!/bin/bash
-# 				sc_31_check_dsm_backup.sh - Script that checks if last dsm backup go OK
-
-
-# Set SYSCHECK_HOME if not already set.
 
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -17,12 +13,17 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
+# Import common definitions ##
+# todo -> . $SYSCHECK_HOME/config/related-scripts.conf
+source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
-## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-scripts.conf
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=dsm_backup
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=928
+
+# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
 DSM_ERRNO_1=${SCRIPTID}01
@@ -56,4 +57,3 @@ if [ "x$dsm" = "xFAIL" ] ; then
 else
     printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   "$INFO" "$DSM_ERRNO_1" "$DSM_DESCR_1 "
 fi
-

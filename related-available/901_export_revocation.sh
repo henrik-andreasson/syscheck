@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -15,11 +13,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/related-scripts.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=export_revocation
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=901
@@ -27,7 +25,7 @@ SCRIPTID=901
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-getlangfiles $SCRIPTID 
+getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 ERRNO_1="01"
@@ -47,12 +45,12 @@ if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     "x$2" = "x-s" -o  "x$2" = "x--screen"   ] ; then
     PRINTTOSCREEN=1
-fi 
+fi
 
 
 ### is there even a file as argument1 ?
-if [ "x$1" = "x" -o ! -r "$1" ] ; then 
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"  
+if [ "x$1" = "x" -o ! -r "$1" ] ; then
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2"
 	printtoscreen $ERROR $ERRNO_2 "$DESCR_2"
 	exit
 fi
@@ -60,18 +58,18 @@ fi
 # for inital checks
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
-date >> ${REVLOG} 
+date >> ${REVLOG}
 CERTSERIAL=`openssl x509 -inform der -in $1 -serial -noout | sed 's/serial=//'`
-if [ $? -ne 0 ] ; then 
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+if [ $? -ne 0 ] ; then
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
 	# we really need a serial
 	exit
 fi
 
 
 CERTSUBJECT=`openssl x509 -inform der -in $1 -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
-if [ $? -ne 0 ] ; then 
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+if [ $? -ne 0 ] ; then
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
 	# also without subject we cant continiue
 	exit
 fi
@@ -79,8 +77,8 @@ fi
 echo "CERTSERIAL: $CERTSERIAL" >> ${REVLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${REVLOG}
 CERT=`openssl x509 -inform der -in $1`
-if [ $? -ne 0 ] ; then 
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+if [ $? -ne 0 ] ; then
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
 	# if we cant parse the cert
 	exit
 fi
@@ -90,13 +88,13 @@ CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
 echo "CERTSTRING: $CERTSTRING " >> ${REVLOG}
 echo                            >> ${REVLOG}
 
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX) 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 OUTFILE="${OUTPATH2}/revoked-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in $1 > ${OUTFILE}
-if [ $? -eq 0 ] ; then 
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?" 
+if [ $? -eq 0 ] ; then
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$DESCR_1" "$?"
 else
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?" 
+    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3" "$?"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
@@ -104,4 +102,3 @@ for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     ${SYSCHECK_HOME}/related-enabled/917_archive_file.sh ${OUTFILE} ${REMOTE_HOST[$j]} ${REMOTE_DIR[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]}
 }
-

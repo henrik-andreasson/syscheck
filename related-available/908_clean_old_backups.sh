@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -15,12 +13,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
-
 ## Import common definitions ##
 . $SYSCHECK_HOME/config/related-scripts.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=clean_old_db_backups
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=908
@@ -28,7 +25,7 @@ SCRIPTID=908
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-getlangfiles $SCRIPTID 
+getlangfiles $SCRIPTID
 getconfig $SCRIPTID
 
 
@@ -53,14 +50,14 @@ elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
     "x$2" = "x-s" -o  "x$2" = "x--screen"   ] ; then
     PRINTTOSCREEN=1
     shift
-fi 
+fi
 
 
 
 ERR=""
 # loop throug all files to be removed due to age
 for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
-    printtoscreen "deleteing ${FILENAME[$i]} ... "  
+    printtoscreen "deleteing ${FILENAME[$i]} ... "
 
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
@@ -70,23 +67,23 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
     fi
 
     realfiles=$(ls ${FILENAME[$i]} 2>/dev/null)
-    if [ "x${realfiles}" != "x" ] ; then 
+    if [ "x${realfiles}" != "x" ] ; then
 
 	returnstr=`rm ${FILENAME[$i]} 2>&1`
-	if [ $? -ne 0 ] ; then 
+	if [ $? -ne 0 ] ; then
 	    ERR=" ${FILENAME[$i]} ; $ERR"
-	    printtoscreen "deleted ${realfiles} failed ($returnstr)"  
+	    printtoscreen "deleted ${realfiles} failed ($returnstr)"
 	else
-	    printtoscreen "deleted ${realfiles} ok"  
+	    printtoscreen "deleted ${realfiles} ok"
 	fi
 
     else
 
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_3 "$CLEANBAK_DESCR_3" "${FILENAME[$i]}"
-        printtoscreen "file ${FILENAME[$i]} did not exist before deleting "  
-	    
+        printtoscreen "file ${FILENAME[$i]} did not exist before deleting "
+
     fi
-	
+
 done
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)

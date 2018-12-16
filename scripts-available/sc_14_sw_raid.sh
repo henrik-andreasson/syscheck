@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -15,11 +13,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-
-
-
 ## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-scripts.conf
+source $SYSCHECK_HOME/config/syscheck-scripts.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=swraid
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=14
@@ -36,10 +34,10 @@ ERRNO_3=03
 
 if [ "x$1" = "x--help" -o "x$1" = "x-h" ] ; then
     echo -e "$0: $HELP"
-    echo -e "$ERRNO_1 - $HELP_1" 
-    echo -e "$ERRNO_2 - $HELP_2" 
-    echo -e "$ERRNO_3 - $HELP_3" 
-    
+    echo -e "$ERRNO_1 - $HELP_1"
+    echo -e "$ERRNO_2 - $HELP_2"
+    echo -e "$ERRNO_3 - $HELP_3"
+
 elif [ "x$1" = "x--screen" -o "x$1" = "x-s" ] ; then
 	PRINTTOSCREEN=1
 fi
@@ -70,5 +68,3 @@ for (( i = 0 ;  i < ${#MDDEV[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     swraidcheck ${#MDDEV[$i]} ${#DDDEV[$i]} $SCRIPTINDEX
 done
-
-

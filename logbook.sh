@@ -17,11 +17,11 @@ fi
 
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
-#added for test
-
-
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/common.conf
+
+# scriptname used to map and explain scripts in icinga and other
+SCRIPTNAME=logbook
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=701
