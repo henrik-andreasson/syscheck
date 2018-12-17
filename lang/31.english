@@ -7,5 +7,4 @@ DESCR_3="FAN sensor %s is NOT OK %s"
 HELP_3="Run manual test with hpasmcli"
 DESCR_4="Tool not found: %s "
 HELP_4="Install or set path"
-HELP_5="Another process might have terminated wrong, this do not happen under normal situations."
-DESCR_5="Removed stale lock file, it was created at: %s."
+
