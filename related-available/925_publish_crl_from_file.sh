@@ -26,7 +26,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 
 # Import common resources
-. $SYSCHECK_HOME/config/related-scripts.conf
+source $SYSCHECK_HOME/config/related-scripts.conf
 
 
 ## local definitions ##

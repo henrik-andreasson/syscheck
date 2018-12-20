@@ -7,11 +7,11 @@
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	     source /etc/syscheck.conf
     else
 # 3. last resort use default path
-	SYSCHECK_HOME="/opt/syscheck"
+	     SYSCHECK_HOME="/opt/syscheck"
     fi
 fi
 
@@ -69,4 +69,3 @@ for (( j=0; j < ${#SQL_SELECT[@]} ; j++ )){
 	echo "### ${SQL_DESC[$j]} ###" >> ${SYSCHECK_HOME}/var/${SQL_SUMMARY_FILE}
 	cat ${SYSCHECK_HOME}/var/${OUTFILE[$j]} >> ${SYSCHECK_HOME}/var/${SQL_SUMMARY_FILE}
 }
-

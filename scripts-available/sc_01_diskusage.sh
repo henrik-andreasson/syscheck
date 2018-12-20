@@ -16,7 +16,7 @@ fi
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-scripts.conf
+source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=01

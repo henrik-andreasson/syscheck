@@ -20,7 +20,7 @@ set -e
 
 
 # Import common resources
-. $SYSCHECK_HOME/config/related-scripts.conf
+source $SYSCHECK_HOME/config/related-scripts.conf
 
 SCRIPTID=918
 SCRIPTINDEX=00

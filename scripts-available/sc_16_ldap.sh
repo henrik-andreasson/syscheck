@@ -24,7 +24,7 @@ SCRIPTINDEX=00
 
 
 ## Import common definitions ##
-. $SYSCHECK_HOME/config/syscheck-scripts.conf
+source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 getlangfiles $SCRIPTID
 getconfig $SCRIPTID
