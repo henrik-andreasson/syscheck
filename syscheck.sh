@@ -19,7 +19,7 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 
 ## Import common definitions ##
-source $SYSCHECK_HOME/config/syscheck-scripts.conf
+. $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 PATH=$SYSCHECK_HOME:$PATH
 

@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
 # 1. First check if SYSCHECK_HOME is set then use that
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
+    if [ -e /etc/syscheck.conf ] ; then
+	source /etc/syscheck.conf
     else
 # 3. last resort use default path
 	SYSCHECK_HOME="/opt/syscheck"
@@ -17,6 +15,9 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh
 
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/syscheck-scripts.conf
+
+# script name, used when integrating with nagios/icinga
+SCRIPTNAME=memoryusage
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=03
@@ -43,7 +44,7 @@ if [ "x$1" = "x--help" ] ; then
     exit
 elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
     PRINTTOSCREEN=1
-fi 
+fi
 
 
 checkmem(){
@@ -52,24 +53,24 @@ checkmem(){
 
     MEMORY=`free | grep -v total | grep -v buffers | grep -v Swap | cut -f2 -d: | perl -ane 's/\ +/;/gio,print'`
     SWAP=`free | grep -v total | grep -v buffers | grep -v Mem | cut -f2 -d: | perl -ane 's/\ +/;/gio,print'`
-    
+
     TOTALMEMORY=`echo $MEMORY | cut -f2 -d\;`
     USEDMEMORY=`echo $MEMORY | cut -f3 -d\;`
     FREEMEMORY=`echo $MEMORY | cut -f4 -d\;`
     CACHEDMEMORY=`echo $MEMORY | cut -f6 -d\;`
     BUFFEREDMEMORY=`echo $MEMORY | cut -f7 -d\;`
-    
+
     TOTALSWAP=`echo $SWAP | cut -f2 -d\;`
     USEDSWAP=`echo $SWAP | cut -f3 -d\;`
     FREESWAP=`echo $SWAP | cut -f4 -d\;`
-    
+
     MEMORYTOGETHER=`expr $FREEMEMORY + $CACHEDMEMORY + $BUFFEREDMEMORY`
-    
+
     MEMORYLIMIT=`expr $TOTALMEMORY \* $INMEMORYLIMIT \/ 100`
     SWAPLIMIT=`expr $TOTALSWAP \* $INSWAPLIMIT \/ 100`
-    
+
     REALUSEDMEMORY=`expr $TOTALMEMORY - $MEMORYTOGETHER`
-    
+
 
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     if [ $REALUSEDMEMORY -gt $MEMORYLIMIT ] ; then
@@ -77,17 +78,16 @@ checkmem(){
     else
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_2 "$DESCR_2" "$REALUSEDMEMORY" "$MEMORYLIMIT"
     fi
-    
+
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
     if [ $USEDSWAP -gt $SWAPLIMIT ] ; then
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "$USEDSWAP" "$SWAPLIMIT"
     else
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESCR_4" "$USEDSWAP" "$SWAPLIMIT"
-	
+
     fi
 }
 
-# max 80% of memory and 50% of swap 
+# max 80% of memory and 50% of swap
 checkmem ${MEM_PERCENT} ${SWAP_PERCENT}
-

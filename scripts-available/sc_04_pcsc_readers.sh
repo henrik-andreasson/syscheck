@@ -66,3 +66,4 @@ else
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$DESCR_2" "$STATUS"
 fi
 
+SCRIPTNAME=pcscreaders
