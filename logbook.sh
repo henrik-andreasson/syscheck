@@ -29,11 +29,6 @@ SCRIPTID=701
 # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
 SCRIPTINDEX=00
 
-# how many info/warn/error messages
-NO_OF_ERR=3
-NOERRORS=$NO_OF_ERR
-
-getconfig ${SCRIPTID}
 
 # main part start
 
@@ -47,29 +42,30 @@ if [ "x${ExecutingUserName}" = "xroot" ] ; then
     exit
 fi
 
-printhelp () {
-	/bin/echo -e "$HELP"
-	/bin/echo -e "$0 [ -r <days> |  -p ] (read is default)"
-	exit
-}
 
-DAYS=1
+# how many info/warn/error messages
+NO_OF_ERR=1
+initscript $SCRIPTID $NO_OF_ERR
 
-#TEMP=`/usr/bin/getopt --options "hr:p" --long "help,read:,post" -- "$@"`
-while getopts :r:ph opt ; do
-  case "$opt" in
-    r ) READ=1
-            if [ -n $OPTARG ] ; then
-                      DAYS=$OPTARG
-            fi
-            shift;;
-    p ) POST=1; shift;;
-    h ) printhelp; exit;;
-    --) break ;;
+# get command line arguments
+INPUTARGS=`/usr/bin/getopt --options "hsvrp" --long "help,screen,verbose,read,post" -- "$@"`
+if [ $? != 0 ] ; then schelp ; fi
+eval set -- "$INPUTARGS"
+
+while true; do
+  case "$1" in
+    -s|--screen  ) PRINTTOSCREEN=1; shift;;
+    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
+    -r|--read    ) READ=1 ; shift;;
+    -p|--post    ) POST=1 ; shift;;
+    -h|--help )   schelp;exit;shift;;
+    --) break;;
   esac
 done
 
+# main part of script
 
+DAYS=1
 
 if [ "x$READ" != "x1" -a "x$POST" != "x1"  ] ; then
     READ=1 # defaults to read

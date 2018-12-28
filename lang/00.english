@@ -1,1 +1,3 @@
-HELP="This is syscheck, it has checks for most issues found on a system"
+SCRIPT_HUMAN_NAME="Syscheck master script"
+
+HELP="This is syscheck, it checks that all checks in scripts-enabled runs, reports the result to one or more of the following destinations: \nsyslog, file, op5/icinga monitoring, in three different formats, OLD, NEW or JSON.\n\n"

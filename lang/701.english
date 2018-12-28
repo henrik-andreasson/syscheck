@@ -1,6 +1,6 @@
 SCRIPT_HUMAN_NAME="Log book"
 
-HELP="This is syscheck, loogbook.sh it ask for a entry then logs it."
+HELP="This is syscheck, loogbook.sh it ask for a entry then logs it.\n\n-p|--post - to post a new message\n-r|--read - to read already posted"
 HELP[1]=Logmessage
 DESCR[1]="User: %s ; Logentry: %s"
 
