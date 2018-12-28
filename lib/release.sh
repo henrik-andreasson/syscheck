@@ -31,7 +31,21 @@ if [ "x$tag" = $"xy" -o "x$tag" = "xY" -o "x$tag" = "x" ] ; then
 	git push origin "${progname}-${rel}"
 fi
 
-cp -r . ${PROGPATH}
+cp -r ./config 							 ${PROGPATH}
+cp -r ./console_syscheck.sh  ${PROGPATH}
+cp -r ./doc                  ${PROGPATH}
+cp -r ./getroot.sh           ${PROGPATH}
+cp -r ./lang                 ${PROGPATH}
+cp -r ./lib                  ${PROGPATH}
+cp -r ./logbook.sh           ${PROGPATH}
+cp -r ./readme.md            ${PROGPATH}
+cp -r ./related-available    ${PROGPATH}
+cp -r ./related-enabled      ${PROGPATH}
+cp -r ./scripts-available    ${PROGPATH}
+cp -r ./scripts-enabled      ${PROGPATH}
+cp -r ./syscheck.sh          ${PROGPATH}
+cp -r ./var                  ${PROGPATH}
+
 perl -pi -e "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gi"  ${PROGPATH}/config/common.conf
 find ${PROGPATH} -name \*.sh -exec chmod 755 {} \;
 find ${PROGPATH}/scripts-available/ -name \*.sh -exec chmod 755 {} \;
