@@ -1,23 +1,24 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
-# 1. First check if SYSCHECK_HOME is set then use that
-if [ "x${SYSCHECK_HOME}" = "x" ] ; then
-# 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
-    else
-# 3. last resort use default path
-	SYSCHECK_HOME="/opt/syscheck"
-    fi
+SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
+  echo "Can't find $SYSCHECK_HOME/syscheck.sh"
+  exit
 fi
 
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
 
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/common.conf
 
-printlogmess "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" 
+# source the config func
+source ${SYSCHECK_HOME}/lib/config.sh
+
+# use the printlog function
+source $SYSCHECK_HOME/lib/printlogmess.sh
+
+# source the lang func
+source ${SYSCHECK_HOME}/lib/lang.sh
 
 
+printlogmess "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#set -e
-
 orgdir=`pwd`
 
 echo "release no:"
@@ -48,7 +46,7 @@ zip --exclude "${progname}-${rel}/.git/*" -r ${zipname} ${progname}-${rel}
 
 md5sum ${zipname}          > ${zipname}.md5
 sha1sum ${zipname}         > ${zipname}.sha1
-gpg -o ${zipname}.gpg -sab   ${zipname} 
+gpg -o ${zipname}.gpg -sab   ${zipname}
 
 cd ${progname}-${rel} ; ./misc/make-rpm-deb.sh -v ${rel}
 

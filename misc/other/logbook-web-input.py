@@ -68,11 +68,11 @@ class S(BaseHTTPRequestHandler):
     def post2logbook(self,user,comment):
     
         SCRIPTID=701
-        SCRIPTINDEX=00
-        ERRNO_1="7011"
-        DESCR_1="User: %s ; Logentry: %s"
+        
+        ERRNO[1]="7011"
+        DESCR[1]="User: %s ; Logentry: %s"
         INFO="I"
-        call(["/home/han/devel/syscheck/master/lib/logbook-cli.sh", str(SCRIPTID), str(SCRIPTINDEX), str(INFO), str(ERRNO_1), str(DESCR_1), user, comment])
+        call(["/home/han/devel/syscheck/master/lib/logbook-cli.sh", str(SCRIPTID), str(SCRIPTINDEX), str(INFO), str(ERRNO[1]), str(DESCR[1]), user, comment])
 
 
     def do_GET(self):

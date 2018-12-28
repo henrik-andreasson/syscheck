@@ -28,8 +28,8 @@ addOneToIndex() {
 }
 
 
-#        sendlogmess "${SCRIPTID}-${SCRIPTINDEX}" "${HOST}"  "${DESCR_W_ARGS}"
-sendlogmess(){
+#        send_mess_to_monitoring "${SCRIPTID}-${SCRIPTINDEX}" "${HOST}"  "${DESCR_W_ARGS}"
+send_mess_to_monitoring(){
 #    set -x
     SCRIPTNAME=$1
     SCRIPTID=$2
@@ -38,7 +38,7 @@ sendlogmess(){
     MESSAGE=$5
 
     if [ "x$SCRIPTNAME" = "x" ] ;then
-        echo "scriptname must be passed to sendlogmess"
+        echo "scriptname must be passed to send_mess_to_monitoring"
         exit
     fi
 
@@ -57,20 +57,20 @@ sendlogmess(){
     fi
 
     if [ "x$SCRIPTID" = "x" ] ;then
-        echo "scriptid must be passed to sendlogmess"
+        echo "scriptid must be passed to send_mess_to_monitoring"
         exit
     fi
 
     if [ "x$SCRIPTINDEX" = "x" ] ;then
-        echo "scriptindex must be passed to sendlogmess"
+        echo "scriptindex must be passed to send_mess_to_monitoring"
         exit
     fi
     if [ "x$xHOSTNAME" = "x" ] ;then
-        echo "HOSTNAME must be passed to sendlogmess"
+        echo "HOSTNAME must be passed to send_mess_to_monitoring"
         exit
     fi
     if [ "x$MESSAGE" = "x" ] ;then
-        echo "MESSAGE must be passed to sendlogmess"
+        echo "MESSAGE must be passed to send_mess_to_monitoring"
         exit
     fi
 
@@ -79,6 +79,7 @@ sendlogmess(){
 #     curl -u 'status_update:asd123' -H 'content-type: application/json' -d '{"host_name":"H-CA01","service_description":"test", "status_code":"2","plugin_output":"Example issue has occurred"}' 'https://monitorserver/api/command/PROCESS_SERVICE_CHECK_RESULT'
 
     if [ "x${SENDTO_OP5}" = "x1" ] ; then
+
 #    curl -u 'status_update:mysecret' -H 'content-type: application/json' -d '{"host_name":"example_host_1","service_description":"Example service", "status_code":"2","plugin_output":"Example issue has occurred"}' 'https://monitorserver/api/command/PROCESS_SERVICE_CHECK_RESULT'
         check_source=$xHOSTNAME
         plugin_output=$MESSAGE
@@ -108,7 +109,7 @@ sendlogmess(){
 
 }
 
-# ex: printlogmess $LEVEL $SLOG_ERRNO_1 "$SLOG_DESCR_1"
+# ex: printlogmess $LEVEL $SLOG_ERRNO[1] "$SLOG_DESCR[1]"
 printlogmess(){
         SCRIPTNAME=$1
         SCRIPTID=$2
@@ -176,7 +177,8 @@ printlogmess(){
         JSONSTRING="{ \"FROM\": \"SYSCHECK\", \"SYSCHECK_VERSION\": \"${SYSCHECK_VERSION}\", \"LOGFMT\": \"JSON-1.2\", \"SCRIPTNAME\": \"${SCRIPTNAME}\", \"SCRIPTID\": \"${SCRIPTID}\", \"SCRIPTINDEX\": \"${SCRIPTINDEX}\", \"LEVEL\": \"${LEVEL}\", \"ERRNO\": \"${ERRNO}\", \"SYSTEMNAME\": \"${SYSTEMNAME}\", \"DATE\": \"${DATE}\", \"HOSTNAME\": \"${HOST}\", \"SEC1970\": \"${SEC1970}\", \"SEC1970NANO\": \"${SEC1970NANO}\", \"LONGLEVEL\":  \"$LONGLEVEL\", \"DESCRIPTION\": \"$DESCR\", \"EXTRAARG1\":   \"$ARG1\", \"EXTRAARG2\":   \"$ARG2\", \"EXTRAARG3\":   \"$ARG3\", \"EXTRAARG4\":   \"$ARG4\", \"EXTRAARG5\":   \"$ARG5\", \"EXTRAARG6\":   \"$ARG6\", \"EXTRAARG7\":   \"$ARG7\", \"EXTRAARG8\":   \"$ARG8\", \"EXTRAARG9\":   \"$ARG9\", \"LEGACYFMT\":   \"${NEWFMTSTRING}\" }"
 
         if [ "x${SENDTO_OP5}" = "x1" -o "x${SENDTO_ICINGA}" = "x1" ] ; then
-            sendlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} "${HOST}"  "${DESCR_W_ARGS}"
+            getconfig "monitoring"
+            send_mess_to_monitoring ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} "${HOST}"  "${DESCR_W_ARGS}"
         fi
 
         if [ "x${PRINTTOSCREEN}" = "x1" ] ; then
@@ -234,7 +236,7 @@ printlogmess(){
 }
 
 
-# ex: logbookmess $LEVEL $ERRNO_1 "$DESCR_1"
+# ex: logbookmess $LEVEL ${ERRNO[1]} "${DESCR[1]}"
 logbookmess(){
         SCRIPTID=$1
         SCRIPTINDEX=$2

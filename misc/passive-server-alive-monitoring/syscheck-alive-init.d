@@ -14,7 +14,11 @@
 
 # Set SYSCHECK_HOME if not already set.
 
-# 1. First check if SYSCHECK_HOME is set then use that
+SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then 
+  echo "Can't find $SYSCHECK_HOME/syscheck.sh"
+  exit 
+fi
 if [ "x${SYSCHECK_HOME}" = "x" ] ; then
 # 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
     if [ -e /etc/syscheck.conf ] ; then 
@@ -25,7 +29,7 @@ if [ "x${SYSCHECK_HOME}" = "x" ] ; then
     fi
 fi
 
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
 
 
 # Shell functions sourced from /etc/rc.status:
@@ -61,21 +65,23 @@ rc_reset
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=
 
-getlangfiles $SCRIPTID ;
+# how many info/warn/error messages 
+NO_OF_ERR=3
+initscript $SCRIPTID $NO_OF_ERR ;
 
-ERRNO_1="${SCRIPTID}01"
-ERRNO_2="${SCRIPTID}02"
+ERRNO[1]="${SCRIPTID}01"
+ERRNO[2]="${SCRIPTID}02"
 
 
 case "$1" in
 start)
     echo -n "Sending syscheck alive startup message: "
-    printlogmess $INFO $ERRNO_1 "$DESCR_1"	
+    printlogmess $INFO ${ERRNO[1]} "${DESCR[1]}"	
 	echo "done"
     ;;
 stop)
     echo -n "Sending syscheck alive shutdown message: "
-    printlogmess $INFO $ERRNO_2 "$DESCR_2" 
+    printlogmess $INFO ${ERRNO[2]} "${DESCR[2]}" 
     echo "done"
     ;;
 *)
