@@ -1,6 +1,7 @@
 
 initscript(){
    SCRIPTID=$1
+      exit
    getconfig ${SCRIPTID}
    getlangfiles ${SCRIPTID}
    isSyscheckOnHold ${SCRIPTID}
