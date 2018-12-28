@@ -1,80 +1,50 @@
 #!/bin/bash
-#                817-delete-old-record-CRLData.sh - Delete old crldata from ejbca db
-#
-# create a yearly backup if you want (y/n)
-# creat mysqldump of crldata table
-# can be run on backend and frontend
-# need tyo have working database owner account eq to ejcbca and certcerviceadmin, can be founfd in common.conf
-# can be checked with  814-mysql-console-as-db-user.sh
-# Get row number to delete to
-# Delete old record from crldata use argument for how many rows to keep, not less then 5
-# make backup of crldata db.
 
-# Set SYSCHECK_HOME if not already set.
-
-# 1. First check if SYSCHECK_HOME is set then use that
-if [ "x${SYSCHECK_HOME}" = "x" ] ; then
-# 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
- if [ -e /etc/syscheck.conf ] ; then
- source /etc/syscheck.conf
- else
-# 3. last resort use default path
- SYSCHECK_HOME="/opt/syscheck"
- fi
-fi
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
-
-## Import common definitions ##
-. $SYSCHECK_HOME/config/database-replication.conf
-
-# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
-SCRIPTID=817
-
-# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
-SCRIPTINDEX=00
-
-getlangfiles $SCRIPTID || exit 1;
-getconfig $SCRIPTID || exit 1;
-schelp () {
- echo
-        echo "$HELP"
-        echo
-        echo "${SCRIPTID}1/$DESCR_1 - $HELP_1"
-        echo "${SCRIPTID}2/$DESCR_2 - $HELP_2"
-        echo "${SCRIPTID}3/$DESCR_3 - $HELP_3"
-        echo "${SCRIPTID}4/$DESCR_4 - $HELP_4"
-        echo "${SCRIPTID}5/$DESCR_5 - $HELP_5"
-        echo "${SCRIPTID}6/$DESCR_6 - $HELP_6"
-        echo "${SCRIPTID}7/$DESCR_7 - $HELP_7"
-        echo "${SCRIPTID}8/$DESCR_8 - $HELP_8"
-        echo "${SCRIPTID}9/$DESCR_9 - $HELP_9"
-        echo "${SCRIPTID}10/$DESCR_10 - $HELP_10"
-        echo "${SCREEN_HELP}"
-        exit
-}
-
-
-PRINTTOSCREEN=0
-
-if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-        schelp
-elif [ "x$1" = "x-s" -o  "x$1" = "x--screen" -o \
-    "x$2" = "x-s" -o  "x$2" = "x--screen"   ] ; then
-        PRINTTOSCREEN=1
-elif [ "x$1" = "x-q" -o  "x$1" = "x--quiet" -o \
-    "x$2" = "x-q" -o  "x$2" = "x--quiet"   ] ; then
-        PRINTTOSCREEN=0
-elif [ "x$1" = "x-m" -o  "x$1" = "x--menu" -o \
-    "x$2" = "x-m" -o  "x$2" = "x--menu"   ] ; then
-        MENU=1
-elif [ "x$1" = "x-b" -o  "x$1" = "x--batch" -o \
-    "x$2" = "x-b" -o  "x$2" = "x--batch"   ] ; then
-        MENU=0
-fi
-if [ "x$MENU" = x ];then
-  echo "Need to set value -b or -m to run, exit"
+SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
+  echo "Can't find $SYSCHECK_HOME/syscheck.sh"
   exit
 fi
+
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
+
+## Import common definitions ##
+source $SYSCHECK_HOME/config/related-scripts.conf
+
+# script name, used when integrating with nagios/icinga
+SCRIPTNAME=delete_old_crls
+
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
+SCRIPTID=937
+
+# how many info/warn/error messages
+NO_OF_ERR=10
+initscript $SCRIPTID $NO_OF_ERR;
+getconfig "mariadb"
+
+MENU=0
+
+# get command line arguments
+INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
+if [ $? != 0 ] ; then schelp ; fi
+#echo "TEMP: >$TEMP<"
+eval set -- "$INPUTARGS"
+
+while true; do
+  case "$1" in
+    -s|--screen  ) PRINTTOSCREEN=1; shift;;
+    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
+    -b|--batch   ) BATCH=1; shift;;
+    -m|--menu    ) MENU=1; shift;;
+    -q|--quiet   ) MENU=0; shift;;
+    -h|--help )   schelp;exit;shift;;
+    --) break;;
+  esac
+done
+
+
+# main part of script
+
 
 DATE=`date +%Y%m%d-%H%M`
 DATAFILE="$SYSCHECK_HOME/var/${SCRIPTID}.out"
@@ -98,11 +68,11 @@ fi
 ERR=0
 test -z "${ROW_SAVE}" && ERR=1
 LEVEL=${LEVEL_1}
-DESCR=${DESCR_1}
+DESCR=${DESCR[1]}
 Sub_Error 1
 test ${ROW_SAVE} -lt 5 && ERR=2
 LEVEL=${LEVEL_2}
-DESCR=${DESCR_2}
+DESCR=${DESCR[2]}
 Sub_Error 2
 ###############
 # Check value on enviroment, cant  be null
@@ -127,7 +97,7 @@ echo "`date`:Create backup before clean crldata">>${LOGFILE}
 $SYSCHECK_HOME/related-enabled/904_make_mysql_db_backup.sh -b 2>${ERRFILE}.3
 ERR=$?
 LEVEL=${LEVEL_3}
-DESCR=${DESCR_3}
+DESCR=${DESCR[3]}
 Sub_Error 3
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
@@ -165,14 +135,14 @@ SERIALNUMBER=serial_number
 else
   echo " Do not suppport ${DB_NAME} database exist, exit"
   LEVEL=${LEVEL_4}
-  DESCR=${DESCR_4}
+  DESCR=${DESCR[4]}
   Sub_Error 4
   exit
 fi
 $MYSQL_BIN --skip-column-names $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < ${OUTFILE}.4 >${DATAFILE}
 ERR=$?
 LEVEL=${LEVEL_4}
-DESCR=${DESCR_4}
+DESCR=${DESCR[4]}
 Sub_Error 4
 }
 Sub_Bckcrldata(){
@@ -180,7 +150,7 @@ DATE=`date +'%Y-%m-%d_%H.%M.%S'`
 MYSQLBACKUPDIR=/backup/mysql/
 dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${DB_NAME} ${TABLE_NAME} |gzip > ${MYSQLBACKUPDIR}/default/crldata${DATE}sql.gz)
 if [ $? -ne 0 ] ; then
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$DESCR_4" "$dumpret"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "${DESCR[4]}" "$dumpret"
         exit
 fi
 }
@@ -275,7 +245,7 @@ ISSUERDN=$1
    ROWNUM=`$MYSQL_BIN $DB_NAME -u ${DB_USER} --password=$DB_PASSWORD < ${OUTFILE}.5 |tail -1`
    ERR=$?
    LEVEL=${LEVEL_5}
-   DESCR=${DESCR_5}
+   DESCR=${DESCR[5]}
    Sub_Error 5
    echo "`date`:$RUNBYE:Remove rows from ${ISSUERDN} current rows:${ROWS} delete until Crlnumber:${ROWNUM}">>${LOGFILE}
    echo "`date`:$RUNBYE:Current rows;${ROWS_BEFORE} :Delete until Crlnumber:${ROWNUM} where issuer is:${ISSUERDN}">>${LOGFILE}
@@ -291,7 +261,7 @@ ISSUERDN=$1
       ERR=$?
    fi
    LEVEL=${LEVEL_6}
-   DESCR=${DESCR_6}
+   DESCR=${DESCR[6]}
    Sub_Error 6
    ROWS=`echo "SELECT count(*) from $TABLE_NAME where $COLUMN_ISSUER='${ISSUERDN}';" | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD} |grep -v count `
    echo "`date`:After $RUNBYE:$ISSUERDN,$ROWS" |tee -a ${LOGFILE}
@@ -312,7 +282,7 @@ do
    ROWNUM=`$MYSQL_BIN $DB_NAME -u ${DB_USER} --password=$DB_PASSWORD < ${OUTFILE}.5 |tail -1`
    ERR=$?
    LEVEL=${LEVEL_5}
-   DESCR=${DESCR_5}
+   DESCR=${DESCR[5]}
    Sub_Error 5
    echo "`date`:Remove rows from ${ISSUERDN} current rows:${ROWS} delete until Crlnumber:${ROWNUM}">>${LOGFILE}
    echo "`date`:Current rows;${ROWS} :Delete until Crlnumber:${ROWNUM} where $COLUMN_ISSUER is:${ISSUERDN}">>${LOGFILE}
@@ -334,7 +304,7 @@ do
       ERR=$?
    fi
    LEVEL=${LEVEL_6}
-   DESCR=${DESCR_6}
+   DESCR=${DESCR[6]}
    Sub_Error 6
    ROWS_AFTER=`echo "SELECT count(*) from ${TABLE_NAME} where $COLUMN_ISSUER='${ISSUERDN}';" | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD} |grep -v count `
    echo "`date`:New value rows;${ROWS_AFTER}  where $COLUMN_ISSUER is:${ISSUERDN}" >>${LOGFILE}
@@ -368,7 +338,7 @@ $MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < ${OUTFILE}.7  >${ER
 ##############
 ERR=$?
 LEVEL=${LEVEL_7}
-DESCR=${DESCR_7}
+DESCR=${DESCR[7]}
 Sub_Error 7
 }
 
@@ -406,7 +376,7 @@ echo "`date`:Totalnumber of row removed: ${REMOVE_ROWS} remaing rows in $DB_NAME
 ##############
 ERR=$?
 LEVEL=${LEVEL_8}
-DESCR=${DESCR_8}
+DESCR=${DESCR[8]}
 Sub_Error 8
 }
 Sub_Backup(){
@@ -416,7 +386,7 @@ echo "`date`:Create backup after clean crldata">>${LOGFILE}
 $SYSCHECK_HOME/related-enabled/904_make_mysql_db_backup.sh -b 2>${ERRFILE}.9
 ERR=$?
 LEVEL=${LEVEL_9}
-DESCR=${DESCR_9}
+DESCR=${DESCR[9]}
 Sub_Error 9
 echo "`date`:Backup end">>${LOGFILE}
 echo "`date`:`ls -lhtr /backup/mysql/default/|tail -2`">>${LOGFILE}
@@ -450,5 +420,5 @@ fi
 #############
 #
 # If we got here, the job is finnish
-printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${SCRIPTID}14 "$DESCR_10 "
+printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${SCRIPTID}14 "${DESCR[10]} "
 echo "`date`:$0 end">>${LOGFILE}

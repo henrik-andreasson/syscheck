@@ -1,17 +1,12 @@
 #!/bin/bash
 
-# 1. First check if SYSCHECK_HOME is set then use that
-if [ "x${SYSCHECK_HOME}" = "x" ] ; then
-# 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then
-	source /etc/syscheck.conf
-    else
-# 3. last resort use default path
-	SYSCHECK_HOME="/opt/syscheck"
-    fi
+SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
+  echo "Can't find $SYSCHECK_HOME/syscheck.sh"
+  exit
 fi
 
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
 
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/syscheck-scripts.conf
@@ -22,29 +17,27 @@ SCRIPTNAME=memoryusage
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=03
 
-# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
-SCRIPTINDEX=00
+# how many info/warn/error messages
+NO_OF_ERR=3
+initscript $SCRIPTID $NO_OF_ERR
 
-getlangfiles $SCRIPTID
-getconfig $SCRIPTID
+# get command line arguments
+INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
+if [ $? != 0 ] ; then schelp ; fi
+#echo "TEMP: >$TEMP<"
+eval set -- "$INPUTARGS"
 
-ERRNO_1=01
-ERRNO_2=02
-ERRNO_3=03
-ERRNO_4=03
+while true; do
+  case "$1" in
+    -s|--screen  ) PRINTTOSCREEN=1; shift;;
+    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
+    -c|--cert )   CERTFILE=$2; shift 2;;
+    -h|--help )   schelp;exit;shift;;
+    --) break;;
+  esac
+done
 
-
-if [ "x$1" = "x--help" ] ; then
-    echo "$HELP mem: ${MEM_PERCENT}% / swap ${SWAP_PERCENT} %"
-    echo "${ERRNO_1}/${DESCR_1}"
-    echo "${ERRNO_2}/${DESCR_2}"
-    echo "${ERRNO_3}/${DESCR_3}"
-    echo "${ERRNO_4}/${DESCR_4}"
-    echo "${SCREEN_HELP}"
-    exit
-elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
-    PRINTTOSCREEN=1
-fi
+# main part of script
 
 
 checkmem(){
@@ -74,17 +67,17 @@ checkmem(){
 
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     if [ $REALUSEDMEMORY -gt $MEMORYLIMIT ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_1 "$DESCR_1" "$REALUSEDMEMORY" "$MEMORYLIMIT"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[1]} "${DESCR[1]}" "$REALUSEDMEMORY" "$MEMORYLIMIT"
     else
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_2 "$DESCR_2" "$REALUSEDMEMORY" "$MEMORYLIMIT"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[2]} "${DESCR[2]}" "$REALUSEDMEMORY" "$MEMORYLIMIT"
     fi
 
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
     if [ $USEDSWAP -gt $SWAPLIMIT ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_3 "$DESCR_3" "$USEDSWAP" "$SWAPLIMIT"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[3]} "${DESCR[3]}" "$USEDSWAP" "$SWAPLIMIT"
     else
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_4 "$DESCR_4" "$USEDSWAP" "$SWAPLIMIT"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[4]} "${DESCR[4]}" "$USEDSWAP" "$SWAPLIMIT"
 
     fi
 }

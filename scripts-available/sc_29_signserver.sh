@@ -1,51 +1,43 @@
 #!/bin/bash
 
-# Set SYSCHECK_HOME if not already set.
-
-# 1. First check if SYSCHECK_HOME is set then use that
-if [ "x${SYSCHECK_HOME}" = "x" ] ; then
-# 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then 
-	source /etc/syscheck.conf 
-    else
-# 3. last resort use default path
-	SYSCHECK_HOME="/opt/syscheck"
-    fi
+SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
+  echo "Can't find $SYSCHECK_HOME/syscheck.sh"
+  exit
 fi
 
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
-
-
-
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
 
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
+# script name, used when integrating with nagios/icinga
+SCRIPTNAME=signserver
+
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=29
 
-# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
-SCRIPTINDEX=00
+# how many info/warn/error messages
+NO_OF_ERR=3
+initscript $SCRIPTID $NO_OF_ERR
 
+# get command line arguments
+INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
+if [ $? != 0 ] ; then schelp ; fi
+#echo "TEMP: >$TEMP<"
+eval set -- "$INPUTARGS"
 
+while true; do
+  case "$1" in
+    -s|--screen  ) PRINTTOSCREEN=1; shift;;
+    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
+    -c|--cert )   CERTFILE=$2; shift 2;;
+    -h|--help )   schelp;exit;shift;;
+    --) break;;
+  esac
+done
 
-getlangfiles $SCRIPTID
-getconfig $SCRIPTID
-
-ERRNO_1=01
-ERRNO_2=02
-ERRNO_3=03
-
-if [ "x$1" = "x-h" -o "x$1" = "x--help" ] ; then
-	echo "$HELP"
-	echo "$ERRNO_1/$DESCR_1 - $HELP_1"
-	echo "$ERRNO_2/$DESCR_2 - $HELP_2"
-	echo "$ERRNO_3/$DESCR_3 - $HELP_3"
-	echo "${SCREEN_HELP}"
-	exit
-elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
-    PRINTTOSCREEN=1
-fi 
+# main part of script
 
 OUTPUT='/tmp/signserverhealth.log'
 URL="http://$SIGNSERVER_HOSTNAME:8080/signserver/healthcheck/signserverhealth"
@@ -57,7 +49,7 @@ if [ "x${CHECKTOOL}" = "xwget" ] ; then
 elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
         ${CHECKTOOL} ${URL} --connect-timeout ${GET_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
 else
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$DESCR_3"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}"
 	exit
 fi
 
@@ -67,10 +59,9 @@ ERROROUTPUT=$(cat $OUTPUT | grep ERROR)
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "x$OKOUTPUT" != "x" ]; then
-       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO $ERRNO_1 "$DESCR_1" "$FULLOUTPUT"
-elif [ "x$ERROROUTPUT" != "x" ]; then 
-       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR $ERRNO_2 "$DESCR_2" "$FULLOUTPUT"
+       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "$FULLOUTPUT"
+elif [ "x$ERROROUTPUT" != "x" ]; then
+       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "$FULLOUTPUT"
 fi
 
 rm $OUTPUT
-

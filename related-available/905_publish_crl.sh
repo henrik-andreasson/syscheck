@@ -1,17 +1,12 @@
 #!/bin/bash
 
-# 1. First check if SYSCHECK_HOME is set then use that
-if [ "x${SYSCHECK_HOME}" = "x" ] ; then
-# 2. Check if /etc/syscheck.conf exists then source that (put SYSCHECK_HOME=/path/to/syscheck in ther)
-    if [ -e /etc/syscheck.conf ] ; then
-	source /etc/syscheck.conf
-    else
-# 3. last resort use default path
-	SYSCHECK_HOME="/opt/syscheck"
-    fi
+SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
+  echo "Can't find $SYSCHECK_HOME/syscheck.sh"
+  exit
 fi
 
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "$0: Can't find syscheck.sh in SYSCHECK_HOME ($SYSCHECK_HOME)" ;exit ; fi
+if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
 
 # Import common resources
 source $SYSCHECK_HOME/config/related-scripts.conf
@@ -22,35 +17,31 @@ SCRIPTNAME=publish_crl
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=905
 
-# Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
-SCRIPTINDEX=00
-
-getlangfiles $SCRIPTID
-getconfig $SCRIPTID
-
-ERRNO_1=01
-ERRNO_2=02
-ERRNO_3=03
-ERRNO_4=04
-ERRNO_5=05
-ERRNO_6=06
-ERRNO_7=07
-ERRNO_8=08
-ERRNO_9=09
-ERRNO_10=10
+# how many info/warn/error messages
+NO_OF_ERR=3
+initscript $SCRIPTID $NO_OF_ERR
 
 
+# get command line arguments
+INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose" -- "$@"`
+if [ $? != 0 ] ; then schelp ; fi
+#echo "TEMP: >$TEMP<"
+eval set -- "$INPUTARGS"
 
-if [ "x$1" = "x--help" -o "x$1" = "x-h" ] ; then
-        echo "$0 <-s|--screen>"
-        exit
-elif [ "x$1" = "x-s" -o  "x$1" = "x--screen"  ] ; then
-    PRINTTOSCREEN=1
-fi 
+while true; do
+  case "$1" in
+    -s|--screen  ) PRINTTOSCREEN=1; shift;;
+    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
+    -h|--help )   schelp;exit;shift;;
+    --) break;;
+  esac
+done
 
+
+# main part of script
 
 ### get crl ###
-### CRLFILE will be overwritten and migth be empty 
+### CRLFILE will be overwritten and migth be empty
 ### soo call me with a temporary file!!!
 get () {
     CRLNAME=$1
@@ -59,7 +50,7 @@ get () {
     printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLFILE"
     CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME "$CRLFILE")
     if [ $? != 0 -o  ! -r $CRLFILE  ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$PUBL_DESCR_6" "$CRLNAME/$CRLFILE"
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" "$CRLNAME/$CRLFILE"
     fi
     printtoscreen $CMD
 
@@ -74,13 +65,13 @@ put () {
     REMOTEDIR=$3
     SSHKEY=$4
     SSHUSER=$5
-    
+
     $SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $REMOTEHOST $REMOTEDIR $SSHUSER $SSHKEY
 
     if [ $? = 0 ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_8 "$PUBL_DESCR_8" $CRLNAME $REMOTEHOST 
+        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[8]} "$PUBL_DESCR[8]" $CRLNAME $REMOTEHOST
     else
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_2 "$PUBL_DESCR_2" $CRLNAME $REMOTEHOST
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "$PUBL_DESCR[2]" $CRLNAME $REMOTEHOST
     fi
 }
 
@@ -129,24 +120,24 @@ checkcrl () {
 	eunit="hours"
     fi
     ETIME=$edigits
-	
+
 
 # file not found where it should be
     if [ ! -f $CRLFILE ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_4 "$PUBL_DESCR_4" $CRLFILE
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "$PUBL_DESCR[4]" $CRLFILE
         return 4
     fi
 
 # stat return check
     CRL_FILE_SIZE=`stat -c"%s" $CRLFILE`
     if [ $? -ne 0 ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_5 "$PUBL_DESCR_5" $CRLFILE
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[5]} "$PUBL_DESCR[5]" $CRLFILE
         return 5
     fi
 
 # crl of 0 size?
     if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_6 "$PUBL_DESCR_6" $CRLFILE
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" $CRLFILE
         return 6
     fi
 
@@ -157,18 +148,18 @@ checkcrl () {
     ETIMELEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" ${ecmdopts})
 
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-    
+
     if [ "$ETIMELEFT" -lt "$ETIME" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_7 "$PUBL_DESCR_7" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[7]} "$PUBL_DESCR[7]" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
 	return 7
 
     elif [ "$WTIMELEFT" -lt "$WTIME" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $ERRNO_9 "$PUBL_DESCR_9" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN ${ERRNO[9]} "$PUBL_DESCR[9]" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	return 7
 
     else
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_10 "$PUBL_DESCR_10" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
-	printtoscreen "$INFO $ERRNO_10 $PUBL_DESCR_10 $CRLFILE timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[10]} "$PUBL_DESCR[10]" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	printtoscreen "$INFO ${ERRNO[10]} $PUBL_DESCR[10] $CRLFILE timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	return 0
     fi
 }
@@ -193,23 +184,21 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
     	rm -rf $tempdir
 	continue
     fi
-	
-    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX) 
+
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     if [ "x${REMOTE_HOST[$i]}" = "xlocalhost" ] ; then
 	cp -f ${CRLFILE} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	if [ $? -eq 0 ] ;then
-	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $ERRNO_1 "$PUBL_DESCR_1" ${CRLCANAME[$i]} 
+	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "$PUBL_DESCR[1]" ${CRLCANAME[$i]}
 	else
-	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $ERRNO_3 "$PUBL_DESCR_3" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
+	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "$PUBL_DESCR[3]" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	fi
-	
+
     else
         SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     	put ${REMOTE_HOST[$i]} ${CRLFILE} ${CRLTO_DIR[$i]} ${SSHKEY[$i]}  ${SSHUSER[$i]}
-	
+
     fi
 
     rm -rf $tempdir
 }
-
-
