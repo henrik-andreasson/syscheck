@@ -1,7 +1,9 @@
+SCRIPT_HUMAN_NAME="EJBCA DB Sync"
+
 HELP="Check if DB in sync"
 
-DESCR_1="DB in sync"
-HELP_1="and updating databases"
+DESCR[1]="DB in sync"
+HELP[1]="and updating databases"
 
-DESCR_2="DB not in sync, date of CertificateData diff betwin nodes:"
-HELP_2="check error.log, probebly needing manual sync, se manual"
+DESCR[2]="DB not in sync, date of CertificateData diff betwin nodes:"
+HELP[2]="check error.log, probebly needing manual sync, se manual"

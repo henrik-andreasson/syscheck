@@ -1,0 +1,6 @@
+SCRIPT_HUMAN_NAME="Copy HTMF config"
+
+HELP="Copy HTMF config"
+
+DESCR[1]="Interactive script to copy htmf / ejbca config"
+HELP[1]="files are added in config file"

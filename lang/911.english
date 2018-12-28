@@ -1,20 +1,20 @@
+SCRIPT_HUMAN_NAME="Activate VIP"
+
 HELP="Activate the VIP"
-DESCR_1="Activate VIP run successfully"
-HELP_1="All is ok"
+DESCR[1]="Activate VIP run successfully"
+HELP[1]="All is ok"
 
-DESCR_2="Activate VIP failed (%s) "
-HELP_2="Manually try the ipconfig commands error:(%s)"
+DESCR[2]="Activate VIP failed (%s) "
+HELP[2]="Manually try the ipconfig commands error:(%s)"
 
-DESCR_3="Activate VIP failed since the VIP was already active"
-HELP_3="All is ok, if the VIP was supposed to be on this host already"
+DESCR[3]="Activate VIP failed since the VIP was already active"
+HELP[3]="All is ok, if the VIP was supposed to be on this host already"
 
-DESCR_4="Activate VIP failed since the VIP was already active on another node"
-HELP_4="Check the other node to see if that node has the VIP, else start invesigating who has you IP ..."
+DESCR[4]="Activate VIP failed since the VIP was already active on another node"
+HELP[4]="Check the other node to see if that node has the VIP, else start invesigating who has you IP ..."
 
-DESCR_5="Router/firewall did answer gratuitous ARP request."
-HELP_5="no action needed"
+DESCR[5]="Router/firewall did answer gratuitous ARP request."
+HELP[5]="no action needed"
 
-DESCR_6="Router/firewall did NOT answer gratuitous ARP request."
-HELP_6="Check with Router/firewall admin if they support gratuitous ARP request."
-
-
+DESCR[6]="Router/firewall did NOT answer gratuitous ARP request."
+HELP[6]="Check with Router/firewall admin if they support gratuitous ARP request."

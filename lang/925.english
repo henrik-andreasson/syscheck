@@ -1,10 +1,14 @@
-HELP="Publish a CRL from file, ie you need to call this script with the file on disc\n$0: -c <file>|--crlfile=<file>"
-DESCR_1="Publish crl run successfully"
-HELP_1="ok"
-DESCR_2="no input file found"
-HELP_2="supply file as argument to this script"
-DESCR_3="Publish certificate failed, cant read file (%s)"
-HELP_3="verify the file is in place and with proper permissions before executing this script"
-DESCR_4="scp script failed"
-HELP_4="check the log for messages about the transfer"
+SCRIPT_HUMAN_NAME="Publish a CRL from a file"
 
+HELP="Publish a CRL from file, ie you need to call this script with the file on disc\n$0: -c <file>|--crlfile=<file>"
+DESCR[1]="Publish crl run successfully"
+HELP[1]="ok"
+
+DESCR[2]="no input file found"
+HELP[2]="supply file as argument to this script"
+
+DESCR[3]="Publish certificate failed, cant read file (%s)"
+HELP[3]="verify the file is in place and with proper permissions before executing this script"
+
+DESCR[4]="scp script failed"
+HELP[4]="check the log for messages about the transfer"

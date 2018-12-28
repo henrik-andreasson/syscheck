@@ -1,8 +1,12 @@
-HELP="Copy all config/keystore files to /tmp/bckup_htmf_conf before system upgrade"
-DESCR_1="File copied ok(%s)"
-HELP_1="no action needed"
-DESCR_2="Failed to copy file (%s)"
-HELP_2="check permissions and paths"
-DESCR_3="Failed to create backup dir (%s)"
-HELP_3="check permissions and paths"
+SCRIPT_HUMAN_NAME="Locally copy config and keystores"
 
+HELP="Copy all config/keystore files to /tmp/bckup_htmf_conf before system upgrade"
+
+DESCR[1]="File copied ok(%s)"
+HELP[1]="no action needed"
+
+DESCR[2]="Failed to copy file (%s)"
+HELP[2]="check permissions and paths"
+
+DESCR[3]="Failed to create backup dir (%s)"
+HELP[3]="check permissions and paths"

@@ -1,21 +1,33 @@
-ARCHIVE_HELP="Script used to copy files to other hosts/directorys usage: $0: file host <directory> <to-username> <from-ssh-key> \n(if you dont specify directory the file will end up in the user's homedirectory, \nif you dont specify to-username the same user as the one executing this script will be used, \nif from-ssh-key is not specified default key will be used)"
-ARCHIVE_HELP_1="ok"
-ARCHIVE_HELP_2="Check write premisions in archive dir"
-ARCHIVE_HELP_3="specify the right arguments (run $0 -h for help)"
-ARCHIVE_HELP_4="Check ssh connection setup to remote server"
-ARCHIVE_HELP_5="Check ssh connection setup to remote server and write permissions in remote archive dir"
-ARCHIVE_HELP_6="ok"
-ARCHIVE_HELP_7="ok"
-ARCHIVE_HELP_8="Check permissions to write in the intransit folder"
-ARCHIVE_HELP_9="Create the dir with mkdir"
-ARCHIVE_DESCR_1="File archived succefully Locally (%s -> %s)"
-ARCHIVE_DESCR_2="Failed to move file to Local archive (%s -> %s)"
-ARCHIVE_DESCR_3="Errornous input arguments"
-ARCHIVE_DESCR_4="Failed to get a filename from remote server"
-ARCHIVE_DESCR_5="File Failed to be Archived on Remote Server (%s)"
-ARCHIVE_DESCR_6="File Archived successfully to Remote Server (%s)"
-ARCHIVE_DESCR_7="File moved successfully to intransit folder (%s -> %s)"
-ARCHIVE_DESCR_8="Failed to create file in the intransit folder (%s)"
-ARCHIVE_DESCR_9="Intransit dir not found"
-ARCHIVE_PTS_1="Processing NEW file"
-ARCHIVE_PTS_2="Processing OLD file"
+SCRIPT_HUMAN_NAME="Archive files"
+
+HELP="Script used to copy files to other hosts/directorys usage: $0: file host <directory> <to-username> <from-ssh-key> \n(if you dont specify directory the file will end up in the user's homedirectory, \nif you dont specify to-username the same user as the one executing this script will be used, \nif from-ssh-key is not specified default key will be used)"
+
+HELP[1]="ok"
+DESCR[1]="File archived succefully Locally (%s -> %s)"
+
+HELP[2]="Check write premisions in archive dir"
+DESCR[2]="Failed to move file to Local archive (%s -> %s)"
+
+HELP[3]="specify the right arguments (run $0 -h for help)"
+DESCR[3]="Errornous input arguments"
+
+HELP[4]="Check ssh connection setup to remote server"
+DESCR[4]="Failed to get a filename from remote server"
+
+HELP[5]="Check ssh connection setup to remote server and write permissions in remote archive dir"
+DESCR[5]="File Failed to be Archived on Remote Server (%s)"
+
+HELP[6]="ok"
+DESCR[6]="File Archived successfully to Remote Server (%s)"
+
+HELP[7]="ok"
+DESCR[7]="File moved successfully to intransit folder (%s -> %s)"
+
+HELP[8]="Check permissions to write in the intransit folder"
+DESCR[8]="Failed to create file in the intransit folder (%s)"
+
+HELP[9]="Create the dir with mkdir"
+DESCR[9]="Intransit dir not found"
+
+PTS_1="Processing NEW file"
+PTS_2="Processing OLD file"

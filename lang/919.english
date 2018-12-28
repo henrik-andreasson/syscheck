@@ -1,4 +1,11 @@
-REMCMD_HELP="Takes a certificate and runs a configurable command at a remote host"
-REMCMD_DESCR_1="Remote command ran successfully (%s)"
-REMCMD_DESCR_2="Remote command failed (%s)"
-REMCMD_DESCR_3="File input error, failed (%s)"
+SCRIPT_HUMAN_NAME="Certificate publishing remote host"
+
+HELP="Takes a certificate and runs a configurable command at a remote host"
+DESCR[1]="Remote command ran successfully (%s)"
+HELP[1]="no action needed"
+
+DESCR[2]="Remote command failed (%s)"
+HELP[2]="try to run the command manually"
+
+DESCR[3]="File input error, failed (%s)"
+HELP[3]="input file not set ok"

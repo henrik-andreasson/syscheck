@@ -1,11 +1,12 @@
+SCRIPT_HUMAN_NAME="Dell Server system components"
 
 HELP="check dell system components"
 
-DESCR_1="Component is OK %s"
-HELP_1="No action is needed"
+DESCR[1]="Component is OK %s"
+HELP[1]="No action is needed"
 
-DESCR_2="Component NOT OK %s"
-HELP_2="Change component as soon as possible"
+DESCR[2]="Component NOT OK %s"
+HELP[2]="Change component as soon as possible"
 
-DESCR_6="TOOL not installed at: %s"
-HELP_6="the tool is not installed, install the tool to get working reports"
+DESCR[3]="TOOL not installed at: %s"
+HELP[3]="the tool is not installed, install the tool to get working reports"

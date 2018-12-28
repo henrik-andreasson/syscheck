@@ -1,6 +1,8 @@
+SCRIPT_HUMAN_NAME="Log book"
+
 HELP="This is syscheck, loogbook.sh it ask for a entry then logs it."
-HELP_1=Logmessage
-DESCR_1="User: %s ; Logentry: %s"
+HELP[1]=Logmessage
+DESCR[1]="User: %s ; Logentry: %s"
 
 LOGBOOK_GREETING="Tool to log messages to syscheck"
 DONT_RUN_AS_ROOT="Do not run as root, the tool is for becoming root"

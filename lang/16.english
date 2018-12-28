@@ -1,7 +1,9 @@
+SCRIPT_HUMAN_NAME="LDAP Server"
+
 HELP="Checks the ldap server to make sure it's running"
 
-DESCR_1="LDAP directory server is running"
-HELP_1="all ok"
+DESCR[1]="LDAP directory server is running"
+HELP[1]="all ok"
 
-DESCR_2="LDAP directory server is not running"
-HELP_2="check you ldap server logs"
+DESCR[2]="LDAP directory server is not running"
+HELP[2]="check you ldap server logs"

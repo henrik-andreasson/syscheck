@@ -1,5 +1,9 @@
-AMLB_HELP="Script used to move/archive Access Manager logfiles"
-AMLB_HELP_1="ok"
-AMLB_HELP_2="test the underlying archive script manually"
-AMLB_DESCR_1="Files archived succefully (%s -> %s)"
-AMLB_DESCR_2="Failed to artchive files (%s -> %s)"
+SCRIPT_HUMAN_NAME="Archive log files"
+
+HELP="Script used to move/archive logfiles"
+
+DESCR[1]="Files archived succefully (%s -> %s)"
+HELP[1]="ok"
+
+DESCR[2]="Failed to artchive files (%s -> %s)"
+HELP[2]="test the underlying archive script manually"

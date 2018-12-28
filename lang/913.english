@@ -1,4 +1,8 @@
-COPY_EJBCA_CONF_HELP="Copy EJBCA conf/, p12/ and syscheck"
-COPY_EJBCA_CONF_DESCR_1="Copy run successfully"
-COPY_EJBCA_CONF_DESCR_2="Copy failed (%s) "
-COPY_EJBCA_CONF_HELP_1="All is ok"
+SCRIPT_HUMAN_NAME="Copy config to NODE2"
+
+HELP="Copy EJBCA conf/, p12/ and syscheck"
+DESCR[1]="Copy run successfully"
+HELP[1]="All is ok"
+
+DESCR[2]="Copy failed (%s) "
+HELP[1]="Check config and keys to remote hosts"

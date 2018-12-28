@@ -1,46 +1,46 @@
 HELP="Delete records from crldata, keep default 20 record in crltable, see config file 817.conf"
 
 LEVEL_1=$ERROR
-DESCR_1="No Value in ROW_SAVE"
-HELP_1="Check scripts config file "
+DESCR[1]="No Value in ROW_SAVE"
+HELP[1]="Check scripts config file "
 
 LEVEL_2=$ERROR
-DESCR_2="The value is less then 5"
-HELP_2="Check  scripts config file "
+DESCR[2]="The value is less then 5"
+HELP[2]="Check  scripts config file "
 
 LEVEL_3=$ERROR
-DESCR_3="Can't make a backup" 
-HELP_3="Check permisson and dbuser"
+DESCR[3]="Can't make a backup" 
+HELP[3]="Check permisson and dbuser"
 
 LEVEL_4=$ERROR
-DESCR_4="Can't get uniq issuerDN from CRLData "
-HELP_4="Check database and logs "
+DESCR[4]="Can't get uniq issuerDN from CRLData "
+HELP[4]="Check database and logs "
 
 LEVEL_5=$ERROR
-DESCR_5="Can't get row number from CRLData for each issuerDN"
-HELP_5="Check database and logs "
+DESCR[5]="Can't get row number from CRLData for each issuerDN"
+HELP[5]="Check database and logs "
 
 LEVEL_5=$ERROR
-DESCR_5="Can't copy CRLData to db crldata.CRLDatalog for each issuerDN "
-HELP_5="Check database and logs "
+DESCR[5]="Can't copy CRLData to db crldata.CRLDatalog for each issuerDN "
+HELP[5]="Check database and logs "
 
 LEVEL_6=$ERROR
-DESCR_6="Cant delete record from CRLData for uniq issuerDN"
-HELP_6="Check database and logs "
+DESCR[6]="Cant delete record from CRLData for uniq issuerDN"
+HELP[6]="Check database and logs "
 
 LEVEL_7=$ERROR
-DESCR_7="Delete to crlnumber "
-HELP_7="Delet ok "
+DESCR[7]="Delete to crlnumber "
+HELP[7]="Delet ok "
 
 LEVEL_8=$ERROR
-DESCR_8="Can't Optimize table "
-HELP_8="Check vendor of database, and adjust command "
+DESCR[8]="Can't Optimize table "
+HELP[8]="Check vendor of database, and adjust command "
 
 LEVEL_9=$ERROR
-DESCR_9="Can't zip dbbackup "
-HELP_9="Check permission  "
+DESCR[9]="Can't zip dbbackup "
+HELP[9]="Check permission  "
 
 LEVEL_10=$INFO
-DESCR_10="Delete to crlnumber, restart jboss and check sync "
-HELP_10="Delete ok "
+DESCR[10]="Delete to crlnumber, restart jboss and check sync "
+HELP[10]="Delete ok "
 

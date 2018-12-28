@@ -1,6 +1,8 @@
+SCRIPT_HUMAN_NAME="Check Health of tomcat applications"
+
 HELP="Healthcheck of Certificate Service Tomcat applications"
 
-DESCR_1="Healtcheck of app: %s ok"
-HELP_1="No action is needed"
-DESCR_2="Healtcheck of app: %s NOT ok error message: %s"
-HELP_2="Check errormessage and log-file"
+DESCR[1]="Healtcheck of app: %s ok"
+HELP[1]="No action is needed"
+DESCR[2]="Healtcheck of app: %s NOT ok error message: %s"
+HELP[2]="Check errormessage and log-file"

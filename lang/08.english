@@ -1,28 +1,29 @@
-HELP="check the status of CRL, both that it can be downloaden and that its valid"
+SCRIPT_HUMAN_NAME="Download CRL from Webserver and check its validity"
+HELP="check the status of CRL, both that it can be downloaded and that its valid"
 
-DESCR_1="CRL %s creation have failed"
-HELP_1="either the server is not up, it dont produce CRL:s, it dont validate or the CRL is old "
+DESCR[1]="CRL %s creation have failed"
+HELP[1]="either the server is not up, it dont produce CRL:s, it dont validate or the CRL is old "
 
-DESCR_2="%s"
-HELP_2="No action is needed"
+DESCR[2]="%s"
+HELP[2]="No action is needed"
 
-DESCR_3="Unable to get CRL %s from webserver "
-HELP_3="Check manually to get CRL from webserver"
+DESCR[3]="Unable to get CRL %s from webserver "
+HELP[3]="Check manually to get CRL from webserver"
 
-DESCR_4="When getting CRL %s the size of file is 0"
-HELP_4="Check discusage, try manually to get CRL"
+DESCR[4]="When getting CRL %s the size of file is 0"
+HELP[4]="Check discusage, try manually to get CRL"
 
-DESCR_5="Configuration error: %s"
-HELP_5="Check config"
+DESCR[5]="Configuration error: %s"
+HELP[5]="Check config"
 
-DESCR_6="CRL has past the EXPIRE date: %s"
-HELP_6="Systems will probably fail due to this, urgent troubleshooting needed"
+DESCR[6]="CRL has past the EXPIRE date: %s"
+HELP[6]="Systems will probably fail due to this, urgent troubleshooting needed"
 
-DESCR_7="CRL has past the ERROR level: %s"
-HELP_7="Systems will soon fail if not fixed, urgent troubleshooting needed"
+DESCR[7]="CRL has past the ERROR level: %s"
+HELP[7]="Systems will soon fail if not fixed, urgent troubleshooting needed"
 
-DESCR_8="CRL has past the WARN level: %s"
-HELP_8="Systems will soon fail if not fixed, urgent troubleshooting needed"
+DESCR[8]="CRL has past the WARN level: %s"
+HELP[8]="Systems will soon fail if not fixed, urgent troubleshooting needed"
 
-DESCR_9="CRL summary problems: %s"
-HELP_9="Systems will soon fail if not fixed, urgent troubleshooting needed"
+DESCR[9]="CRL summary problems: %s"
+HELP[9]="Systems will soon fail if not fixed, urgent troubleshooting needed"

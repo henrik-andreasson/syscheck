@@ -1,5 +1,9 @@
-CMSD_HELP="Compare tables on master and slave database"
-CMSD_DESCR_1="Data read successfully"
-CMSD_DESCR_2="Could not get table data"
-CMSD_HELP_1="All is ok"
-CMSD_HELP_2="Check connection, username and password"
+SCRIPT_HUMAN_NAME="Deactivate VIP"
+
+HELP="Compare tables on master and slave database"
+
+DESCR[1]="Data read successfully"
+HELP[1]="All is ok"
+
+DESCR[2]="Could not get table data"
+HELP[2]="Check connection, username and password"

@@ -1,8 +1,10 @@
-HELP="sc_29_signserver.sh Script that connects to the signserver health check servlet to check the status of the signserver application. The health check servlet checks JVM memory, database connection and HSM connection."
+SCRIPT_HUMAN_NAME="SignServer health checker"
 
-DESCR_1="SIGNSERVER : %s"
-HELP_1="No action is needed"
-DESCR_2="SIGNSERVER : %s"
-HELP_2="Possible errors: \n\"Error Virtual Memory is about to run out, currently free memory : X\" - you need to add more virtual memory to application server/java process\n\"Error Connecting to SIGNSERVER Database\" - The internal check of database failed, try to connect to database directly or restart database server\n\"CA Token is disconnected\" - activate token or maybe a restart of pcscd can help"
-DESCR_3="SIGNSERVER : Application Server is unavailable"
-HELP_3="The server is non-responding, restart application-server (jboss) and/or check server log to find the fault"
+HELP="signserver  Script that connects to the signserver health check servlet to check the status of the signserver application. The health check servlet checks JVM memory, database connection and HSM connection."
+
+DESCR[1]="SIGNSERVER : %s"
+HELP[1]="No action is needed"
+DESCR[2]="SIGNSERVER : %s"
+HELP[2]="Possible errors: \n\"Error Virtual Memory is about to run out, currently free memory : X\" - you need to add more virtual memory to application server/java process\n\"Error Connecting to SIGNSERVER Database\" - The internal check of database failed, try to connect to database directly or restart database server\n\"CA Token is disconnected\" - activate token or maybe a restart of pcscd can help"
+DESCR[3]="SIGNSERVER : Application Server is unavailable"
+HELP[3]="The server is non-responding, restart application-server (jboss) and/or check server log to find the fault"

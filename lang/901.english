@@ -1,10 +1,12 @@
+SCRIPT_HUMAN_NAME="Export CRL file"
+
 HELP="Export CRL:s with a script $0 <DER-encoded CERT>"
 
-DESCR_1="Export revocation run successfully"
-HELP_1="no actions needed"
+DESCR[1]="Export revocation run successfully"
+HELP[1]="no actions needed"
 
-DESCR_2="Export revocation failed (%s) "
-HELP_2="check manually with sh -x $0 <file>"
+DESCR[2]="Export revocation failed (%s) "
+HELP[2]="check manually with sh -x $0 <file>"
 
-DESCR_3="Export revocation failed, script called without file"
-HELP_3="call this script with a DER encoded CERT as arg1"
+DESCR[3]="Export revocation failed, script called without file"
+HELP[3]="call this script with a DER encoded CERT as arg1"

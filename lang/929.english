@@ -1,8 +1,9 @@
+SCRIPT_HUMAN_NAME="Filter messages from syscheck"
+
 HELP="Filter only some messages from a file"
 
-DESCR_1="Filter ok"
-HELP_1="no action needed"
+DESCR[1]="Filter ok"
+HELP[1]="no action needed"
 
-DESCR_2="Filter failed"
-HELP_2="try the commands manually"
-
+DESCR[2]="Filter failed"
+HELP[2]="try the commands manually"

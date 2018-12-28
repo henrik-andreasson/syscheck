@@ -1,7 +1,11 @@
-DEACTVIP_HELP="Deactivate the VIP"
-DEACTVIP_DESCR_1="Deactivate VIP run successfully"
-DEACTVIP_DESCR_2="Deactivate VIP failed (%s) "
-DEACTVIP_DESCR_3="While deactivating, the VIP was already NOT active on this host"
-DEACTVIP_HELP_1="All is ok"
-DEACTVIP_HELP_2="Check manually with ifconfig -a and run ifconfig <if> down"
-DEACTVIP_HELP_3="If the VIP was supposed to be at this host this event needs investigation "
+SCRIPT_HUMAN_NAME="Deactivate VIP"
+
+HELP="Deactivate the VIP"
+DESCR[1]="Deactivate VIP run successfully"
+HELP[1]="All is ok"
+
+DESCR[2]="Deactivate VIP failed (%s) "
+HELP[2]="Check manually with ifconfig -a and run ifconfig <if> down"
+
+DESCR[3]="While deactivating, the VIP was already NOT active on this host"
+HELP[3]="If the VIP was supposed to be at this host this event needs investigation "

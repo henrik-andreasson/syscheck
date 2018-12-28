@@ -1,9 +1,9 @@
+SCRIPT_HUMAN_NAME="Send result as a message"
+
 HELP="Send syscheck result as a message over to a central hub "
 
-DESCR_1="Transfer ok (command:%s result:%s)"
-HELP_1="no action needed"
+DESCR[1]="Transfer ok (command:%s result:%s)"
+HELP[1]="no action needed"
 
-DESCR_2="Could not send message: %s result:%s"
-HELP_2="try the transfer commands manually"
-
-
+DESCR[2]="Could not send message: %s result:%s"
+HELP[2]="try the transfer commands manually"

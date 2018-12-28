@@ -1,12 +1,12 @@
-HELP="Mysql backup tool syntax: $0 [-x|--default|-d|--daily|-w|--weekly|-m|--monthly|-y|--yearly] [-s|--screen] [-b|--batch] \n -x and --default will put the backupfile in directory defined in config as SUBDIR_DEFAULT\n -d or --daily will put the backup in the directory defined in config as SUBDIR_DAILY\n -w or --weekly will put the backup in the directory defined in config as SUBDIR_WEEKLY\n -m or --monthly will put the backup in the directory defined in config as SUBDIR_MONTHLY\n -y or --yearly will put the backup in the directory defined in config as SUBDIR_YEARLY\n OBSERVE that it's up to the admin to run this script with cron or alike at these intervals, so run this script once a day with --daily to get only one daily backup and so on\n -b or --batch will echo the resulting filename for processing by other scripts"
+SCRIPT_HUMAN_NAME="Mysql backup tool"
 
+HELP="syntax: $0 [-x|--default|-d|--daily|-w|--weekly|-m|--monthly|-y|--yearly] [-s|--screen] [-b|--batch] \n\n -x and --default will put the backupfile in directory defined in config as SUBDIR_DEFAULT\n -d or --daily will put the backup in the directory defined in config as SUBDIR_DAILY\n -w or --weekly will put the backup in the directory defined in config as SUBDIR_WEEKLY\n -m or --monthly will put the backup in the directory defined in config as SUBDIR_MONTHLY\n -y or --yearly will put the backup in the directory defined in config as SUBDIR_YEARLY\n OBSERVE that it's up to the admin to run this script with cron or alike at these intervals, so run this script once a day with --daily to get only one daily backup and so on\n -b or --batch will echo the resulting filename for processing by other scripts"
 
-DESCR_1="Backed up db ok file: %s time to complete(sec): %s filesize(bytes): %s"
-HELP_1="no action needed"
+DESCR[1]="Backed up db ok file: %s time to complete(sec): %s filesize(bytes): %s"
+HELP[1]="no action needed"
 
-DESCR_2="Could not create the backup file: %s time to complete(sec): %s filesize(bytes): %s errormess: %s"
-HELP_2="Run manually also check disk space and owner of directory to write backup to"
+DESCR[2]="Could not create the backup file: %s time to complete(sec): %s filesize(bytes): %s errormess: %s"
+HELP[2]="Run manually also check disk space and owner of directory to write backup to"
 
-DESCR_3="Backup failed, backupdir not found (%s)"
-HELP_3="check the configfile and make sure the configured directory exist"
-
+DESCR[3]="Backup failed, backupdir not found (%s)"
+HELP[3]="check the configfile and make sure the configured directory exist"

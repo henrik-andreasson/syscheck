@@ -1,8 +1,9 @@
+SCRIPT_HUMAN_NAME="Nfast backup"
+
 HELP="Backup a HSM"
 
-DESCR_1="Backup of Nfast HSM run successfully"
-HELP_1="no action needed"
+DESCR[1]="Backup of Nfast HSM run successfully"
+HELP[1]="no action needed"
 
-DESCR_2="Backup of Nfast HSM failed (%s) "
-HELP_2="TODO"
-
+DESCR[2]="Backup of Nfast HSM failed (%s) "
+HELP[2]="TODO"

@@ -1,0 +1,4 @@
+SCRIPT_HUMAN_NAME="Start mysql as root"
+
+HELP="as a convinance tool"
+

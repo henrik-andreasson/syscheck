@@ -1,11 +1,12 @@
+SCRIPT_HUMAN_NAME="Certificate validity check"
+
 HELP="Monitor certificates validity"
 
-DESCR_1="File: %s subj: %s days until expiry: %s"
-HELP_1="no action needed"
+DESCR[1]="File: %s subj: %s days until expiry: %s"
+HELP[1]="no action needed"
 
-DESCR_2="File: %s subj: %s days until expiry: %s"
-HELP_2="schedule replacement soon"
+DESCR[2]="File: %s subj: %s days until expiry: %s"
+HELP[2]="schedule replacement soon"
 
-DESCR_3="File: %s subj: %s days until expiry: %s"
-HELP_3="Certificate indicent is close"
-
+DESCR[3]="File: %s subj: %s days until expiry: %s"
+HELP[3]="Certificate indicent is close"

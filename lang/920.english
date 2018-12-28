@@ -1,16 +1,12 @@
+SCRIPT_HUMAN_NAME="DB Restore tool"
+
 HELP="Restore db, syntax: $0 <gzip:ed mysqldump-file>"
-LEVEL_1=$ERROR
-DESCR_1="Failed to make backup of the pre-existing db prior to restore"
-HELP_1="run a manual backup with $SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s to check if it works"
 
-LEVEL_2=$INFO
-DESCR_2="Restored the db from file (%s)"
-HELP_2="no action needed"
+DESCR[1]="Failed to make backup of the pre-existing db prior to restore"
+HELP[1]="run a manual backup with arg -s to check errors"
 
-LEVEL_3=$ERROR
-DESCR_3="Failed to restore the db from the file (%s) consider to restore to previously db (%s)"
-HELP_3=""
+DESCR[2]="Restored the db from file (%s)"
+HELP[2]="no action needed"
 
-LEVEL_4=$ERROR
-DESCR_4="foo"
-HELP_4="bar"
+DESCR[3]="Failed to restore the db from the file (%s) consider to restore to previously db (%s)"
+HELP[3]=""

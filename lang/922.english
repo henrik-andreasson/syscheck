@@ -1,17 +1,19 @@
+SCRIPT_HUMAN_NAME="Simple db replication tool"
+
 HELP="Simple replication test"
 
 LEVEL_1=$INFO
-HELP_1="ok, no action needed"
-DESCR_1="Value replicated ok"
+HELP[1]="ok, no action needed"
+DESCR[1]="Value replicated ok"
 
 LEVEL_2=$ERROR
-HELP_2="databse not replicating (%s != %s), manually check the database with check master and check slave script"
-DESCR_2="Value differs"
+HELP[2]="databse not replicating (%s != %s), manually check the database with check master and check slave script"
+DESCR[2]="Value differs"
 
 LEVEL_3=$ERROR
-HELP_3="check connection manually, ping, telnet, mysql -h node2 -u dbadmin -p ... "
-DESCR_3="No value from node2 (%s)"
+HELP[3]="check connection manually, ping, telnet, mysql -h node2 -u dbadmin -p ... "
+DESCR[3]="No value from node2 (%s)"
 
 LEVEL_4=$ERROR
-HELP_4="check connection manually, ping, telnet, mysql -h node1 -u dbadmin -p ... "
-DESCR_4="No value from node1 (%s)"
+HELP[4]="check connection manually, ping, telnet, mysql -h node1 -u dbadmin -p ... "
+DESCR[4]="No value from node1 (%s)"

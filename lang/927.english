@@ -1,8 +1,9 @@
+SCRIPT_HUMAN_NAME="Trigger the Creation of CRLs in EJBCA"
+
 HELP="Script to create the CRL:s from the CA:s options if needed"
 
-DESCR_1="Create CRL run successfully (%s)"
-HELP_1="No action needed"
+DESCR[1]="Create CRL run successfully (%s)"
+HELP[1]="No action needed"
 
-DESCR_2="Create CRL failed (%s)"
-HELP_2="Try manually to run this command or direct do 'cd $EJBCA_HOME ; ./bin/ejbca.sh ca createcrl'"
-
+DESCR[2]="Create CRL failed (%s)"
+HELP[2]="Try manually to run this command or direct do 'cd $EJBCA_HOME ; ./bin/ejbca.sh ca createcrl'"

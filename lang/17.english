@@ -1,16 +1,18 @@
+SCRIPT_HUMAN_NAME="NTP in sync"
+
 HELP="Check that ntp i running and is insync"
 
-DESCR_1="ntpd is in sync with server: %s"
-HELP_1="all ok"
+DESCR[1]="ntpd is in sync with server: %s"
+HELP[1]="all ok"
 
-DESCR_2="ntpd is NOT running."
-HELP_2="Start it with /etc/init.d/xntpd start"
+DESCR[2]="ntpd is NOT running."
+HELP[2]="Start it with /etc/init.d/xntpd start"
 
-DESCR_3="cant check ntp sync to: %s"
-HELP_3="check the configuration or restart ntpd"
+DESCR[3]="cant check ntp sync to: %s"
+HELP[3]="check the configuration or restart ntpd"
 
-DESCR_4="ntpd can NOT synchronize to servers LOCAL(0) mode "
-HELP_4="Check network connectivity and configuration of ntp"
+DESCR[4]="ntpd can NOT synchronize to servers LOCAL(0) mode "
+HELP[4]="Check network connectivity and configuration of ntp"
 
-DESCR_5="ntp server not sent in input"
-HELP_5="Check your syscheck config for ntp"
+DESCR[5]="ntp server not sent in input"
+HELP[5]="Check your syscheck config for ntp"
