@@ -18,5 +18,5 @@ jobs:
           name: syscheck
           command: ./misc/make-rpm-deb.sh
       - run:
-          name: syscheck help
-          command: ls
+          name: syscheck install
+          command: rpm -Uvh ../syscheck*rpm
