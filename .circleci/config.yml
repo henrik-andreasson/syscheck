@@ -19,7 +19,7 @@ jobs:
           command: mkdir /tmp/artifacts
       - run:
           name: syscheck
-          command: ./lib/release.sh --program syscheck --version $CIRCLE_SHA1 --outpath /tmp/artifacts
+          command: ./lib/release.sh --program syscheck --version snapshot --outpath /tmp/artifacts
       - run:
           name: syscheck install
           command: rpm -Uvh /tmp/artifacts/syscheck*rpm
