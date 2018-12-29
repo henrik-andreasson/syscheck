@@ -9,6 +9,12 @@ jobs:
           name: Greeting
           command: echo Hello, world.
       - run:
+          name: install fpm building tools
+          command: yum install ruby-devel gcc make rpm-build rubygems
+      - run:
+          name: install fpm
+          command: gem install --no-ri --no-rdoc fpm
+      - run:
           name: syscheck
           command: ./misc/make-rpm-deb.sh
       - run:
