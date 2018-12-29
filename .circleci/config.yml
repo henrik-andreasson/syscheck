@@ -2,14 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: centos7
+      - image: centos:7
     steps:
       - checkout
       - run:
           name: Greeting
           command: echo Hello, world.
       - run:
-          name: syscheck 
+          name: syscheck
           command: ./misc/
       - run:
           name: syscheck help
