@@ -20,15 +20,6 @@ jobs:
       - run:
           name: syscheck install
           command: rpm -Uvh ../syscheck*rpm
-      - run:
-          name: create directory for articats
-          command: mkdir /tmp/artifacts
-      - run:
-          name: copy arifacts
-          command: |
-            cp ../syscheck*zip* /tmp/artifacts;
-            cp ../syscheck*rpm /tmp/artifacts;
-            cp ../syscheck*deb /tmp/artifacts
 
       - store_artifacts:
-          path: /tmp/artifacts
+          path: ..
