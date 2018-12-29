@@ -31,6 +31,9 @@ if [ "x$tag" = $"xy" -o "x$tag" = "xY" -o "x$tag" = "x" ] ; then
 	git push origin "${progname}-${rel}"
 fi
 
+mkdir -p                     ${PROGPATH}/config
+mkdir -p                     ${PROGPATH}/misc
+cp -r ./misc/ 							 ${PROGPATH}/misc/make-rpm-deb.sh
 cp -r ./config 							 ${PROGPATH}
 cp -r ./console_syscheck.sh  ${PROGPATH}
 cp -r ./doc                  ${PROGPATH}

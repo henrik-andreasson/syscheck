@@ -10,7 +10,7 @@ jobs:
           command: echo Hello, world.
       - run:
           name: syscheck
-          command: ./misc/
+          command: ./misc/make-rpm-deb.sh
       - run:
           name: syscheck help
           command: ls
