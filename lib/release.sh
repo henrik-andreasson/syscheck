@@ -7,13 +7,15 @@ schelp(){
   /bin/echo  "--------------------------------------"
   /bin/echo "<-p|--program> 'syscheck'"
 	/bin/echo "<-v|--version> '1.0'"
+	/bin/echo "<-s|--sign> - gpg sign "
+	/bin/echo "<-o|--outpath> /tmp "
+	/bin/echo "<-g|--gittag> - tag in git"
   /bin/echo
 }
 
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hpvog" --long "help,program:,version:,outpath:,gittag,sign" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
+INPUTARGS=`/usr/bin/getopt --options "hp:v:og" --long "help,program:,version:,outpath:,gittag,sign" -- "$@"`
 eval set -- "$INPUTARGS"
 
 while true; do
@@ -31,12 +33,16 @@ done
 
 orgdir=`pwd`
 
-if [ "x$VERSION" == "x" ] ; then
+if [ "x$VERSION" != "x" ] ; then
+	rel=$VERSION
+else
 	echo "release no:"
 	read rel
 fi
 
-if [ "x$PROGRAM" == "x" ] ; then
+if [ "x$PROGRAM" != "x" ] ; then
+	progname=$PROGRAM
+else
 	echo "progname: (syscheck):"
 	read progname
 fi
@@ -65,7 +71,7 @@ fi
 
 mkdir -p                     ${PROGPATH}/config
 mkdir -p                     ${PROGPATH}/misc
-cp -r ./misc/ 							 ${PROGPATH}/misc/
+cp -r ./misc/make-rpm-deb.sh ${PROGPATH}/misc/
 cp -r ./config 							 ${PROGPATH}
 cp -r ./console_syscheck.sh  ${PROGPATH}
 cp -r ./doc                  ${PROGPATH}
