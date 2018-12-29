@@ -16,10 +16,19 @@ jobs:
           command: gem install --no-ri --no-rdoc fpm
       - run:
           name: syscheck
-          command: ./misc/make-rpm-deb.sh
+          command: ./lib/release.sh --program syscheck --version $CIRCLE_SHA1
       - run:
           name: syscheck install
           command: rpm -Uvh ../syscheck*rpm
+      - run:
+          name: create directory for articats
+          command: mkdir /tmp/artifacts
+      - run:
+          name: copy arifacts
+          command: |
+            cp ../syscheck*zip* /tmp/artifacts;
+            cp ../syscheck*rpm /tmp/artifacts;
+            cp ../syscheck*deb /tmp/artifacts
 
       - store_artifacts:
-          path: ..
+          path: /tmp/artifacts
