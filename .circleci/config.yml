@@ -10,7 +10,7 @@ jobs:
           command: echo Hello, world.
       - run:
           name: install fpm building tools
-          command: yum install ruby-devel gcc make rpm-build rubygems
+          command: yum install -y ruby-devel gcc make rpm-build rubygems
       - run:
           name: install fpm
           command: gem install --no-ri --no-rdoc fpm
