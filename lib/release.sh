@@ -23,8 +23,8 @@ while true; do
     -v|--version ) VERSION=$2 ; shift 2;;
     -p|--program ) PROGRAM=$2 ; shift 2;;
 		-o|--outpath ) OUTPATH=$2 ; shift 2;;
-		-s|--sign    ) SIGN=1 ; shift 2;;
-		-g|--gittag  ) GIT=1 ; shift ;;
+		-s|--sign    ) SIGN=1 ; shift;;
+		-g|--gittag  ) GITTAG=1 ; shift;;
     -h|--help )   schelp;exit;shift;;
     --) break;;
   esac
