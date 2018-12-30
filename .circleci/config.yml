@@ -24,6 +24,11 @@ jobs:
           name: syscheck install
           command: rpm -Uvh /tmp/artifacts/syscheck*rpm
 
+      - run:
+          name: set SYSCHECK_HOME
+            echo 'export SYSCHECK_HOME=/opt/syscheck' >> $BASH_ENV
+            source $BASH_ENV
+
       - store_artifacts:
           path: /tmp/artifacts
 
