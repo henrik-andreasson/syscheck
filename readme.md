@@ -21,8 +21,6 @@ Authors
 Maintainter is Henrik Andreasson github@han.pp.se
 
 
-[![CircleCI](https://circleci.com/gh/henrik-andreasson/syscheck.svg?style=svg)](https://circleci.com/gh/henrik-andreasson/syscheck)
-
 INFO
 ---------------------------
 Homepage:	(http://github.com/henrik-andreasson/syscheck)
@@ -30,6 +28,12 @@ Homepage:	(http://github.com/henrik-andreasson/syscheck)
 Patches are welcome via email or pull requests, please state if you want your name in the contributors list.
 
 License is GPL 2.
+
+ci result
+----------
+
+[![CircleCI](https://circleci.com/gh/henrik-andreasson/syscheck.svg?style=svg)](https://circleci.com/gh/henrik-andreasson/syscheck)
+
 
 INSTALLATION
 ==========================
