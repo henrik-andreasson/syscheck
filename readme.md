@@ -20,11 +20,8 @@ Authors
 
 Maintainter is Henrik Andreasson github@han.pp.se
 
-Contributors:
-* Philip Vendil
-* Joakim Bågnert
-* Tomas Gustafsson
 
+[![CircleCI](https://circleci.com/gh/henrik-andreasson/syscheck.svg?style=svg)](https://circleci.com/gh/henrik-andreasson/syscheck)
 
 INFO
 ---------------------------

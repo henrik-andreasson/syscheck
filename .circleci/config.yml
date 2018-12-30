@@ -38,9 +38,9 @@ jobs:
           command: test/bats-core/bin/bats test/help.bats
 
       - run:
-          name: test help 1
+          name: test help scritps
           command: test/bats-core/bin/bats test/help-scripts.bats
 
       - run:
-          name: test help 1
+          name: test scripts
           command: test/bats-core/bin/bats test/test-scripts.bats
