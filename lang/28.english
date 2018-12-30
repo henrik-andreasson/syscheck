@@ -3,9 +3,15 @@ SCRIPT_HUMAN_NAME="VIP"
 HELP="Checks which node has the VIP address"
 DESCR[1]="Node 1 has the VIP"
 HELP[1]="No action needed"
+
 DESCR[2]="Node 2 has the VIP"
 HELP[2]="No action needed"
+
 DESCR[3]="Both nodes has the VIP"
 HELP[3]="Resolve this issue asap"
+
 DESCR[4]="None of the nodes has the VIP"
 HELP[4]="Resolve this issue asap"
+
+DESCR[5]="ssh tool 915 not activated"
+HELP[5]="enable 915"

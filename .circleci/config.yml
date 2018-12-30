@@ -26,3 +26,15 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
+
+      - run:
+          name: test help 1
+          command: test/bats-core/bin/bats test/help.bats
+
+      - run:
+          name: test help 1
+          command: test/bats-core/bin/bats test/help-scripts.bats
+
+      - run:
+          name: test help 1
+          command: test/bats-core/bin/bats test/test-scripts.bats

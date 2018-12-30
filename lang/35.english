@@ -2,16 +2,22 @@ SCRIPT_HUMAN_NAME="Dell Hard drive checker"
 
 HELP="check the raid discs"
 #RAID PHYSICALDISK CHECK RESOURCES
+
 DESCR[1]="PhysicalDiscs is OK %s"
 HELP[1]="No action is needed"
+
 DESCR[2]="PhysicalDiscs is not OK %s"
 HELP[2]="Change disc as soon as possible"
 #RAID LOGICALDISK CHECK RESOURCES
+
 DESCR[3]="LogicalDiscs is OK %s"
 HELP[3]="No action is needed"
+
 DESCR[4]="LogicalDiscs is rebuilding %s"
 HELP[4]="check back in a while to see this error goes away, else you need to investigate"
+
 DESCR[5]="LogicalDiscs has some other error %s"
 HELP[5]="you need to investigate this error ASAP"
+
 DESCR[6]="TOOL not installed at: %s"
 HELP[6]="the tool is not installed, install the tool to get working reports"

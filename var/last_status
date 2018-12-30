@@ -1,0 +1,738 @@
+I-01011-PKI 20181229 21:10:08 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:08 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:08 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:08 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:23 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:23 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:23 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:23 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:58 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:58 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:58 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:10:58 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:11:33 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:11:33 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:11:33 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:11:33 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:11:35 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:11:35 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:11:35 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:11:35 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:32:04 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:32:04 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:32:04 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:32:04 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:32:04 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:32:04 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:32:04 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:32:04 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 21:32:04 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+E-02022-PKI 20181229 21:32:04 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 21:32:04 sus: INFO - memoryusage Memory limit ok (Memory is -6499044 KB used: Limit is 12903814 KB)
+I-03Swap limit ok (Swap is  KB used: Limit is  KB)-PKI 20181229 21:32:04 sus: INFO - memoryusage 0
+I-03032-PKI 20181229 21:32:04 sus: INFO - memoryusage Memory limit ok (Memory is -6499044 KB used: Limit is 12903814 KB)
+I-03Swap limit ok (Swap is  KB used: Limit is  KB)-PKI 20181229 21:32:04 sus: INFO - memoryusage 0
+W-04043-PKI 20181229 21:32:04 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+W-04043-PKI 20181229 21:32:04 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181229 21:32:04 sus: ERROR - pcscd pcscd is NOT running
+E-05052-PKI 20181229 21:32:04 sus: ERROR - pcscd pcscd is NOT running
+E-06HPTOOL not installed at: -PKI 20181229 21:32:05 sus: ERROR - raidcheck /usr/sbin/hpacucli
+E-06HPTOOL not installed at: -PKI 20181229 21:32:05 sus: ERROR - raidcheck /usr/sbin/hpacucli
+E-07071-PKI 20181229 21:32:06 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-07071-PKI 20181229 21:32:07 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+I-01011-PKI 20181229 21:33:22 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:33:22 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:33:22 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:33:22 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:33:26 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:33:26 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:33:27 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:33:27 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 21:33:36 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-01011-PKI 20181229 21:34:28 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:28 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:28 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:28 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 21:34:28 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 21:34:28 sus: INFO - memoryusage Memory limit ok (Memory is -6417636 KB used: Limit is 12903814 KB)
+I-03Swap limit ok (Swap is  KB used: Limit is  KB)-PKI 20181229 21:34:28 sus: INFO - memoryusage 0
+W-04043-PKI 20181229 21:34:28 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181229 21:34:28 sus: ERROR - pcscd pcscd is NOT running
+E-06HPTOOL not installed at: -PKI 20181229 21:34:28 sus: ERROR - raidcheck /usr/sbin/hpacucli
+E-07071-PKI 20181229 21:34:29 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+I-01011-PKI 20181229 21:34:39 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:39 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:39 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:39 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 21:34:39 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 21:34:39 sus: INFO - memoryusage Memory limit ok (Memory is -6420480 KB used: Limit is 12903814 KB)
+I-03Swap limit ok (Swap is  KB used: Limit is  KB)-PKI 20181229 21:34:39 sus: INFO - memoryusage 0
+W-04043-PKI 20181229 21:34:39 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181229 21:34:39 sus: ERROR - pcscd pcscd is NOT running
+E-06HPTOOL not installed at: -PKI 20181229 21:34:40 sus: ERROR - raidcheck /usr/sbin/hpacucli
+E-07071-PKI 20181229 21:34:41 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+I-01011-PKI 20181229 21:34:43 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:43 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:43 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:34:43 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 21:34:43 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 21:34:44 sus: INFO - memoryusage Memory limit ok (Memory is -6421156 KB used: Limit is 12903814 KB)
+I-03Swap limit ok (Swap is  KB used: Limit is  KB)-PKI 20181229 21:34:44 sus: INFO - memoryusage 0
+W-04043-PKI 20181229 21:34:44 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181229 21:34:44 sus: ERROR - pcscd pcscd is NOT running
+E-06HPTOOL not installed at: -PKI 20181229 21:34:44 sus: ERROR - raidcheck /usr/sbin/hpacucli
+E-07071-PKI 20181229 21:34:45 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+I-01011-PKI 20181229 21:35:17 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:35:17 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:35:17 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:35:17 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 21:35:17 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 21:35:17 sus: INFO - memoryusage Memory limit ok (Memory is -6409672 KB used: Limit is 12903814 KB)
+I-03Swap limit ok (Swap is  KB used: Limit is  KB)-PKI 20181229 21:35:17 sus: INFO - memoryusage 0
+W-04043-PKI 20181229 21:35:17 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181229 21:35:17 sus: ERROR - pcscd pcscd is NOT running
+E-06HPTOOL not installed at: -PKI 20181229 21:35:17 sus: ERROR - raidcheck /usr/sbin/hpacucli
+E-07071-PKI 20181229 21:35:18 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+I-01011-PKI 20181229 21:52:07 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:07 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:07 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:07 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:27 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:27 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:27 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:27 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 21:52:27 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 21:52:27 sus: INFO - memoryusage Memory limit ok (Memory is -5600060 KB used: Limit is 12903814 KB)
+I-03Swap limit ok (Swap is  KB used: Limit is  KB)-PKI 20181229 21:52:27 sus: INFO - memoryusage 0
+W-04043-PKI 20181229 21:52:27 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181229 21:52:27 sus: ERROR - pcscd pcscd is NOT running
+E-06HPTOOL not installed at: -PKI 20181229 21:52:27 sus: ERROR - raidcheck /usr/sbin/hpacucli
+E-07071-PKI 20181229 21:52:28 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+I-01011-PKI 20181229 21:52:34 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:34 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:34 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 21:52:34 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 21:52:34 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 21:52:34 sus: INFO - memoryusage Memory limit ok (Memory is -5592608 KB used: Limit is 12903814 KB)
+I-03Swap limit ok (Swap is  KB used: Limit is  KB)-PKI 20181229 21:52:34 sus: INFO - memoryusage 0
+W-04043-PKI 20181229 21:52:34 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181229 21:52:34 sus: ERROR - pcscd pcscd is NOT running
+E-06HPTOOL not installed at: -PKI 20181229 21:52:34 sus: ERROR - raidcheck /usr/sbin/hpacucli
+E-07071-PKI 20181229 21:52:35 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 20:52:56 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 20:52:56 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 20:52:56 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181229 21:52:56 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181229 21:52:56 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181229 21:52:56 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181229 21:52:56 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181229 21:52:56 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181229 21:52:56 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181229 21:52:56 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181229 21:52:56 sus: INFO - alive [3]
+W-20[3]-PKI 20181229 21:52:56 sus: WARNING - ejbcaerrorlog [3]
+E-22[2]-PKI 20181229 21:52:57 sus: ERROR - boks [2]
+I-23[1]-PKI 20181229 21:52:57 sus: INFO - rsa_axm [1]
+E-28284-PKI 20181229 21:52:57 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181229 21:52:57 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181229 21:52:57 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181229 21:52:57 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181229 21:52:57 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181229 21:52:57 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181229 21:52:57 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script, database-replication/808-test-table-update-and-check-master-and-
+E-33332-PKI 20181229 21:53:18 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181229 21:53:39 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181229 21:53:39 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181229 21:53:39 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181229 21:53:39 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181229 21:53:39 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181229 21:53:39 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35TOOL not installed at: -PKI 20181229 21:53:39 sus: ERROR - dell_raid /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181229 22:16:28 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 22:16:28 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 22:16:29 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 22:16:29 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 22:20:19 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 22:21:53 sus: INFO - memoryusage Memory limit ok (Memory is -6180148 KB used: Limit is 12903814 KB)
+I-03-d-PKI 20181229 22:21:53 sus: INFO - memoryusage Memory limit ok (Memory is 0 KB used: Limit is 8232958 KB)
+I-03032-PKI 20181229 22:22:20 sus: INFO - memoryusage Memory limit ok (Memory is -6154648 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181229 22:22:20 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181229 22:24:42 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-06066-PKI 20181229 22:33:31 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181229 22:33:50 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 21:40:46 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 21:40:46 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 21:40:46 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181229 22:53:25 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181229 22:53:34 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181229 22:53:40 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-16162-PKI 20181229 22:53:49 sus: ERROR - ldap LDAP directory server is not running
+W-20203-PKI 20181229 22:58:53 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181229 23:02:24 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181229 23:02:30 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181229 23:03:55 sus: ERROR - dss Document SignServer is not installed at this host
+E-28284-PKI 20181229 23:05:02 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181229 23:06:12 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181229 23:07:53 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181229 23:07:53 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181229 23:07:53 sus: INFO - running_processes Process cupsd is running
+E-32322-PKI 20181229 23:21:21 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181229 23:21:50 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181229 23:22:11 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181229 23:22:11 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181229 23:24:41 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181229 23:24:41 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181229 23:24:41 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181229 23:24:41 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181229 23:29:24 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181229 23:37:09 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181229 23:53:00 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:53:00 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:53:00 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:53:00 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 23:53:00 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 23:53:01 sus: INFO - memoryusage Memory limit ok (Memory is -5752548 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181229 23:53:01 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181229 23:53:01 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-06066-PKI 20181229 23:53:01 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181229 23:53:02 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+I-01011-PKI 20181229 23:54:18 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:54:18 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:54:18 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:54:18 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 23:54:18 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 23:54:18 sus: INFO - memoryusage Memory limit ok (Memory is -5726820 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181229 23:54:18 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181229 23:54:18 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-06066-PKI 20181229 23:54:18 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181229 23:54:19 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 22:54:40 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 22:54:40 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 22:54:40 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181229 23:54:40 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181229 23:54:40 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181229 23:54:40 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181229 23:54:41 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181229 23:54:41 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181229 23:54:41 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181229 23:54:41 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181229 23:54:41 sus: INFO - alive [3]
+W-20203-PKI 20181229 23:54:41 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181229 23:54:41 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181229 23:54:41 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181229 23:54:41 sus: ERROR - dss Document SignServer is not installed at this host
+E-28284-PKI 20181229 23:54:41 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181229 23:54:41 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181229 23:54:41 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181229 23:54:41 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181229 23:54:41 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181229 23:54:41 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181229 23:54:41 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181229 23:55:03 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181229 23:55:24 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181229 23:55:24 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181229 23:55:24 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181229 23:55:24 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181229 23:55:24 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181229 23:55:24 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181229 23:55:24 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181229 23:55:24 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-05052-PKI 20181229 23:56:27 sus: ERROR - pcscd pcscd is NOT running
+I-01011-PKI 20181229 23:58:48 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:58:48 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:58:48 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181229 23:58:48 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181229 23:58:48 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181229 23:58:48 sus: INFO - memoryusage Memory limit ok (Memory is -5740036 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181229 23:58:48 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181229 23:58:48 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181229 23:58:48 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181229 23:58:48 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181229 23:58:49 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-07071-PKI 20181229 23:59:00 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 22:59:10 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 22:59:10 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 22:59:10 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181229 23:59:10 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181229 23:59:10 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181229 23:59:11 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181229 23:59:11 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181229 23:59:11 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181229 23:59:11 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181229 23:59:11 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181229 23:59:11 sus: INFO - alive [3]
+W-20203-PKI 20181229 23:59:11 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181229 23:59:11 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181229 23:59:11 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181229 23:59:11 sus: ERROR - dss Document SignServer is not installed at this host
+E-28284-PKI 20181229 23:59:11 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181229 23:59:11 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181229 23:59:12 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181229 23:59:12 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181229 23:59:12 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181229 23:59:12 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181229 23:59:12 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+I-01011-PKI 20181230 00:00:00 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:00:00 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:00:00 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:00:00 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 00:00:00 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 00:00:00 sus: INFO - memoryusage Memory limit ok (Memory is -5799040 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 00:00:01 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 00:00:01 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 00:00:01 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 00:00:01 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 00:00:02 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 23:00:23 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 23:00:23 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 23:00:23 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 00:00:23 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 00:00:23 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 00:00:23 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 00:00:23 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 00:00:23 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 00:00:23 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 00:00:23 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 00:00:23 sus: INFO - alive [3]
+W-20203-PKI 20181230 00:00:23 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 00:00:24 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 00:00:24 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 00:00:24 sus: ERROR - dss Document SignServer is not installed at this host
+E-28284-PKI 20181230 00:00:24 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181230 00:00:24 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 00:00:24 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:00:24 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:00:24 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 00:00:24 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 00:00:24 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 00:00:45 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-07071-PKI 20181230 00:01:25 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-07071-PKI 20181230 00:02:02 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+I-01011-PKI 20181230 00:02:12 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:02:12 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:02:12 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:02:12 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 00:02:12 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 00:02:12 sus: INFO - memoryusage Memory limit ok (Memory is -5745812 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 00:02:12 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 00:02:12 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 00:02:12 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 00:02:12 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 00:02:13 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 23:02:34 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 23:02:35 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 23:02:35 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 00:02:35 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 00:02:35 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 00:02:35 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 00:02:35 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 00:02:35 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 00:02:35 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 00:02:35 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 00:02:35 sus: INFO - alive [3]
+W-20203-PKI 20181230 00:02:35 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 00:02:35 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 00:02:35 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 00:02:35 sus: ERROR - dss Document SignServer is not installed at this host
+E-28284-PKI 20181230 00:02:35 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181230 00:02:36 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 00:02:36 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:02:36 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:02:36 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 00:02:36 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 00:02:36 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 00:02:57 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 00:03:18 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 00:03:18 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 00:03:18 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 00:03:18 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 00:03:18 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 00:03:18 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 00:03:18 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 00:03:18 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181230 00:04:00 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:04:00 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:04:00 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:04:00 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 00:04:00 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 00:04:00 sus: INFO - memoryusage Memory limit ok (Memory is -5725296 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 00:04:00 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 00:04:00 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 00:04:00 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 00:04:00 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 00:04:01 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 23:04:23 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 23:04:23 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 23:04:23 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 00:04:23 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 00:04:23 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 00:04:23 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 00:04:23 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 00:04:23 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 00:04:23 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 00:04:23 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 00:04:23 sus: INFO - alive [3]
+W-20203-PKI 20181230 00:04:23 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 00:04:23 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 00:04:23 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 00:04:23 sus: ERROR - dss Document SignServer is not installed at this host
+E-28284-PKI 20181230 00:04:23 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181230 00:04:24 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 00:04:24 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:04:24 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:04:24 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 00:04:24 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 00:04:24 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 00:04:45 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 00:05:06 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 00:05:06 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 00:05:06 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 00:05:06 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 00:05:06 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 00:05:06 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 00:05:06 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 00:05:06 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181230 00:05:39 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:05:39 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:05:39 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:05:39 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 00:05:39 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 00:05:39 sus: INFO - memoryusage Memory limit ok (Memory is -5761680 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 00:05:39 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 00:05:39 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 00:05:39 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 00:05:39 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 00:05:40 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 23:06:01 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 23:06:01 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 23:06:01 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 00:06:01 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 00:06:01 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 00:06:01 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 00:06:01 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 00:06:01 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 00:06:01 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 00:06:01 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 00:06:02 sus: INFO - alive [3]
+W-20203-PKI 20181230 00:06:02 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 00:06:02 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 00:06:02 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 00:06:02 sus: ERROR - dss Document SignServer is not installed at this host
+E-28284-PKI 20181230 00:06:02 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181230 00:06:02 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 00:06:02 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:06:02 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:06:02 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 00:06:02 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 00:06:02 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 00:06:23 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 00:06:44 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 00:06:44 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 00:06:44 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 00:06:44 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 00:06:44 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 00:06:44 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 00:06:45 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 00:06:45 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181230 00:06:48 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:06:48 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:06:48 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:06:48 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 00:06:48 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 00:06:48 sus: INFO - memoryusage Memory limit ok (Memory is -5717340 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 00:06:48 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 00:06:48 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 00:06:48 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 00:06:48 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 00:06:49 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 23:07:10 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 23:07:10 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 23:07:10 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 00:07:10 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 00:07:11 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 00:07:11 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 00:07:11 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 00:07:11 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 00:07:11 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 00:07:11 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 00:07:11 sus: INFO - alive [3]
+W-20203-PKI 20181230 00:07:11 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 00:07:11 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 00:07:11 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 00:07:11 sus: ERROR - dss Document SignServer is not installed at this host
+E-28284-PKI 20181230 00:07:11 sus: ERROR - vip None of the nodes has the VIP
+E-29293-PKI 20181230 00:07:11 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 00:07:12 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:07:12 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:07:12 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 00:07:12 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 00:07:12 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 00:07:33 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 00:07:54 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 00:07:54 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 00:07:54 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 00:07:54 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 00:07:54 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 00:07:54 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 00:07:54 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 00:07:54 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-28284-PKI 20181230 00:11:55 sus: ERROR - vip None of the nodes has the VIP
+E-28284-PKI 20181230 00:12:18 sus: ERROR - vip None of the nodes has the VIP
+I-01011-PKI 20181230 00:13:02 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:13:02 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:13:02 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:13:02 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 00:13:02 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 00:13:02 sus: INFO - memoryusage Memory limit ok (Memory is -5716900 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 00:13:02 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 00:13:02 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 00:13:02 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 00:13:02 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 00:13:04 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 23:13:25 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 23:13:25 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 23:13:25 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 00:13:25 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 00:13:25 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 00:13:25 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-30303-PKI 20181230 00:13:25 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:13:25 sus: ERROR - running_processes Process ntpd was not running, restart failed
+E-15152-PKI 20181230 00:13:25 sus: ERROR - apache Apache webserver is not running
+I-30301-PKI 20181230 00:13:25 sus: INFO - running_processes Process cupsd is running
+E-16162-PKI 20181230 00:13:25 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 00:13:25 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 00:13:25 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 00:13:25 sus: INFO - alive [3]
+W-20203-PKI 20181230 00:13:25 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 00:13:25 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 00:13:25 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 00:13:26 sus: ERROR - dss Document SignServer is not installed at this host
+E-29293-PKI 20181230 00:13:26 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 00:13:26 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:13:26 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:13:26 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 00:13:26 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 00:13:26 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 00:13:47 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 00:14:08 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 00:14:08 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 00:14:08 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 00:14:08 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 00:14:08 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 00:14:08 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 00:14:08 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 00:14:08 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181230 00:14:19 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:14:19 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:14:19 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:14:19 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 00:14:19 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 00:14:19 sus: INFO - memoryusage Memory limit ok (Memory is -5685632 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 00:14:19 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 00:14:19 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 00:14:19 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 00:14:19 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 00:14:20 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181229 23:14:41 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 23:14:41 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 23:14:41 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 00:14:41 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 00:14:41 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 00:14:41 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 00:14:41 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 00:14:42 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 00:14:42 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 00:14:42 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 00:14:42 sus: INFO - alive [3]
+W-20203-PKI 20181230 00:14:42 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 00:14:42 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 00:14:42 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 00:14:42 sus: ERROR - dss Document SignServer is not installed at this host
+E-29293-PKI 20181230 00:14:42 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 00:14:42 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:14:42 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:14:42 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 00:14:42 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 00:14:42 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 00:15:04 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 00:15:25 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 00:15:25 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 00:15:25 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 00:15:25 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 00:15:25 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 00:15:25 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 00:15:25 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 00:15:25 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181230 00:16:26 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:16:26 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:16:26 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 00:16:26 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 00:16:26 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 00:16:26 sus: INFO - memoryusage Memory limit ok (Memory is -5654248 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 00:16:26 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 00:16:26 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 00:16:26 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 00:16:26 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 00:16:27 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-30303-PKI 20181230 00:16:31 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:16:31 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:16:31 sus: INFO - running_processes Process cupsd is running
+E-08083-PKI 20181229 23:16:49 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181229 23:16:49 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181229 23:16:49 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 00:16:49 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 00:16:49 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 00:16:49 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 00:16:49 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 00:16:49 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 00:16:49 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 00:16:49 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 00:16:49 sus: INFO - alive [3]
+W-20203-PKI 20181230 00:16:49 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 00:16:49 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 00:16:49 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 00:16:50 sus: ERROR - dss Document SignServer is not installed at this host
+E-29293-PKI 20181230 00:16:50 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 00:16:50 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 00:16:50 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 00:16:50 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 00:16:50 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 00:16:50 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 00:17:11 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 00:17:32 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 00:17:32 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 00:17:32 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 00:17:32 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 00:17:32 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 00:17:32 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 00:17:32 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 00:17:32 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181230 12:01:24 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:01:24 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:01:24 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:01:24 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 12:01:24 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 12:01:24 sus: INFO - memoryusage Memory limit ok (Memory is -5527128 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 12:01:24 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 12:01:24 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 12:01:24 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 12:01:24 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 12:01:25 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181230 11:01:37 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181230 11:01:37 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181230 11:01:37 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 12:01:37 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 12:01:37 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 12:01:37 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 12:01:37 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 12:01:37 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 12:01:38 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 12:01:38 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 12:01:38 sus: INFO - alive [3]
+W-20203-PKI 20181230 12:01:38 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 12:01:38 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 12:01:38 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 12:01:38 sus: ERROR - dss Document SignServer is not installed at this host
+E-29293-PKI 20181230 12:01:38 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 12:01:38 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 12:01:38 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 12:01:38 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 12:01:38 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 12:01:39 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 12:02:00 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 12:02:21 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 12:02:21 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 12:02:21 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 12:02:21 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 12:02:21 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 12:02:21 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 12:02:21 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 12:02:21 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-28285-PKI 20181230 12:04:12 sus: ERROR - vip ssh tool 915 not activated
+E-30303-PKI 20181230 12:04:57 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 12:04:57 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 12:04:57 sus: INFO - running_processes Process cupsd is running
+I-01011-PKI 20181230 12:05:05 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:05:05 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:05:05 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:05:05 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 12:05:05 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 12:05:05 sus: INFO - memoryusage Memory limit ok (Memory is -5863164 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 12:05:05 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 12:05:05 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 12:05:05 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 12:05:05 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 12:05:06 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181230 11:05:27 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181230 11:05:27 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181230 11:05:27 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 12:05:28 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 12:05:28 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 12:05:28 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 12:05:28 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 12:05:28 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 12:05:28 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 12:05:28 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 12:05:28 sus: INFO - alive [3]
+W-20203-PKI 20181230 12:05:28 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 12:05:28 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 12:05:28 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 12:05:28 sus: ERROR - dss Document SignServer is not installed at this host
+E-28285-PKI 20181230 12:05:28 sus: ERROR - vip ssh tool 915 not activated
+E-29293-PKI 20181230 12:05:29 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 12:05:29 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 12:05:29 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 12:05:29 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 12:05:29 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 12:05:29 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 12:05:50 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 12:06:11 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 12:06:11 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 12:06:11 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 12:06:11 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 12:06:11 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 12:06:11 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 12:06:11 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 12:06:11 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+I-01011-PKI 20181230 12:08:05 sus: INFO - diskusage Diskusage ok (/ is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:08:05 sus: INFO - diskusage Diskusage ok (/backup is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:08:05 sus: INFO - diskusage Diskusage ok (/var/lib is 16 percent used: Limit is 75 percent)
+I-01011-PKI 20181230 12:08:05 sus: INFO - diskusage Diskusage ok (/var/log is 16 percent used: Limit is 75 percent)
+E-02022-PKI 20181230 12:08:05 sus: ERROR - ejbca EJBCA : curl: (7) Failed to connect to localhost port 8080: Connection refused
+I-03032-PKI 20181230 12:08:05 sus: INFO - memoryusage Memory limit ok (Memory is -5887640 KB used: Limit is 12903814 KB)
+I-03034-PKI 20181230 12:08:05 sus: INFO - memoryusage Swap limit ok (Swap is 0 KB used: Limit is 8232958 KB)
+W-04043-PKI 20181230 12:08:05 sus: WARNING - pcscreaders Perl module not installed(Can't locate Chipcard/PCSC.pm in @INC (you may need to install the Chipcard::PCSC module) (@INC contains: /
+E-05052-PKI 20181230 12:08:05 sus: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20181230 12:08:05 sus: ERROR - raidcheck HPTOOL not installed at: /usr/sbin/hpacucli
+E-07071-PKI 20181230 12:08:06 sus: ERROR - syslog loggmessage did not come throu SYSLOG
+E-08083-PKI 20181230 11:08:27 sus: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20181230 11:08:27 sus: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20181230 11:08:27 sus: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http:/
+E-09091-PKI 20181230 12:08:27 sus: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20181230 12:08:27 sus: ERROR - mysql mysql is NOT running
+E-14143-PKI 20181230 12:08:27 sus: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20181230 12:08:28 sus: ERROR - apache Apache webserver is not running
+E-16162-PKI 20181230 12:08:28 sus: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20181230 12:08:28 sus: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20181230 12:08:28 sus: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20181230 12:08:28 sus: INFO - alive [3]
+W-20203-PKI 20181230 12:08:28 sus: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20181230 12:08:28 sus: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+I-23231-PKI 20181230 12:08:28 sus: INFO - rsa_axm RSA Access Manager is running
+E-27274-PKI 20181230 12:08:28 sus: ERROR - dss Document SignServer is not installed at this host
+E-28285-PKI 20181230 12:08:28 sus: ERROR - vip ssh tool 915 not activated
+E-29293-PKI 20181230 12:08:28 sus: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20181230 12:08:28 sus: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20181230 12:08:28 sus: ERROR - running_processes Process ntpd was not running, restart failed
+I-30301-PKI 20181230 12:08:28 sus: INFO - running_processes Process cupsd is running
+E-31314-PKI 20181230 12:08:28 sus: ERROR - hp_health Tool not found: /sbin/hpasmcli 
+E-32322-PKI 20181230 12:08:28 sus: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20181230 12:08:50 sus: ERROR - healthcheck Healtcheck of app: certservice-public NOT ok error message: 
+E-33332-PKI 20181230 12:09:11 sus: ERROR - healthcheck Healtcheck of app: certservice-admin NOT ok error message: 
+E-33332-PKI 20181230 12:09:11 sus: ERROR - healthcheck Healtcheck of app: certservice-worker NOT ok error message: 
+E-34342-PKI 20181230 12:09:11 sus: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20181230 12:09:11 sus: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20181230 12:09:11 sus: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20181230 12:09:11 sus: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20181230 12:09:11 sus: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20181230 12:09:11 sus: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
