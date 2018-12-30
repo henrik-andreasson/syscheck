@@ -98,7 +98,7 @@ find ${PROGPATH}/ -name \*\.pl -exec chmod 755 {} \;
 
 zipname="${progname}-${rel}.zip"
 cd ${OUTPATH}
-zip --exclude "${progname}-${rel}/.git/*" -r ${zipname} ${progname}-${rel}
+zip  -r ${zipname} ${progname}-${rel}
 
 if [ "x$SIGN" == "x1" ] ; then
 
