@@ -57,7 +57,7 @@ done
 # main part of script
 
 if [ ! -r "$CERTFILE" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}"
 	printtoscreen $ERROR ${ERRNO[3]} "${DESCR[3]}"
 	exit
 fi
@@ -65,32 +65,32 @@ fi
 
 CERTSERIAL=`openssl x509 -inform der -in ${CERTFILE} -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
 CERTDN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
 CERTUID=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/uid=(.*?)\//gio, print "$1"'`
 if [ $? -ne 0 ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "${DESCR[3]}" "$?"
 fi
 
 CERTCN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/cn=(.*?)\//gio, print "$1"'`
 if [ $? -ne 0 ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
 CERTSN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/serialnumber=(.*?)\//gio, print "$1"'`
 if [ $? -ne 0 ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
 CERTSTRING=`openssl x509 -inform der -in ${CERTFILE}| perl -ane 's/\n//gio,print'`
 if [ $? -ne 0 ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

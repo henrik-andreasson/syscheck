@@ -46,14 +46,14 @@ for (( i = 0 ;  i < ${#HOST[@]} ; i++ )) ; do
 		MINUTES_SINCE_LASTLOG=`${SYSCHECK_HOME}/lib/cmp_syslog_dates.pl "$LASTLOGTS" | awk '{print $1}'`
 
 		if [ ${MINUTES_SINCE_LASTLOG} -gt ${TIME_BEFORE_ERROR} ] ; then
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "$SCALIVE_SRV_DESCR[2]" ${HOST[$i]} ${MINUTES_SINCE_LASTLOG}
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "$SCALIVE_SRV_DESCR[2]" ${HOST[$i]} ${MINUTES_SINCE_LASTLOG}
 		elif [ ${MINUTES_SINCE_LASTLOG} -gt ${TIME_BEFORE_WARN} ] ; then
-	    		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN ${ERRNO[3]} "$SCALIVE_SRV_DESCR[3]" ${HOST[$i]} ${MINUTES_SINCE_LASTLOG}
+	    		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $WARN ${ERRNO[3]} "$SCALIVE_SRV_DESCR[3]" ${HOST[$i]} ${MINUTES_SINCE_LASTLOG}
 		else
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "$SCALIVE_SRV_DESCR[1]" ${HOST[$i]} ${MINUTES_SINCE_LASTLOG}
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "$SCALIVE_SRV_DESCR[1]" ${HOST[$i]} ${MINUTES_SINCE_LASTLOG}
 		fi
 	else
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "$SCALIVE_SRV_DESCR[2]" ${HOST[$i]}
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "$SCALIVE_SRV_DESCR[2]" ${HOST[$i]}
 	fi
 
 

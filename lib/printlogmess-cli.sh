@@ -11,14 +11,14 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/common.conf
 
-# source the config func
-source ${SYSCHECK_HOME}/lib/config.sh
+# source libsycheck 
+source ${SYSCHECK_HOME}/lib/libsyscheck.sh
 
 # use the printlog function
 source $SYSCHECK_HOME/lib/printlogmess.sh
 
-# source the lang func
-source ${SYSCHECK_HOME}/lib/lang.sh
+
+
 
 
 printlogmess "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"

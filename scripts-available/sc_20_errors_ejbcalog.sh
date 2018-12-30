@@ -21,26 +21,12 @@ SCRIPTID=20
 NO_OF_ERR=3
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -c|--cert )   CERTFILE=$2; shift 2;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
 if [ ! -f $EEL_SERVER_LOG_FILE ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN $EEL_ERRNO[3] "$EEL_DESCR[3]"  $EEL_SERVER_LOG_FILE
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$EEL_SERVER_LOG_FILE"
     exit
 fi
 
@@ -52,8 +38,8 @@ export EEL_SERVER_LOG_LASTPOSITION
 NEWERRORS=`${SYSCHECK_HOME}/lib/tail_errors_from_ejbca_log.pl 2>/dev/null`
 
 if [ "x$NEWERRORS" = "x" ]; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO $EEL_ERRNO[1] "$EEL_DESCR[1]"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
 else
     SHORTMESS=`echo $NEWERRORS | perl -ane 'm/Comment : (.*)/, print "$1\n"'`
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR $EEL_ERRNO[2] "$EEL_DESCR[2]" "$SHORTMESS"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$SHORTMESS"
 fi

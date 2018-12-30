@@ -67,17 +67,17 @@ if [ "x$valhost1" != "x" ] ; then
 	if [ "x$valhost2" != "x" ] ; then
 		if [ "x$valhost1" = "x$valhost2" ] ; then
 			#ok
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_1 ${ERRNO[1]} "${DESCR[1]}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $LEVEL_1 ${ERRNO[1]} "${DESCR[1]}"
 		else
 			#failed, not the same values
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_2 ${ERRNO[2]} "${DESCR[2]}" "$valhost1" "$valhost2"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $LEVEL_2 ${ERRNO[2]} "${DESCR[2]}" "$valhost1" "$valhost2"
 		fi
 	else
 		#failed, no value from $valhost2
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_3 ${ERRNO[3]} "${DESCR[3]}" "$valhost2"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $LEVEL_3 ${ERRNO[3]} "${DESCR[3]}" "$valhost2"
 	fi
 
 else
 	#failed, no value from $valhost1
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $LEVEL_4 ${ERRNO[4]} "${DESCR[4]}" "$valhost1"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $LEVEL_4 ${ERRNO[4]} "${DESCR[4]}" "$valhost1"
 fi

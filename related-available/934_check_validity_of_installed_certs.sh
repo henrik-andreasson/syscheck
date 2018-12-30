@@ -89,9 +89,9 @@ checkPEM() {
     let timeDiffDays="$timeDiffMin / 60 / 24"
 
     if [ $timeDiffDays -le $WARNINGDAYS ] ; then
-	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "$keystoreFile" $timeDiffDays "$subject"
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$keystoreFile" $timeDiffDays "$subject"
 	elif [ $timeDiffDays -le $ERRORDAYS ] ; then
-	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[3]} "${DESCR[3]}" "$keystoreFile" $timeDiffDays "$subject"
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$keystoreFile" $timeDiffDays "$subject"
 	else
 	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "$keystoreFile" $timeDiffDays "$subject"
 	fi

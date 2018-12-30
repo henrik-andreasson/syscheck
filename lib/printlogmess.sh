@@ -111,23 +111,27 @@ send_mess_to_monitoring(){
 
 # ex: printlogmess $LEVEL $SLOG_ERRNO[1] "$SLOG_DESCR[1]"
 printlogmess(){
-        SCRIPTNAME=$1
-        SCRIPTID=$2
-        SCRIPTINDEX=$3
-        LEVEL=$4
-        ERRNO=$5
-        DESCR=$6
-        shift 6
-        ARG1=$1
-        ARG2=$2
-        ARG3=$3
-        ARG4=$4
-        ARG5=$5
-        ARG6=$6
-        ARG7=$7
-        ARG8=$8
-        ARG9=$9
+      INPUTARGS=`/usr/bin/getopt --options "n:i:x:l:e:d:1:2:3:4:5:6:7:8:9"  -- "$@"`
+      if [ $? != 0 ] ; then schelp ; fi
+      eval set -- "$INPUTARGS"
 
+      while true; do
+        case "$1" in
+          -n ) SCRIPTNAME=$2; shift 2;;
+          -i ) SCRIPTID=$2; shift 2;;
+          -x ) SCRIPTINDEX=$2; shift 2;;
+          -l ) LEVEL=$2; shift 2;;
+          -e ) ERRNO=$2; shift 2;;
+          -d ) DESCR=$2; shift 2;;
+          -1 ) ARG1=$2 ; shift 2;;
+          -2 ) ARG2=$2 ; shift 2;;
+          -3 ) ARG3=$2 ; shift 2;;
+          -4 ) ARG4=$2 ; shift 2;;
+          -5 ) ARG5=$2 ; shift 2;;
+          -6 ) ARG6=$2 ; shift 2;;
+          --) break;;
+        esac
+      done
 
         if [ "x${LEVEL}" = "xI" ] ;then
           SYSLOGLEVEL="info"

@@ -18,24 +18,10 @@ SCRIPTNAME=dell_raid
 SCRIPTID=35
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=6
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
-
+default_script_getopt $*
 
 # main part of script
 
@@ -65,9 +51,9 @@ raiddiskcheck () {
 	printverbose "pdisk: $pdisk controller: $controller $DISK_INFO"
 
         if [ "x$STATUS" != "x" ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "disk: ${pdisk} contoller: ${controller} OK"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "disk: ${pdisk} contoller: ${controller} OK"
         else
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "disk: ${pdisk} contoller: ${controller} NOTOK $DISK_INFO"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "disk: ${pdisk} contoller: ${controller} NOTOK $DISK_INFO"
         fi
 }
 
@@ -93,15 +79,15 @@ raidlogiccheck () {
 	printverbose "vdisk: $vdisk controller: $controller $VDISK_INFO"
 
 	if [ "x$vdisk_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[3]} "${DESCR[3]}" "controller: $controller vdisk: $vdisk OK"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "controller: $controller vdisk: $vdisk OK"
 	else
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[4]} "${DESCR[4]}" "controller: $controller vdisk: $vdisk NOT OK $VDISK_INFO"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "controller: $controller vdisk: $vdisk NOT OK $VDISK_INFO"
 	fi
 }
 
 
 if [ ! -x $DELLTOOL ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[6]} "${DESCR[6]}" $DELLTOOL
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$DELLTOOL"
     exit
 fi
 

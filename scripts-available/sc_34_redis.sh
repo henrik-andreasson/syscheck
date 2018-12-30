@@ -11,6 +11,9 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
+# script name, used when integrating with nagios/icinga
+SCRIPTNAME=redis
+
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=34
 
@@ -18,21 +21,7 @@ SCRIPTID=34
 NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -c|--cert )   CERTFILE=$2; shift 2;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
@@ -41,23 +30,23 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 checkredis () {
         SCRIPTINDEX=$1
         if [ "x${SCRIPTINDEX}" = "x" ] ; then
-                        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "SCRIPTINDEX not sent"
+                        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "SCRIPTINDEX not sent"
                         return
         fi
 
         REDIS_IP=$2
         if [ "x${REDIS_IP}" = "x" ] ; then
-                        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "REDIS_IP not sent"
+                        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "REDIS_IP not sent"
                         return
         fi
         REDIS_PORT=$3
         if [ "x${REDIS_PORT}" = "x" ] ; then
-                        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "REDIS_PORT not sent"
+                        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "REDIS_PORT not sent"
                         return
         fi
         REDIS_PW=$4
         if [ "x${REDIS_PW}" = "x" ] ; then
-                        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "REDIS_PW not sent"
+                        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "REDIS_PW not sent"
                         return
         fi
 
@@ -65,15 +54,15 @@ checkredis () {
         OUTPUT=$($REDISCLI -h $REDIS_IP -p $REDIS_PORT -a $REDIS_PW ping 2>&1 |grep PONG )
 
         if [ "x$OUTPUT" = "xPONG" ]; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "$REDIS_IP" "$REDIS_PORT" "$OUTPUT"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$REDIS_IP" -2 "$REDIS_PORT" -3 "$OUTPUT"
         else
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "$REDIS_IP" "$REDIS_PORT" "$OUTPUT"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$REDIS_IP" -2 "$REDIS_PORT" -3 "$OUTPUT"
         fi
 }
 
 
 if [ x"$REDISCLI" = "x" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "${DESCR[4]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}"
 	exit
 fi
 

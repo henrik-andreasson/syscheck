@@ -21,21 +21,7 @@ SCRIPTID=33
 NO_OF_ERR=2
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -c|--cert )   CERTFILE=$2; shift 2;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
@@ -66,13 +52,13 @@ for (( i = 0 ;  i < ${#HEALTHCHECKURL[@]} ; i++ )) ; do
 			printtoscreen ${FULLSTATUS}
 		fi
 	else
-	        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[3]} "${DESCR[3]}"
+	        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 	fi
 
 	if [ "x$STATUS" != "xALLOK" ] ; then
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "${HEALTHCHECK_APP[$i]}" "$STATUS"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$STATUS"
 	else
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO  ${ERRNO[1]} "${DESCR[1]}" "${HEALTHCHECK_APP[$i]}"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -s ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${HEALTHCHECK_APP[$i]}"
 	fi
 
 	if [ "x${PRINTFULL}" = "x1" ] ; then

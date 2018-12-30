@@ -11,26 +11,17 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
+# script name, used when integrating with nagios/icinga
+SCRIPTNAME=dell_health
+
+# uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=36
 
 # how many info/warn/error messages
 NO_OF_ERR=3
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
@@ -52,9 +43,9 @@ fan_check () {
 	printverbose "$FAN_INFO"
 
         if [ "x$fan_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "fanid: $fanid status: $fan_status"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "fanid: $fanid status: $fan_status"
         else
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "fan NOTOK $FAN_INFO"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "fan NOTOK $FAN_INFO"
         fi
 }
 
@@ -79,9 +70,9 @@ temp_check () {
 	printverbose "$TEMP_INFO"
 
         if [ "x$temp_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "tempid: $tempid status: $temp_status degrees: $temp_degrees"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "tempid: $tempid status: $temp_status degrees: $temp_degrees"
         else
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "temp NOTOK $TEMP_INFO"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "temp NOTOK $TEMP_INFO"
         fi
 }
 
@@ -104,9 +95,9 @@ psu_check () {
         printverbose "$PSU_INFO"
 
         if [ "x$psu_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "PSU id: $id status: $psu_status watts: $psu_watts"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "PSU id: $id status: $psu_status watts: $psu_watts"
         else
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "PSU id: $id NOTOK $PSU_INFO"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "PSU id: $id NOTOK $PSU_INFO"
         fi
 }
 
@@ -131,15 +122,15 @@ power_consumption_check () {
 	printverbose "$POWER_INFO"
 
         if [ "x$power_status" = "xOk" ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "powerid: $id status: $power_status watts: $power_watts"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "powerid: $id status: $power_status watts: $power_watts"
         else
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "power NOTOK $POWER_INFO"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "power NOTOK $POWER_INFO"
         fi
 }
 
 
 if [ ! -x $DELLTOOL ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[6]}" $DELLTOOL
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$DELLTOOL"
     exit
 fi
 

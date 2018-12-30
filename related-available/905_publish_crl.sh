@@ -50,7 +50,7 @@ get () {
     printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLFILE"
     CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME "$CRLFILE")
     if [ $? != 0 -o  ! -r $CRLFILE  ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" "$CRLNAME/$CRLFILE"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" "$CRLNAME/$CRLFILE"
     fi
     printtoscreen $CMD
 
@@ -69,9 +69,9 @@ put () {
     $SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $REMOTEHOST $REMOTEDIR $SSHUSER $SSHKEY
 
     if [ $? = 0 ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[8]} "$PUBL_DESCR[8]" $CRLNAME $REMOTEHOST
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[8]} "$PUBL_DESCR[8]" $CRLNAME $REMOTEHOST
     else
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "$PUBL_DESCR[2]" $CRLNAME $REMOTEHOST
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "$PUBL_DESCR[2]" $CRLNAME $REMOTEHOST
     fi
 }
 
@@ -124,20 +124,20 @@ checkcrl () {
 
 # file not found where it should be
     if [ ! -f $CRLFILE ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "$PUBL_DESCR[4]" $CRLFILE
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "$PUBL_DESCR[4]" $CRLFILE
         return 4
     fi
 
 # stat return check
     CRL_FILE_SIZE=`stat -c"%s" $CRLFILE`
     if [ $? -ne 0 ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[5]} "$PUBL_DESCR[5]" $CRLFILE
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[5]} "$PUBL_DESCR[5]" $CRLFILE
         return 5
     fi
 
 # crl of 0 size?
     if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" $CRLFILE
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" $CRLFILE
         return 6
     fi
 
@@ -150,15 +150,15 @@ checkcrl () {
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
     if [ "$ETIMELEFT" -lt "$ETIME" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[7]} "$PUBL_DESCR[7]" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[7]} "$PUBL_DESCR[7]" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
 	return 7
 
     elif [ "$WTIMELEFT" -lt "$WTIME" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $WARN ${ERRNO[9]} "$PUBL_DESCR[9]" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $WARN ${ERRNO[9]} "$PUBL_DESCR[9]" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	return 7
 
     else
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[10]} "$PUBL_DESCR[10]" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[10]} "$PUBL_DESCR[10]" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	printtoscreen "$INFO ${ERRNO[10]} $PUBL_DESCR[10] $CRLFILE timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
 	return 0
     fi
@@ -189,9 +189,9 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
     if [ "x${REMOTE_HOST[$i]}" = "xlocalhost" ] ; then
 	cp -f ${CRLFILE} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	if [ $? -eq 0 ] ;then
-	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "$PUBL_DESCR[1]" ${CRLCANAME[$i]}
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "$PUBL_DESCR[1]" ${CRLCANAME[$i]}
 	else
-	    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "$PUBL_DESCR[3]" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "$PUBL_DESCR[3]" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	fi
 
     else

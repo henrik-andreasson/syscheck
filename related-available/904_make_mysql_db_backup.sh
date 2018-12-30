@@ -73,7 +73,7 @@ for (( i = 0 ;  i < ${#DBNAME[@]} ; i++ )) ; do
     if [ $retcode -eq 0 ] ; then
         printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO  ${ERRNO[1]} "${DESCR[1]}" "$MYSQLBACKUPFULLFILENAME" $TIMETOCOMPLEATE $filesize
     else
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "$MYSQLBACKUPFULLFILENAME" $TIMETOCOMPLEATE $filesize "$dumpret"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$MYSQLBACKUPFULLFILENAME" $TIMETOCOMPLEATE $filesize "$dumpret"
     fi
 
     if [ "x$BATCH" = "x1" ] ; then

@@ -21,20 +21,7 @@ SCRIPTID=04
 NO_OF_ERR=3
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
@@ -42,19 +29,17 @@ CMD=$($SYSCHECK_HOME/lib/list_reader.pl 2>&1)
 ERRCHK=$(echo $CMD| grep "locate Chipcard/PCSC.pm")
 
 if [ "x$ERRCHK" != "x" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $WARN ${ERRNO[3]} "${DESCR[3]}" "$CMD"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$CMD"
 	exit
 fi
 
-STATUS=`echo $CMD | perl -ane 'm/Number\ of\ attatched\ readers:\ (\d+)/gio, print $1'`
+STATUS=$(echo $CMD | perl -ane 'm/Number\ of\ attatched\ readers:\ (\d+)/gio, print $1') # todo not use perl
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "$PCSC_NUMBER_OF_READERS" = "$STATUS" ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "${DESCR[1]}" "$STATUS"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$STATUS"
 
 else
 
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "${DESCR[2]}" "$STATUS"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$STATUS"
 fi
-
-SCRIPTNAME=pcscreaders

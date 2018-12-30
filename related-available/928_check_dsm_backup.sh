@@ -47,7 +47,7 @@ LAST=`egrep "${SERACH_STRING}" ${LOGFILE}|awk '{print $1,$2}'|tail -1`
 dsm=FAIL
 fi
 if [ "x$dsm" = "xFAIL" ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   "$ERROR" "${ERRNO[2]}" "${DESCR[2]} $LAST"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  "$ERROR" "${ERRNO[2]}" "${DESCR[2]} $LAST"
 else
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   "$INFO" "${ERRNO[1]}" "${DESCR[1]} "
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  "$INFO" "${ERRNO[1]}" "${DESCR[1]} "
 fi

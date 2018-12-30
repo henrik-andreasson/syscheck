@@ -46,7 +46,7 @@ fi
 
 
 if [ "x$CERTFILE" = "x" -o ! -r "$CERTFILE" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "${DESCR[2]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}"
 	printtoscreen $ERROR ${ERRNO[2]} "${DESCR[2]}"
 	exit
 fi
@@ -57,7 +57,7 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 date >> ${REVLOG}
 CERTSERIAL=`openssl x509 -inform der -in "$CERTFILE" -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 	# we really need a serial
 	exit
 fi
@@ -65,7 +65,7 @@ fi
 
 CERTSUBJECT=`openssl x509 -inform der -in "$CERTFILE" -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
 if [ $? -ne 0 ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 	# also without subject we cant continiue
 	exit
 fi
@@ -74,7 +74,7 @@ echo "CERTSERIAL: $CERTSERIAL" >> ${REVLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${REVLOG}
 CERT=`openssl x509 -inform der -in "$CERTFILE"`
 if [ $? -ne 0 ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 	# if we cant parse the cert
 	exit
 fi
@@ -88,9 +88,9 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 OUTFILE="${OUTPATH2}/revoked-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in "$CERTFILE" > ${OUTFILE}
 if [ $? -eq 0 ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "${DESCR[1]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" "$?"
 else
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

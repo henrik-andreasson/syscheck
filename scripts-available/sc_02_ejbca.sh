@@ -21,21 +21,7 @@ SCRIPTID=02
 NO_OF_ERR=3
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -c|--cert )   CERTFILE=$2; shift 2;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
@@ -51,12 +37,12 @@ elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
 
         result=$( ${CHECKTOOL} "${URL}" --silent --show-error --connect-timeout ${EJBCA_TIMEOUT} --max-time ${EJBCA_TIMEOUT} --retry 1 --output $OUTPUT 2>&1)
         if [ $? -ne 0 ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "$result"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$result"
                 exit
         fi
 
 else
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
@@ -66,13 +52,13 @@ OKOUTPUT=$(cat $OUTPUT | grep ALLOK )
 ERROROUTPUT=$(cat $OUTPUT | grep ERROR)
 
 if [ "x$OKOUTPUT" != "x" ]; then
-       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "$FULLOUTPUT"
+       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$FULLOUTPUT"
 elif [ "x$ERROROUTPUT" != "x" ]; then
-       printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "$FULLOUTPUT"
+       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FULLOUTPUT"
 elif [ "x$FULLOUTPUT" = "x" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "${DESCR[4]}" $FULLOUTPUT
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$FULLOUTPUT"
 else
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "${DESCR[4]}" $FULLOUTPUT
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$FULLOUTPUT"
 fi
 
 rm -f $OUTPUT

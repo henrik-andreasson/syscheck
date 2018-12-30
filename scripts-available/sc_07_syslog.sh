@@ -21,20 +21,7 @@ SCRIPTID=07
 NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
@@ -43,13 +30,12 @@ send_syslog_msg(){
 	chkvalue="${RANDOM}_$$"
 	logger -p local0.notice "$0, syscheck test message: $chkvalue"
 	sleep 1
-	tail -1000 $localsyslogfile | grep "$0, syscheck test message: $chkvalue"   > /dev/null
+	tail -1000 $localsyslogfile 2>&1 | grep "$0, syscheck test message: $chkvalue"  2>&1 > /dev/null
 	if [ $? -ne 0 ] ; then
-                printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[1]} "${DESCR[1]}"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}"
 		exit 1;
 	else
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[4]} "${DESCR[4]}"
-
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "${DESCR[3]}"
 	fi
 }
 
@@ -58,7 +44,7 @@ send_syslog_msg(){
 syslog=$($SYSCHECK_HOME/lib/proc_checker.sh $pidfile $procname)
 
 if [ "x$syslog" = "x" ] ; then
-  printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}"
+  printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
 	exit 2;
 fi
 

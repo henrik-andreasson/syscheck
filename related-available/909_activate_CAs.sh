@@ -58,7 +58,7 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
         if [ "x$error" = "x"  ] ; then
             printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "$NAME"
         else
-            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "$NAME" "$error"
+            printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$NAME" "$error"
 
         fi
         echo " --- "

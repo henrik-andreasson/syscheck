@@ -52,9 +52,9 @@ for (( i=0; i < ${#FileName[@]} ; i++ )){
 		printtoscreen $SYSCHECK_HOME/related-available/917_archive_file.sh ${KEEPORG} "${fn}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 		$SYSCHECK_HOME/related-available/917_archive_file.sh ${KEEPORG} "${fn}" ${ToServer0[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 		if [ $? != 0 ] ; then
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "${DESCR[2]}" "${fn}" "${ToServerDir[$i]}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}" "${fn}" "${ToServerDir[$i]}"
 		else
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "${DESCR[1]}" "${fn}" "${ToServerDir[$i]}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" "${fn}" "${ToServerDir[$i]}"
 		fi
 	fi
 
@@ -62,9 +62,9 @@ for (( i=0; i < ${#FileName[@]} ; i++ )){
 		printtoscreen $SYSCHECK_HOME/related-available/917_archive_file.sh "${fn}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 		$SYSCHECK_HOME/related-available/917_archive_file.sh "${fn}" ${ToServer1[$i]} ${ToServerDir[$i]} ${ToUser[$i]}
 		if [ $? != 0 ] ; then
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "${DESCR[2]}" "${fn}" "${ToServerDir[$i]}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}" "${fn}" "${ToServerDir[$i]}"
 		else
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "${DESCR[1]}" "${fn}" "${ToServerDir[$i]}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" "${fn}" "${ToServerDir[$i]}"
 		fi
 	fi
  done

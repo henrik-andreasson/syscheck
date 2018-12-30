@@ -21,19 +21,7 @@ SCRIPTID=01
 NO_OF_ERR=3
 initscript $SCRIPTID $NO_OF_ERR
 
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
@@ -42,26 +30,26 @@ diskusage () {
 	LIMIT=$2
 
 	if [ "x${FILESYSTEM}" = "x" ] ; then
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[3]} "${DESCR[3]}" "No filesystem specified"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "No filesystem specified"
 		return -1
 	fi
 	if [ "x${LIMIT}" = "x" ] ; then
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[3]} "${DESCR[3]}" "No limit specified"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "No limit specified"
 		return -1
 	fi
 
 	DFPH=`df -Ph $FILESYSTEM 2>&1`
 
-	if [ $retcode -ne 0 ] ; then
-		printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[3]} "${DESCR[3]}" "$FILESYSTEM" "$DFPH"
+	if [ $? -ne 0 ] ; then
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$FILESYSTEM" -2 "$DFPH"
 	else
 
 		PERCENT=`df -Ph $FILESYSTEM | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
 
 		if [ $PERCENT -gt $LIMIT ] ; then
-       	         	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $ERROR ${ERRNO[2]} "${DESCR[2]}" "$FILESYSTEM" "$PERCENT" "$LIMIT"
+       	         	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$LIMIT"
 		else
-                	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]}  "${DESCR[1]}" "$FILESYSTEM" "$PERCENT" "$LIMIT"
+                	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]}  -d "${DESCR[1]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$LIMIT"
 		fi
 	fi
 }

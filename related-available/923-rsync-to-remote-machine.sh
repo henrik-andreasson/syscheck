@@ -46,7 +46,7 @@ done
 
 # arg1, if you use regexps, be sure to use "" , ex: "*.txt" on the command line
 if [ "x$FILES" = "x" ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "${DESCR[2]}"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}"
     exit
 else
     FILES="$1"
@@ -54,14 +54,14 @@ fi
 
 # arg2, SSHHOST is MANDATORY, to which host to rsync the files
 if [ "x$SSHHOST" = "x"  ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}"
 	exit
 fi
 
 runresult=`rsync --recursive ${RSYNC_OPTIONS} -e "ssh ${SSHFROMKEY} ${SSHTOUSER}" ${FILES} ${SSHHOST}:${SSHDIR} 2>&1`
 if [ $? -eq 0 ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "${DESCR[1]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}"
 else
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "${DESCR[4]}" "$runresult"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "${DESCR[4]}" "$runresult"
 	exit -1
 fi

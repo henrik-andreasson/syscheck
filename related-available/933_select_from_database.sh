@@ -48,9 +48,9 @@ for (( j=0; j < ${#SQL_SELECT[@]} ; j++ )){
 	echo "${SQL_SELECT[$j]}" | $MYSQL_BIN ${DB_NAME} -u ${DB_USER} --password="${DB_PASSWORD}" --skip-column-names >  ${SYSCHECK_HOME}/var/${OUTFILE[$j]}
 
 	if [ $? -eq 0 ] ; then
-	        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[1]} "${DESCR[1]}" "${SQL_DESC[$j]}"
+	        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" "${SQL_DESC[$j]}"
 	else
-	        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[2]} "${DESCR[2]}" "${SQL_DESC[$j]}"
+	        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}" "${SQL_DESC[$j]}"
 	fi
 
 	echo "### ${SQL_DESC[$j]} ###" >> ${SYSCHECK_HOME}/var/${SQL_SUMMARY_FILE}

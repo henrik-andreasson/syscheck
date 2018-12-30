@@ -41,7 +41,7 @@ done
 # main part of script
 
 if [ "x$BACKUPFILE" = "x" ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${DESCR[4]} "$BAK_DESCR[4]"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${DESCR[4]} "$BAK_DESCR[4]"
 	exit
 fi
 
@@ -58,7 +58,7 @@ echo "now we'll backup the current database before we restore the one you specif
 $SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s
 
 if [ $? -ne 0 ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[1]} "${DESCR[1]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[1]} "${DESCR[1]}"
 	exit
 fi
 
@@ -66,7 +66,7 @@ fi
 echo "restoring the db from $BACKUPFILE"
 zcat "$BACKUPFILE" | $MYSQL_BIN ${DB_NAME} -u root --password="$MYSQLROOT_PASSWORD"
 if [ $? -eq 0 ] ; then
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $INFO ${ERRNO[2]} "${DESCR[2]}" "$1"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[2]} "${DESCR[2]}" "$1"
 else
-	printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "$1" "${BACKUPFILE}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$1" "${BACKUPFILE}"
 fi
