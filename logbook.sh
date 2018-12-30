@@ -34,11 +34,6 @@ printf "$0: ${LOGBOOK_GREETING}\n\n"
 ExecutingUserName=$(whoami)
 ExecutingUserId=$(id -u)
 
-if [ "x${ExecutingUserName}" = "xroot" ] ; then
-    printf " ${DONT_RUN_AS_ROOT}\n"
-    exit
-fi
-
 
 # how many info/warn/error messages
 NO_OF_ERR=1
@@ -61,6 +56,12 @@ while true; do
 done
 
 # main part of script
+
+if [ "x${ExecutingUserName}" = "xroot" ] ; then
+    printf " ${DONT_RUN_AS_ROOT}\n"
+    exit
+fi
+
 
 DAYS=1
 
