@@ -73,7 +73,7 @@ setup(){
   [ "${line}" != "" ]
 }
 @test "all scripts - 18 sqlselect" {
-  line=$(echo "${SYSCHECK_CONSOLE_DATA}"  | egrep "^18-" | egrep "sqlselect")
+  line=$(echo "${SYSCHECK_CONSOLE_DATA}"  | egrep "^18-" | egrep "sql_select")
   [ "${line}" != "" ]
 }
 @test "all scripts - 19 alive" {
