@@ -65,8 +65,8 @@ initscript(){
    # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
    SCRIPTINDEX=00 ; export SCRIPTINDEX
 
-   # extra output for operators troubleshooting
-   PRINTVERBOSESCREEN=0 ; export PRINTVERBOSESCREEN
+   # default is no output, ie silent/cron mode
+   PRINTTOSCREEN=${PRINTTOSCREEN:-0} ; export PRINTTOSCREEN
 
 }
 

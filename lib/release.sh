@@ -15,7 +15,7 @@ schelp(){
 
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hp:v:og" --long "help,program:,version:,outpath:,gittag,sign" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "hp:v:ogs" --long "help,program:,version:,outpath:,gittag,sign" -- "$@"`
 eval set -- "$INPUTARGS"
 
 while true; do
