@@ -12,3 +12,5 @@ test/bats-core/bin/bats test/help.bats
 test/bats-core/bin/bats test/help-scripts.bats
 
 test/bats-core/bin/bats test/test-scripts.bats
+
+test/bats-core/bin/bats test/test-syscheck-console.bats
