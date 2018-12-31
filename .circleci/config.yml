@@ -44,3 +44,7 @@ jobs:
       - run:
           name: test scripts
           command: test/bats-core/bin/bats test/test-scripts.bats
+
+      - run:
+          name: test scripts
+          command: test/bats-core/bin/bats test/test-syscheck-console.bats
