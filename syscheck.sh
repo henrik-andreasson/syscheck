@@ -25,11 +25,11 @@ PATH=$SYSCHECK_HOME:$PATH
 
 export PATH
 
-PRINTTOSCREEN=0
-PRINTVERBOSESCREEN=0
+PRINTTOSCREEN=${PRINTTOSCREEN:-0}
+PRINTVERBOSESCREEN=${PRINTVERBOSESCREEN:-0}
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "hsvct" --long "help,screen,verbose,testall" -- "$@"`
 if [ $? != 0 ] ; then schelp ; fi
 eval set -- "$INPUTARGS"
 
@@ -37,6 +37,7 @@ while true; do
   case "$1" in
     -s|--screen  ) PRINTTOSCREEN=1; shift;;
     -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
+    -t|--testall ) TESTALL=1 ; shift;;
     -h|--help )   schelp;exit;shift;;
     --) break;;
   esac
@@ -45,6 +46,13 @@ done
 export PRINTTOSCREEN
 export PRINTVERBOSESCREEN
 export SAVELASTSTATUS
+
+if [ "x$TESTALL" == "x1" ] ; then
+  for file in ${SYSCHECK_HOME}/scripts-available/sc_* ; do
+  	$file
+  done
+  exit
+fi
 
 rm -f ${SYSCHECK_HOME}/var/last_status
 date > ${SYSCHECK_HOME}/var/last_status

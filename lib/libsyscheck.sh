@@ -59,14 +59,15 @@ initscript(){
    done
    export ERRNO
 
-   # default is no output, ie silent/cron mode
-   PRINTTOSCREEN=0 ; export PRINTTOSCREEN
 
    # Index is used to uniquely identify one test done by the script (a harddrive, crl or cert)
    SCRIPTINDEX=00 ; export SCRIPTINDEX
 
    # default is no output, ie silent/cron mode
    PRINTTOSCREEN=${PRINTTOSCREEN:-0} ; export PRINTTOSCREEN
+
+   # default is no output, ie silent/cron mode
+   PRINTVERBOSESCREEN=${PRINTVERBOSESCREEN:-0} ; export PRINTVERBOSESCREEN
 
 }
 
