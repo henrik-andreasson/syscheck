@@ -29,8 +29,8 @@ else
 fi
 
 
-yum install -y ruby-devel gcc make rpm-build rubygems
-gem install --no-ri --no-rdoc fpm
+sudo yum install -y ruby-devel gcc make rpm-build rubygems
+sudo gem install --no-ri --no-rdoc fpm
 
 
 mkdir -p "$WORK_PATH"
