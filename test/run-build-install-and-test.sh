@@ -27,6 +27,12 @@ if [ "x$4" != "x" ] ; then
 else
     WORK_PATH="/tmp/sysceck"
 fi
+
+
+yum install -y ruby-devel gcc make rpm-build rubygems
+gem install --no-ri --no-rdoc fpm
+
+
 mkdir -p "$WORK_PATH"
 
 cp -ra $SOURCE_PATH/* "$WORK_PATH"
@@ -65,28 +71,28 @@ echo "running test suite 1"                             | tee -a /$RESULT_PATH/t
 test/bats-core/bin/bats test/help.bats                  | tee -a  /$RESULT_PATH/test-reports/test_1_help.txt
 ts1_end=$(date +"%s")
 ts1_delta=$(expr $ts1_end - $ts1_start )
-echo "test suite 1 done in $ts1_delta sec"                      | tee -a /$RESULT_PATH/test-reports/summary.txt
+echo "test suite 1 done in $ts1_delta sec"               | tee -a /$RESULT_PATH/test-reports/summary.txt
 
 ts2_start=$(date +"%s")
 echo "running test suite 2"                             | tee -a /$RESULT_PATH/test-reports/summary.txt
 test/bats-core/bin/bats test/help-scripts.bats          | tee -a  /$RESULT_PATH/test-reports/test_2_help_scripts.txt
 ts2_end=$(date +"%s")
 ts2_delta=$(expr $ts2_end - $ts2_start )
-echo "test suite 2 done in $ts2_delta sec"                      | tee -a /$RESULT_PATH/test-reports/summary.txt
+echo "test suite 2 done in $ts2_delta sec"              | tee -a /$RESULT_PATH/test-reports/summary.txt
 
 ts3_start=$(date +"%s")
 echo "running test suite 3"                             | tee -a /$RESULT_PATH/test-reports/summary.txt
 test/bats-core/bin/bats test/test-scripts.bats          | tee -a /$RESULT_PATH/test-reports/test_3_scripts.txt
 ts3_end=$(date +"%s")
 ts3_delta=$(expr $ts3_end - $ts3_start)
-echo "test suite 3 done in $ts3_delta sec"                      | tee -a /$RESULT_PATH/test-reports/summary.txt
+echo "test suite 3 done in $ts3_delta sec"              | tee -a /$RESULT_PATH/test-reports/summary.txt
 
 ts4_start=$(date +"%s")
 echo "running test suite 4"                             | tee -a /$RESULT_PATH/test-reports/summary.txt
 test/bats-core/bin/bats test/test-syscheck-console.bats | tee -a  /$RESULT_PATH/test-reports/test_4_console.txt
 ts4_end=$(date +"%s")
 ts4_delta=$(expr $ts4_end - $ts4_start )
-echo "test suite 4 done in $ts4_delta sec"                      | tee -a /$RESULT_PATH/test-reports/summary.txt
+echo "test suite 4 done in $ts4_delta sec"              | tee -a /$RESULT_PATH/test-reports/summary.txt
 
 echo "end date"                                         | tee -a /$RESULT_PATH/test-reports/summary.txt
 date                                                    | tee -a /$RESULT_PATH/test-reports/summary.txt
