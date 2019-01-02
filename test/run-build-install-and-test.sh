@@ -28,10 +28,10 @@ else
     WORK_PATH="/tmp/sysceck"
 fi
 
-
-sudo yum install -y ruby-devel gcc make rpm-build rubygems
-sudo gem install --no-ri --no-rdoc fpm
-
+if [ "x$5" == "install" ] ; then
+  yum install -y ruby-devel gcc make rpm-build rubygems
+  gem install --no-ri --no-rdoc fpm
+fi
 
 mkdir -p "$WORK_PATH"
 
