@@ -16,6 +16,7 @@ fi
 
 if [ "x$3" != "x" ] ; then
   RESULT_PATH=$3
+
 else
   echo "arg3 should be the where to put resulting packages and reports"
   exit
@@ -44,7 +45,7 @@ rm -rf $RESULT_PATH/test-reports/
 rm -rf $RESULT_PATH/syscheck*rpm
 rm -rf $RESULT_PATH/syscheck*zip
 rm -rf $RESULT_PATH/syscheck*deb
-mkdir $RESULT_PATH/test-reports/
+mkdir -p $RESULT_PATH/test-reports/
 
 echo "test report of syscheck"                          | tee -a $RESULT_PATH/test-reports/summary.txt
 echo                                                    | tee -a $RESULT_PATH/test-reports/summary.txt
