@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x 
 
 SOURCE_PATH=.
 INSTALL_PATH="/opt/syscheck"
