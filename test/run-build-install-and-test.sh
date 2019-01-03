@@ -7,18 +7,18 @@ WORK_PATH="/tmp/sysceck"
 SUDO=""
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --long "source:,results:,install:,work:,deps,sudo" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
+INPUTARGS=`/usr/bin/getopt --options "s:r:i:w:do" --long "source:,results:,install:,work:,deps,sudo" -- "$@"`
+if [ $? != 0 ] ; then exit ; fi
 eval set -- "$INPUTARGS"
 
 while true; do
   case "$1" in
-    --source ) SOURCE_PATH=$2 ; shift 2;;
-    --results ) RESULT_PATH=$2 ; shift 2;;
-    --install ) INSTALL_PATH=$2 ; shift 2;;
-    --work )    WORK_PATH=$2 ; shift;;
-    --deps )    INSTALL_DEPS=1 ; shift;;
-    --sudo )    SUDO="sudo" ; shift;;
+    -o|--sudo )    SUDO="sudo"     ; shift;;
+    -s|--source )  SOURCE_PATH=$2  ; shift 2;;
+    -r|--results ) RESULT_PATH=$2  ; shift 2;;
+    -i|--install ) INSTALL_PATH=$2 ; shift 2;;
+    -w|--work )    WORK_PATH=$2    ; shift 2;;
+    -d|--deps )    INSTALL_DEPS=1  ; shift;;
     --) break;;
   esac
 done
