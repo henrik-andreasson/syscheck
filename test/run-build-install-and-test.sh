@@ -66,7 +66,7 @@ is_syscheck_installed=$(rpm -q syscheck)
 if [ $? -eq 0 ] ; then
   rpm -e syscheck
 fi
-run rpm -Uvh /results/syscheck-snapshot-1.x86_64.rpm
+yum install -y /results/syscheck-snapshot-1.x86_64.rpm
 
 install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
