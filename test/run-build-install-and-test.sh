@@ -1,35 +1,29 @@
 #!/bin/bash
 
-if [ "x$1" != "x" ] ; then
-  SOURCE_PATH=$1
-else
-  echo "arg1 should be the path to source"
-  exit
-fi
+SOURCE_PATH=.
+INSTALL_PATH="/opt/syscheck"
+RESULT_PATH="results"
+WORK_PATH="/tmp/sysceck"
 
-if [ "x$2" != "x" ] ; then
-  INSTALL_PATH=$2
-else
-  echo "arg2 should be the where syscheck is installed"
-  exit
-fi
+# get command line arguments
+INPUTARGS=`/usr/bin/getopt --long "source:,results:,install:,work:,deps,sudo" -- "$@"`
+if [ $? != 0 ] ; then schelp ; fi
+eval set -- "$INPUTARGS"
 
-if [ "x$3" != "x" ] ; then
-  RESULT_PATH=$3
+while true; do
+  case "$1" in
+    --source ) SOURCE_PATH=$2 ; shift 2;;
+    --results ) RESULT_PATH=$2 ; shift 2;;
+    --install ) INSTALL_PATH=$2 ; shift 2;;
+    --work )    WORK_PATH=$2 ; shift 2;;
+    --deps )    INSTALL_DEPS=1 ; shift;;
+    --sudo )    SUDO=sudo ; shift;;
+    --) break;;
+  esac
+done
 
-else
-  echo "arg3 should be the where to put resulting packages and reports"
-  exit
-fi
 
-
-if [ "x$4" != "x" ] ; then
-  WORK_PATH=$4
-else
-    WORK_PATH="/tmp/sysceck"
-fi
-
-if [ "x$5" == "installdeps" ] ; then
+if [ "x$INSTALL_DEPS" == "x1" ] ; then
   yum install -y ruby-devel gcc make rpm-build rubygems
   gem install --no-ri --no-rdoc fpm
 fi
@@ -59,15 +53,14 @@ rel_end=$(date +"%s")
 rel_delta=$(expr $rel_end - $rel_start )
 echo "release step: done in $rel_delta sec"              | tee -a $RESULT_PATH/test-reports/summary.txt
 
-install_start=$(date +"%s")
-#test/bats-core/bin/bats test/test-install.bats           | tee -a  $RESULT_PATH/test-reports/test_install.txt
 
+echo "install build start"                  | tee -a $RESULT_PATH/test-reports/summary.txt
+install_start=$(date +"%s")
 is_syscheck_installed=$(rpm -q syscheck)
 if [ $? -eq 0 ] ; then
-  rpm -e syscheck
+  $SUDO rpm -e syscheck
 fi
-yum install -y /results/syscheck-snapshot-1.x86_64.rpm
-
+$SUDO yum install -y /results/syscheck-snapshot-1.x86_64.rpm
 install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
 echo "install step: done in $install_delta sec"          | tee -a $RESULT_PATH/test-reports/summary.txt
