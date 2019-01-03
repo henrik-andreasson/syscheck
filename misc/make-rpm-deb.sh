@@ -31,6 +31,9 @@ done
 rm -f *rpm
 rm -f *deb
 
-fpm -s dir -t rpm -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package=".." "$SOURCE_PATH"
+RPM_PKG="OUTPATH/${NAME}-${VERSION}.noarch.rpm"
+DEB_PKG="OUTPATH/${NAME}_${VERSION}_noarch.deb"
 
-fpm -s dir -t deb -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package=".." "$SOURCE_PATH"
+fpm -s dir -t rpm -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package="${RPM_PKG}" "$SOURCE_PATH"
+
+fpm -s dir -t deb -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package="${DEB_PKG}" "$SOURCE_PATH"
