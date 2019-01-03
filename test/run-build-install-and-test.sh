@@ -2,7 +2,7 @@
 
 SOURCE_PATH=.
 INSTALL_PATH="/opt/syscheck"
-RESULT_PATH="results"
+RESULT_PATH="results/"
 WORK_PATH="/tmp/sysceck"
 SUDO=""
 
