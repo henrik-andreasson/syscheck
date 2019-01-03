@@ -28,7 +28,7 @@ else
     WORK_PATH="/tmp/sysceck"
 fi
 
-if [ "x$5" == "install" ] ; then
+if [ "x$5" == "installdeps" ] ; then
   yum install -y ruby-devel gcc make rpm-build rubygems
   gem install --no-ri --no-rdoc fpm
 fi
@@ -59,7 +59,14 @@ rel_delta=$(expr $rel_end - $rel_start )
 echo "release step: done in $rel_delta sec"              | tee -a $RESULT_PATH/test-reports/summary.txt
 
 install_start=$(date +"%s")
-test/bats-core/bin/bats test/test-install.bats           | tee -a  $RESULT_PATH/test-reports/test_install.txt
+#test/bats-core/bin/bats test/test-install.bats           | tee -a  $RESULT_PATH/test-reports/test_install.txt
+
+is_syscheck_installed=$(rpm -q syscheck)
+if [ $? -eq 0 ] ; then
+  rpm -e syscheck
+fi
+run rpm -Uvh /results/syscheck-snapshot-1.x86_64.rpm
+
 install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
 echo "install step: done in $install_delta sec"          | tee -a $RESULT_PATH/test-reports/summary.txt
