@@ -1,9 +1,10 @@
-#!/bin/bash -x 
+#!/bin/bash -x
 
 SOURCE_PATH=.
 INSTALL_PATH="/opt/syscheck"
 RESULT_PATH="results"
 WORK_PATH="/tmp/sysceck"
+SUDO=""
 
 # get command line arguments
 INPUTARGS=`/usr/bin/getopt --long "source:,results:,install:,work:,deps,sudo" -- "$@"`
@@ -15,9 +16,9 @@ while true; do
     --source ) SOURCE_PATH=$2 ; shift 2;;
     --results ) RESULT_PATH=$2 ; shift 2;;
     --install ) INSTALL_PATH=$2 ; shift 2;;
-    --work )    WORK_PATH=$2 ; shift 2;;
+    --work )    WORK_PATH=$2 ; shift;;
     --deps )    INSTALL_DEPS=1 ; shift;;
-    --sudo )    SUDO=sudo ; shift;;
+    --sudo )    SUDO="sudo" ; shift;;
     --) break;;
   esac
 done
