@@ -23,6 +23,9 @@ while true; do
   esac
 done
 
+pwd
+
+find . -ls
 
 if [ "x$INSTALL_DEPS" == "x1" ] ; then
   yum install -y ruby-devel gcc make rpm-build rubygems
@@ -67,6 +70,7 @@ install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
 echo "install step: done in $install_delta sec"          | tee -a $RESULT_PATH/test-reports/summary.txt
 
+find . -ls
 
 
 ts1_start=$(date +"%s")
