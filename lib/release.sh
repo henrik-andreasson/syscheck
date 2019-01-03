@@ -108,7 +108,7 @@ if [ "x$SIGN" == "x1" ] ; then
 
 fi
 
-cd ${progname}-${rel} ; ./misc/make-rpm-deb.sh -v ${rel}
+cd ${progname}-${rel} ; ./misc/make-rpm-deb.sh -v ${rel} -o "${OUTPATH}"
 
 
 cd $orgdir

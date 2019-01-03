@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 SOURCE_PATH=.
 INSTALL_PATH="/opt/syscheck"
@@ -50,6 +50,7 @@ date                                                    | tee -a $RESULT_PATH/te
 echo "release build start"                  | tee -a $RESULT_PATH/test-reports/summary.txt
 rel_start=$(date +"%s")
 ./lib/release.sh  --program syscheck --version snapshot --outpath $RESULT_PATH | tee -a $RESULT_PATH/test-reports/build-log.txt
+ls -la $RESULT_PATH
 rel_end=$(date +"%s")
 rel_delta=$(expr $rel_end - $rel_start )
 echo "release step: done in $rel_delta sec"              | tee -a $RESULT_PATH/test-reports/summary.txt
@@ -91,7 +92,7 @@ echo "test suite 3 done in $ts3_delta sec"              | tee -a $RESULT_PATH/te
 
 ts4_start=$(date +"%s")
 echo "running test suite 4"                             | tee -a $RESULT_PATH/test-reports/summary.txt
-test/bats-core/bin/bats test/test-syscheck-console.bats | tee -a  $RESULT_PATH/test-reports/test_4_console.txt
+$SUDO test/bats-core/bin/bats test/test-syscheck-console.bats | tee -a  $RESULT_PATH/test-reports/test_4_console.txt
 ts4_end=$(date +"%s")
 ts4_delta=$(expr $ts4_end - $ts4_start )
 echo "test suite 4 done in $ts4_delta sec"              | tee -a $RESULT_PATH/test-reports/summary.txt
