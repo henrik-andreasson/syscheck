@@ -31,6 +31,6 @@ done
 rm -f *rpm
 rm -f *deb
 
-fpm -s dir -t rpm -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package="$OUTPUT" "$SOURCE_PATH"
+fpm -s dir -t rpm -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package=".." "$SOURCE_PATH"
 
-fpm -s dir -t deb -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package="$OUTPUT" "$SOURCE_PATH"
+fpm -s dir -t deb -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package=".." "$SOURCE_PATH"
