@@ -63,7 +63,7 @@ is_syscheck_installed=$(rpm -q syscheck)
 if [ $? -eq 0 ] ; then
   $SUDO rpm -e syscheck
 fi
-$SUDO rpm -Uvh $RESULT_PATH/syscheck-snapshot-1.x86_64.rpm
+$SUDO rpm -Uvh $RESULT_PATH/syscheck-snapshot.noarch.rpm
 install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
 echo "install step: done in $install_delta sec"          | tee -a $TESTRESULT_PATH/summary.txt
