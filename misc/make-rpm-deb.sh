@@ -31,8 +31,8 @@ done
 rm -f *rpm
 rm -f *deb
 
-RPM_PKG="${OUTPATH}/${NAME}-${VERSION}.noarch.rpm"
-DEB_PKG="${OUTPATH}/${NAME}_${VERSION}_noarch.deb"
+RPM_PKG="${OUTPUT}/${NAME}-${VERSION}.noarch.rpm"
+DEB_PKG="${OUTPUT}/${NAME}_${VERSION}_noarch.deb"
 
 fpm -s dir -t rpm -n ${NAME} -v ${VERSION} --url "${URL}" --vendor "${VENDOR}" --maintainer "${MAINTAINER}" --description "${DESCRIPTION}" ${DIRECTORIES}  --force  --exclude=".git" --config-files /opt/syscheck/config/ --prefix=/opt/syscheck --package="${RPM_PKG}" "$SOURCE_PATH"
 
