@@ -98,4 +98,4 @@ ts4_delta=$(expr $ts4_end - $ts4_start )
 echo "test suite 4 done in $ts4_delta sec"              | tee -a $TESTRESULT_PATH/summary.txt
 
 echo "end date"                                         | tee -a $TESTRESULT_PATH/summary.txt
-date                                                    | tee -a $TESTRESULT_PATH/test-reports/summary.txt
+date                                                    | tee -a $TESTRESULT_PATH/summary.txt
