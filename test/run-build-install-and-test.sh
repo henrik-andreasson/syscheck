@@ -26,22 +26,23 @@ while true; do
 done
 
 
-ABS_RESULT_PATH="$(cd "$(dirname "$RESULT_PATH")"; pwd)/$(basename "$RESULT_PATH")"
-ABS_TEST_PATH="$(cd "$(dirname "$TESTRESULT_PATH")"; pwd)/$(basename "$TESTRESULT_PATH")"
-ABS_WORK_PATH="$(cd "$(dirname "$WORK_PATH")"; pwd)/$(basename "$WORK_PATH")"
+ABS_RESULT_PATH=$(echo "$(cd "$(dirname "$RESULT_PATH")"; pwd)/$(basename "$RESULT_PATH")")
+ABS_TESTRESULT_PATH=$(echo "$(cd "$(dirname "$TESTRESULT_PATH")"; pwd)/$(basename "$TESTRESULT_PATH")")
+ABS_WORK_PATH=$(echo "$(cd "$(dirname "$WORK_PATH")"; pwd)/$(basename "$WORK_PATH")")
 
 if [ "x$INSTALL_DEPS" == "x1" ] ; then
   yum install -y ruby-devel gcc make rpm-build rubygems
   gem install --no-ri --no-rdoc fpm
 fi
 
-if [ "x${ABS_WORK_PATH}" != "x." ] ; then
+if [ "x${WORK_PATH}" != "x." ] ; then
   mkdir -p "${ABS_WORK_PATH}"
-  cp -ra "${ABS_SOURCE_PATH}/"* "${ABS_WORK_PATH}"
+  cp -ra "${SOURCE_PATH}/"* "${ABS_WORK_PATH}"
   cd "${ABS_WORK_PATH}"
 fi
 
-export SYSCHECK_HOME=$INSTALL_PATH
+SYSCHECK_HOME="$INSTALL_PATH"
+export SYSCHECK_HOME
 rm -rf $ABS_TESTRESULT_PATH/
 rm -rf $ABS_RESULT_PATH/syscheck*rpm
 rm -rf $ABS_RESULT_PATH/syscheck*zip

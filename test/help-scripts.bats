@@ -171,4 +171,3 @@
 	line0=$(echo "${lines[0]}"  | grep "36 - Dell Server system components")
 	[ "${lines[0]}" = "$line0" ]
 }
-
