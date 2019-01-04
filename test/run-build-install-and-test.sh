@@ -25,20 +25,16 @@ while true; do
   esac
 done
 
-pwd
-
-find . -ls
-
 if [ "x$INSTALL_DEPS" == "x1" ] ; then
   yum install -y ruby-devel gcc make rpm-build rubygems
   gem install --no-ri --no-rdoc fpm
 fi
 
-mkdir -p "$WORK_PATH"
-
-cp -ra $SOURCE_PATH/* "$WORK_PATH"
-
-cd "$WORK_PATH"
+if [ "x${WORK_PATH}" != "x." ] ; then
+  mkdir -p "$WORK_PATH"
+  cp -ra $SOURCE_PATH/* "$WORK_PATH"
+  cd "$WORK_PATH"
+fi
 
 export SYSCHECK_HOME=$INSTALL_PATH
 rm -rf $TESTRESULT_PATH/
@@ -56,7 +52,6 @@ date                                                    | tee -a $TESTRESULT_PAT
 echo "release build start"                              | tee -a $TESTRESULT_PATH/summary.txt
 rel_start=$(date +"%s")
 ./lib/release.sh  --program syscheck --version snapshot --outpath $RESULT_PATH | tee -a $TESTRESULT_PATH/build-log.txt
-ls -la $RESULT_PATH
 rel_end=$(date +"%s")
 rel_delta=$(expr $rel_end - $rel_start )
 echo "release step: done in $rel_delta sec"              | tee -a $TESTRESULT_PATH/summary.txt
@@ -72,8 +67,6 @@ $SUDO rpm -Uvh $RESULT_PATH/syscheck-snapshot-1.x86_64.rpm
 install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
 echo "install step: done in $install_delta sec"          | tee -a $TESTRESULT_PATH/summary.txt
-
-find . -ls
 
 
 ts1_start=$(date +"%s")
