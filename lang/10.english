@@ -1,0 +1,23 @@
+SCRIPT_HUMAN_NAME="Query OCSP Responder"
+HELP="Check the status of OCSP Responder"
+
+DESCR[0]="OCSP %s ok"
+HELP[0]="all ok"
+
+DESCR[1]="Responder cert calculation failed (%s)"
+HELP[1]="either the server is not up, it don't produce OCSP Responses:s"
+
+DESCR[2]="Responder cert ok: %s minutes remains: %s"
+HELP[2]="No action is needed"
+
+DESCR[3]="Responder cert has passed validity warning level %s minutes remains: %s"
+HELP[3]="Schedule a update of Responder cert"
+
+DESCR[4]="Responder cert has passed validity ERROR level %s minutes remains: %s"
+HELP[4]="Urgently replace the OCSP responder certificate"
+
+DESCR[5]="Responder cert has PASSED EXPIRY date %s minutes remains: %s"
+HELP[5]="Urgently replace the OCSP responder certificate"
+
+DESCR[6]="Response status ok: %s"
+HELP[6]="this ocsp response is ok"
