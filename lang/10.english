@@ -10,14 +10,26 @@ HELP[1]="either the server is not up, it don't produce OCSP Responses:s"
 DESCR[2]="Responder cert ok: %s minutes remains: %s"
 HELP[2]="No action is needed"
 
-DESCR[3]="Responder cert has passed validity warning level %s minutes remains: %s"
+DESCR[3]="Responder cert has passed validity warning level %s : %s"
 HELP[3]="Schedule a update of Responder cert"
 
-DESCR[4]="Responder cert has passed validity ERROR level %s minutes remains: %s"
+DESCR[4]="Responder cert has passed validity ERROR level %s : %s"
 HELP[4]="Urgently replace the OCSP responder certificate"
 
-DESCR[5]="Responder cert has PASSED EXPIRY date %s minutes remains: %s"
+DESCR[5]="Responder cert has PASSED EXPIRY date %s : %s"
 HELP[5]="Urgently replace the OCSP responder certificate"
 
 DESCR[6]="Response status ok: %s"
 HELP[6]="this ocsp response is ok"
+
+DESCR[7]="OCSP Summary ERROR msg: %s errors: %s warnings: %s"
+HELP[7]="search for $SCRIPTID in logs for more detailed info or run syscheck manually"
+
+DESCR[8]="OCSP Summary WARNING msg: %s errors: %s warnings: %s"
+HELP[8]="search for $SCRIPTID in logs for more detailed info or run syscheck manually"
+
+DESCR[9]="OCSP Summary OK"
+HELP[9]="this ocsp summary is ok"
+
+DESCR[10]="OCSP response not ok %s"
+HELP[10]="ocsp response not ok"
