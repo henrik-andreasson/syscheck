@@ -83,7 +83,7 @@ send_mess_to_monitoring(){
 #    curl -u 'status_update:mysecret' -H 'content-type: application/json' -d '{"host_name":"example_host_1","service_description":"Example service", "status_code":"2","plugin_output":"Example issue has occurred"}' 'https://monitorserver/api/command/PROCESS_SERVICE_CHECK_RESULT'
         check_source=$xHOSTNAME
         plugin_output=$MESSAGE
-        check_name="sc_$SCRIPTNAME_$SCRIPTID_$SCRIPTINDEX"
+        check_name="sc_${SCRIPTNAME}_${SCRIPTID}_${SCRIPTINDEX}"
 
         sendresult=$(curl --silent --show-error -u "${OP5_USER}:${OP5_PASS}" --no-progress-bar -H 'content-type: application/json' -d "{\"host_name\":\"$xHOSTNAME\",\"service_description\":\"$check_name\", \"status_code\":\"$status_code\",\"plugin_output\":\"$MESSAGE\"}" "${OP5_API_URL}/PROCESS_SERVICE_CHECK_RESULT" 2>&1)
 
@@ -102,7 +102,8 @@ send_mess_to_monitoring(){
 
         check_source=$xHOSTNAME
         plugin_output=$MESSAGE
-        check_name="sc_$SCRIPTID_$SCRIPTINDEX"
+        check_name="sc_${SCRIPTNAME}_${SCRIPTID}_${SCRIPTINDEX}"
+#        check_name="sc_$SCRIPTID_$SCRIPTINDEX"
         curl -k -s -u "${ICINGA_USER}:${ICINGA_PASS}" -H 'Accept: application/json' -X POST "${ICINGA_API_URL}/process-check-result?host=${xHOSTNAME}" -d '{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }'
 
     fi
