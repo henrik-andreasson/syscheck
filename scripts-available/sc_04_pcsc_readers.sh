@@ -25,21 +25,19 @@ default_script_getopt $*
 
 # main part of script
 
-CMD=$($SYSCHECK_HOME/lib/list_reader.pl 2>&1)
-ERRCHK=$(echo $CMD| grep "locate Chipcard/PCSC.pm")
+CMD=$($SYSCHECK_HOME/lib/list-pcsc-readers.py 2>&1)
+ERRCHK=$(echo $CMD| grep "ModuleNotFoundError: No module named")
 
 if [ "x$ERRCHK" != "x" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$CMD"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${ERRCHK}"
 	exit
 fi
 
-STATUS=$(echo $CMD | perl -ane 'm/Number\ of\ attatched\ readers:\ (\d+)/gio, print $1') # todo not use perl
+CURRENT_NUMBER_OF_READERS=$(echo "${CMD}" | head -1 | cut -f2 -d\: )
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-if [ "$PCSC_NUMBER_OF_READERS" = "$STATUS" ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$STATUS"
-
+if [ "$PCSC_NUMBER_OF_READERS" == "$CURRENT_NUMBER_OF_READERS" ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${CURRENT_NUMBER_OF_READERS}" -2 "${PCSC_NUMBER_OF_READERS}"
 else
-
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$STATUS"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${CURRENT_NUMBER_OF_READERS}"  -2 "${PCSC_NUMBER_OF_READERS}"
 fi
