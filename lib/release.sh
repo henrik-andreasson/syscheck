@@ -87,8 +87,8 @@ cp -r ./scripts-enabled      ${PROGPATH}
 cp -r ./syscheck.sh          ${PROGPATH}
 cp -r ./var                  ${PROGPATH}
 
-#TODO dont use perl
-perl -pi -e "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/gi"  ${PROGPATH}/config/common.conf
+sed -i "s/SYSCHECK_VERSION=.*/SYSCHECK_VERSION=${rel}/"  ${PROGPATH}/config/common.conf
+
 find ${PROGPATH} -name \*.sh -exec chmod 755 {} \;
 find ${PROGPATH}/scripts-available/ -name \*.sh -exec chmod 755 {} \;
 find ${PROGPATH}/scripts-enabled/ -name \*.sh -exec rm {} \;
@@ -108,7 +108,7 @@ if [ "x$SIGN" == "x1" ] ; then
 
 fi
 
-cd ${progname}-${rel} ; ./misc/make-rpm-deb.sh -v ${rel} -o "${OUTPATH}"
+cd ${progname}-${rel} ; ./misc/make-rpm-deb.sh -v ${rel} -o ".."
 
 
 cd $orgdir

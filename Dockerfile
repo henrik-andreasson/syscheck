@@ -2,7 +2,8 @@
 FROM centos:latest
 
 # Set the working directory to /app
-WORKDIR /work
+WORKDIR /source
+COPY . /source
 
 # Install any needed packages
 RUN yum install -y ruby-devel gcc make rpm-build rubygems
@@ -15,5 +16,5 @@ RUN gem install --no-ri --no-rdoc fpm
 # Define environment variable
 ENV SYSCHECK_HOME /opt/syscheck
 
-# Run app.py when the container launches
+# Run when the container launches
 CMD [ "/source/test/run-build-install-and-test.sh", "/source", "/opt/syscheck" , "/results" , "/work"]

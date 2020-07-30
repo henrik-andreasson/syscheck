@@ -8,7 +8,7 @@ WORK_PATH="."
 SUDO=""
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "s:r:i:w:dot:" --long "source:,results:,install:,work:,deps,sudo,test" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "s:r:i:w:dot:" --long "source:,results:,install:,work:,deps,sudo,test:" -- "$@"`
 if [ $? != 0 ] ; then exit ; fi
 eval set -- "$INPUTARGS"
 
