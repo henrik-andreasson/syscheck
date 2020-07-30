@@ -80,88 +80,83 @@ put () {
 checkcrl () {
 
     CRLFILE=$1
-    WTIME=$2
-    ETIME=$2
-
-    wishour=$(echo $WTIME | grep -i "h")
-    wismin=$(echo $WTIME  | grep -i "m")
-    wdigits=$(echo $WTIME| grep -o '[[:digit:]]*')
-    wunit="hours"
-    wcmdopts=""
-    if [ "x$wismin" != "x" ] ; then
-	wcmdopts="--return-in-minutes"
-	wunit="minutes"
-    elif [ "x$wishour" != "x" ] ; then
-#	TIME=$digits
-	wunit="hours"
-    else
-	# todo fail not known time
-	# default to use only number as before
-#	TIME=$digits
-	wunit="hours"
+    if [ "x$CRLFILE" = "x" ] ; then
+      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "No CRL Configured"
+      return
     fi
-    WTIME=$wdigits
 
-    eishour=$(echo $ETIME | grep -i "h")
-    eismin=$(echo $ETIME  | grep -i "m")
-    edigits=$(echo $ETIME| grep -o '[[:digit:]]*')
-    eunit="hours"
-    ecmdopts=""
-    if [ "x$eismin" != "x" ] ; then
-	ecmdopts="--return-in-minutes"
-	eunit="minutes"
-    elif [ "x$eishour" != "x" ] ; then
-#	TIME=$digits
-	eunit="hours"
-    else
-	# todo fail not known time
-	# default to use only number as before
-#	TIME=$digits
-	eunit="hours"
+    # Limitminutes is now optional, if not configured the limits is crl WARN: validity/2 ERROR: validity/4 eg: CRL is valid to 12h, warn will be 6h and error 3h
+    LIMITMINUTES=$2
+    if [ "x$LIMITMINUTES" != "xdefault" ] ; then
+      ARGWARNMIN="--warnminutes=$LIMITMINUTES"
     fi
-    ETIME=$edigits
+
+    ERRMINUTES=$3
+    if [ "x$ERRMINUTES" != "xdefault" ] ; then
+      ARGERRMIN="--errorminutes=$ERRMINUTES"
+    fi
 
 
 # file not found where it should be
     if [ ! -f $CRLFILE ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "$PUBL_DESCR[4]" $CRLFILE
-        return 4
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "$PUBL_DESCR[4]" "$CRLFILE"
+       return 4
     fi
 
 # stat return check
     CRL_FILE_SIZE=`stat -c"%s" $CRLFILE`
     if [ $? -ne 0 ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[5]} "$PUBL_DESCR[5]" $CRLFILE
-        return 5
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[5]} "$PUBL_DESCR[5]" "$CRLFILE"
+       return 5
     fi
 
 # crl of 0 size?
     if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" $CRLFILE
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" "$CRLFILE"
         return 6
     fi
 
-# now we can check the crl:s best before date is in the future with atleast HOURTHRESHOLD hours (defined in resources)
-    TEMPDATE=`openssl crl -inform der -in $CRLFILE -nextupdate -noout`
-    DATE=${TEMPDATE:11}
-    WTIMELEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" ${wcmdopts})
-    ETIMELEFT=$(${SYSCHECK_HOME}/lib/cmp_dates.pl "$DATE" ${ecmdopts})
 
-    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+      LASTUPDATE=$(openssl crl -inform der -in $outname -lastupdate -noout | sed 's/lastUpdate=//')
+      if [ "x${LASTUPDATE}" = "x" ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLFILE (Cant parse file,lastupdate)"
 
-    if [ "$ETIMELEFT" -lt "$ETIME" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[7]} "$PUBL_DESCR[7]" $CRLFILE "timeleft: ${ETIMELEFT}${eunit} limit: ${ETIME}${eunit}"
-	return 7
+      fi
 
-    elif [ "$WTIMELEFT" -lt "$WTIME" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $WARN ${ERRNO[9]} "$PUBL_DESCR[9]" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
-	return 7
+      NEXTUPDATE=$(openssl crl -inform der -in $outname -nextupdate -noout | sed 's/nextUpdate=//')
+      if [ "x${NEXTUPDATE}" = "x" ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLFILE (Cant parse file,nextupdate)"
 
-    else
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[10]} "$PUBL_DESCR[10]" $CRLFILE "timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
-	printtoscreen "$INFO ${ERRNO[10]} $PUBL_DESCR[10] $CRLFILE timeleft: ${WTIMELEFT}${wunit} limit: ${WTIME}${wunit}"
-	return 0
-    fi
+      fi
+
+      CRLMESSAGE=$(${SYSCHECK_HOME}/lib/cmp_dates.py "$LASTUPDATE" "$NEXTUPDATE" ${ARGWARNMIN} ${ARGERRMIN} )
+      CRLCHECK=$?
+      #th these values  0 -> ok,  1 -> warn ,  2 -> error,  3 -> expired.')
+
+      if [ "x$CRLCHECK" = "x" ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLFILE (Cant parse file)"
+        return 7
+
+      elif [ $CRLCHECK -eq 3 ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$CRLFILE: ${CRLMESSAGE}"
+        return 7
+
+      elif [ $CRLCHECK -eq 2 ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "$CRLFILE: ${CRLMESSAGE}"
+        return 7
+
+      elif [ $CRLCHECK -eq 1 ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[8]} -d "${DESCR[8]}" -1 "$CRLFILE: ${CRLMESSAGE}"
+        return 7
+
+      elif [ $CRLCHECK -eq 0 ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CRLFILE: ${CRLMESSAGE}"
+        return 0
+      else
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLFILE: problem calculating validity"
+        return 8
+
+      fi
 }
 
 
