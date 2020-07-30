@@ -59,7 +59,7 @@ if [ $? -ne 0 ] ; then
     exit;
 fi
 
-CERTSUBJECT=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
+CERTSUBJECT=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | sed 's/\//_/gi' | sed 's/subject=//gi' | sed s/=/-/gi | sed  's/\ /_/gi'`
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
@@ -72,7 +72,7 @@ if [ $? -ne 0 ] ; then
 fi
 
 # putting the base64 string in the log (livrem och h�ngslen)
-CERTSTRING=`echo $CERT| perl -ane 's/\n//gio,print'`
+CERTSTRING=$(echo $CERT| tr '\n' ';')
 echo "CERTSTRING: $CERTSTRING " >> ${CERTLOG}
 echo                            >> ${CERTLOG}
 

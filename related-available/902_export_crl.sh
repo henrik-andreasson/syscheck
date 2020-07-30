@@ -62,7 +62,7 @@ if [ $? -ne 0 ] ; then
     exit
 fi
 
-CRLISSUER2=`echo ${CRLISSUER} | perl -ane 's/\//_/gio,s/issuer=//,s/=/-/gio,s/\ /_/gio,print'`
+CRLISSUER2=$(echo ${CRLISSUER} |  sed 's/issuer=//' | sed 's/\ /_/gi' | sed 's/=/-/gi' | sed 's/,/-/gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
     exit
@@ -74,7 +74,7 @@ if [ $? -ne 0 ] ; then
     exit
 fi
 
-CRLLASTUPDATE2=`echo ${CRLLASTUPDATE} | perl -ane 's/lastUpdate=//gio,s/\ /_/gio,s/:/./gio,print'`
+CRLLASTUPDATE2=$(echo ${CRLLASTUPDATE} | sed 's/lastUpdate=//gi' | sed 's/\ /_/gi' | sed 's/:/./gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
     exit
@@ -86,7 +86,7 @@ if [ $? -ne 0 ] ; then
     exit
 fi
 
-CRLSTRING=`echo $CRL | perl -ane 's/\n//gio,print'`
+CRLSTRING=$(echo $CRL | tr -d '\n')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
     exit

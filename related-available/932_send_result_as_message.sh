@@ -42,7 +42,7 @@ done
 for (( j=0; j < ${#SEND_MSG_COMMAND[@]} ; j++ )){
 	printtoscreen "Sending status as message with: ${SEND_MSG_COMMAND[$j]} ${SEND_MSG_FILE[$j]}"
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-	SENDRES=$(${SEND_MSG_COMMAND[$j]} -c ${SEND_MSG_CONFIG[$j]} -m ${SEND_MSG_FILE[$j]} | perl -ane 's/\n//,print')
+	SENDRES=$(${SEND_MSG_COMMAND[$j]} -c ${SEND_MSG_CONFIG[$j]} -m ${SEND_MSG_FILE[$j]} | tr -d '\n')
 	if [ $? -ne 0 ] ; then
       		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}" "${SEND_MSG_COMMAND[$j]} ${SEND_MSG_FILE[$j]}" "result: ${SENDRES}"
 	else

@@ -68,27 +68,27 @@ if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
-CERTDN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 's/\//_/gio,s/subject=//,s/=/-/gio,s/\ /_/gio,print'`
+CERTDN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  sed 's/\//_/gi' | sed 's/subject=//gi' | sed s/=/-/gi | sed  's/\ /_/gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
-CERTUID=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/uid=(.*?)\//gio, print "$1"'`
+CERTUID=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout | grep -oi 'uid=[[:alnum:][:space:]]*' |sed 's/uid=//gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "${DESCR[3]}" "$?"
 fi
 
-CERTCN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/cn=(.*?)\//gio, print "$1"'`
+CERTCN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'cn=[[:alnum:][:space:]]*'  |sed 's/cn=//gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
-CERTSN=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | perl -ane 'm/serialnumber=(.*?)\//gio, print "$1"'`
+CERTSN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'serialnumber=[[:alnum:][:space:]]*' |sed 's/serialnumber=//gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi
 
-CERTSTRING=`openssl x509 -inform der -in ${CERTFILE}| perl -ane 's/\n//gio,print'`
+CERTSTRING=$(openssl x509 -inform der -in ${CERTFILE}| tr '\n' ';')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
 fi

@@ -30,8 +30,8 @@ checkmem(){
     INMEMORYLIMIT=$1
     INSWAPLIMIT=$2
 
-    MEMORY=`free | grep -v total | grep -v buffers | grep -v Swap | cut -f2 -d: | perl -ane 's/\ +/;/gio,print'`
-    SWAP=`free | grep -v total | grep -v buffers | grep -v Mem | cut -f2 -d: | perl -ane 's/\ +/;/gio,print'`
+    MEMORY=$(free | grep -v total | grep -v buffers | grep -v Swap | cut -f2 -d: | sed -E 's/[[:space:]]+/;/gi')
+    SWAP=$(free | grep -v total | grep -v buffers | grep -v Mem | cut -f2 -d: | sed -E 's/[[:space:]]+/;/gi')
 
     TOTALMEMORY=`echo $MEMORY | cut -f2 -d\;`
     USEDMEMORY=`echo $MEMORY | cut -f3 -d\;`

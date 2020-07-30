@@ -85,7 +85,7 @@ checkcrl () {
 
     wishour=$(echo $WTIME | grep -i "h")
     wismin=$(echo $WTIME  | grep -i "m")
-    wdigits=$(echo $WTIME| perl -ane 'm/(\d+)/,print "$1"')
+    wdigits=$(echo $WTIME| grep -o '[[:digit:]]*')
     wunit="hours"
     wcmdopts=""
     if [ "x$wismin" != "x" ] ; then
@@ -104,7 +104,7 @@ checkcrl () {
 
     eishour=$(echo $ETIME | grep -i "h")
     eismin=$(echo $ETIME  | grep -i "m")
-    edigits=$(echo $ETIME| perl -ane 'm/(\d+)/,print "$1"')
+    edigits=$(echo $ETIME| grep -o '[[:digit:]]*')
     eunit="hours"
     ecmdopts=""
     if [ "x$eismin" != "x" ] ; then

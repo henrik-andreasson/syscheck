@@ -52,7 +52,7 @@ echo "INSERT INTO relatedtest SET value='1';"  >> $OUTFILE
 $MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD < $OUTFILE
 
 rm $OUTFILE
-newval=`perl -e 'print time'`
+newval=$(date +"%s")
 echo "delete from relatedtest"                   | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD}
 echo "insert into relatedtest set value=$newval" | $MYSQL_BIN $DB_NAME -u ${DB_USER} --password=${DB_PASSWORD}
 
