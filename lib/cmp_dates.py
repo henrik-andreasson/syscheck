@@ -11,12 +11,20 @@ parser.add_argument('date2', help='date2 ex: "Mar 18 19:30:38 2017 GMT"')
 parser.add_argument('--warnminutes', type=int, help='set custom level for warning in minutes')
 parser.add_argument('--errorminutes', type=int, help='set custom level for error in minutes')
 parser.add_argument('--minutes', action='store_const', const="1", help='just return minutes to warn')
+parser.add_argument('--diff', action='store_const', const="1", help='just return minutes between the dates')
+parser.add_argument('--noyearnotz', action='store_const', const="1", help='datetime without year and tz (aka syslog format) ex: Jul 27 11:36:54')
 parser.add_argument('--verbose', action='store_const', const="1")
 args = parser.parse_args()
 
 
-created = datetime.strptime(args.date1, "%b %d %H:%M:%S %Y %Z")
-expires = datetime.strptime(args.date2, "%b %d %H:%M:%S %Y %Z")
+if args.noyearnotz:
+    created = datetime.strptime(args.date1, "%b %d %H:%M:%S")
+    expires = datetime.strptime(args.date2, "%b %d %H:%M:%S")
+    print("start: {}".format(created.isoformat()))
+else:
+    created = datetime.strptime(args.date1, "%b %d %H:%M:%S %Y %Z")
+    expires = datetime.strptime(args.date2, "%b %d %H:%M:%S %Y %Z")
+
 now = datetime.now()
 validity = expires - created
 
@@ -36,52 +44,56 @@ until_warn = until_expire - warn_time
 until_error = until_expire - error_time
 
 if (args.verbose):
-    print "date1                :", args.date1
-    print "date2                :", args.date2
-    print "created              :", created
-    print "expires              :", expires
-    print "now                  :", now.replace(microsecond=0)
-    print "validity             :", validity
-    print "time since creation  :", since_created
-    print "validity             :", validity
-    print "warn time            :", warn_time
-    print "err time             :", error_time
-    print "time until warn      :", until_warn
-    print "time until expire    :", until_expire
-    print "time until error     :", until_error
+    print("date1                :", args.date1)
+    print("date2                :", args.date2)
+    print("created              :", created)
+    print("expires              :", expires)
+    print("now                  :", now.replace(microsecond=0))
+    print("validity             :", validity)
+    print("time since creation  :", since_created)
+    print("validity             :", validity)
+    print("warn time            :", warn_time)
+    print("err time             :", error_time)
+    print("time until warn      :", until_warn)
+    print("time until expire    :", until_expire)
+    print("time until error     :", until_error)
 
 
 if (args.minutes):
     minutes = int((until_expire.total_seconds() / 60))
 
+if args.diff:
+    print(int(validity.total_seconds() / 60))
+    exit
+
 # has already expired
-if (now > expires):
+elif (now > expires):
     if (args.minutes):
-        print minutes
+        print(minutes)
     else:
-        print "ERROR HAS EXPIRED: ", expires, "(d:h:m:s.mmm)"
+        print("ERROR HAS EXPIRED: ", expires, "(d:h:m:s.mmm)")
     sys.exit(3)
 
 # error time has passed
 elif (error_time > until_expire):
     if (args.minutes):
-        print minutes
+        print(minutes)
     else:
-        print "ERROR error_time", error_time, "(hh:mm:ss) has passed, time until expiration", until_expire, "(d:h:m:s.mmm)"
+        print("ERROR error_time", error_time, "(hh:mm:ss) has passed, time until expiration", until_expire, "(d:h:m:s.mmm)")
     sys.exit(2)
 
 # warn time has passed
 elif (warn_time > until_expire):
     if (args.minutes):
-        print minutes
+        print(minutes)
     else:
-        print "WARNING warn_time", warn_time, "(hh:mm:ss) has passed, time until error: ", until_error, " time until expiration: ", until_expire, "(hh:mm:ss)"
+        print("WARNING warn_time", warn_time, "(hh:mm:ss) has passed, time until error: ", until_error, " time until expiration: ", until_expire, "(hh:mm:ss)")
     sys.exit(1)
 
 # no warn/err all ok
 else:
     if (args.minutes):
-        print minutes
+        print(minutes)
     else:
-        print "expire_in: ", until_expire , "(h:m:s), until_warn: ", until_warn , " until_err: ", until_error, " validity: ", validity
+        print("expire_in: ", until_expire, "(h:m:s), until_warn: ", until_warn, " until_err: ", until_error, " validity: ", validity)
     sys.exit(0)

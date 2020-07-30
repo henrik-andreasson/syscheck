@@ -43,7 +43,8 @@ for (( i = 0 ;  i < ${#HOST[@]} ; i++ )) ; do
 
 	LASTLOGTS=`grep -ni "1903.*${HOST[$i]}" ${LOGFILECURRENT} ${LOGFILELAST} | tail -1 |  awk '{print $7,$8}'`
 	if [ "x$LASTLOGTS" != "x" ] ;then
-		MINUTES_SINCE_LASTLOG=`${SYSCHECK_HOME}/lib/cmp_syslog_dates.pl "$LASTLOGTS" | awk '{print $1}'`
+    NOW=$(date +"%b %d %H:%M:%S")
+		MINUTES_SINCE_LASTLOG=$(${SYSCHECK_HOME}/lib/cmp_dates.py "$LASTLOGTS" "${NOW}" --noyearnotz --diff)
 
 		if [ ${MINUTES_SINCE_LASTLOG} -gt ${TIME_BEFORE_ERROR} ] ; then
 			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "$SCALIVE_SRV_DESCR[2]" ${HOST[$i]} ${MINUTES_SINCE_LASTLOG}
