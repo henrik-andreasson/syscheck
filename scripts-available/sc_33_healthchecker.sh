@@ -18,19 +18,28 @@ SCRIPTNAME=healthcheck
 SCRIPTID=33
 
 # how many info/warn/error messages
-NO_OF_ERR=2
+NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR
 
-default_script_getopt $*
+
+INPUTARGS=`/usr/bin/getopt --options "hsvcinf" --long "help,screen,verbose,scriptid,scriptname,scripthumanname,full" -- "$@"`
+if [ $? != 0 ] ; then schelp ; fi
+eval set -- "$INPUTARGS"
+
+while true; do
+  case "$1" in
+    -s|--screen  ) PRINTTOSCREEN=1; shift;;
+    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
+    -i|--scriptid        ) scriptid          ; exit ; shift;;
+    -n|--scriptname      ) scriptname        ; exit ; shift;;
+    -a|--scripthumanname ) script_human_name ; exit ; shift;;
+    -h|--help            ) schelp            ; exit ; shift;;
+    -f|--full            ) PRINTFULL=1       ; shift;;
+    --) break;;
+  esac
+done
 
 # main part of script
-
-PRINTFULL=0
-if [ "x$1" = "x-f" -o  "x$1" = "x--full"  ] ; then
-    shift
-    PRINTFULL=1
-fi
-
 
 
 for (( i = 0 ;  i < ${#HEALTHCHECKURL[@]} ; i++ )) ; do
@@ -39,6 +48,7 @@ for (( i = 0 ;  i < ${#HEALTHCHECKURL[@]} ; i++ )) ; do
 	if [ "x${PRINTFULL}" = "x1" ] ; then
 		printtoscreen "Checking ${HEALTHCHECKURL_FULL[$i]}"
 	fi
+
 	if [ "x${CHECKTOOL}" = "xwget" ] ; then
 	        STATUS=$(${CHECKTOOL} ${HEALTHCHECKURL[$i]} -T ${TIMEOUT} -t 1 2>/dev/null)
 		if [ "x${PRINTFULL}" = "x1" ] ; then
@@ -57,8 +67,16 @@ for (( i = 0 ;  i < ${#HEALTHCHECKURL[@]} ; i++ )) ; do
 
 	if [ "x$STATUS" != "xALLOK" ] ; then
 		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$STATUS"
+
+    if [ "x${STOP_CMD[$i]}" != "x" -a  "x${START_CMD[$i]}" != "x" ] ; then
+        STOP_STATUS=$(${STOP_CMD[$i]} 2>&1)
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "${STOP_STATUS}" -3 "${STOP_CMD[$i]}"
+        sleep "${STOP_START_PAUSE}"
+        START_STATUS=$(${START_CMD[$i]} 2>&1)
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "${START_STATUS}" -3 "${START_CMD[$i]}"
+    fi
 	else
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -s ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${HEALTHCHECK_APP[$i]}"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${HEALTHCHECK_APP[$i]}"
 	fi
 
 	if [ "x${PRINTFULL}" = "x1" ] ; then
