@@ -283,7 +283,7 @@ logbookmess(){
         HOST=`hostname `
         SEC1970NANO=$(date +"%s.%N")
         HOST=$(hostname )
-	    DESCR_W_ARGS=`${SYSCHECK_HOME}/lib/printf.pl "$LONGLEVEL - $DESCR" "$ARG1" "$ARG2" "$ARG3" "$ARG4" "$ARG5" "$ARG6" "$ARG7" "$ARG8" "$ARG9"  `
+        DESCR_W_ARGS=$(printf "${LONGLEVEL} - ${SCRIPTNAME} ${DESCR}\n" "$ARG1" "$ARG2" "$ARG3" "$ARG4" "$ARG5" "$ARG6" "$ARG7" "$ARG8" "$ARG9" | head -1)
         MESSAGE0="${HOST}: ${DESCR_W_ARGS}"
       	MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
       	NEWFMTSTRING="${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
