@@ -1,7 +1,0 @@
-WEBLOGIC_HELP="Checks the weblogic server to make sure it's running"
-
-WEBLOGIC_DESCR[1]="WebLogic server is running"
-WEBLOGIC_HELP[1]="all ok"
-
-WEBLOGIC_DESCR[2]="WebLogic server is not running (%s)"
-WEBLOGIC_HELP[2]="Start the WebLogic server"
