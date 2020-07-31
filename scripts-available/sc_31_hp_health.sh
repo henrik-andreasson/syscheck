@@ -27,8 +27,7 @@ default_script_getopt $*
 
 
 hppsu () {
-        COMMAND=`/bin/echo -e "show powersupply\nexit" | /sbin/hpasmcli | perl -ane 's/\n//,print'  | perl -ane 'm/Power supply #1.
-*Present.*: (.*).*Condition:(.*).*Hotplug.*Power supply #2.*Present.*: (.*).*Condition:(.*).*Hotplug/,print "$1;$2;$3;$4\n"'`
+        COMMAND=`/bin/echo -e "show powersupply\nexit" | /sbin/hpasmcli | perl -ane 's/\n//,print'  | perl -ane 'm/Power supply #1.*Present.*: (.*).*Condition:(.*).*Hotplug.*Power supply #2.*Present.*: (.*).*Condition:(.*).*Hotplug/,print "$1;$2;$3;$4\n"'`
         STATUSPSU1=`echo $COMMAND | cut -f1 -d\; |grep -i "yes"`
         CONDPSU1=`echo $COMMAND | cut -f2 -d\; |grep -i "ok"`
         STATUSPSU2=`echo $COMMAND | cut -f3 -d\; |grep -i "yes"`

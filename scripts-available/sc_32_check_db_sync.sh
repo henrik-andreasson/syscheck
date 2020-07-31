@@ -32,11 +32,11 @@ if [ ! -f $SYSCHECK_HOME/database-replication/808-test-table-update-and-check-ma
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-. $SYSCHECK_HOME/database-replication/808-test-table-update-and-check-master-and-slave.sh >/dev/null
+echo "This script is broken"
+exit
 NODE1=`echo $VALUE_NODE1|awk '{print $2}'`
 NODE2=`echo $VALUE_NODE2|awk '{print $2}'`
 if [ $NODE1 != $NODE2 ] ;  then
-	SYNCDATE=`perl -e "print scalar(localtime($NODE2))"|awk '{print $3,$2,$4,$5}'`
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l "$ERROR" -e "${ERRNO[2]}" -d "${DESCR[2]} $LASTUPD_NODE1 /$LASTUPD_NODE2 $SYNCDATE"
 else
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l "$INFO"  -e "${ERRNO[1]}" -d "${DESCR[1]}"

@@ -2,14 +2,14 @@
 ==========================
 
 Henrik Andreasson
-kinneh@users.sourceforge.net 
+kinneh@users.sourceforge.net
 2010-10-12
 
 Introduction
 =============
 
 Syscheck has the posibillity to backup the database to a file in several different locations, these can be used to save hourly, daily, monthly and yearly backups in different locations and save those in different amount of times.
-Default values of saving the different backups can be adjusted in the config file for “clean old backups script” (<syscheck>/config/908.config) 
+Default values of saving the different backups can be adjusted in the config file for “clean old backups script” (<syscheck>/config/908.config)
 
 
 
@@ -57,25 +57,25 @@ Verify the config file
 ```
 ### config for 908_clean_old_backups.sh
 
-KEEPDAYS[0]=10;
-BACKUPDIR[0]="/backup/mysql/default/";
-DATESTR[0]=`${SYSCHECK_HOME}/lib/x-days-ago-datestring.pl ${KEEPDAYS[0]}  2>/dev/null`;
+KEEPDAYS[0]=10
+BACKUPDIR[0]="/backup/mysql/default/"
+DATESTR[0]=$(x-days-ago-datestr ${KEEPDAYS[0]} 2>/dev/null)
 FILENAME[0]="${BACKUPDIR[0]}/ejbcabackup-${DATESTR[0]}*"
 
 KEEPDAYS[1]=30;
-BACKUPDIR[1]="/backup/mysql/daily";
-DATESTR[1]=`${SYSCHECK_HOME}/lib/x-days-ago-datestring.pl ${KEEPDAYS[0]}  2>/dev/null`;
+BACKUPDIR[1]="/backup/mysql/daily"
+DATESTR[1]=$(x-days-ago-datestr  ${KEEPDAYS[0]} 2>/dev/null)
 FILENAME[1]="${BACKUPDIR[0]}/ejbcabackup-${DATESTR[0]}*"
 
 
 KEEPDAYS[2]=90;
 BACKUPDIR[2]="/backup/mysql/weekly/";
-DATESTR[2]=`${SYSCHECK_HOME}/lib/x-days-ago-datestring.pl ${KEEPDAYS[1]}  2>/dev/null`;
+DATESTR[2]=$(x-days-ago-datestr ${KEEPDAYS[1]} 2>/dev/null)
 FILENAME[2]="${BACKUPDIR[1]}/ejbcabackup-${DATESTR[1]}*"
 
 KEEPDAYS[3]=370;
 BACKUPDIR[3]="/backup/mysql/monthly/";
-DATESTR[3]=`${SYSCHECK_HOME}/lib/x-days-ago-datestring.pl ${KEEPDAYS[1]}  2>/dev/null`;
+DATESTR[3]=$(x-days-ago-datestr ${KEEPDAYS[1]} 2>/dev/null)
 FILENAME[3]="${BACKUPDIR[1]}/ejbcabackup-${DATESTR[1]}*"
 ```
 
@@ -85,4 +85,3 @@ Add clean old backups to crontab
         $ sudo crontab -e
         # at 4:10 am each day clean old backups
         10 4 * * * /usr/local/certificate-services/syscheck/related-enabled/908_clean_old_backups.sh
-

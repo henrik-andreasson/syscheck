@@ -137,3 +137,12 @@ getlangfiles(){
   fi
 
 }
+
+x-days-ago-datestr(){
+  days=$1
+  if [ "x$1" == "x" ] ; then
+    days = 0
+  fi
+  date +"%Y-%m-%d" --date "now - ${days} days"
+
+}
