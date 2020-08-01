@@ -4,7 +4,7 @@
 ## Changes
 
 |Version   |Author             |Date        |Comment                      |
-|----------|.------------------|------------|-----------------------------|
+|----------|-------------------|------------|-----------------------------|
 | 1.0      | Henrik Andreasson | 2010-10-12 | Initial version             |
 | 1.1      | Henrik Andreasson | 2020-07-31 | mkdocs updates              |
 
