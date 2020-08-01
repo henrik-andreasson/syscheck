@@ -13,3 +13,10 @@ jobs:
           python-version: 3.x
       - run: pip install mkdocs-material
       - run: mkdocs gh-deploy --force
+  test:
+    runs-on: centos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: yum install -y ruby-devel gcc make rpm-build rubygems
+      - run: gem install --no-ri --no-rdoc fpm
+      - run: /source/test/run-build-install-and-test.sh /source /opt/syscheck /results /work
