@@ -1,0 +1,37 @@
+site_name: Inventorpy
+nav:
+    - Home: index.md
+    - Archiving: certificate_and_revovation_archival.md
+    - upgrade upgrade.md
+    - Getting started: getting-started.md
+    - Config: config-management.md
+    - getroot: getroot.md
+    - All Syscheck scripts: syscheck-scripts.md
+    - SSH Keys: ssh-keys-setup.md
+    - Logbook: logbook.md
+    - MariaDB Backup: syscheck-backup-management.md
+    - OP5: integration-with-op5.md
+    - Output destinations: output-destinations.md
+    - Related Scripts: related-scripts.md
+    - Output Formats: output-format.md
+    - Install: install.md
+    - Util cmpdates: cmp_dates.md
+
+theme: material
+repo_url: https://github.com/henrik-andreasson/syscheck
+repo_name: Syscheck 
+copyright: "&copy 2020 Henrik Andreasson"
+markdown_extensions:
+    - admonition
+    - smarty
+    - abbr
+    - attr_list
+    - fenced_code
+    - footnotes
+    - tables
+    - codehilite
+    - meta
+    - toc:
+        title: title
+        permalink: True
+    - sane_lists

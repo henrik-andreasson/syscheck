@@ -1,39 +1,28 @@
-% Syscheck integration with op5
-% Henrik Andreasson
-% 2016-11-27
+---
+title: Syscheck integration with op5
+author: Henrik Andreasson
+date: 2016-11-27
+---
 
-<link href="style.css" rel="stylesheet"></link>
+#  Syscheck integration with op5
 
-
-Document properties 
-===================
-
-
-Security class: Unmarked
-
-Access Rights: All Certificate Service Personnel
-
-
-
-Changes 
---------
+## Changes
 
 |Version   |Author             |Date        |Comment                      |
 |----------|.------------------|------------|-----------------------------|
 | 1.0      | Henrik Andreasson | 2016-11-27 | Initial version             |
+| 1.1      | Henrik Andreasson | 2020-07-31 | mkdocs updates              |
 
 
 
-Introduction
-=================
+## Introduction
 
 OP5 is an enterprise monitoring solution initally based on nagios.
 Purpose of the integration is to send infomration from servers that is out of reach for the regular agent.
 
-Example Work flow
--------------------
+### Example Work flow
 
-* Syscheck run every 10 min 
+* Syscheck run every 10 min
 * As a part of the run syscheck sends information to OP5
 * sample request:
 
@@ -45,6 +34,3 @@ References
 ==========
 
 [Nagios API](https://kb.op5.com/display/HOWTOs/Submitting+status+updates+through+the+HTTP+API)
-
-
-
