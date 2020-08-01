@@ -23,7 +23,9 @@ Maintainter is Henrik Andreasson github@han.pp.se
 
 INFO
 ---------------------------
-Homepage:	(http://github.com/henrik-andreasson/syscheck)
+[Homepage:](http://github.com/henrik-andreasson/syscheck)
+
+[Docs:](https://henrik-andreasson.github.io/syscheck/install/)
 
 Patches are welcome via email or pull requests, please state if you want your name in the contributors list.
 
