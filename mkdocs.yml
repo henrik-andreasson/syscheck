@@ -2,7 +2,7 @@ site_name: Inventorpy
 nav:
     - Home: index.md
     - Archiving: certificate_and_revovation_archival.md
-    - upgrade upgrade.md
+    - upgrade: upgrade.md
     - Getting started: getting-started.md
     - Config: config-management.md
     - getroot: getroot.md

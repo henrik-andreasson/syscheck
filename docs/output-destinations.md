@@ -1,12 +1,21 @@
-## Output
+
+# Syscheck - LOGBOOK Tool
 
 
-### File
+## Changes
+
+|Version   |Author             |Date        |Comment                      |
+|----------|.------------------|------------|-----------------------------|
+| 1.0      | Henrik Andreasson | 2016-11-27 | Initial version             |
+| 1.1      | Henrik Andreasson | 2020-07-31 | mkdocs updates              |
+
+
+## Output to File
 
 
 syscheck can write to a local file, this can be collected by filebeat to be managed in ELK.
 
-### Syslog
+## Output to  Syslog
 
 
 Sycheck will send messages to a local syslog server, that server can of course route the messages to a central syslog.
@@ -15,13 +24,13 @@ Sycheck will send messages to a local syslog server, that server can of course r
 
 You still can use any syslog implementation.
 
-### Icinga
+## Output to  Icinga
 
 syscheck can send check result directly to icinga  http api
 
 Icinga API <https://icinga.com/docs/icinga2/latest/doc/12-icinga2-api/>
 
-### OP5
+## Output to  OP5
 
 
 OP5 is an enterprise monitoring solution initally based on nagios.
@@ -40,7 +49,7 @@ Purpose of the integration is to send infomration from servers that is out of re
 
 Nagios API <https://kb.op5.com/display/HOWTOs/Submitting+status+updates+through+the+HTTP+API>
 
-### Elastic Stack
+## Output to  Elastic Stack
 
 The JSON output was added for easy integration with elastic.
 

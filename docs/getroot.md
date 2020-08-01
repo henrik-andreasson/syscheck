@@ -1,13 +1,24 @@
 
-## GetRoot Tool
+# Syscheck - GetRoot Tool
 
+## Changes
+
+|Version   |Author             |Date        |Comment                      |
+|----------|.------------------|------------|-----------------------------|
+| 1.0      | Henrik Andreasson | 2016-11-27 | Initial version             |
+| 1.1      | Henrik Andreasson | 2020-07-31 | mkdocs updates              |
+
+
+## Intro
 
 Small tool to log why you need root before getting access.
 This is of course in no way enforceable but still easy to follow up
 if operators do not log their reason. As an incentive getroot manages
 putting syscheck on hold for the operator.
 
-Becoming root
+
+## Becoming root
+
 ```
 $ ./getroot.sh
 ./getroot.sh: Tool to log changes and to pause syscheck
@@ -25,7 +36,8 @@ Syscheck is on hold, are you done Y/n?y
 
 ```
 
-Becoming root, keeping syscheck on-hold.
+## Becoming root, keeping syscheck on-hold.
+
 ```
 $ ./getroot.sh
 ./getroot.sh: Tool to log changes and to pause syscheck
@@ -38,7 +50,8 @@ logout
 Syscheck is on hold, are you done Y/n?n
 ```
 
-Next time getroot is started, is asks if your done
+## Next time getroot is started, is asks if your done
+
 ```
 $ ./getroot.sh
 Syscheck is on hold, are you done Y/n?y

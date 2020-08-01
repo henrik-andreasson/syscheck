@@ -1,8 +1,3 @@
----
-title: Syscheck backup management
-author: Henrik Andreasson
-date: 2016-11-27
----
 
 #  ﻿Syscheck backup management
 

@@ -1,9 +1,17 @@
-Syscheck component cmp_dates.py
-=======================================
 
-Introduction
-------------
+# Syscheck - Syscheck component cmp_dates.py
 
+## Changes
+
+|Version   |Author             |Date        |Comment                      |
+|----------|.------------------|------------|-----------------------------|
+| 1.0      | Henrik Andreasson | 2016-11-27 | Initial version             |
+| 1.1      | Henrik Andreasson | 2020-07-31 | translate tool to pyton + mkdocs updates              |
+
+
+## Intro
+
+```
 usage: Util to check validity, compares two date strings and calculate the time left. Calculates also two limits WARN (1/2 of the CRL lifetime), ERROR( 1/4 left of the lifetime). The process returns with these values  0 -> ok,  1 -> warn ,  2 -> error,  3 -> expired.
        [-h] [--warnminutes WARNMINUTES] [--errorminutes ERRORMINUTES]
        [--minutes] [--diff] [--noyearnotz] [--verbose]
@@ -24,3 +32,5 @@ optional arguments:
   --noyearnotz          datetime without year and tz (aka syslog format) ex:
                         Jul 27 11:36:54
   --verbose
+
+```

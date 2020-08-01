@@ -1,9 +1,3 @@
----
-title: Syscheck integration with op5
-author: Henrik Andreasson
-date: 2016-11-27
----
-
 #  Syscheck integration with op5
 
 ## Changes

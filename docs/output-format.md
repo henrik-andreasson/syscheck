@@ -1,8 +1,3 @@
----
-title: Syscheck output formats
-author: Henrik Andreasson
-date: 2016-11-27
----
 
 #  Syscheck output formats
 
