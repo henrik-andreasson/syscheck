@@ -13,7 +13,7 @@ jobs:
           python-version: 3.x
       - run: pip install mkdocs-material
       - run: mkdocs gh-deploy --force
-      - run: apt-get install ruby ruby-dev rubygems build-essential
+      - run: sudo apt-get install ruby ruby-dev rubygems build-essential
       - run: gem install --no-ri --no-rdoc fpm
       - run: /source/test/run-build-install-and-test.sh /source /opt/syscheck /results /work
 
