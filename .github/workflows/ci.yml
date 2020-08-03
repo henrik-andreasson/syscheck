@@ -15,7 +15,8 @@ jobs:
       - run: mkdocs gh-deploy --force
       - run: sudo apt-get install ruby ruby-dev rubygems build-essential
       - run: sudo gem install --no-document fpm
-      - run: /source/test/run-build-install-and-test.sh /source /opt/syscheck /results /work
+      - run: ls -la
+#      - run: /source/test/run-build-install-and-test.sh /source /opt/syscheck /results /work
 
 # version: 2
 # jobs:
