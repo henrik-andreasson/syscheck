@@ -27,7 +27,7 @@ default_script_getopt $*
 # main part of script
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-status=`echo "SELECT * FROM $DB_TEST_TABLE LIMIT 1"|$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD 2>&1 > /dev/null`
+status=$(echo "SELECT * FROM $DB_TEST_TABLE LIMIT 1"|$MYSQL_BIN $DB_NAME -u root --password=$MYSQLROOT_PASSWORD 2>&1 > /dev/null)
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
     exit 3
