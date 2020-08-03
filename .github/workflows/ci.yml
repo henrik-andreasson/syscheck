@@ -20,27 +20,6 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-results
-          path: /results/*
-      - uses: actions/upload-artifact@v2
-        with:
-          name: summary
-          path: /test-reports/summary.txt
-      - uses: actions/upload-artifact@v2
-        with:
-          name: test of help
-          path: /test-reports/test_1_help.txt
-      - uses: actions/upload-artifact@v2
-        with:
-          name: test_2_help_scripts.txt
-          path: /test-reports/test_2_help_scripts.txt
-      - uses: actions/upload-artifact@v2
-        with:
-          name: test_3_scripts.txt
-          path: /test-reports/test_3_scripts.txt
-      - uses: actions/upload-artifact@v2
-        with:
-          name: test_4_console.txt
-          path: /test-reports/test_4_console.txt
-
-
-#            /test-reports/*
+          path: |
+            /results/*
+            /test-reports/*
