@@ -11,7 +11,7 @@
   [ "${line2}" != "" ]
   line3=$(echo "${SYSCHECK_CONSOLE_DATA}"  | egrep "^03-" | egrep "memoryusage")
   [ "${line3}" != "" ]
-  line4=$(echo "${SYSCHECK_CONSOLE_DATA}"  | egrep "^04-" | egrep "pcscreaders")
+  line4=$(echo "${SYSCHECK_CONSOLE_DATA}"  | egrep "^04-" | egrep "Connected PCSC Readers")
   [ "${line}" != "" ]
   line5=$(echo "${SYSCHECK_CONSOLE_DATA}"  | egrep "^05-" | egrep "pcscd")
   [ "${line5}" != "" ]
