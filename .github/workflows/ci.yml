@@ -19,61 +19,28 @@ jobs:
       - run: sudo ./test/run-build-install-and-test.sh --install=/opt/syscheck --work=$(pwd) --results=/results --test=/test-reports
       - uses: actions/upload-artifact@v2
         with:
-          name: results
-          path: |
-            /test-reports/*
-            /results/*
+          name: build-results
+          path: /results/*
+      - uses: actions/upload-artifact@v2
+        with:
+          name: summary
+          path: /results/summary.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test of help
+          path: /results/test_1_help.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test_2_help_scripts.txt
+          path: /results/test_2_help_scripts.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test_3_scripts.txt
+          path: /results/test_3_scripts.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test_4_console.txt
+          path: /results/test_4_console.txt
 
-# version: 2
-# jobs:
-#   build:
-#     docker:
-#       - image: centos:7
-#     steps:
-#       - checkout
-#       - run:
-#           name: Greeting
-#           command: echo Hello, world.
-#       - run:
-#           name: install fpm building tools
-#           command: yum install -y ruby-devel gcc make rpm-build rubygems
-#       - run:
-#           name: install fpm
-#           command: gem install --no-ri --no-rdoc fpm
-#       - run:
-#           name: create directory for articats
-#           command: mkdir /tmp/artifacts
-#       - run:
-#           name: syscheck
-#           command: ./lib/release.sh --program syscheck --version snapshot --outpath /tmp/artifacts
-#       - run:
-#           name: syscheck install
-#           command: rpm -Uvh /tmp/artifacts/syscheck*rpm
-#
-#       - run:
-#           name: set SYSCHECK_HOME
-#           command: |
-#             echo 'export SYSCHECK_HOME=/opt/syscheck' >> $BASH_ENV
-#             source $BASH_ENV
-#
-#       - store_artifacts:
-#           path: /tmp/artifacts
-#
-#       - run:
-#           name: create directory for test-reports
-#           command: mkdir /tmp/test-reports
-#
-#       - run:
-#           name: test help 1
-#           command: test/bats-core/bin/bats test/help.bats > /tmp/test-reports/test_1_help.txt
-#       - run:
-#           name: test help scritps
-#           command: test/bats-core/bin/bats test/help-scripts.bats > /tmp/test-reports/test_2_help_scripts.txt
-#
-#       - run:
-#           name: test scripts
-#           command: test/bats-core/bin/bats test/test-scripts.bats > /tmp/test-reports/test_2_scripts.txt
-#
-#       - run:
-#           name: test scripts
-#           command: test/bats-core/bin/bats test/test-syscheck-console.bats > /tmp/test-reports/test_3_console.txt
+
+#            /test-reports/*
