@@ -3,7 +3,8 @@ from flask import Flask
 import os
 
 app = Flask(__name__)
-status_filename = os.environ.get('STATUS_FILE')
+status_filename = os.environ.get('STATUS_FILE') or "status.txt"
+app.url_map.strict_slashes = False
 
 run_help = """
 
@@ -44,15 +45,14 @@ fail status will retun string FAIL and http status 500
 
 @app.route("/", methods=['GET'])
 def root():
-    print('service accessed')
+    print('SASD service accessed')
     return client_help, 200
 
 
-@app.route("/health", methods=['GET'])
+@app.route("/health/<display>/", methods=['GET'])
 @app.route("/health/", methods=['GET'])
-@app.route("/health/<display>", methods=['GET'])
 def health(display=None):
-    print('service accessed')
+    print('health service accessed')
 
     status = None
     if os.path.exists(status_filename):
@@ -66,28 +66,54 @@ def health(display=None):
                 msg = "Stauts: ALLOK\nService1: OK\nService2: OK\n"
             else:
                 msg = "ALLOK\n"
+
             return msg, 200
+        elif status.strip() == "DOM":
+            if display is not None:
+                msg = "DOM: Service Maintenance\n"
+            else:
+                msg = "DOM\n"
+
+            return msg, 503
+
         else:
-            msg = "INTERNAL ERROR\n"
+            if display is not None:
+                msg = "Stauts: FAIL:\nService1: FAIL (msg1)\nService2: OK\n"
+            else:
+                msg = "INTERNAL ERROR\n"
             return msg, 500
     else:
-        msg = "ALLOK\n"
+        if display is not None:
+            msg = "Stauts: ALLOK\nService1: OK\nService2: OK\n"
+        else:
+            msg = "ALLOK\n"
+
         return msg, 200
 
 
-@app.route("/ok", methods=['GET'])
-def ok():
+@app.route("/ok/<display>/", methods=['GET'])
+@app.route("/ok/", methods=['GET'])
+def ok(display=None):
     print('ok service accessed')
 
-    msg = "ALLOK\n"
+    if display is not None:
+        msg = "Stauts: ALLOK\nService1: OK\nService2: OK\n"
+    else:
+        msg = "ALLOK\n"
+
     return msg, 200
 
 
-@app.route("/fail", methods=['GET'])
-def fail():
+@app.route("/fail/<display>/", methods=['GET'])
+@app.route("/fail/", methods=['GET'])
+def fail(display=None):
     print('fail service accessed')
 
-    msg = "INTERNAL ERROR\n"
+    if display is not None:
+        msg = "Stauts: FAIL:\nService1: FAIL (msg1)\nService2: OK\n"
+    else:
+        msg = "INTERNAL ERROR\n"
+
     return msg, 500
 
 
@@ -101,3 +127,7 @@ def dom():
 
     msg = "Down fOr Maintenance\n"
     return msg, 200
+
+
+if __name__ == '__main__':
+    app.run(debug=False)

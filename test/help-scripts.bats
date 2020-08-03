@@ -150,7 +150,7 @@
 
 @test scripts-available/sc_33_healthchecker.sh {
 	run ${SYSCHECK_HOME}/scripts-available/sc_33_healthchecker.sh  --help
-	line0=$(echo "${lines[0]}"  | grep "33 - Check Health of tomcat applications")
+	line0=$(echo "${lines[0]}"  | grep "33 - Check Health of applications")
 	[ "${lines[0]}" = "$line0" ]
 }
 
