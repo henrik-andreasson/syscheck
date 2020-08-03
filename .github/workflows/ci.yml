@@ -15,9 +15,9 @@ jobs:
       - run: mkdocs gh-deploy --force
       - run: sudo apt-get install ruby ruby-dev rubygems build-essential
       - run: sudo gem install --no-document fpm
-      - run: mkdir -p /results /opt/syscheck /work
-      - run: ./test/run-build-install-and-test.sh --install=/opt/syscheck --work=$(pwd) --results=/results
-      
+      - run: sudo mkdir -p /results /opt/syscheck /work
+      - run: sudo ./test/run-build-install-and-test.sh --install=/opt/syscheck --work=$(pwd) --results=/results
+
 # version: 2
 # jobs:
 #   build:
