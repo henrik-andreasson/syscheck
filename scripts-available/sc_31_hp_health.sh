@@ -27,7 +27,7 @@ default_script_getopt $*
 
 
 hppsu () {
-        COMMAND=`/bin/echo -e "show powersupply\nexit" | /sbin/hpasmcli | perl -ane 's/\n//,print'  | perl -ane 'm/Power supply #1.*Present.*: (.*).*Condition:(.*).*Hotplug.*Power supply #2.*Present.*: (.*).*Condition:(.*).*Hotplug/,print "$1;$2;$3;$4\n"'`
+        COMMAND=`/bin/echo -e "show powersupply\nexit" | /sbin/hpasmcli | egrep "Present|Condition"|cut -f2 -d":"|awk '{printf "%s;",$1}'`
         STATUSPSU1=`echo $COMMAND | cut -f1 -d\; |grep -i "yes"`
         CONDPSU1=`echo $COMMAND | cut -f2 -d\; |grep -i "ok"`
         STATUSPSU2=`echo $COMMAND | cut -f3 -d\; |grep -i "yes"`
@@ -49,12 +49,12 @@ hppsu () {
 }
 
 hptemp () {
-  for tempinput in $(/bin/echo -e "show temp\nexit" | /sbin/hpasmcli | grep ^# | perl  -ane 's/\s+/;/gio, print "$_\n"') ; do
+  for tempinput in $(/bin/echo -e "show temp\nexit" | /sbin/hpasmcli | grep '^#' |awk '{print $1,$2,$3,$4}'|sed 's/ /;/g') ; do
     ##15;I/O_ZONE;33C/91F;70C/158F
     TEMPNO=`echo $tempinput | cut -f1 -d\;`
     TEMPNAME=`echo $tempinput | cut -f2 -d\;`
-    TEMPVAL=`echo $tempinput | cut -f3 -d\;   | perl -ane 'm/(.*)C\//gio,print "$1"'`
-    TEMPLIMIT=`echo $tempinput | cut -f4 -d\; | perl -ane 'm/(.*)C\//gio,print "$1"'`
+    TEMPVAL=`echo $tempinput | cut -f3 -d\; |sed 's,C/.*,,'`
+    TEMPLIMIT=`echo $tempinput | cut -f4 -d\; |sed 's,C/.*,,'`
     echo ${HPTEMP}|egrep -q "${TEMPNO} "
     if [ $? != 0 ];then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "TEMP ${TEMPNO} ${TEMPNAME} is known not to give any reading ($tempinput)"
@@ -82,7 +82,7 @@ hptemp () {
 }
 
 hpfans () {
-  for fansinput in $(/bin/echo -e "show fans\nexit" | /sbin/hpasmcli | grep ^# | perl  -ane 's/\s+/;/gio, print "$_\n"') ; do
+  for fansinput in $(/bin/echo -e "show fans\nexit" | /sbin/hpasmcli | grep '^#' |awk '{print $1,$2,$3,$4,$5}'|sed 's/ /;/g') ; do
     #Fan  Location        Present Speed  of max  Redundant  Partner  Hot-pluggable
     ##1;SYSTEM;Yes;NORMAL;29%;Yes;0;Yes;
     FANNO=`echo $fansinput | cut -f1 -d\;`
