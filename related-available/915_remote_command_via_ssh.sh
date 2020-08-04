@@ -35,7 +35,7 @@ while true; do
     -o|--host    ) SSHHOST=$2 ; shift 2;;
     -c|--command ) SSHCMD=$2 ; shift 2;;
     -u|--user )    SSHTOUSER=$2 ; shift 2;;
-    -k|--key )     SSHFROMKEY="-i $2" ; shift 2;;
+    -k|--key )     SSHFROMKEY="$2" ; shift 2;;
     -h|--help )    schelp;exit;shift;;
     --) break;;
   esac
@@ -46,17 +46,17 @@ done
 
 
 if [ "x$SSHHOST" = "x"  ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
 	exit -1
 fi
 
 if [ "x$SSHCMD" = "x"  ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
         exit -1
 fi
 
 if [ "x$SSHTOUSER" = "x"  ] ; then
-  printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}"
+  printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
   exit -1
 fi
 
@@ -66,8 +66,8 @@ ssh ${SSHOPTIONS} -i ${SSHFROMKEY} -l ${SSHTOUSER} ${SSHHOST} ${SSHCMD} 2>&1
 retcode=$?
 
 if [ $retcode -eq 0 ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" "${SSHTOUSER}${SSHHOST} ${SSHCMD}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${SSHTOUSER}" -2 "${SSHHOST}" -3 "${SSHCMD}"
 else
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "${DESCR[4]}" "$retcode"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$retcode"
 	exit $retcode
 fi

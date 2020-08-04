@@ -16,7 +16,7 @@ jobs:
       - run: sudo apt-get install ruby ruby-dev rubygems build-essential
       - run: sudo gem install --no-document fpm
       - run: sudo mkdir -p /results /opt/syscheck /work /test-reports
-      - run: sudo ./test/run-build-install-and-test.sh --install=/opt/syscheck --work=$(pwd) --results=/results --test=/test-reports
+      - run: sudo ./test/run-build-install-and-test.sh --install=/opt/syscheck --work=/work --results=/results --test=/test-reports
       - uses: actions/upload-artifact@v2
         with:
           name: build-results

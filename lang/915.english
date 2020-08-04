@@ -1,6 +1,6 @@
 SCRIPT_HUMAN_NAME="SSH remote command tool"
 
-HELP="Run command on another host with ssh $0 <host> <cmd> [sshtouser] [sshfromkey]"
+HELP="Run command on another host with ssh $0 --host host --command cmd --user sshtouser --key sshfromkey"
 DESCR[1]="Command executed successfully (%s)"
 DESCR[2]="Host not found (%s)"
 DESCR[3]="Command not found (%s)"

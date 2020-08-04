@@ -34,8 +34,7 @@ License is GPL 2.
 ci result
 ----------
 
-[![CircleCI](https://circleci.com/gh/henrik-andreasson/syscheck.svg?style=svg)](https://circleci.com/gh/henrik-andreasson/syscheck)
-
+![ci](https://github.com/henrik-andreasson/syscheck/workflows/ci/badge.svg)
 
 INSTALLATION
 ==========================

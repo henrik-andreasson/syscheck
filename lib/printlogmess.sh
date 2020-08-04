@@ -1,5 +1,4 @@
 #!/bin/bash
-#set -x
 
 # func to output debug when using -s or --screen
 printtoscreen() {

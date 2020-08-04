@@ -60,18 +60,14 @@ hptemp () {
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "TEMP ${TEMPNO} ${TEMPNAME} is known not to give any reading ($tempinput)"
       #continue
     else
-
-
       if [ "x${TEMPVAL}" = "x" ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "TEMP  ${TEMPNO} ${TEMPNAME} did not return any value for CURRENT temp ($tempinput)"
         continue
       fi
-
       if [ "x${TEMPLIMIT}" = "x" ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "TEMP  ${TEMPNO} ${TEMPNAME} did not return any value for LIMIT temp ($tempinput)"
         continue
       fi
-
       if [ ${TEMPVAL} -gt ${TEMPLIMIT} ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "TEMP ${TEMPNO} ${TEMPNAME} Current: ${TEMPVAL} Limit: ${TEMPLIMIT} (celsius)"
       else
@@ -80,7 +76,6 @@ hptemp () {
     fi
   done
 }
-
 hpfans () {
   for fansinput in $(/bin/echo -e "show fans\nexit" | /sbin/hpasmcli | grep '^#' |awk '{print $1,$2,$3,$4,$5}'|sed 's/ /;/g') ; do
     #Fan  Location        Present Speed  of max  Redundant  Partner  Hot-pluggable
@@ -102,17 +97,14 @@ hpfans () {
     fi
   done
 }
-
 if [ ! -x $HP_HEALTH_TOOL ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$HP_HEALTH_TOOL"
     exit
 fi
 lockfilewait () {
         LOCKFILE=$1
-
 # lock file check/wait
     if [ -f ${LOCKFILE} ] ; then
-
     lockFileIsChangedAt=$(stat --format="%Z" ${LOCKFILE})
     nowSec=$(date +"%s")
     let diff="$nowSec-$lockFileIsChangedAt"
@@ -122,18 +114,13 @@ lockfilewait () {
         nowSec=$(date +"%s")
         let diff="$nowSec-$lockFileIsChangedAt"
     done
-
     lockFileIsChangedAtHuman=$(stat --format="%z" ${LOCKFILE})
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$lockFileIsChangedAtHuman"
     rm ${LOCKFILE}
 fi
-
-
 }
-
 LOCKFILE="${SYSCHECK_HOME}/var/${SCRIPTID}.lock"
 lockfilewait ${LOCKFILE}
-
 touch ${LOCKFILE}
 hppsu
 hptemp
