@@ -28,7 +28,20 @@ default_script_getopt $*
 
 checkcrl () {
 
-  CRLNAME=$1
+	INPUTARGS=$(/usr/bin/getopt --options "c:w:e:i:" --long "crl:,warn:,err:,ip:" -- "$@")
+	if [ $? != 0 ] ; then schelp ; fi
+	eval set -- "$INPUTARGS"
+
+	while true; do
+	  case "$1" in
+	    -c|--crl             ) CRLNAME=$2            ; shift 2 ;;
+	    -w|--warn            ) LIMITMINUTES=$2       ; shift 2 ;;
+	    -e|--err             ) ERRMINUTES=$2         ; shift 2 ;;
+	    -i|--ip              ) CRL_HOST_IPx=$2       ; shift 2 ;;
+	    --) break;;
+	  esac
+	done
+
   if [ "x$CRLNAME" = "x" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "No CRL Configured"
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${DESCR[3]} $CRLNAME"
@@ -38,18 +51,15 @@ checkcrl () {
 
 
   # Limitminutes is now optional, if not configured the limits is crl WARN: validity/2 ERROR: validity/4 eg: CRL is valid to 12h, warn will be 6h and error 3h
-  LIMITMINUTES=$2
   if [ "x$LIMITMINUTES" != "xdefault" ] ; then
     ARGWARNMIN="--warnminutes=$LIMITMINUTES"
   fi
 
-  ERRMINUTES=$3
   if [ "x$ERRMINUTES" != "xdefault" ] ; then
     ARGERRMIN="--errorminutes=$ERRMINUTES"
   fi
 
   # rework of url to access the server via ip instead and send the hostname in the "Host" header variable
-  CRL_HOST_IPx=$4
   if [ "x$CRL_HOST_IPx" != "xdefault" ] ; then
     HOSTNAME_FROM_URL=$(echo "${CRLNAME}" | cut -d'/' -f3 | cut -d':' -f1)
     PATH_FROM_URL=$(echo "${CRLNAME}" | cut -d'/' -f4-)
@@ -175,7 +185,7 @@ GLOBALERRMESSAGE=""
 for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     if [ "x${MINUTES[$i]}" != "x" ] ; then
-      MINUTES=${MINUTES[$i]}
+      MINUTESx=${MINUTES[$i]}
     else
       MINUTESx="default"
     fi
@@ -185,16 +195,16 @@ for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
       ERRMINx="default"
     fi
     if [ "x${CRL_HOST_IP[$i]}" != "x" ] ; then
-      CRL_HOST_IPx=${CRL_HOST_IP[$i]}
+      CRL_HOST_IPx="${CRL_HOST_IP[$i]}"
 
     elif [ "x${CRL_HOST_IP_ALL}" != "x" ] ; then
-      CRL_HOST_IPx=${CRL_HOST_IP_ALL}
+      CRL_HOST_IPx="${CRL_HOST_IP_ALL}"
 
     else
       CRL_HOST_IPx="default"
     fi
 
-    checkcrl "${CRLS[$i]}" "${MINUTESx}" "${ERRMINx}" "${CRL_HOST_IPx}"
+    checkcrl -c "${CRLS[$i]}" -w "${MINUTESx}" -e "${ERRMINx}" -i "${CRL_HOST_IPx}"
 done
 
 # send the summary message (00)
