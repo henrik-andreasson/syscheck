@@ -57,40 +57,40 @@ done
 # main part of script
 
 if [ ! -r "$CERTFILE" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}"
-	printtoscreen $ERROR ${ERRNO[3]} "${DESCR[3]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+	printtoscreen $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 	exit
 fi
 
 
 CERTSERIAL=`openssl x509 -inform der -in ${CERTFILE} -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 CERTDN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  sed 's/\//_/gi' | sed 's/subject=//gi' | sed s/=/-/gi | sed  's/\ /_/gi')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 CERTUID=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout | grep -oi 'uid=[[:alnum:][:space:]]*' |sed 's/uid=//gi')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 CERTCN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'cn=[[:alnum:][:space:]]*'  |sed 's/cn=//gi')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 CERTSN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'serialnumber=[[:alnum:][:space:]]*' |sed 's/serialnumber=//gi')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 CERTSTRING=$(openssl x509 -inform der -in ${CERTFILE}| tr '\n' ';')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

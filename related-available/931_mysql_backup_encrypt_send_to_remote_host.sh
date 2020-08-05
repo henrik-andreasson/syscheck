@@ -52,7 +52,7 @@ fi
 FULLFILENAME=`$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh --batch ${BACKUPARG}`
 
 if [ $? -ne 0 ] ; then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID $SCRIPTINDEX $ERROR $BAK_ERRNO[2] "$BAK_DESCR[2]"
+    printlogmess-n  ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e $ERRNO[2] -d "$DESCR[2]"
 fi
 
 # lock file check/wait
@@ -69,14 +69,14 @@ if [ -f ${TOARCHIVE_DIR}/encback.lock ] ; then
     done
 
     lockFileIsChangedAtHuman=$(stat --format="%z" ${TOARCHIVE_DIR}/encback.lock)
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} $SCRIPTINDEX $WARN ${ERRNO[5]} "${DESCR[5]}" $lockFileIsChangedAtHuman
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $WARN -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$lockFileIsChangedAtHuman"
     rm ${TOARCHIVE_DIR}/encback.lock
 fi
 
 touch ${TOARCHIVE_DIR}/encback.lock
 res=$(${OPENENC_TOOL} encrypt ${FULLFILENAME} ${TOARCHIVE_DIR})
 if [ $? -ne 0 ] ;   then
-    printlogmess ${SCRIPTNAME} ${SCRIPTID} $SCRIPTINDEX $ERROR ${ERRNO[3]} "${DESCR[3]}" $res
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$res"
 fi
 rm ${TOARCHIVE_DIR}/encback.lock
 
@@ -88,11 +88,11 @@ for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do
     fi
 	for (( i = 0 ;  i < "${#BACKUP_HOST[@]}" ; i++ )) ; do
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-		$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh ${TRANSFERFILENAME} ${BACKUP_HOST[$i]} "${BACKUP_DIR[$i]}/${EXTRADIR}/" ${BACKUP_USER[$i]} ${BACKUP_SSHFROMKEY[$i]}
+		$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh "${TRANSFERFILENAME}"" ${BACKUP_HOST[$i]}" "${BACKUP_DIR[$i]}/${EXTRADIR}/" "${BACKUP_USER[$i]}" "${BACKUP_SSHFROMKEY[$i]}"
 		if [ $? -eq 0 ] ; then
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} $SCRIPTINDEX $INFO ${ERRNO[1]} "${DESCR[1]}" "${TRANSFERFILENAME}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${TRANSFERFILENAME}"
 		else
-			printlogmess ${SCRIPTNAME} ${SCRIPTID} $SCRIPTINDEX $ERROR ${ERRNO[4]} "${DESCR[4]}" "${TRANSFERFILENAME}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${TRANSFERFILENAME}"
 			FILETRANS=0
 		fi
 	done

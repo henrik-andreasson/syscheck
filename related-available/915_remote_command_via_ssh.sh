@@ -44,7 +44,6 @@ done
 
 # main part of script
 
-
 if [ "x$SSHHOST" = "x"  ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
 	exit -1

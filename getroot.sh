@@ -11,15 +11,11 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/common.conf
 
-# source libsycheck 
+# source libsycheck
 source ${SYSCHECK_HOME}/lib/libsyscheck.sh
 
 # use the printlog function
 source $SYSCHECK_HOME/lib/printlogmess.sh
-
-
-
-
 
 # script name, used when integrating with nagios/icinga
 SCRIPTNAME=getroot
@@ -72,9 +68,9 @@ if [ -f  ${SYSCHECK_HOME}/var/syscheck-on-hold ] ; then
 	if [ "x${SYSCHECKONHOLDDONE}" = "xy" -o "x$SYSCHECKONHOLDDONE" = "xY" ] ; then
 		REASON=$(cat ${SYSCHECK_HOME}/var/syscheck-on-hold)
 		sudo rm ${SYSCHECK_HOME}/var/syscheck-on-hold
-		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[4]} "${DESCR[4]}" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
-		printf "${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[4]} ${ExecutingUserName} (${ExecutingUserId}) ${DESCR[4]} $REASON\n"
-		sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[4]} "${DESCR[4]}" "${ExecutingUserName}" "$REASON"
+		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${ExecutingUserName} (${ExecutingUserId})" -2 "$REASON"
+		printf "${SCRIPTID} ${SCRIPTINDEX} $INFO  ${ERRNO[4]} ${ExecutingUserName} (${ExecutingUserId}) ${DESCR[4]} $REASON\n"
+		sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO -e ${ERRNO[4]} -d "${DESCR[4]}" "${ExecutingUserName}" "$REASON"
 		exit
 	fi
 fi
@@ -97,12 +93,12 @@ else
 fi
 
 if [ "x$SYSCHECKONHOLD" = "xy" -o "x$SYSCHECKONHOLD" = "xY" ] ; then
-    sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh "${SCRIPTNAME}" "${SCRIPTID}" ${SCRIPTINDEX} $INFO ${ERRNO[3]} "${DESCR[3]}" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
-    sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh                      "${SCRIPTID}" "${SCRIPTINDEX}" $INFO ${ERRNO[3]} "${DESCR[3]}" "${ExecutingUserName}" "$REASON"
+    sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh "${SCRIPTNAME}" "${SCRIPTID}" ${SCRIPTINDEX} $INFO -e ${ERRNO[3]} -d "${DESCR[3]}" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
+    sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh                      "${SCRIPTID}" "${SCRIPTINDEX}" $INFO -e ${ERRNO[3]} -d "${DESCR[3]}" "${ExecutingUserName}" "$REASON"
     printf "$(date):${REASON}:${ExecutingUserName}" | sudo tee ${SYSCHECK_HOME}/var/syscheck-on-hold > /dev/null
 else
-    sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh "${SCRIPTNAME}" "${SCRIPTID}" "${SCRIPTINDEX}"  $INFO ${ERRNO[1]} "${DESCR[1]}" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
-    sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "${ExecutingUserName}" "$REASON"
+    sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh "${SCRIPTNAME}" "${SCRIPTID}" "${SCRIPTINDEX}"  $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
+    sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" "${ExecutingUserName}" "$REASON"
 fi
 
 sudo su -
@@ -119,7 +115,7 @@ if [ -f  ${SYSCHECK_HOME}/var/syscheck-on-hold ] ; then
 	if [ "x${SYSCHECKONHOLDDONE}" = "xy" -o "x$SYSCHECKONHOLDDONE" = "xY" ] ; then
 		sudo rm ${SYSCHECK_HOME}/var/syscheck-on-hold
 		sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh "${SCRIPTNAME}" "${SCRIPTID}" "${SCRIPTINDEX}" "$INFO" "${ERRNO[4]}" "${DESCR[4]}" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
-		sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[4]} "${DESCR[4]}" "${ExecutingUserName}" "$REASON"
+		sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh ${SCRIPTID} ${SCRIPTINDEX} $INFO -e ${ERRNO[4]} -d "${DESCR[4]}" "${ExecutingUserName}" "$REASON"
 		exit
 	fi
 fi

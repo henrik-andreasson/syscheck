@@ -40,7 +40,6 @@ done
 
 # main part of script
 
-
 cd $EJBCA_HOME
 for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
         NAME=${CANAME[$i]}
@@ -56,9 +55,9 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
         ./bin/ejbca.sh ca activateca $NAME $PIN | tee ${SYSCHECK_HOME}/var/$0.output
         error=$(grep -v "Enter authorization code:" ${SYSCHECK_HOME}/var/$0.output)
         if [ "x$error" = "x"  ] ; then
-            printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO ${ERRNO[1]} "${DESCR[1]}" "$NAME"
+            printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$NAME"
         else
-            printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$NAME" "$error"
+            printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$NAME" -2 "$error"
 
         fi
         echo " --- "

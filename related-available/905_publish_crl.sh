@@ -50,7 +50,7 @@ get () {
     printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLFILE"
     CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME "$CRLFILE")
     if [ $? != 0 -o  ! -r $CRLFILE  ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" "$CRLNAME/$CRLFILE"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "$DESCR[6]" -1 "$CRLNAME/$CRLFILE"
     fi
     printtoscreen $CMD
 
@@ -69,9 +69,9 @@ put () {
     $SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $REMOTEHOST $REMOTEDIR $SSHUSER $SSHKEY
 
     if [ $? = 0 ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[8]} "$PUBL_DESCR[8]" $CRLNAME $REMOTEHOST
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[8]} -d "$DESCR[8]" -1 $CRLNAME -2 $REMOTEHOST
     else
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "$PUBL_DESCR[2]" $CRLNAME $REMOTEHOST
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "$DESCR[2]" -1 $CRLNAME -2 $REMOTEHOST
     fi
 }
 
@@ -99,20 +99,20 @@ checkcrl () {
 
 # file not found where it should be
     if [ ! -f $CRLFILE ] ; then
-	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "$PUBL_DESCR[4]" "$CRLFILE"
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "$DESCR[4]" -1 "$CRLFILE"
        return 4
     fi
 
 # stat return check
     CRL_FILE_SIZE=`stat -c"%s" $CRLFILE`
     if [ $? -ne 0 ] ; then
-	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[5]} "$PUBL_DESCR[5]" "$CRLFILE"
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "$DESCR[5]" -1 "$CRLFILE"
        return 5
     fi
 
 # crl of 0 size?
     if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[6]} "$PUBL_DESCR[6]" "$CRLFILE"
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "$DESCR[6]" -1 "$CRLFILE"
         return 6
     fi
 
@@ -184,9 +184,9 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
     if [ "x${REMOTE_HOST[$i]}" = "xlocalhost" ] ; then
 	cp -f ${CRLFILE} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	if [ $? -eq 0 ] ;then
-	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "$PUBL_DESCR[1]" ${CRLCANAME[$i]}
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "$DESCR[1]" -1 ${CRLCANAME[$i]}
 	else
-	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "$PUBL_DESCR[3]" ${CRL_NAME[$i]} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "$DESCR[3]" -1 ${CRL_NAME[$i]} -2 "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	fi
 
     else

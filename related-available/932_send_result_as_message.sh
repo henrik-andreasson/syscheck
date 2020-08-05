@@ -44,8 +44,8 @@ for (( j=0; j < ${#SEND_MSG_COMMAND[@]} ; j++ )){
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	SENDRES=$(${SEND_MSG_COMMAND[$j]} -c ${SEND_MSG_CONFIG[$j]} -m ${SEND_MSG_FILE[$j]} | tr -d '\n')
 	if [ $? -ne 0 ] ; then
-      		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}" "${SEND_MSG_COMMAND[$j]} ${SEND_MSG_FILE[$j]}" "result: ${SENDRES}"
+      		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${SEND_MSG_COMMAND[$j]} ${SEND_MSG_FILE[$j]}" -2 "result: ${SENDRES}"
 	else
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" "${SEND_MSG_COMMAND[$j]} ${SEND_MSG_FILE[$j]}" "result: ${SENDRES}"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${SEND_MSG_COMMAND[$j]} ${SEND_MSG_FILE[$j]}" -2 "result: ${SENDRES}"
 	fi
 }

@@ -43,13 +43,13 @@ done
 
 
 if [ "x${CRLFILE}" = "x" ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
     exit
 fi
 
 
 if [ ! -r ${CRLFILE} ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" ${CRLFILE}
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 ${CRLFILE}
     exit
 fi
 
@@ -64,9 +64,9 @@ put () {
 
 	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $CRLHOST $SSHSERVER_DIR $SSHUSER $SSHKEY
 	if [ $? != 0 ] ; then
-                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[4]} "${DESCR[4]}" $CRLHOST $CRLFILE
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[4]}" -d "${DESCR[4]}" -1 "$CRLHOST" -2 "$CRLFILE"
 	else
-                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" $CRLHOST $CRLFILE
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "$CRLHOST" -2 "$CRLFILE"
 	fi
 }
 

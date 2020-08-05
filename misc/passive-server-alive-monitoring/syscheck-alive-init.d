@@ -76,12 +76,12 @@ ERRNO[2]="${SCRIPTID}02"
 case "$1" in
 start)
     echo -n "Sending syscheck alive startup message: "
-    printlogmess $INFO ${ERRNO[1]} "${DESCR[1]}"	
+    printlogmess $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"	
 	echo "done"
     ;;
 stop)
     echo -n "Sending syscheck alive shutdown message: "
-    printlogmess $INFO ${ERRNO[2]} "${DESCR[2]}" 
+    printlogmess $INFO -e ${ERRNO[2]} -d "${DESCR[2]}" 
     echo "done"
     ;;
 *)

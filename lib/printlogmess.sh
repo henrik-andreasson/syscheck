@@ -241,62 +241,86 @@ printlogmess(){
 }
 
 
-# ex: logbookmess $LEVEL ${ERRNO[1]} "${DESCR[1]}"
+# ex: logbookmess $LEVEL ${ERRNO[1]} -d "${DESCR[1]}"
 logbookmess(){
-        SCRIPTID=$1
-        SCRIPTINDEX=$2
-        LEVEL=$3
-        ERRNO=$4
-        DESCR=$5
-        shift 5
-        ARG1=$1
-        ARG2=$2
-        ARG3=$3
-        ARG4=$4
-        ARG5=$5
-        ARG6=$6
-        ARG7=$7
-        ARG8=$8
-        ARG9=$9
+  INPUTARGS=`/usr/bin/getopt --options "n:i:x:l:e:d:1:2:3:4:5:6:7:8:9"  -- "$@"`
+  if [ $? != 0 ] ; then schelp ; fi
+  eval set -- "$INPUTARGS"
 
+  while true; do
+    case "$1" in
+      -n ) SCRIPTNAME=$2; shift 2;;
+      -i ) SCRIPTID=$2; shift 2;;
+      -x ) SCRIPTINDEX=$2; shift 2;;
+      -l ) LEVEL=$2; shift 2;;
+      -e ) ERRNO=$2; shift 2;;
+      -d ) DESCR=$2; shift 2;;
+      -1 ) ARG1=$2 ; shift 2;;
+      -2 ) ARG2=$2 ; shift 2;;
+      -3 ) ARG3=$2 ; shift 2;;
+      -4 ) ARG4=$2 ; shift 2;;
+      -5 ) ARG5=$2 ; shift 2;;
+      -6 ) ARG6=$2 ; shift 2;;
+      --) break;;
+    esac
+  done
 
-        if [ "x${LEVEL}" = "xI" ] ;then
-                SYSLOGLEVEL="info"
-		LONGLEVEL="INFO"
-        elif [ "x${LEVEL}" = "xW" ] ;then
-                SYSLOGLEVEL="warning"
-		LONGLEVEL="WARNING"
-        elif [ "x${LEVEL}" = "xE" ] ;then
-                SYSLOGLEVEL="err"
-		LONGLEVEL="ERROR"
-        else
-                echo "wrong type of LEVEL (${LEVEL})"
-                exit;
-        fi
+  if [ "x${LEVEL}" = "xI" ] ;then
+      SYSLOGLEVEL="info"
+      LONGLEVEL="INFO"
+  elif [ "x${LEVEL}" = "xW" ] ;then
+      SYSLOGLEVEL="warning"
+      LONGLEVEL="WARNING"
+  elif [ "x${LEVEL}" = "xE" ] ;then
+      SYSLOGLEVEL="err"
+      LONGLEVEL="ERROR"
+  else
+      echo "wrong type of LEVEL (${LEVEL})"
+      exit;
+  fi
 
-		if [ "x${LOGBOOKTOFILE}" != "x1" ] ; then
+  if [ "x$SCRIPTNAME" = "x" ] ;then
+      echo "scriptname must be passed to printlogmess"
+      exit
+  fi
+
+  if [ "x$SCRIPTID" = "x" ] ;then
+      echo "scriptid must be passed to printlogmess"
+      exit
+  fi
+
+  if [ "x$SCRIPTINDEX" = "x" ] ;then
+      echo "scriptindex must be passed to printlogmess"
+      exit
+  fi
+  if [ "x$DESCR" = "x" ] ;then
+      echo "DESCR must be passed to printlogmess"
+      exit
+  fi
+
+	if [ "x${LOGBOOKTOFILE}" != "x1" ] ; then
 	        return
-		fi
+	fi
 
-        DATE=`date +"%Y%m%d %H:%M:%S"`
-        HOST=`hostname `
-        SEC1970NANO=$(date +"%s.%N")
-        HOST=$(hostname )
-        DESCR_W_ARGS=$(printf "${LONGLEVEL} - ${SCRIPTNAME} ${DESCR}\n" "$ARG1" "$ARG2" "$ARG3" "$ARG4" "$ARG5" "$ARG6" "$ARG7" "$ARG8" "$ARG9" | head -1)
-        MESSAGE0="${HOST}: ${DESCR_W_ARGS}"
-      	MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
-      	NEWFMTSTRING="${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
-		OLDFMTSTRING="${LEVEL}-${SCRIPTID}${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
+  DATE=`date +"%Y%m%d %H:%M:%S"`
+  HOST=`hostname `
+  SEC1970NANO=$(date +"%s.%N")
+  HOST=$(hostname )
+  DESCR_W_ARGS=$(printf "${LONGLEVEL} - ${SCRIPTNAME} ${DESCR}\n" "$ARG1" "$ARG2" "$ARG3" "$ARG4" "$ARG5" "$ARG6" "$ARG7" "$ARG8" "$ARG9" | head -1)
+  MESSAGE0="${HOST}: ${DESCR_W_ARGS}"
+	MESSAGE=${MESSAGE0:0:${MESSAGELENGTH}}
+	NEWFMTSTRING="${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
+	OLDFMTSTRING="${LEVEL}-${SCRIPTID}${ERRNO}-${SYSTEMNAME} ${DATE} ${MESSAGE}"
 
-		if [ "x${LOGBOOK_OUTPUTTYPE}" = "xJSON" ] ; then
+	if [ "x${LOGBOOK_OUTPUTTYPE}" = "xJSON" ] ; then
            LOGBOOK_JSONSTRING="{ \"FROM\": \"SYSCHECK\", \"SYSCHECK_VERSION\": \"${SYSCHECK_VERSION}\", \"LOGFMT\": \"LOGBOOK-1.1\", \"SCRIPTID\": \"${SCRIPTID}\", \"SCRIPTINDEX\": \"${SCRIPTINDEX}\", \"LEVEL\": \"${LEVEL}\", \"ERRNO\": \"${ERRNO}\", \"SYSTEMNAME\": \"${SYSTEMNAME}\", \"DATE\": \"${DATE}\", \"HOSTNAME\": \"${HOST}\", \"SEC1970NANO\": \"${SEC1970NANO}\", \"LONGLEVEL\":  \"$LONGLEVEL\", \"DESCRIPTION\": \"$DESCR\", \"USERNAME\":   \"$ARG1\", \"LOGENTRY\":   \"$ARG2\", \"LEGACYFMT\":   \"${NEWFMTSTRING}\", \"SEC1970\": \"${SEC1970}\"  }"
        		printf "${LOGBOOK_JSONSTRING}\n" >> ${LOGBOOK_FILENAME}
 
-		elif [ "x${LOGBOOK_OUTPUTTYPE}" = "xNEWFMT" ] ; then
+	elif [ "x${LOGBOOK_OUTPUTTYPE}" = "xNEWFMT" ] ; then
       		printf "${NEWFMTSTRING}\n" >> ${LOGBOOK_FILENAME}
-		else
+	else
 			printf "unknown format LOGBOOK_OUTPUTTYPE: ${LOGBOOK_OUTPUTTYPE}"
 			exit -1
-		fi
+	fi
 
 }

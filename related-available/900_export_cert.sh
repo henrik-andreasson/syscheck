@@ -1,4 +1,4 @@
-#!/bin/bash
+printbin/bash
 
 SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
@@ -41,9 +41,10 @@ done
 
 # main part of script
 
+
 if [ "x$CERTFILE" = "x" -o ! -r "$CERTFILE" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}"
-	printtoscreen $ERROR ${ERRNO[3]} "${DESCR[3]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+	printtoscreen $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 	exit
 fi
 
@@ -55,20 +56,20 @@ fi
 date >> ${CERTLOG}
 CERTSERIAL=`openssl x509 -inform der -in ${CERTFILE} -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
     exit;
 fi
 
 CERTSUBJECT=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | sed 's/\//_/gi' | sed 's/subject=//gi' | sed s/=/-/gi | sed  's/\ /_/gi'`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 echo "CERTSERIAL: $CERTSERIAL" >> ${CERTLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${CERTLOG}
 CERT=`openssl x509 -inform der -in ${CERTFILE}`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 # putting the base64 string in the log (livrem och h�ngslen)
@@ -80,9 +81,9 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 OUTFILE="${OUTPATH2}/archived-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in ${CERTFILE} > ${OUTFILE}
 if [ $? -eq 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$?"
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

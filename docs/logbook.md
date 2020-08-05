@@ -18,7 +18,7 @@ handover of problems/incidents to next operator or any important info.
 
 ### to enable sudo run:
 
-    usermod -D wheel -a lcso
+    usermod -D wheel -a username
 
 
 ### logbook samples

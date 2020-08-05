@@ -44,7 +44,7 @@ done
 if [ !- d ${BACKUP_DIR} ] ; then
 	mkdir -p ${BACKUP_DIR}
 	if [ $? -ne 0 ] ; then
-	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[3]} "${DESCR[3]}" "${BACKUP_DIR}"
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" "${BACKUP_DIR}"
 	    exit
 	fi
 fi
@@ -55,19 +55,19 @@ for (( j=0; j < ${#HTMF_FILE[@]} ; j++ )){
 	if [ "x${BACKUP}" = "xbackup" ] ; then
 		cp -f "${HTMF_FILE[$j]}" ${BACKUP_DIR}
 		if [ $? -ne 0 ] ; then
-	    		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}" ${HTMF_FILE[$j]}
+	    		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${HTMF_FILE[$j]}"
 	    		continue
 		else
-	    		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" ${HTMF_FILE[$j]}
+	    		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -2 "${HTMF_FILE[$j]}"
 		fi
 	else
 		localfilename=$(basename ${HTMF_FILE[$j]})
 		cp -f ${BACKUP_DIR}/${localfilename} "${HTMF_FILE[$j]}"
                 if [ $? -ne 0 ] ; then
-                        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $ERROR ${ERRNO[2]} "${DESCR[2]}" ${HTMF_FILE[$j]}
+                        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${HTMF_FILE[$j]}"
                         continue
                 else
-                        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $INFO ${ERRNO[1]} "${DESCR[1]}" ${HTMF_FILE[$j]}
+                        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${HTMF_FILE[$j]}"
                 fi
 
 	fi

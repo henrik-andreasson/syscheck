@@ -150,7 +150,7 @@ DATE=`date +'%Y-%m-%d_%H.%M.%S'`
 MYSQLBACKUPDIR=/backup/mysql/
 dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${DB_NAME} ${TABLE_NAME} |gzip > ${MYSQLBACKUPDIR}/default/crldata${DATE}sql.gz)
 if [ $? -ne 0 ] ; then
-        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[4]} "${DESCR[4]}" "$dumpret"
+        printlogmess ${SCRIPTID} ${SCRIPTINDEX}   $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" "$dumpret"
         exit
 fi
 }

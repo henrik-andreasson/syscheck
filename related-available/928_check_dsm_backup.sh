@@ -41,13 +41,12 @@ done
 # Check logfile with grep
 egrep -q "${DATE} ..:..:.. ${SERACH_STRING}" ${LOGFILE}
 RC=$?
-if [ ${RC} != 0 ]
-then
-LAST=`egrep "${SERACH_STRING}" ${LOGFILE}|awk '{print $1,$2}'|tail -1`
-dsm=FAIL
+if [ ${RC} != 0 ] ; then
+  LAST=`egrep "${SERACH_STRING}" ${LOGFILE}|awk '{print $1,$2}'|tail -1`
+  dsm=FAIL
 fi
 if [ "x$dsm" = "xFAIL" ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  "$ERROR" "${ERRNO[2]}" "${DESCR[2]} $LAST"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l "$ERROR" -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "$LAST"
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  "$INFO" "${ERRNO[1]}" "${DESCR[1]} "
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l "$INFO" -e "${ERRNO[1]}" -d "${DESCR[1]}"
 fi

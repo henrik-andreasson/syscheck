@@ -53,7 +53,7 @@ fi
 
 
 if [ ! -d "${MYSQLBACKUPDIR}/${EXTRADIR}" ] ; then
-    printlogmess ${SCRIPTNAME}  ${SCRIPTID} ${SCRIPTINDEX}   $ERROR ${ERRNO[3]} "${DESCR[3]}" "${MYSQLBACKUPDIR}/${EXTRADIR}"
+    printlogmess ${SCRIPTNAME}  ${SCRIPTID} ${SCRIPTINDEX}   $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${MYSQLBACKUPDIR}/${EXTRADIR}"
     exit 1
 fi
 
@@ -71,9 +71,9 @@ for (( i = 0 ;  i < ${#DBNAME[@]} ; i++ )) ; do
     filesize=$(stat -c "%s" "$MYSQLBACKUPFULLFILENAME")
 
     if [ $retcode -eq 0 ] ; then
-        printlogmess ${SCRIPTNAME} ${SCRIPTID} ${SCRIPTINDEX} $INFO  ${ERRNO[1]} "${DESCR[1]}" "$MYSQLBACKUPFULLFILENAME" $TIMETOCOMPLEATE $filesize
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$MYSQLBACKUPFULLFILENAME" -2 $TIMETOCOMPLEATE -3 $filesize
     else
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$MYSQLBACKUPFULLFILENAME" $TIMETOCOMPLEATE $filesize "$dumpret"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$MYSQLBACKUPFULLFILENAME" -2 $TIMETOCOMPLEATE -3 $filesize -4 "$dumpret"
     fi
 
     if [ "x$BATCH" = "x1" ] ; then
