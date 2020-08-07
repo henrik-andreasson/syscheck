@@ -1,6 +1,6 @@
 HELP="sc_37_monitor_internal_error.sh "
 
-DESCR_1="ok: %s"
-HELP_1="No action is needed"
-DESCR_2="problem: %s"
-HELP_2="problem: %s"
+DESCR[1]="ok: %s"
+HELP[1]="No action is needed"
+DESCR[2]="problem: %s"
+HELP[2]="problem: %s"

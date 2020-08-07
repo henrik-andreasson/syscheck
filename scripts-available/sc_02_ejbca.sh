@@ -35,7 +35,7 @@ if [ "x${CHECKTOOL}" = "xwget" ] ; then
         ${CHECKTOOL} "${URL}" -T ${EJBCA_TIMEOUT} -t 1 -O $OUTPUT 2>/dev/null
 elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
 
-        result=$( ${CHECKTOOL} "${URL}" --silent --show-error --connect-timeout ${EJBCA_TIMEOUT} --max-time ${EJBCA_TIMEOUT} --retry 1 --output $OUTPUT 2>&1)
+        result=$( ${CHECKTOOL} "${URL}" --silent --show-error --max-time ${EJBCA_TIMEOUT} --max-time ${EJBCA_TIMEOUT} --retry 1 --output $OUTPUT 2>&1)
         if [ $? -ne 0 ] ; then
                 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$result"
                 exit

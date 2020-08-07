@@ -29,9 +29,9 @@ default_script_getopt $*
 OUTPUT="/tmp/internal-error.txt"
 
 if [ "x${CHECKTOOL}" = "xcurl" ] ; then
-        ${CHECKTOOL} ${URL} ${HEADER} --connect-timeout ${CURL_TIMEOUT} --retry 1 --output $OUTPUT -v 2>/dev/null
+        ${CHECKTOOL} ${URL} ${HEADER} --max-time ${CURL_TIMEOUT} --retry 1 --output $OUTPUT -v 2>/dev/null
 else
-        printlogmess -n ${SCRIPTID} -i ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
@@ -39,9 +39,9 @@ OKOUTPUT=$(cat $OUTPUT | grep "JNLP File generated" | sed 's/<!--//' | sed 's/--
 FULLOUTPUT=$(cat $OUTPUT | tr -d "\n")
 
 if [ "x${OKOUTPUT}" != "x" ]; then
-   printlogmess -n ${SCRIPTID} -i ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$OKOUTPUT"
+   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$OKOUTPUT"
 else
-	 printlogmess -n ${SCRIPTID} -i ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[4]}" -d "${DESCR[4]}" -1 "$FULLOUTPUT"
+	 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[4]}" -d "${DESCR[4]}" -1 "$FULLOUTPUT"
 fi
 
 rm $OUTPUT

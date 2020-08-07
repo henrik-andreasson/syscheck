@@ -33,7 +33,7 @@ cd /tmp
 if [ "x${CHECKTOOL}" = "xwget" ] ; then
         ${CHECKTOOL} ${URL} -T ${GET_TIMEOUT} -t 1 -O $OUTPUT 2>/dev/null
 elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
-        ${CHECKTOOL} ${URL} --connect-timeout ${GET_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
+        ${CHECKTOOL} ${URL} --max-time ${GET_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
 else
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 	exit
