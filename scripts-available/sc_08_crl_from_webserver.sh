@@ -86,6 +86,7 @@ checkcrl () {
   elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
 
     ${CHECKTOOL} ${CRLNAME} --retry ${RETRIES} ${CHECK_HOST_ARG1} "${CHECK_HOST_ARG2}" --max-time ${TIMEOUT} --max-time ${TIMEOUT} --output $outname 2>/dev/null
+    ${CHECKTOOL} ${CRLNAME} --retry ${RETRIES} ${CHECK_HOST_ARG1} "${CHECK_HOST_ARG2}" --max-time ${TIMEOUT} --output $outname 2>/dev/null
 
     if [ $? -ne 0 ] ; then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$CRLNAME"
