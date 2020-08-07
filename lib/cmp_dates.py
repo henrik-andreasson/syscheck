@@ -17,6 +17,19 @@ parser.add_argument('--verbose', action='store_const', const="1")
 args = parser.parse_args()
 
 
+def deltaFMT(td):
+    '''Convert timedelta objects to a HH:MM string with (+/-) sign'''
+    if td < timedelta(seconds=0):
+        sign = '-'
+        td = -td
+    else:
+        sign = ''
+    tdhours, rem = divmod(td.total_seconds(), 3600)
+    tdminutes, rem = divmod(rem, 60)
+    tdstr = '{}{:}:{:02d}'.format(sign, int(tdhours), int(tdminutes))
+    return tdstr
+
+
 if args.noyearnotz:
     created = datetime.strptime(args.date1, "%b %d %H:%M:%S")
     expires = datetime.strptime(args.date2, "%b %d %H:%M:%S")
@@ -71,7 +84,7 @@ elif (now > expires):
     if (args.minutes):
         print(minutes)
     else:
-        print("ERROR HAS EXPIRED: ", expires, "(d:h:m:s.mmm)")
+        print("expire_in: HAS BEEN PASSED {} (h:m)".format(deltaFMT(until_expire)))
     sys.exit(3)
 
 # error time has passed
@@ -79,7 +92,7 @@ elif (error_time > until_expire):
     if (args.minutes):
         print(minutes)
     else:
-        print("ERROR error_time", error_time, "(hh:mm:ss) has passed, time until expiration", until_expire, "(d:h:m:s.mmm)")
+        print("error: HAS BEN PASSED with {} (h:m) until expire: {} (h:m)".format(deltaFMT(until_error), deltaFMT(until_expire)))
     sys.exit(2)
 
 # warn time has passed
@@ -87,7 +100,7 @@ elif (warn_time > until_expire):
     if (args.minutes):
         print(minutes)
     else:
-        print("WARNING warn_time", warn_time, "(hh:mm:ss) has passed, time until error: ", until_error, " time until expiration: ", until_expire, "(hh:mm:ss)")
+        print("warn HAS BEEN PASSED with {} (h:m), until error: {} (h:m) until expire: {} (h:m)".format(deltaFMT(until_warn), deltaFMT(until_error), deltaFMT(until_expire)))
     sys.exit(1)
 
 # no warn/err all ok
@@ -95,5 +108,5 @@ else:
     if (args.minutes):
         print(minutes)
     else:
-        print("expire_in: ", until_expire, "(h:m:s), until_warn: ", until_warn, " until_err: ", until_error, " validity: ", validity)
+        print("until warn: {} (h:m) until error: {} (h:m) until expire: {} (h:m)".format(deltaFMT(until_warn), deltaFMT(until_error), deltaFMT(until_expire)))
     sys.exit(0)
