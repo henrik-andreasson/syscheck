@@ -2,14 +2,20 @@ SCRIPT_HUMAN_NAME="Check Health of applications"
 
 HELP="Healthcheck of applications with simple URL health (should return ALLOK and status 200)"
 
-DESCR[1]="Healtcheck of app: %s ok"
+DESCR[1]="app: %s ok"
 HELP[1]="No action is needed"
 
-DESCR[2]="Healtcheck of app: %s NOT ok error message: %s"
+DESCR[2]="app: %s NOT ok error message: %s"
 HELP[2]="Check errormessage and log-file"
 
-DESCR[3]="Healtcheck of app: %s CHECKTOOL not curl nor wget"
+DESCR[3]="app: %s CHECKTOOL not curl nor wget"
 HELP[3]="Config curl or wget"
 
-DESCR[4]="Healtcheck of app: %s restarting due to previous failure status: %s command: %s"
+DESCR[4]="app: %s restarting due to previous failure status: %s command: %s restarts in last 24h: %s"
 HELP[4]="Check errormessage and log-file"
+
+DESCR[5]="app: %s NOT restarting due to to many restarts in last 24h: %s"
+HELP[5]="Check errormessage and log-file"
+
+DESCR[6]="app: %s, MAXRESTARTS not set"
+HELP[6]="Config in the config file"
