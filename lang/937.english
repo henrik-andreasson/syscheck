@@ -1,4 +1,5 @@
 HELP="Delete records from crldata, keep default 20 record in crltable, see config file 817.conf"
+SCRIPT_HUMAN_NAME="Delete old records from CRL Data"
 
 LEVEL_1=$ERROR
 DESCR[1]="No Value in ROW_SAVE"
@@ -9,7 +10,7 @@ DESCR[2]="The value is less then 5"
 HELP[2]="Check  scripts config file "
 
 LEVEL_3=$ERROR
-DESCR[3]="Can't make a backup" 
+DESCR[3]="Can't make a backup"
 HELP[3]="Check permisson and dbuser"
 
 LEVEL_4=$ERROR
@@ -43,4 +44,3 @@ HELP[9]="Check permission  "
 LEVEL_10=$INFO
 DESCR[10]="Delete to crlnumber, restart jboss and check sync "
 HELP[10]="Delete ok "
-

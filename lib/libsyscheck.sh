@@ -96,8 +96,7 @@ getconfig(){
 schelp(){
 
   /bin/echo
-  /bin/echo -e "${SCRIPTID} - ${SCRIPT_HUMAN_NAME}"
-  /bin/echo  "--------------------------------------"
+  /bin/echo -e "Scriptid: ${SCRIPTID} - ${SCRIPT_HUMAN_NAME}"
   /bin/echo
   /bin/echo -e "$HELP"
   /bin/echo

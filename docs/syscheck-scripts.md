@@ -1,11 +1,10 @@
 # Syscheck version 2.0 
-Documentation generated: Sat  1 Aug 21:54:03 CEST 2020
+Documentation generated: Mon 10 Aug 00:16:11 CEST 2020
 # Syscheck scripts
 ##  sc_01_diskusage.sh 
 ```  
 
-01 - Disk usage
---------------------------------------
+Scriptid: 01 - Disk usage
 
 sc_01_diskusage.sh Script that checks for to much hard-disc usage, limit is:
 
@@ -21,8 +20,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_02_ejbca.sh 
 ```  
 
-02 - EJBCA Health check
---------------------------------------
+Scriptid: 02 - EJBCA Health check
 
 sc_02_ejbca.sh Script that connects to the ejbca health check servlet to check the status of the ejbca application. The health check servlet checks JVM memory, database connection and HSM connection.
 
@@ -41,8 +39,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_03_memory-usage.sh 
 ```  
 
-03 - Memory usage
---------------------------------------
+Scriptid: 03 - Memory usage
 
 sc_03_memory-usage.sh Script that checks that there is enough free memory. The limit is configured in the script, limit: 
 
@@ -59,8 +56,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_04_pcsc_readers.sh 
 ```  
 
-04 - Connected PCSC Readers
---------------------------------------
+Scriptid: 04 - Connected PCSC Readers
 
 checks for the defined number of PCSC readers is attached to the computer
 
@@ -76,8 +72,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_05_pcscd.sh 
 ```  
 
-05 - pcscd is running
---------------------------------------
+Scriptid: 05 - pcscd is running
 
 check that pcscd is running
 
@@ -92,8 +87,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_06_raid_check.sh 
 ```  
 
-06 - HP Raid check
---------------------------------------
+Scriptid: 06 - HP Raid check
 
 check the raid discs
 
@@ -112,8 +106,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_07_syslog.sh 
 ```  
 
-07 - Check if syslog if running
---------------------------------------
+Scriptid: 07 - Check if syslog if running
 
 check to see that syslog is running and delivers messages ok
 
@@ -130,8 +123,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_08_crl_from_webserver.sh 
 ```  
 
-08 - Download CRL from Webserver and check its validity
---------------------------------------
+Scriptid: 08 - Download CRL from Webserver and check its validity
 
 check the status of CRL, both that it can be downloaded and that its valid
 
@@ -153,8 +145,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_09_firewall.sh 
 ```  
 
-09 - Firewall iptables
---------------------------------------
+Scriptid: 09 - Firewall iptables
 
 Check the firewall is configured and running
 
@@ -170,8 +161,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_10_ocsp.sh 
 ```  
 
-10 - Query OCSP Responder
---------------------------------------
+Scriptid: 10 - Query OCSP Responder
 
 all ok
 
@@ -194,8 +184,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_12_mysql.sh 
 ```  
 
-12 - Mysql server
---------------------------------------
+Scriptid: 12 - Mysql server
 
 Mysql server checks
 
@@ -210,8 +199,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_14_sw_raid.sh 
 ```  
 
-14 - SW Raid
---------------------------------------
+Scriptid: 14 - SW Raid
 
 Linux software raid checks
 
@@ -227,8 +215,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_15_apache.sh 
 ```  
 
-15 - Apache Web server
---------------------------------------
+Scriptid: 15 - Apache Web server
 
 Check apache process is up and running
 
@@ -243,8 +230,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_16_ldap.sh 
 ```  
 
-16 - LDAP Server
---------------------------------------
+Scriptid: 16 - LDAP Server
 
 Checks the ldap server to make sure it's running
 
@@ -259,8 +245,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_17_ntp.sh 
 ```  
 
-17 - NTP in sync
---------------------------------------
+Scriptid: 17 - NTP in sync
 
 Check that ntp i running and is insync
 
@@ -278,8 +263,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_18_sqlselect.sh 
 ```  
 
-18 - Mysql Select
---------------------------------------
+Scriptid: 18 - Mysql Select
 
 Mysql select keepalive
 
@@ -294,8 +278,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_19_alive.sh 
 ```  
 
-19 - Server is alive
---------------------------------------
+Scriptid: 19 - Server is alive
 
 Sends alive messages to a central syscheck server run this script either along with the rest of the syscheck scripts or in a crontab (then you can run me more often...)
 
@@ -311,8 +294,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_20_errors_ejbcalog.sh 
 ```  
 
-20 - EJBCA Error log checker
---------------------------------------
+Scriptid: 20 - EJBCA Error log checker
 
 checks fo new errors in the server log for ejbca
 
@@ -329,8 +311,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_22_boks_replica.sh 
 ```  
 
-22 - BOKS
---------------------------------------
+Scriptid: 22 - BOKS
 
 BoKS Replica checks
 
@@ -345,8 +326,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_23_rsa_axm.sh 
 ```  
 
-23 - RSA Access Manager
---------------------------------------
+Scriptid: 23 - RSA Access Manager
 
 Checks the RSA Access Manager server to make sure it's running
 
@@ -361,8 +341,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_27_dss.sh 
 ```  
 
-27 - SignServer
---------------------------------------
+Scriptid: 27 - SignServer
 
 checks the dss server
 
@@ -379,8 +358,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_28_check_vip.sh 
 ```  
 
-28 - VIP
---------------------------------------
+Scriptid: 28 - VIP
 
 Checks which node has the VIP address
 
@@ -398,8 +376,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_29_signserver.sh 
 ```  
 
-29 - SignServer health checker
---------------------------------------
+Scriptid: 29 - SignServer health checker
 
 signserver  Script that connects to the signserver health check servlet to check the status of the signserver application. The health check servlet checks JVM memory, database connection and HSM connection.
 
@@ -418,8 +395,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_30_check_running_procs.sh 
 ```  
 
-30 - Running processes
---------------------------------------
+Scriptid: 30 - Running processes
 
 Generic script to check a proc is running and try to restart those that's not
 
@@ -435,8 +411,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_31_hp_health.sh 
 ```  
 
-31 - HP Server health check
---------------------------------------
+Scriptid: 31 - HP Server health check
 
 Check the HP Server health
 
@@ -453,8 +428,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_32_check_db_sync.sh 
 ```  
 
-32 - EJBCA DB Sync
---------------------------------------
+Scriptid: 32 - EJBCA DB Sync
 
 Check if DB in sync
 
@@ -469,17 +443,18 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_33_healthchecker.sh 
 ```  
 
-33 - Check Health of applications
---------------------------------------
+Scriptid: 33 - Check Health of applications
 
 Healthcheck of applications with simple URL health (should return ALLOK and status 200)
 
 Error code / description - What to do
 
-331 / Healtcheck of app: %s ok - No action is needed
-332 / Healtcheck of app: %s NOT ok error message: %s - Check errormessage and log-file
-333 / Healtcheck of app: %s CHECKTOOL not curl nor wget - Config curl or wget
-334 / Healtcheck of app: %s restarting due to previous failure status: %s command: %s - Check errormessage and log-file
+331 / app: %s ok - No action is needed
+332 / app: %s NOT ok error message: %s - Check errormessage and log-file
+333 / app: %s CHECKTOOL not curl nor wget - Config curl or wget
+334 / app: %s restarting due to previous failure status: %s command: %s restarts in last 24h: %s - Check errormessage and log-file
+335 / app: %s NOT restarting due to to many restarts in last 24h: %s - Check errormessage and log-file
+336 / app: %s, MAXRESTARTS not set - Config in the config file
 
 to run with output directed to screen: add a '-s' or '--screen'
 
@@ -487,8 +462,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_34_redis.sh 
 ```  
 
-34 - Redis
---------------------------------------
+Scriptid: 34 - Redis
 
 Check Redis VIP
 
@@ -505,8 +479,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_35_dell_raid.sh 
 ```  
 
-35 - Dell Hard drive checker
---------------------------------------
+Scriptid: 35 - Dell Hard drive checker
 
 check the raid discs
 
@@ -525,8 +498,7 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_36_dell_health.sh 
 ```  
 
-36 - Dell Server system components
---------------------------------------
+Scriptid: 36 - Dell Server system components
 
 check dell system components
 
@@ -542,10 +514,16 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_37_monitor_jnlp.sh 
 ```  
 
-01/ok: %s - No action is needed
-02/problem: %s - problem: %s
-03/ - 
-04/ - 
-05/ - 
+Scriptid: 37 - Get remote URL and check status
+
+sc_37_monitor_internal_error.sh 
+
+Error code / description - What to do
+
+371 / ok: %s - No action is needed
+372 / problem: %s - problem found when getting the URL: %s
+373 / Can not find CURL tool: %s - Install/configure curl
+
 to run with output directed to screen: add a '-s' or '--screen'
+
 ``` 
