@@ -7,7 +7,6 @@ nav:
     - Output Formats: output-format.md
     - MariaDB Backup: syscheck-backup-management.md
     - SSH Keys: ssh-keys-setup.md
-    - Logbook: logbook.md
     - OP5: integration-with-op5.md
     - Output destinations: output-destinations.md
     - All Syscheck scripts: syscheck-scripts.md
@@ -15,6 +14,9 @@ nav:
     - Archiving: certificate_and_revovation_archival.md
     - upgrade: upgrade.md
     - getroot: getroot.md
+    - getroot help: help-getroot.md
+    - Logbook: logbook.md
+    - Logbook Help: help-logbook.md
     - Util cmpdates: cmp_dates.md
 
 theme: material
