@@ -1,11 +1,10 @@
 # Syscheck version 2.0 
-Documentation generated: Sat  1 Aug 21:53:45 CEST 2020
+Documentation generated: Mon 10 Aug 00:13:14 CEST 2020
 # Syscheck related scripts 
 ##  900_export_cert.sh 
 ```  
 
-900 - Export certificate file
---------------------------------------
+Scriptid: 900 - Export certificate file
 
 Export certificate and archive them, ./900_export_cert.sh <certfile>
 
@@ -18,11 +17,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  901_export_revocation.sh 
 ```  
 
-901 - Export CRL file
---------------------------------------
+Scriptid: 901 - Export CRL file
 
 Export CRL:s with a script ./901_export_revocation.sh <DER-encoded CERT>
 
@@ -35,11 +34,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  902_export_crl.sh 
 ```  
 
-902 - Export revoked certificate file
---------------------------------------
+Scriptid: 902 - Export revoked certificate file
 
 Export CRL ./902_export_crl.sh: <DER encoded CRL>
 
@@ -52,14 +51,28 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  903_make_hsm_backup.sh 
 ```  
+
+Scriptid: 903 - Nfast backup
+
+Backup a HSM
+
+Error code / description - What to do
+
+9031 / Backup of Nfast HSM run successfully - no action needed
+9032 / Backup of Nfast HSM failed (%s)  - TODO
+9033 /  - 
+
+to run with output directed to screen: add a '-s' or '--screen'
+
 ``` 
+
 ##  904_make_mysql_db_backup.sh 
 ```  
 
-904 - Mysql backup tool
---------------------------------------
+Scriptid: 904 - Mysql backup tool
 
 syntax: ./904_make_mysql_db_backup.sh [-x|--default|-d|--daily|-w|--weekly|-m|--monthly|-y|--yearly] [-s|--screen] [-b|--batch] 
 
@@ -80,11 +93,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  905_publish_crl.sh 
 ```  
 
-905 - CRL publish
---------------------------------------
+Scriptid: 905 - CRL publish
 
 Script to publish the CRL:s from the CA, supports local and remote publishing by SSH
 
@@ -97,11 +110,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  906_ssh-copy-to-remote-machine.sh 
 ```  
 
-906 - SCP support tool
---------------------------------------
+Scriptid: 906 - SCP support tool
 
 Script used to copy files to other hosts/directorys usage: ./906_ssh-copy-to-remote-machine.sh: file host <directory> <to-username> <from-ssh-key> 
 (if you dont specify directory the file will end up in the user's homedirectory, 
@@ -110,18 +123,22 @@ if from-ssh-key is not specified default key will be used)
 
 Error code / description - What to do
 
-01 / file transfered ok - ok
-02 / specify a filename as first argument to this script - filename not specified as argument
-03 / specify a hostname as second argument to this script - Hostname not specified as argument
+9061 / file transfered ok - ok
+9062 / specify a filename as first argument to this script - filename not specified as argument
+9063 / specify a hostname as second argument to this script - Hostname not specified as argument
+9064 / scp failed: %s - check the error message and try to fix it
+9065 / Diskspace at host: %s and dir: %s has to little space left %s , its lower than %s of the file: %s - Disk space on remote host to low
+9066 / Remote filesize at host: %s and dir: %s has different size: %s than the original: %s of the file: %s - Remote filesize after transfer differs
+9067 / Remote file already exist at host: %s remote file: %s for the local file: %s - Remote file already exist
 
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  907_make_mysql_db_backup_and_transfer_to_remote_mashine.sh 
 ```  
 
-907 - Mariadb backup and transfer to remote host
---------------------------------------
+Scriptid: 907 - Mariadb backup and transfer to remote host
 
 Script used to take backup of the sql database, compress and send to a separate server. call with -x|--default for puting the backupfile in the SUBDIR_DEFAULT ; -d|--daily to make daily backup end up in SUBDIR_DAILY; with -w|--weekly to make daily backup end up in SUBDIR_WEEKLY; -m|--monthly to make daily backup end up in SUBDIR_MONTHLY ; -y|--yearly to make daily backup end up in SUBDIR_YEARLY;
 
@@ -134,11 +151,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  908_clean_old_backups.sh 
 ```  
 
-908 - Clean old backup files
---------------------------------------
+Scriptid: 908 - Clean old backup files
 
 Clean old backups, so the disk dont fill up
 
@@ -152,11 +169,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  909_activate_CAs.sh 
 ```  
 
-909 - Activate CA HSM
---------------------------------------
+Scriptid: 909 - Activate CA HSM
 
 Activate the CA:s (automaticlly enter PIN codes)
 
@@ -168,11 +185,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  910_deactivate_CAs.sh 
 ```  
 
-910 - Deactivate CA HSM
---------------------------------------
+Scriptid: 910 - Deactivate CA HSM
 
 Deactivate the CA:s
 
@@ -184,11 +201,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  911_activate_VIP.sh 
 ```  
 
-911 - Activate VIP
---------------------------------------
+Scriptid: 911 - Activate VIP
 
 Activate the VIP
 
@@ -202,11 +219,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  912_deactivate_VIP.sh 
 ```  
 
-912 - Deactivate VIP
---------------------------------------
+Scriptid: 912 - Deactivate VIP
 
 Deactivate the VIP
 
@@ -219,11 +236,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  913_copy_ejbca_conf.sh 
 ```  
 
-913 - Copy config to NODE2
---------------------------------------
+Scriptid: 913 - Copy config to NODE2
 
 Copy EJBCA conf/, p12/ and syscheck
 
@@ -235,11 +252,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  914_compare_master_slave_db.sh 
 ```  
 
-914 - Deactivate VIP
---------------------------------------
+Scriptid: 914 - Deactivate VIP
 
 Compare tables on master and slave database
 
@@ -251,13 +268,13 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  915_remote_command_via_ssh.sh 
 ```  
 
-915 - SSH remote command tool
---------------------------------------
+Scriptid: 915 - SSH remote command tool
 
-Run command on another host with ssh ./915_remote_command_via_ssh.sh <host> <cmd> [sshtouser] [sshfromkey]
+Run command on another host with ssh ./915_remote_command_via_ssh.sh --host host --command cmd --user sshtouser --key sshfromkey
 
 Error code / description - What to do
 
@@ -269,11 +286,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  916_archive_access_manager_logs.sh 
 ```  
 
-916 - Archive log files
---------------------------------------
+Scriptid: 916 - Archive log files
 
 Script used to move/archive logfiles
 
@@ -285,11 +302,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  917_archive_file.sh 
 ```  
 
-917 - Archive files
---------------------------------------
+Scriptid: 917 - Archive files
 
 Script used to copy files to other hosts/directorys usage: ./917_archive_file.sh: file host <directory> <to-username> <from-ssh-key> 
 (if you dont specify directory the file will end up in the user's homedirectory, 
@@ -311,11 +328,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  918_server_alive.sh 
 ```  
 
-918 - Passive server monitoring
---------------------------------------
+Scriptid: 918 - Passive server monitoring
 
 Passive server monitoring, all server that should be monitored should be listed in 918.conf and run sc_19.sh every x:th minute, example: if you run syscheck every 10:th minute set warn to 15(missed one log and some margin) and error to 25(missed one log and some margin)
 
@@ -328,11 +345,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  919_certpublisher_remotecommand.sh 
 ```  
 
-919 - Certificate publishing remote host
---------------------------------------
+Scriptid: 919 - Certificate publishing remote host
 
 Takes a certificate and runs a configurable command at a remote host
 
@@ -345,11 +362,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  920_restore_mysql_db_from_backup.sh 
 ```  
 
-920 - DB Restore tool
---------------------------------------
+Scriptid: 920 - DB Restore tool
 
 Restore db, syntax: ./920_restore_mysql_db_from_backup.sh <gzip:ed mysqldump-file>
 
@@ -362,11 +379,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  921_copy_htmf_conf.sh 
 ```  
 
-921 - Copy HTMF config
---------------------------------------
+Scriptid: 921 - Copy HTMF config
 
 Copy HTMF config
 
@@ -377,11 +394,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  922-simple-database-replication-check.sh 
 ```  
 
-922 - Simple db replication tool
---------------------------------------
+Scriptid: 922 - Simple db replication tool
 
 Simple replication test
 
@@ -395,11 +412,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  923-rsync-to-remote-machine.sh 
 ```  
 
-923 - Sync files to remote host
---------------------------------------
+Scriptid: 923 - Sync files to remote host
 
 Script used to sync files with rsync to other hosts/directorys usage: ./923-rsync-to-remote-machine.sh: file host <directory> <to-username> <from-ssh-key> 
 (if you dont specify directory the file will end up in the user's homedirectory, 
@@ -416,11 +433,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  924-backup-this-machine-to-remote-machine.sh 
 ```  
 
-924 - Sync several directories and files to remote host
---------------------------------------
+Scriptid: 924 - Sync several directories and files to remote host
 
 Script used to rsync configured files/dirs to other hosts
 
@@ -433,11 +450,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  925_publish_crl_from_file.sh 
 ```  
 
-925 - Publish a CRL from a file
---------------------------------------
+Scriptid: 925 - Publish a CRL from a file
 
 Publish a CRL from file, ie you need to call this script with the file on disc
 ./925_publish_crl_from_file.sh: -c <file>|--crlfile=<file>
@@ -451,11 +468,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  926_local_htmf_copy_conf.sh 
 ```  
 
-926 - Locally copy config and keystores
---------------------------------------
+Scriptid: 926 - Locally copy config and keystores
 
 Copy all config/keystore files to /tmp/bckup_htmf_conf before system upgrade
 
@@ -468,11 +485,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  927_create_crls.sh 
 ```  
 
-927 - Trigger the Creation of CRLs in EJBCA
---------------------------------------
+Scriptid: 927 - Trigger the Creation of CRLs in EJBCA
 
 Script to create the CRL:s from the CA:s options if needed
 
@@ -485,11 +502,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  928_check_dsm_backup.sh 
 ```  
 
-928 - DSM Backup
---------------------------------------
+Scriptid: 928 - DSM Backup
 
 Check if DSM Backup working
 
@@ -502,11 +519,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  929_filter_syscheck_messages.sh 
 ```  
 
-929 - Filter messages from syscheck
---------------------------------------
+Scriptid: 929 - Filter messages from syscheck
 
 Filter only some messages from a file
 
@@ -518,11 +535,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  930_send_filtered_result_to_remote_machine.sh 
 ```  
 
-930 - Send files to remote host
---------------------------------------
+Scriptid: 930 - Send files to remote host
 
 Copy a file over to a central hub (might be used to expose some or all of syscheck results)
 
@@ -535,11 +552,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  931_mysql_backup_encrypt_send_to_remote_host.sh 
 ```  
 
-931 - Backup, encrypt backup and send to remote hosts
---------------------------------------
+Scriptid: 931 - Backup, encrypt backup and send to remote hosts
 
 Script used to take backup of the sql database, compress and send to a separate server. call with -x|--default for puting the backupfile in the SUBDIR_DEFAULT ; -d|--daily to make daily backup end up in SUBDIR_DAILY; with -w|--weekly to make daily backup end up in SUBDIR_WEEKLY; -m|--monthly to make daily backup end up in SUBDIR_MONTHLY ; -y|--yearly to make daily backup end up in SUBDIR_YEARLY;
 
@@ -552,11 +569,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  932_send_result_as_message.sh 
 ```  
 
-932 - Send result as a message
---------------------------------------
+Scriptid: 932 - Send result as a message
 
 Send syscheck result as a message over to a central hub 
 
@@ -568,11 +585,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  933_select_from_database.sh 
 ```  
 
-933 - Select from db for info
---------------------------------------
+Scriptid: 933 - Select from db for info
 
 Get info from db
 
@@ -584,11 +601,11 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  934_check_validity_of_installed_certs.sh 
 ```  
 
-934 - Certificate validity check
---------------------------------------
+Scriptid: 934 - Certificate validity check
 
 Monitor certificates validity
 
@@ -601,18 +618,42 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+
 ##  935_mysql_console_as_root.sh 
 ```  
+
+Scriptid: 935 - Start mysql as root
+
+as a convenience tool
+
+Error code / description - What to do
+
+9351 /  - 
+9352 /  - 
+9353 /  - 
+
+to run with output directed to screen: add a '-s' or '--screen'
+
 ``` 
+
 ##  936_mysql_console_as_db_user.sh 
 ```  
-cant open langfile (/home/han/devel/syscheck/lang/936.english)
+
+Scriptid: 936 - Start mysql as dbuser
+
+as a convenience tool
+
+Error code / description - What to do
+
+
+to run with output directed to screen: add a '-s' or '--screen'
+
 ``` 
+
 ##  937_delete_old_CRLData.sh 
 ```  
 
-937 - 
---------------------------------------
+Scriptid: 937 - Delete old records from CRL Data
 
 Delete records from crldata, keep default 20 record in crltable, see config file 817.conf
 
@@ -632,3 +673,4 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
+

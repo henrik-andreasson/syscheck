@@ -18,7 +18,7 @@ SCRIPTNAME=jnlp_checker
 SCRIPTID=37
 
 # how many info/warn/error messages
-NO_OF_ERR=5
+NO_OF_ERR=3
 
 initscript $SCRIPTID $NO_OF_ERR
 
@@ -41,7 +41,7 @@ FULLOUTPUT=$(cat $OUTPUT | tr -d "\n")
 if [ "x${OKOUTPUT}" != "x" ]; then
    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$OKOUTPUT"
 else
-	 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[4]}" -d "${DESCR[4]}" -1 "$FULLOUTPUT"
+	 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "$FULLOUTPUT"
 fi
 
 rm $OUTPUT

@@ -1,5 +1,5 @@
 # Syscheck version 2.0 
-Documentation generated: Sat  1 Aug 21:54:03 CEST 2020
+Documentation generated: Mon 10 Aug 00:02:57 CEST 2020
 # Syscheck scripts
 ##  sc_01_diskusage.sh 
 ```  
@@ -476,10 +476,12 @@ Healthcheck of applications with simple URL health (should return ALLOK and stat
 
 Error code / description - What to do
 
-331 / Healtcheck of app: %s ok - No action is needed
-332 / Healtcheck of app: %s NOT ok error message: %s - Check errormessage and log-file
-333 / Healtcheck of app: %s CHECKTOOL not curl nor wget - Config curl or wget
-334 / Healtcheck of app: %s restarting due to previous failure status: %s command: %s - Check errormessage and log-file
+331 / app: %s ok - No action is needed
+332 / app: %s NOT ok error message: %s - Check errormessage and log-file
+333 / app: %s CHECKTOOL not curl nor wget - Config curl or wget
+334 / app: %s restarting due to previous failure status: %s command: %s restarts in last 24h: %s - Check errormessage and log-file
+335 / app: %s NOT restarting due to to many restarts in last 24h: %s - Check errormessage and log-file
+336 / app: %s, MAXRESTARTS not set - Config in the config file
 
 to run with output directed to screen: add a '-s' or '--screen'
 
@@ -542,10 +544,17 @@ to run with output directed to screen: add a '-s' or '--screen'
 ##  sc_37_monitor_jnlp.sh 
 ```  
 
-01/ok: %s - No action is needed
-02/problem: %s - problem: %s
-03/ - 
-04/ - 
-05/ - 
+37 - 
+--------------------------------------
+
+sc_37_monitor_internal_error.sh 
+
+Error code / description - What to do
+
+371 / ok: %s - No action is needed
+372 / problem: %s - problem found when getting the URL: %s
+373 / Can not find CURL tool: %s - Install/configure curl
+
 to run with output directed to screen: add a '-s' or '--screen'
+
 ``` 

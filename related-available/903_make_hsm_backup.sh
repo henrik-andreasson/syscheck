@@ -17,7 +17,6 @@ SCRIPTNAME=make_nfast_hsm_backup
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=903
 
-identify one test done by the script (a harddrive, crl or cert)
 
 
 # how many info/warn/error messages

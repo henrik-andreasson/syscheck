@@ -19,6 +19,7 @@ SCRIPTID=935
 
 # how many info/warn/error messages
 NO_OF_ERR=3
-initscript $SCRIPTID $NO_OF_ERR || exit 1;
+initscript $SCRIPTID $NO_OF_ERR
 
+default_script_getopt $*
 $MYSQL_BIN mysql -u root --password="$MYSQLROOT_PASSWORD"

@@ -1,4 +1,4 @@
-printbin/bash
+#!/bin/bash
 
 SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
 if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then

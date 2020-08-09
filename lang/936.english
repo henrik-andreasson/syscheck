@@ -1,0 +1,3 @@
+SCRIPT_HUMAN_NAME="Start mysql as dbuser"
+
+HELP="as a convenience tool"
