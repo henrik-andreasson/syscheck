@@ -18,7 +18,7 @@ SCRIPTNAME=hp_health
 SCRIPTID=31
 
 # how many info/warn/error messages
-NO_OF_ERR=4
+NO_OF_ERR=5
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
@@ -55,6 +55,8 @@ hptemp () {
     TEMPNAME=`echo $tempinput | cut -f2 -d\;`
     TEMPVAL=`echo $tempinput | cut -f3 -d\; |sed 's,C/.*,,'`
     TEMPLIMIT=`echo $tempinput | cut -f4 -d\; |sed 's,C/.*,,'`
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
     echo ${HPTEMP}|egrep -q "${TEMPNO} "
     if [ $? != 0 ];then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "TEMP ${TEMPNO} ${TEMPNAME} is known not to give any reading ($tempinput)"
@@ -122,7 +124,32 @@ fi
 LOCKFILE="${SYSCHECK_HOME}/var/${SCRIPTID}.lock"
 lockfilewait ${LOCKFILE}
 touch ${LOCKFILE}
+
+# global ERRSTATUS for all healthchecks (0 is ok)
+ERRSTATUS=0
+WARNSTATUS=0
+GLOBALERRMESSAGE=""
+GENDESCR="All HP Healthchecks are OK"
+GENERR="Error in HP Healthcheck"
+GENWARN="Warning in HP Healthcheck"
+
+
+
 hppsu
 hptemp
 hpfans
+
+
+
+# send the summary message (00)
+SCRIPTINDEX=00
+if [ "x${ERRSTATUS}" != "x0" ] ; then
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${GENERR}" -1 "${GLOBALERRMESSAGE}"
+elif [ "x${WARNSTATUS}" != "x0" ] ; then
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN  -e ${ERRNO[5]} -d "${GENWARN}" -1 "${GLOBALERRMESSAGE}"
+else
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${GENDESCR}"
+fi
+
+
 rm ${LOCKFILE}
