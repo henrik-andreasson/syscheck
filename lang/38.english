@@ -1,0 +1,15 @@
+HELP="sc_38_mysql_connections.sh "
+SCRIPT_HUMAN_NAME="Monitor mysql connections"
+
+DESCR[1]="ok: curr: %s max: %s (%s percent)"
+HELP[1]="No action is needed"
+DESCR[2]="problem reading max variable"
+HELP[2]="Check Mysql manually, might need restart"
+DESCR[3]="problem reading connections"
+HELP[3]="Check Mysql manually, might need restart"
+
+DESCR[4]="High level of connections: %s max: %s (%s percent)"
+HELP[4]="Check apps using Mysql manually, they might need restart"
+
+DESCR[5]="Very Hugh level of connections: %s max: %s (%s percent)"
+HELP[5]="Check apps using Mysql manually, they might need restart"
