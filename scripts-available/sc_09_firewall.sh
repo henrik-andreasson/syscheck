@@ -25,25 +25,24 @@ default_script_getopt $*
 
 # main part of script
 
-IPTABLES_TMP_FILE=$(mktemp "iptables.out.XXXXXXX")
-
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-$IPTABLES_BIN -L -n>> $IPTABLES_TMP_FILE 2>&1 >/dev/null
+IPTABLES_RULES=$($IPTABLES_BIN -L -n 2>&1)
 if [ $? -ne 0 ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}"
 	exit
 fi
-FIREWALLFAILED="0"
+
+FIREWALLFAILED=0
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 # rule that must exist
-rule1check=`grep "$IPTABLES_RULE1" $IPTABLES_TMP_FILE`
+rule1check=$(echo "${IPTABLES_RULES}" | grep "$IPTABLES_RULE1")
 if [ "x$rule1check" = "x" ] ; then
 	FIREWALLFAILED=1
 fi
 
 # rule that must not exist
-rule2check=`grep "$IPTABLES_RULE2" $IPTABLES_TMP_FILE`
+rule2check=$(echo "${IPTABLES_RULES}" | grep "$IPTABLES_RULE2")
 if [ "x$rule2check" != "x" ] ; then
 	FIREWALLFAILED=1
 fi
@@ -53,5 +52,3 @@ if [ $FIREWALLFAILED -ne 0 ] ; then
 else
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[3]} -d "${DESCR[3]}"
 fi
-
-rm $IPTABLES_TMP_FILE
