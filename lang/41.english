@@ -1,0 +1,10 @@
+HELP="sc_42_ra_verifier.sh Script that connects to the ra_server and health check servlet to check the status of the ra application. The health check servlet checks connection  nd certificate."
+
+DESCR[1]="RA : %s"
+HELP[1]="No action is needed"
+DESCR[2]="RA : %s"
+HELP[2]="Possible errors: \n\"Error Virtual Memory is about to run out, currently free memory : X\" - you need to add more virtual memory to application server/java process\n\"Error Connecting to EJBCA Database\" - The internal check of database failed, try to connect to database directly or restart database server\n\"CA Token is disconnected\" - activate token or maybe a restart of pcscd can help"
+DESCR[3]="RA : health check tool failure"
+HELP[3]="The tool to check if RA is at good health is not configured properly"
+DESCR[4]="RA : application server unavailable"
+HELP[4]="Try manually to reach the URL: $URL manually %s"
