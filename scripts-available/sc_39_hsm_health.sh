@@ -28,16 +28,15 @@ default_script_getopt $*
 
 luna_hsm_check () {
 
-  LUNASTATUS=$(timeout 3 "${LUNADIAG}" "-s=${SLOT}" -o=0 -c=11)
+  LUNACM_STATUS=$(timeout 3 /bin/echo -e "par si\nexit"  | "${LUNACM}" )
   if [ $? != 0 ];then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "HSM Not Installed"
       exit
   fi
 
-
   SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-  HSM_STATUS=$(echo ${LUNASTATUS} |egrep "HSM Status" )
-  STATUSOK=$(echo ${HSM_STATUS} |grep "ok" )
+  HSM_STATUS=$(echo "${LUNACM_STATUS}" |egrep "HSM Status" | head -1)
+  STATUSOK=$(echo ${HSM_STATUS} |grep "OK" )
 
   if [ "x$STATUSOK" != "x" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${STATUSOK}"
@@ -48,7 +47,7 @@ luna_hsm_check () {
 
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 #  COMMAND=`timeout 3 echo -e "par si \n exit"| "${LUNACM}" |egrep "CONTAINER_ACTIVATED"`
-  ACTIVATED=$(echo ${LUNASTATUS} |egrep "CONTAINER_ACTIVATED" )
+  ACTIVATED=$(echo "${LUNACM_STATUS}" |egrep "CONTAINER_ACTIVATED" | sed 's/\s*//')
 	if [ "x$ACTIVATED" != "x" ];then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${ACTIVATED}"
   else
@@ -56,7 +55,7 @@ luna_hsm_check () {
   fi
 
   SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-  HSM_SERIAL=$(echo ${LUNASTATUS} |egrep "Token Serial Number" | sed 's/Token Serial Number ->//')
+  HSM_SERIAL=$(echo "${LUNACM_STATUS}" |egrep "HSM Serial Number" | sed 's/\s*HSM Serial Number ->\s*//')
 
   if [ "x$HSM_SERIAL" != "x" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "${HSM_SERIAL}"
