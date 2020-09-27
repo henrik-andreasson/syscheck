@@ -98,7 +98,10 @@ checkocsp() {
         printverbose "openssl ocsp -issuer $OCSP_ISSUER -cert $OCSP_CERT -CAfile $OCSP_CACHAIN -url $OCSP_URL $OCSP_DEBUG "
     fi
 
-		OCSPINFO=$(openssl ocsp -issuer "$OCSP_ISSUER" -cert "$OCSP_CERT" -CAfile "$OCSP_CACHAIN" -resp_text  -url $OCSP_URL 2>/dev/null)
+	START=$(date +"%s%3N")
+	OCSPINFO=$(openssl ocsp -timeout "${TIMEOUT}" -issuer "$OCSP_ISSUER" -cert "$OCSP_CERT" -CAfile "$OCSP_CACHAIN" -resp_text  -url $OCSP_URL 2>/dev/null)
+	STOP=$(date +"%s%3N")
+	let OCSPdeltaTns="$STOP - $START"
 #    printverbose "### START OCSP INFO ###"
 #    printverbose $OCSPINFO
 #    printverbose "### END OCSP INFO ###"
@@ -120,9 +123,9 @@ checkocsp() {
     printverbose "### OCSP_RESPONDER_RESPONSE_STATUS: $OCSP_RESPONDER_RESPONSE_STATUS ###"
 
     if [ "x${OCSP_STATUS}" == "x${EXPECTED_STATUS}" ] ; then
-      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "${CERTINFO_SUBJECT}: $OCSP_STATUS/$EXPECTED_STATUS)"
+      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "${CERTINFO_SUBJECT}: $OCSP_STATUS/$EXPECTED_STATUS)" -2 "${OCSPdeltaTns}"
     else
-      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[10]} -d "${DESCR[10]}" -1 "${CERTINFO_SUBJECT}: $OCSP_STATUS/$EXPECTED_STATUS)"
+      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[10]} -d "${DESCR[10]}" -1 "${CERTINFO_SUBJECT}: $OCSP_STATUS/$EXPECTED_STATUS)" -2 "${OCSPdeltaTns}"
       WARNSTATUS=$(expr $WARNSTATUS + 1)
       GLOBALMESSAGE="${GLOBALMESSAGE}; ${OCSP_RESPONDER_CERT_ISSUER}"
     fi
