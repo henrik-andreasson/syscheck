@@ -28,7 +28,7 @@ OUTPUT='/tmp/rahealth.log'
 
 cd /tmp
 if [ ! -f "${CHECKTOOL_PATH}/${CHECKTOOL}" ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[3]}" "$DESCR_3"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[3]}" -d "$DESCR_3"
 fi
 
 runres=$(${CHECKTOOL_PATH}/${CHECKTOOL} -c ${CHECKTOOL_PATH}/verify-factoryra.properties > $OUTPUT 2>&1 )
@@ -38,24 +38,24 @@ CLIENT_OKOUTPUT=$(cat $OUTPUT | egrep "Client Certificate: VALID")
 REQ_OKOUTPUT=$(cat $OUTPUT | egrep "Request Verification: OK")
 SERVER_OKOUTPUT=$(cat $OUTPUT | egrep "Server Certificate: VALID")
 if [ "x$CLIENT_OKOUTPUT" != "x" ]; then
-       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e  ${ERRNO[1]} "${DESCR[1]}" "$CLIENT_OKOUTPUT"
+       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e  ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CLIENT_OKOUTPUT"
 else
        ERROROUTPUT=$(cat $OUTPUT | head -2 )
-       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e  ${ERRNO[2]} "${DESCR[2]}" "$ERROROUTPUT"
+       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e  ${ERRNO[2]} -d "${DESCR[2]}" -1 "$ERROROUTPUT"
 fi
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "x$REQ_OKOUTPUT" != "x" ]; then
-       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e  ${ERRNO[1]} "${DESCR[1]}" "$REQ_OKOUTPUT"
+       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e  ${ERRNO[1]} -d "${DESCR[1]}" -1 "$REQ_OKOUTPUT"
 else
        REQ_ERROROUTPUT=$(cat $OUTPUT |grep Error|sed 's/<faultstring>/ faultstring /;s/<\/faultstring>/ \/faultstring /;s/.*faultstring \(.*\)\/faultstring/\1/')
-       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} "${DESCR[2]}" "$REQ_ERROROUTPUT"
+       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$REQ_ERROROUTPUT"
 fi
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "x$SERVER_OKOUTPUT" != "x" ]; then
-       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} "${DESCR[1]}" "$SERVER_OKOUTPUT"
+       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$SERVER_OKOUTPUT"
 else
        ERROROUTPUT=$(cat $OUTPUT | head -2 )
-       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} "${DESCR[2]}" "$ERROROUTPUT"
+       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$ERROROUTPUT"
 fi
 
 rm $OUTPUT
