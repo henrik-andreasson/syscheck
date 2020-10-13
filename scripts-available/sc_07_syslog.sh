@@ -29,7 +29,7 @@ default_script_getopt $*
 send_syslog_msg(){
 	chkvalue="${RANDOM}_$$"
 	logger -p local0.notice "$0, syscheck test message: $chkvalue"
-	sleep 1
+	sleep "${WAIT_TIME}"
 	tail -1000 $localsyslogfile 2>&1 | grep "$0, syscheck test message: $chkvalue"  2>&1 > /dev/null
 	if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}"
