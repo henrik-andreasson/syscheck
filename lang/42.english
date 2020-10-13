@@ -1,0 +1,5 @@
+HELP="Check failed receipts"
+DESCR[1]="not missing for: %s"
+HELP[1]="No action is needed"
+DESCR[2]="missing for: %s"
+HELP[2]="Try manually resending messages"
