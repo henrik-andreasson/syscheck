@@ -64,7 +64,7 @@ for (( i = 0 ;  i < ${#DBNAME[@]} ; i++ )) ; do
     DATESTR=$(date +${DATESTING})
     MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPDIR}/${EXTRADIR}/${DBNAME[$i]}-${DATESTR}.gz"
     DATESTART=$(date +"%s")
-    dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${MYSQLDUMP_OPTIONS} "${DB_NAME}" ${MYSQLDUMP_TABLES} |& gzip > ${MYSQLBACKUPFULLFILENAME} 2>&1)
+    dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${MYSQLDUMP_OPTIONS} "${DBNAME[$i]}" ${TABLESNAMES[$i]} |& gzip > ${MYSQLBACKUPFULLFILENAME} 2>&1)
     retcode=$?
     DATEDONE=$(date +"%s")
     let TIMETOCOMPLEATE="$DATEDONE - $DATESTART" || true # not to stop script
