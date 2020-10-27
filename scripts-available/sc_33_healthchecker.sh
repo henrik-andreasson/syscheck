@@ -137,7 +137,7 @@ for (( i = 0 ;  i < ${#HEALTHCHECKURL[@]} ; i++ )) ; do
 	else
 	        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 	fi
-	FIXED_FULL_STATUS=$(echo "${FULLSTATUS}" | tr -d '\\' | tr -d "'"  | sed 's/%/%%/gi' | tr  '\n' ';')
+	FIXED_FULL_STATUS=$(echo "${FULLSTATUS}" | tr -d '\\' | tr -d "'"  | sed 's/%/%%/gi' | tr  '\n' ';' | tr -d '"')
 	if [ "x$STATUS" != "xALLOK" ] ; then
 		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
     		if [ "x${STOP_CMD[$i]}" != "x" -a  "x${START_CMD[$i]}" != "x" ] ; then
