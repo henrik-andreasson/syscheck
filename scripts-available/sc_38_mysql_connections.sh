@@ -40,7 +40,7 @@ fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
-percent_used=$((${threads_connected} / ${max_connections} * 100))
+percent_used=$((100 * ${threads_connected} / ${max_connections}))
 if [ ${percent_used} -gt "${ERROR_PERCENT}" ]; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[4]}" -d "${DESCR[4]}" -1 "${threads_connected}" -2 "${max_connections}" -3 "${percent_used}"
 elif [ ${percent_used} -gt "${WARN_PERCENT}" ]; then
