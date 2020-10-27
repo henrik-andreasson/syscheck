@@ -27,15 +27,20 @@ default_script_getopt $*
 
 diskusage () {
 	FILESYSTEM=$1
-	LIMIT=$2
+	ERRLIMIT=$2
+  WARNLIMIT=$3
 
 	if [ "x${FILESYSTEM}" = "x" ] ; then
 		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "No filesystem specified"
 		return -1
 	fi
-	if [ "x${LIMIT}" = "x" ] ; then
+  if [ "x${ERRLIMIT}" = "x" ] ; then
 		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "No limit specified"
 		return -1
+	fi
+
+  if [ "x${WARNLIMIT}" = "x" ] ; then
+    WARNLIMIT="${ERRLIMIT}"
 	fi
 
 	DFPH=`df -Ph $FILESYSTEM 2>&1`
@@ -46,10 +51,13 @@ diskusage () {
 
 		PERCENT=`df -Ph $FILESYSTEM | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
 
-		if [ $PERCENT -gt $LIMIT ] ; then
-       	         	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$LIMIT"
+
+    if [ $PERCENT -gt $ERRLIMIT ] ; then
+       	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$ERRLIMIT"
+    elif [ $PERCENT -gt $WARNLIMIT ] ; then
+       	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$WARNLIMIT"
 		else
-                	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]}  -d "${DESCR[1]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$LIMIT"
+      	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]}  -d "${DESCR[1]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$LIMIT"
 		fi
 	fi
 }
