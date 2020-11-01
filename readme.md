@@ -20,6 +20,13 @@ Authors
 
 Maintainter is Henrik Andreasson github@han.pp.se
 
+Contributors:
+
+* Philip V.
+* Joakim B.
+* Mats B.
+* Magnus N.
+* Linus M.
 
 INFO
 ---------------------------
