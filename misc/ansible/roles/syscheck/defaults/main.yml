@@ -13,6 +13,12 @@
   - monthly
   - yearly
 
+ syscheck_backup_dbs:
+   - name: mysql
+     tables: ""
+   - name: ejbca
+     tables: ""
+
 # enable/disable scripts with true/false
 # check also if config is needed below
 
