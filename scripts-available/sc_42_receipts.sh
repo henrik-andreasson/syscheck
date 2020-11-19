@@ -12,10 +12,10 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/
 source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
 # script name, used when integrating with nagios/icinga
-SCRIPTNAME=diskusage
+SCRIPTNAME=receipts
 
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
-SCRIPTID=41
+SCRIPTID=42
 
 # how many info/warn/error messages
 NO_OF_ERR=2
