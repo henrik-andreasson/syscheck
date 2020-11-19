@@ -29,6 +29,7 @@ diskusage () {
 	FILESYSTEM=$1
 	ERRLIMIT=$2
   WARNLIMIT=$3
+  SCRIPTINDEX=$4
 
 	if [ "x${FILESYSTEM}" = "x" ] ; then
 		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "No filesystem specified"
@@ -65,5 +66,5 @@ diskusage () {
 
 for (( i = 0 ;  i < ${#FILESYSTEM[@]} ; i++ )) ; do
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-	diskusage ${FILESYSTEM[$i]}  ${USAGEPERCENT[$i]} ${SCRIPTINDEX}
+	diskusage ${FILESYSTEM[$i]}  ${USAGEPERCENT[$i]} ${WARN_PERCENT[$i]} ${SCRIPTINDEX}
 done
