@@ -56,9 +56,9 @@ diskusage () {
     if [ $PERCENT -gt $ERRLIMIT ] ; then
        	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$ERRLIMIT"
     elif [ $PERCENT -gt $WARNLIMIT ] ; then
-       	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$WARNLIMIT"
+       	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$ERRLIMIT"
 		else
-      	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]}  -d "${DESCR[1]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$LIMIT"
+      	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]}  -d "${DESCR[1]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$ERRLIMIT"
 		fi
 	fi
 }
