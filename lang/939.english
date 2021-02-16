@@ -1,0 +1,5 @@
+HELP="Clean old backups, so the disk dont fill up"
+CLEANBAK_DESCR_1="Truncate index run successfully"
+CLEANBAK_DESCR_2="Truncate index failed (%s) "
+CLEANBAK_HELP_1="All is ok"
+CLEANBAK_HELP_2="Unpredicted error while deleting file %s"
