@@ -18,7 +18,7 @@ SCRIPTNAME=cluster_health
 SCRIPTID=40
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=6
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
