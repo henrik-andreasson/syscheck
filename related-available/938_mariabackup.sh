@@ -13,8 +13,6 @@ source $SYSCHECK_HOME/config/related-scripts.conf
 
 # script name, used when integrating with nagios/icinga
 SCRIPTNAME=mariabackup
-# Check version of maria db if 10.1 need extra Parameter --apply-log-only
-rpm -qa | grep -q MariaDB-backup-10.1&&EXTRAPARAM="--apply-log-only"
 
 #INC uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=938
