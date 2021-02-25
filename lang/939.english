@@ -1,4 +1,4 @@
-HELP="Clean old backups, so the disk dont fill up"
+HELP="Trunkate old index, so the disk dont fill up"
 CLEANBAK_DESCR_1="Truncate index run successfully"
 CLEANBAK_DESCR_2="Truncate index failed (%s) "
 CLEANBAK_HELP_1="All is ok"
