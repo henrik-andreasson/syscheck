@@ -1,0 +1,7 @@
+HELP="Mysql server checks"
+DESCR[1]="Connect problem : %s"
+HELP[1]="Check status i datacenter"
+DESCR[2]="Wrong value in Rittal: %s"
+HELP[2]="Check status i datacenter"
+DESCR[3]="Rittal value ok: %s"
+HELP[3]="No action needed"
