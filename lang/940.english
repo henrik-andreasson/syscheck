@@ -1,0 +1,9 @@
+SCRIPT_HUMAN_NAME="Mysql job runner"
+
+HELP="syntax: $0 [-l|-j] \n -l list configured jobs \n -j run job n \n default is to run all jobs"
+
+DESCR[1]="Job: %s run ok: returns: %s"
+HELP[1]="no action needed"
+
+DESCR[2]="Job: %s run failed with %s"
+HELP[2]="Run manually to see more error messages"
