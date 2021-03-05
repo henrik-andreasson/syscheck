@@ -1,27 +1,3 @@
-
-Fortsätt till innehåll
-Använda Gmail med skärmläsningsprogram
-Meet
-Nytt möte
-Gå med i ett möte
-Hangouts
-2 av 11 790
-lite info
-Inkorgen
-Brymér, Mats
-	
-Bilagor08:47 (för 9 minuter sedan)
-	
-till mig
-
-hh
-Avsnitt för bifogade filer
-Förhandsgranska bilaga 938.md
-[Text]
-	
-	
-	
-
 #!/bin/bash
 
 SYSCHECK_HOME="${SYSCHECK_HOME:-/opt/syscheck}" # use default if  unset
