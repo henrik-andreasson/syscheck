@@ -72,14 +72,14 @@ if [ -f ${TOARCHIVE_DIR}/encback.lock ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $WARN -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$lockFileIsChangedAtHuman"
     rm ${TOARCHIVE_DIR}/encback.lock
 fi
-
-touch ${TOARCHIVE_DIR}/encback.lock
-res=$(${OPENENC_TOOL} encrypt ${FULLFILENAME} ${TOARCHIVE_DIR})
-if [ $? -ne 0 ] ;   then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$res"
-fi
-rm ${TOARCHIVE_DIR}/encback.lock
-
+for FILE in ${FULLFILENAME};do
+	touch ${TOARCHIVE_DIR}/encback.lock
+	res=$(${OPENENC_TOOL} encrypt ${FILE} ${TOARCHIVE_DIR})
+	if [ $? -ne 0 ] ;   then
+    		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$res"
+	fi
+	rm ${TOARCHIVE_DIR}/encback.lock
+done
 
 FILETRANS=1
 for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do

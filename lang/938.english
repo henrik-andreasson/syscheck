@@ -1,81 +1,81 @@
 SCRIPT_HUMAN_NAME="mariadb backup tool"
 
-HELP="syntax: $0 [-b-f|--full -i|--incremental [-s|--screen] [-b|--batch] \n\n -x and --default will put the backupfile in directory defined in config as SUBDIR_DEFAULT\n -d or --daily will put the backup in the directory defined in config as SUBDIR_DAILY\n -w or --weekly will put the backup in the directory defined in config as SUBDIR_WEEKLY\n -m or --monthly will put the backup in the directory defined in config as SUBDIR_MONTHLY\n -y or --yearly will put the backup in the directory defined in config as SUBDIR_YEARLY\n OBSERVE that it's up to the admin to run this script with cron or alike at these intervals, so run this script once a day with --daily to get only one daily backup and so on\n -b or --batch will echo the resulting filename for processing by other scripts"
+HELP="syntax: $0 [ -b|--backup] -i|--incremental -c|--cumulativ [-s|--screen] [-r|--restore]\n\n-b or --backup will put the backup in the directory defined in config as MARIABACKUP_BASEDIR/YY-MM-DD/FULL\n-i or --incrementel will put the incrementel backup in the directory defined in config as  MARIABACKUP_BASEDIR/YY-MM-DD/INC, last FULL backup or last INC backup is used as startpoint for backup\n-c or --cumulativ will put the backup in the directory defined in config as  MARIABACKUP_BASEDIR/YY-MM-DD/CUM, take a full incrementel backup from last FULL backup\n -r or --restore will tore database in /var/lib/mysql\n OBSERVE that it's up to the admin to run this script with cron or alike at these intervals, so run this script once a day with --daily to get only one daily backup and so on\n -b or --batch will echo the resulting filename for processing by other scripts"
 
-DESCR[1]="Backed up db ok file: %s time to complete(sec): %s filesize(bytes): %s"
-HELP[1]="no action needed"
+DESCR[1]="(%s)"
+HELP[1]=" Start mysql"
 
-DESCR[2]="Could not create the backup file: %s time to complete(sec): %s filesize(bytes): %s errormess: %s"
-HELP[2]="Run manually also check disk space and owner of directory to write backup to"
-
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[2]="(%s)"
+HELP[2]=" no action needed"
 
 DESCR[3]="(%s)"
+HELP[3]="Check space on device"
+
+DESCR[4]="(%s)"
+HELP[4]="Check space on device"
+
+DESCR[5]="(%s)"
+HELP[5]="Check space on device"
+
+DESCR[6]="(%s)"
+HELP[6]="Check space on device"
+
+DESCR[7]="(%s)"
+HELP[7]="Check space on device"
+
+DESCR[8]="(%s)"
+HELP[8]=""
+
+DESCR[9]="(%s)"
+HELP[9]=""
+
+DESCR[10]="(%s)"
 HELP[3]=""
 
-DESCR[3]="(%s)"
+DESCR[10]="(%s)"
 HELP[3]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[11]="(%s)"
+HELP[11]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[12]="(%s)"
+HELP[12]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[13]="(%s)"
+HELP[13]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[14]="(%s)"
+HELP[14]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[15]="(%s)"
+HELP[15]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[16]="(%s)"
+HELP[16]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[17]="(%s)"
+HELP[17]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[18]="(%s)"
+HELP[18]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[19]="(%s)"
+HELP[19]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[20]="(%s)"
+HELP[20]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[21]="(%s)"
+HELP[21]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[22]="(%s)"
+HELP[22]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[23]="(%s)"
+HELP[23]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[24]="(%s)"
+HELP[24]=""
 
-DESCR[3]="(%s)"
-HELP[3]=""
-
-DESCR[3]="(%s)"
-HELP[3]=""
-
-DESCR[3]="(%s)"
-HELP[3]=""
-
-DESCR[3]="(%s)"
-HELP[3]=""
-
-DESCR[3]="(%s)"
-HELP[3]=""
-
-DESCR[3]="(%s)"
-HELP[3]=""
-
-DESCR[3]="(%s)"
-HELP[3]=""
+DESCR[25]="(%s)"
+HELP[25]=""
