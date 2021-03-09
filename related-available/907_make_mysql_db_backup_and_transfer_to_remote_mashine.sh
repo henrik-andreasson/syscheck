@@ -58,13 +58,21 @@ if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
 fi
 
+FULLFILENAME=`$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh --batch ${BACKUPARG}`
 
-for (( i = 0 ;  i < "${#BACKUP_HOST[@]}" ; i++ )) ; do
-	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh --file="${FULLFILENAME}" --host="${BACKUP_HOST[$i]}" --dir="${BACKUP_DIR[$i]}/${EXTRADIR}/" --user="${BACKUP_USER[$i]}" --key="${BACKUP_SSHFROMKEY[$i]}"
-	if [ $? -eq 0 ] ; then
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
-	else
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
-	fi
+if [ $? -ne 0 ] ; then
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
+fi
+
+
+for FILE in ${FULLFILENAME};do
+	for (( i = 0 ;  i < "${#BACKUP_HOST[@]}" ; i++ )) ; do
+		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+		$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh --file="${FILE}" --host="${BACKUP_HOST[$i]}" --dir="${BACKUP_DIR[$i]}/${EXTRADIR}/" --user="${BACKUP_USER[$i]}" --key="${BACKUP_SSHFROMKEY[$i]}"
+		if [ $? -eq 0 ] ; then
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
+		else
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+		fi
+	done
 done
