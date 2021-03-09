@@ -55,6 +55,14 @@ mariabackup_full_backup() {
        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d ${DESCR[2]} -1 "${BACKUP_TO_DIR} exist"
        exit 14
   fi
+  
+  if  [ ${KEEP_GEN} != 0 ];then
+    while [ ${KEEP_GEN -le $(ls -d ${MARIABACKUP_BASEDIR}/* 2>/dev/null|wc -l) ] do
+      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "Remove backup: $(ls -td ${MARIABACKUP_BASEDIR}/*|tail -1)"
+      rm -rf $(ls -td ${MARIABACKUP_BASEDIR}/*|tail -1)
+    done
+  fi
+
   if [ ! -d "${BACKUP_TO_DIR}" ] ; then
     mkdir -p "${BACKUP_TO_DIR}"
   fi
