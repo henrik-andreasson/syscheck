@@ -1,0 +1,721 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.5">
+    
+    
+      
+        <title>﻿Syscheck backup management - Syscheck</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.77f3fd56.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.7fa14f5b.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#syscheck-backup-management" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Syscheck" class="md-header__button md-logo" aria-label="Syscheck">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Syscheck
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ﻿Syscheck backup management
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header__options">
+      
+    </div>
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/henrik-andreasson/syscheck/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Syscheck
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Syscheck" class="md-nav__button md-logo" aria-label="Syscheck">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Syscheck
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/henrik-andreasson/syscheck/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Syscheck
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Install
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config-management/" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output-format/" class="md-nav__link">
+        Output Formats
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syscheck-backup-management.md" class="md-nav__link">
+        MariaDB Backup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ssh-keys-setup/" class="md-nav__link">
+        SSH Keys
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integration-with-op5/" class="md-nav__link">
+        OP5
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output-destinations/" class="md-nav__link">
+        Output destinations
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syscheck-scripts/" class="md-nav__link">
+        All Syscheck scripts
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../related-scripts/" class="md-nav__link">
+        Related Scripts
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certificate_and_revovation_archival/" class="md-nav__link">
+        Archiving
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrade/" class="md-nav__link">
+        upgrade
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getroot/" class="md-nav__link">
+        getroot
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../help-getroot/" class="md-nav__link">
+        getroot help
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logbook/" class="md-nav__link">
+        Logbook
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../help-logbook/" class="md-nav__link">
+        Logbook Help
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cmp_dates/" class="md-nav__link">
+        Util cmpdates
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#changes" class="md-nav__link">
+    Changes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#syscheck-backup-management_1" class="md-nav__link">
+    Syscheck backup management
+  </a>
+  
+    <nav class="md-nav" aria-label="Syscheck backup management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-different-backups-to-crontab" class="md-nav__link">
+    Add the different backups to crontab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-new-backup-dirs" class="md-nav__link">
+    Make new backup dirs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-backup" class="md-nav__link">
+    run backup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-the-clean-old-backups-script" class="md-nav__link">
+    Enable the clean old backups script
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-the-config-file" class="md-nav__link">
+    Verify the config file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-clean-old-backups-to-crontab" class="md-nav__link">
+    Add clean old backups to crontab
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/henrik-andreasson/syscheck/edit/master/docs/backup-management.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="syscheck-backup-management">﻿Syscheck backup management<a class="headerlink" href="#syscheck-backup-management" title="Permanent link">&para;</a></h1>
+<h2 id="changes">Changes<a class="headerlink" href="#changes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Author</th>
+<th>Date</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>Henrik Andreasson</td>
+<td>2010-10-12</td>
+<td>Initial version</td>
+</tr>
+<tr>
+<td>1.1</td>
+<td>Henrik Andreasson</td>
+<td>2020-07-31</td>
+<td>mkdocs updates</td>
+</tr>
+</tbody>
+</table>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>Syscheck has the possibility to backup the database to a file in several different locations, these can be used to save hourly, daily, monthly and yearly backups in different locations and save those in different amount of times.
+Default values of saving the different backups can be adjusted in the config file for “clean old backups script” (<syscheck>/config/908.config)</p>
+<h2 id="syscheck-backup-management_1">Syscheck backup management<a class="headerlink" href="#syscheck-backup-management_1" title="Permanent link">&para;</a></h2>
+<p>Syscheck has the possibility to backup the database to a file in several different locations, these can be used to save hourly, daily, monthly and yearly backups in different locations and save those in different amount of times.
+Default values of saving the different backups can be adjusted in the config file for “clean old backups script” (<syscheck>/config/908.config)</p>
+<h3 id="add-the-different-backups-to-crontab">Add the different backups to crontab<a class="headerlink" href="#add-the-different-backups-to-crontab" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>$ sudo crontab -e
+<span class="c1"># hourly backups at 10 mins past every hour</span>
+<span class="m">10</span> * * * * /opt/syscheck/related-enabled/904_make_mysql_db_backup.sh
+
+<span class="c1"># daily backups 03:10</span>
+<span class="m">10</span> <span class="m">3</span> * * * /opt/syscheck/related-enabled/904_make_mysql_db_backup.sh --daily
+
+<span class="c1"># weekly backups on sundays 03:20</span>
+<span class="m">20</span> <span class="m">3</span> * * <span class="m">7</span> /opt/syscheck/related-enabled/904_make_mysql_db_backup.sh --weekly
+
+<span class="c1"># monthly backups on first day of month 3:30</span>
+<span class="m">30</span> <span class="m">3</span> <span class="m">1</span> * * /opt/syscheck/related-enabled/904_make_mysql_db_backup.sh --monthly
+
+<span class="c1"># yearly backup on first of januari 3:40</span>
+<span class="m">40</span> <span class="m">3</span> <span class="m">1</span> <span class="m">1</span> * /opt/syscheck/related-enabled/904_make_mysql_db_backup.sh --yearly
+</code></pre></div>
+
+<h3 id="make-new-backup-dirs">Make new backup dirs<a class="headerlink" href="#make-new-backup-dirs" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code># mkdir -p /backup/mysql/default
+# mkdir -p /backup/mysql/daily
+# mkdir -p /backup/mysql/weekly
+# mkdir -p /backup/mysql/monthly
+# mkdir -p /backup/mysql/yearly
+</code></pre></div>
+
+<h3 id="run-backup">run backup<a class="headerlink" href="#run-backup" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="n">root@ca1 related-enabled</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">syscheck</span><span class="o">/</span><span class="n">related</span><span class="o">-</span><span class="n">enabled</span><span class="o">/</span><span class="mi">904</span><span class="n">_make_mysql_db_backup</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"></span>
+<span class="n">I</span><span class="o">-</span><span class="mi">90401</span><span class="o">-</span><span class="n">LAB</span><span class="w"> </span><span class="mi">20200519</span><span class="w"> </span><span class="mi">15</span><span class="err">:</span><span class="mi">11</span><span class="err">:</span><span class="mi">35</span><span class="w"> </span><span class="n">ca1</span><span class="p">.</span><span class="n">lab</span><span class="p">.</span><span class="n">certificateservices</span><span class="p">.</span><span class="nl">se</span><span class="p">:</span><span class="w"> </span><span class="n">INFO</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mysqlbackup</span><span class="w"> </span><span class="n">Backed</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">db</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="k">file</span><span class="err">:</span><span class="w"> </span><span class="o">/</span><span class="k">backup</span><span class="o">/</span><span class="n">mysql</span><span class="o">//</span><span class="k">default</span><span class="o">/</span><span class="n">mysql</span><span class="o">-</span><span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">19</span><span class="n">_15</span><span class="mf">.11.33</span><span class="p">.</span><span class="n">gz</span><span class="w"> </span><span class="nc">time</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">complete</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span><span class="err">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">filesize</span><span class="p">(</span><span class="n">b</span><span class="w"></span>
+<span class="n">I</span><span class="o">-</span><span class="mi">90401</span><span class="o">-</span><span class="n">LAB</span><span class="w"> </span><span class="mi">20200519</span><span class="w"> </span><span class="mi">15</span><span class="err">:</span><span class="mi">11</span><span class="err">:</span><span class="mi">36</span><span class="w"> </span><span class="n">ca1</span><span class="p">.</span><span class="n">lab</span><span class="p">.</span><span class="n">certificateservices</span><span class="p">.</span><span class="nl">se</span><span class="p">:</span><span class="w"> </span><span class="n">INFO</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mysqlbackup</span><span class="w"> </span><span class="n">Backed</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">db</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="k">file</span><span class="err">:</span><span class="w"> </span><span class="o">/</span><span class="k">backup</span><span class="o">/</span><span class="n">mysql</span><span class="o">//</span><span class="k">default</span><span class="o">/</span><span class="n">ejbca</span><span class="o">-</span><span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">19</span><span class="n">_15</span><span class="mf">.11.35</span><span class="p">.</span><span class="n">gz</span><span class="w"> </span><span class="nc">time</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">complete</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span><span class="err">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">filesize</span><span class="p">(</span><span class="n">b</span><span class="w"></span>
+</code></pre></div>
+
+<h3 id="enable-the-clean-old-backups-script">Enable the clean old backups script<a class="headerlink" href="#enable-the-clean-old-backups-script" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>    cd /opt/syscheck/related-enabled/
+    syscheck/related-enabled#  ln -s ../related-available/908_clean_old_backups.sh .
+</code></pre></div>
+
+<h3 id="verify-the-config-file">Verify the config file<a class="headerlink" href="#verify-the-config-file" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>    $ sudo vi /opt/syscheck/config/908.config
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>### config for 908_clean_old_backups.sh
+
+KEEPDAYS[0]=10;
+BACKUPDIR[0]=&quot;/backup/mysql/default/&quot;;
+DATESTR[0]=`<span class="cp">${</span><span class="n">SYSCHECK_HOME</span><span class="cp">}</span>/lib/x-days-ago-datestring.pl <span class="cp">${</span><span class="n">KEEPDAYS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="cp">}</span>  2&gt;/dev/null`;
+FILENAME[0]=&quot;<span class="cp">${</span><span class="n">BACKUPDIR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="cp">}</span>/ejbcabackup-<span class="cp">${</span><span class="n">DATESTR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="cp">}</span>*&quot;
+
+KEEPDAYS[1]=30;
+BACKUPDIR[1]=&quot;/backup/mysql/daily&quot;;
+DATESTR[1]=`<span class="cp">${</span><span class="n">SYSCHECK_HOME</span><span class="cp">}</span>/lib/x-days-ago-datestring.pl <span class="cp">${</span><span class="n">KEEPDAYS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="cp">}</span>  2&gt;/dev/null`;
+FILENAME[1]=&quot;<span class="cp">${</span><span class="n">BACKUPDIR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="cp">}</span>/ejbcabackup-<span class="cp">${</span><span class="n">DATESTR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="cp">}</span>*&quot;
+
+
+KEEPDAYS[2]=90;
+BACKUPDIR[2]=&quot;/backup/mysql/weekly/&quot;;
+DATESTR[2]=`<span class="cp">${</span><span class="n">SYSCHECK_HOME</span><span class="cp">}</span>/lib/x-days-ago-datestring.pl <span class="cp">${</span><span class="n">KEEPDAYS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="cp">}</span>  2&gt;/dev/null`;
+FILENAME[2]=&quot;<span class="cp">${</span><span class="n">BACKUPDIR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="cp">}</span>/ejbcabackup-<span class="cp">${</span><span class="n">DATESTR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="cp">}</span>*&quot;
+
+KEEPDAYS[3]=370;
+BACKUPDIR[3]=&quot;/backup/mysql/monthly/&quot;;
+DATESTR[3]=`<span class="cp">${</span><span class="n">SYSCHECK_HOME</span><span class="cp">}</span>/lib/x-days-ago-datestring.pl <span class="cp">${</span><span class="n">KEEPDAYS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="cp">}</span>  2&gt;/dev/null`;
+FILENAME[3]=&quot;<span class="cp">${</span><span class="n">BACKUPDIR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="cp">}</span>/ejbcabackup-<span class="cp">${</span><span class="n">DATESTR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="cp">}</span>*&quot;
+</code></pre></div>
+
+<h3 id="add-clean-old-backups-to-crontab">Add clean old backups to crontab<a class="headerlink" href="#add-clean-old-backups-to-crontab" title="Permanent link">&para;</a></h3>
+<p>$ sudo crontab -e</p>
+<div class="codehilite"><pre><span></span><code># at 4:10 am each day clean old backups
+10 4 * * * /opt/syscheck/related-enabled/908_clean_old_backups.sh
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            &copy 2020 Henrik Andreasson
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.5cf3e710.min.js"></script>
+      
+    
+  </body>
+</html>
