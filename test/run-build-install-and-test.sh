@@ -50,20 +50,20 @@ rm -rf $ABS_RESULT_PATH/syscheck*deb
 mkdir -p $ABS_TESTRESULT_PATH/
 mkdir -p $ABS_RESULT_PATH/
 
-echo "test report of syscheck"                          | tee -a $ABS_TESTRESULT_PATH/summary.txt
-echo                                                    | tee -a $ABS_TESTRESULT_PATH/summary.txt
-echo "start date"                                       | tee -a $ABS_TESTRESULT_PATH/summary.txt
-date                                                    | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "test report of syscheck"                          | tee -a $ABS_TESTRESULT_PATH/summary.html
+echo                                                    | tee -a $ABS_TESTRESULT_PATH/summary.html
+echo "start date"                                       | tee -a $ABS_TESTRESULT_PATH/summary.html
+date                                                    | tee -a $ABS_TESTRESULT_PATH/summary.html
 
-echo "release build start"                              | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "release build start"                              | tee -a $ABS_TESTRESULT_PATH/summary.html
 rel_start=$(date +"%s")
 ./lib/release.sh  --program syscheck --version snapshot --outpath $ABS_RESULT_PATH | tee -a $ABS_TESTRESULT_PATH/build-log.txt
 rel_end=$(date +"%s")
 rel_delta=$(expr $rel_end - $rel_start )
-echo "release step: done in $rel_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "release step: done in $rel_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
 
 
-echo "install build start"                               | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "install build start"                               | tee -a $ABS_TESTRESULT_PATH/summary.html
 install_start=$(date +"%s")
 is_syscheck_installed=$(rpm -q syscheck)
 if [ $? -eq 0 ] ; then
@@ -72,36 +72,36 @@ fi
 $SUDO rpm -Uvh $ABS_RESULT_PATH/syscheck-snapshot.noarch.rpm
 install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
-echo "install step: done in $install_delta sec"          | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "install step: done in $install_delta sec"          | tee -a $ABS_TESTRESULT_PATH/summary.html
 
 
 ts1_start=$(date +"%s")
-echo "running test suite 1"                             | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "running test suite 1"                             | tee -a $ABS_TESTRESULT_PATH/summary.html
 test/bats-core/bin/bats test/help.bats                  | tee -a  $ABS_TESTRESULT_PATH/test_1_help.txt
 ts1_end=$(date +"%s")
 ts1_delta=$(expr $ts1_end - $ts1_start )
-echo "test suite 1 done in $ts1_delta sec"               | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "test suite 1 done in $ts1_delta sec"               | tee -a $ABS_TESTRESULT_PATH/summary.html
 
 ts2_start=$(date +"%s")
-echo "running test suite 2"                             | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "running test suite 2"                             | tee -a $ABS_TESTRESULT_PATH/summary.html
 test/bats-core/bin/bats test/help-scripts.bats          | tee -a  $ABS_TESTRESULT_PATH/test_2_help_scripts.txt
 ts2_end=$(date +"%s")
 ts2_delta=$(expr $ts2_end - $ts2_start )
-echo "test suite 2 done in $ts2_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "test suite 2 done in $ts2_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
 
 ts3_start=$(date +"%s")
-echo "running test suite 3"                             | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "running test suite 3"                             | tee -a $ABS_TESTRESULT_PATH/summary.html
 test/bats-core/bin/bats test/test-scripts.bats          | tee -a $ABS_TESTRESULT_PATH/test_3_scripts.txt
 ts3_end=$(date +"%s")
 ts3_delta=$(expr $ts3_end - $ts3_start)
-echo "test suite 3 done in $ts3_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "test suite 3 done in $ts3_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
 
 ts4_start=$(date +"%s")
-echo "running test suite 4"                             | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "running test suite 4"                             | tee -a $ABS_TESTRESULT_PATH/summary.html
 $SUDO test/bats-core/bin/bats test/test-syscheck-console.bats | tee -a  $ABS_TESTRESULT_PATH/test_4_console.txt
 ts4_end=$(date +"%s")
 ts4_delta=$(expr $ts4_end - $ts4_start )
-echo "test suite 4 done in $ts4_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "test suite 4 done in $ts4_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
 
-echo "end date"                                         | tee -a $ABS_TESTRESULT_PATH/summary.txt
-date                                                    | tee -a $ABS_TESTRESULT_PATH/summary.txt
+echo "end date"                                         | tee -a $ABS_TESTRESULT_PATH/summary.html
+date                                                    | tee -a $ABS_TESTRESULT_PATH/summary.html
