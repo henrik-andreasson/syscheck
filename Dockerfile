@@ -6,7 +6,7 @@ WORKDIR /source
 COPY . /source
 
 # Install any needed packages
-RUN yum install -y ruby-devel gcc make rpm-build rubygems
+RUN yum install -y ruby-devel gcc make rpm-build rubygems git
 
 RUN gem install --no-ri --no-rdoc fpm
 
