@@ -22,7 +22,7 @@ done
 
 cd ${RESULT_PATH}
 
-CHECK_ERROR=$(grep -i error summary.html build-log.txt test_1_help.txt test_2_help_scripts.txt test_3_scripts.txt test_4_console.txt)
+CHECK_ERROR=$(cat test_1_help.txt test_2_help_scripts.txt test_3_scripts.txt test_4_console.txt | grep -v '^#' | grep ^not)
 
 if [ "x${CHECK_ERROR}" != "x" ] ; then
   echo "errors found in reports"
