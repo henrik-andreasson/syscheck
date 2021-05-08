@@ -52,15 +52,52 @@ fixtures suite
 }
 
 @test "extended syntax in suite" {
+  emulate_bats_env
   FLUNK=1 run bats-exec-suite -x "$FIXTURE_ROOT/multiple/"*.bats
+  echo "output: $output"
   [ $status -eq 1 ]
   [ "${lines[0]}" = "1..3" ]
-  [ "${lines[1]}" = "begin 1 truth" ]
-  [ "${lines[2]}" = "ok 1 truth" ]
-  [ "${lines[3]}" = "begin 2 more truth" ]
-  [ "${lines[4]}" = "ok 2 more truth" ]
-  [ "${lines[5]}" = "begin 3 quasi-truth" ]
-  [ "${lines[6]}" = "not ok 3 quasi-truth" ]
+  [ "${lines[1]}" = "suite $FIXTURE_ROOT/multiple/a.bats" ]
+  [ "${lines[2]}" = "begin 1 truth" ]
+  [ "${lines[3]}" = "ok 1 truth" ]
+  [ "${lines[4]}" = "suite $FIXTURE_ROOT/multiple/b.bats" ]
+  [ "${lines[5]}" = "begin 2 more truth" ]
+  [ "${lines[6]}" = "ok 2 more truth" ]
+  [ "${lines[7]}" = "begin 3 quasi-truth" ]
+  [ "${lines[8]}" = "not ok 3 quasi-truth" ]
+}
+
+@test "timing syntax in suite" {
+  emulate_bats_env
+  FLUNK=1 run bats-exec-suite -T "$FIXTURE_ROOT/multiple/"*.bats
+  echo "$output"
+  [ $status -eq 1 ]
+  [ "${lines[0]}" = "1..3" ]
+  regex="ok 1 truth in [0-9]+ms"
+  [[ "${lines[1]}" =~ $regex ]]
+  regex="ok 2 more truth in [0-9]+ms"
+  [[ "${lines[2]}" =~  $regex ]]
+  regex="not ok 3 quasi-truth in [0-9]+ms"
+  [[ "${lines[3]}" =~  $regex ]]
+}
+
+@test "extended timing syntax in suite" {
+  emulate_bats_env
+  FLUNK=1 run bats-exec-suite -x -T "$FIXTURE_ROOT/multiple/"*.bats
+  echo "$output"
+  [ $status -eq 1 ]
+  [ "${lines[0]}" = "1..3" ]
+  [ "${lines[1]}" = "suite $FIXTURE_ROOT/multiple/a.bats" ]
+  [ "${lines[2]}" = "begin 1 truth" ]
+  regex="ok 1 truth in [0-9]+ms"
+  [[ "${lines[3]}" =~ $regex ]]
+  [ "${lines[4]}" = "suite $FIXTURE_ROOT/multiple/b.bats" ]
+  [ "${lines[5]}" = "begin 2 more truth" ]
+  regex="ok 2 more truth in [0-9]+ms"
+  [[ "${lines[6]}" =~ $regex ]]
+  [ "${lines[7]}" = "begin 3 quasi-truth" ]
+  regex="not ok 3 quasi-truth in [0-9]+ms"
+  [[ "${lines[8]}" =~ $regex ]]
 }
 
 @test "recursive support (short option)" {
@@ -73,6 +110,18 @@ fixtures suite
 
 @test "recursive support (long option)" {
   run bats --recursive "${FIXTURE_ROOT}/recursive"
+  [ $status -eq 0 ]
+  [ "${lines[0]}" = "1..2" ]
+  [ "${lines[1]}" = "ok 1 another passing test" ]
+  [ "${lines[2]}" = "ok 2 a passing test" ]
+}
+
+@test "recursive support with symlinks" {
+  if [[ ! -L "${FIXTURE_ROOT}/recursive_with_symlinks/test.bats" ]]; then
+    skip "symbolic links aren't functional on OSTYPE=$OSTYPE"
+  fi
+
+  run bats -r "${FIXTURE_ROOT}/recursive_with_symlinks"
   [ $status -eq 0 ]
   [ "${lines[0]}" = "1..2" ]
   [ "${lines[1]}" = "ok 1 another passing test" ]
@@ -124,4 +173,32 @@ fixtures suite
   [ "${lines[0]}" = '1..2' ]
   [ "${lines[1]}" = 'ok 1 baz in a' ]
   [ "${lines[2]}" = 'ok 2 bar_in_b' ]
+}
+
+@test "skip is handled correctly in setup, test, and teardown" {
+  bats "${FIXTURE_ROOT}/skip"
+}
+
+@test "BATS_TEST_NUMBER starts at 1 in each individual test file" {
+  run bats "${FIXTURE_ROOT}/test_number"
+  echo "$output"
+  [ "$status" -eq 0 ]
+}
+
+@test "Override BATS_FILE_EXTENSION with suite" {
+  BATS_FILE_EXTENSION=test run bats "${FIXTURE_ROOT}/override_BATS_FILE_EXTENSION"
+  echo "$output"
+  [ "$status" -eq 0 ]
+  [ "${#lines[@]}" -eq 2 ]
+  [ "${lines[0]}" = "1..1" ]
+  [ "${lines[1]}" = "ok 1 test.test" ]
+}
+
+@test "Override BATS_FILE_EXTENSION with suite recursive" {
+  BATS_FILE_EXTENSION=other_extension run bats -r "${FIXTURE_ROOT}/override_BATS_FILE_EXTENSION"
+  echo "$output"
+  [ "$status" -eq 0 ]
+  [ "${#lines[@]}" -eq 2 ]
+  [ "${lines[0]}" = "1..1" ]
+  [ "${lines[1]}" = "ok 1 test.other_extension" ]
 }
