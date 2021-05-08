@@ -59,9 +59,10 @@ echo "<h2>release build start</h2>"                              | tee -a $ABS_T
 rel_start=$(date +"%s")
 
 VERSION="snapshot"
-if [ "x$RELEASE" != "x" ] ; then
+if [ "x$RELEASE" == "x" ] ; then
   VERSION="$RELEASE"
 fi
+echo "Building release: $VERSION"
 
 ./lib/release.sh  --program syscheck --version "$VERSION" --outpath $ABS_RESULT_PATH | tee -a $ABS_TESTRESULT_PATH/build-log.txt
 rel_end=$(date +"%s")

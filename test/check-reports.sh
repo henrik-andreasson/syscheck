@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "x$1" != "x" ] ; then
-  RESULT_PATH="test-results/"
+  RESULT_PATH="reports/"
 else
   RESULT_PATH="$1"
 fi
