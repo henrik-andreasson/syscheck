@@ -59,7 +59,7 @@ echo "<h2>release build start</h2>"                              | tee -a $ABS_T
 rel_start=$(date +"%s")
 
 VERSION="snapshot"
-if [ "x$RELEASE" == "x" ] ; then
+if [ "x$RELEASE" != "x" ] ; then
   VERSION="$RELEASE"
 fi
 echo "Building release: $VERSION"
