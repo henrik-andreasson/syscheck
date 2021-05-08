@@ -84,28 +84,28 @@ echo "install step: done in $install_delta sec"          | tee -a $ABS_TESTRESUL
 
 ts1_start=$(date +"%s")
 echo "<h2>running test suite 1</h2>"                    | tee -a $ABS_TESTRESULT_PATH/summary.html
-test/bats-core/bin/bats test/help.bats                  | tee -a  $ABS_TESTRESULT_PATH/test_1_help.txt
+test/bats-core/bin/bats --formatter junit test/help.bats                  | tee -a  $ABS_TESTRESULT_PATH/test_1_help.txt
 ts1_end=$(date +"%s")
 ts1_delta=$(expr $ts1_end - $ts1_start )
 echo "test suite 1 done in $ts1_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
 
 ts2_start=$(date +"%s")
 echo "<h2>running test suite 2</h2>"                    | tee -a $ABS_TESTRESULT_PATH/summary.html
-test/bats-core/bin/bats test/help-scripts.bats          | tee -a  $ABS_TESTRESULT_PATH/test_2_help_scripts.txt
+test/bats-core/bin/bats --formatter junit test/help-scripts.bats          | tee -a  $ABS_TESTRESULT_PATH/test_2_help_scripts.txt
 ts2_end=$(date +"%s")
 ts2_delta=$(expr $ts2_end - $ts2_start )
 echo "test suite 2 done in $ts2_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
 
 ts3_start=$(date +"%s")
 echo "<h2>running test suite 3</h2>"                    | tee -a $ABS_TESTRESULT_PATH/summary.html
-test/bats-core/bin/bats test/test-scripts.bats          | tee -a $ABS_TESTRESULT_PATH/test_3_scripts.txt
+test/bats-core/bin/bats --formatter junit test/test-scripts.bats          | tee -a $ABS_TESTRESULT_PATH/test_3_scripts.txt
 ts3_end=$(date +"%s")
 ts3_delta=$(expr $ts3_end - $ts3_start)
 echo "test suite 3 done in $ts3_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
 
 ts4_start=$(date +"%s")
 echo "<h2>running test suite 4</h2>"                    | tee -a $ABS_TESTRESULT_PATH/summary.html
-$SUDO test/bats-core/bin/bats test/test-syscheck-console.bats | tee -a  $ABS_TESTRESULT_PATH/test_4_console.txt
+$SUDO test/bats-core/bin/bats --formatter junit test/test-syscheck-console.bats | tee -a  $ABS_TESTRESULT_PATH/test_4_console.txt
 ts4_end=$(date +"%s")
 ts4_delta=$(expr $ts4_end - $ts4_start )
 echo "test suite 4 done in $ts4_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
