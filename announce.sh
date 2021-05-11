@@ -20,5 +20,5 @@
 
 
 curl -X POST -H 'Content-Type: application/json' --data \
- '{"text":"Syscheck","attachments":[{"title":"syscheck","title_link":"https://gocd.ci.crtsrv.se/go/pipelines/","text":"Syscheck passed CI/CD"}]}' \
-  https://notify.certificateservices.se/hooks/fyng5jbMLaFXG9TjK/SkgCmmj7vgEAgFGCzP98BgDEuTJDEzT2ZvgYvHbvQERpZs8Xtook
+ "{\"text\": \"Syscheck build: https://gocd.ci.crtsrv.se/go/tab/build/detail/${GO_PIPELINE_NAME}/${GO_PIPELINE_COUNTER}/${GO_STAGE_NAME}/${GO_STAGE_COUNTER}/${GO_JOB_NAME} overview: https://gocd.ci.crtsrv.se/go/pipelines/value_stream_map/${GO_PIPELINE_NAME}/${GO_PIPELINE_COUNTER} passed CI/CD\"}" \
+  https://notify.certificateservices.se/hooks/fyng5jbMLaFXG9TjK/SkgCmmj7vgEAgFGCzP98BgDEuTJDEzT2ZvgYvHbvQERpZs8X
