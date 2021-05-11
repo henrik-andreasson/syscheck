@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM centos:latest
+FROM centos-cs:latest
 
 # Set the working directory to /app
 WORKDIR /source
