@@ -12,11 +12,11 @@ fi
 
 mkdir -p "${release_dir}"
 
-cp changes/template/instruction.md "${release_dir}"
-cp changes/template/notes.md "${release_dir}"
+cp template/instruction.md "${release_dir}"
+cp template/notes.md "${release_dir}"
 
 mkdir -p "${release_dir}/cicd"
-cp reports/* "${release_dir}/cicd"
+cp ../reports/* "${release_dir}/cicd"
 
 git add "${release_dir}"
 
