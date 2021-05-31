@@ -179,3 +179,9 @@ debug(){
 	line0=$(echo "${lines[0]}"  | egrep "^36-" | egrep "dell_health")
 	[ "${lines[0]}" = "$line0" ]
 }
+
+@test scripts-available/sc_37_monitor_jnlp.sh {
+	run ${SYSCHECK_HOME}/scripts-available/sc_37_monitor_jnlp.sh  --screen
+	line0=$(echo "${lines[0]}"  | egrep "^37-" | egrep "monitor_jnlp")
+	[ "${lines[0]}" = "$line0" ]
+}
