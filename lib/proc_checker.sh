@@ -23,7 +23,7 @@ proc_checker_help() {
 	echo "$0 <pid-file>|<pid> <procname>"
 	echo "example: $0 /var/run/syslogd.pid syslogd"
 	echo "example: $0 1234 syslogd"
-	exit
+	exit 1
 }
 
 if [ "x$1" == "x" ] ; then
