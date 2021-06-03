@@ -129,6 +129,15 @@
  sc_09_rule_must_exist: "ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8443 ctstate NEW"
  sc_09_rule_must_not_exist: "ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:23 ctstate NEW"
 
+ sc_10_ocsp_timeout: 10
+ sc_10_ocsp_retries: 1
+ sc_10_ocsp_checktool: openssl
+ sc_10_ocsp_responder_cert_expire_warn: 57600
+ sc_10_ocsp_responder_cert_expire_err: 28800
+ sc_10_ocsp:
+ - { url: "http://ocsp.foo.se", cert: "1_foo_good.pem", status: "good", issuer: "1_foo_issuer.pem", cachain: "1_foo_chain.pem", hostname: "ocsp.foo.se" }
+ - { url: "http://ocsp.foo.se", cert: "2_foo_revoked.pem", status: "revoked", issuer: "2_foo_issuer.pem", cachain: "2_foo_chain.pem", hostname: "ocsp.foo.se" }
+
  sc_12_mysqld_pid: "/var/lib/mysql/mysqld.pid"
  sc_12_mysqld_procname: "/usr/sbin/mysqld"
 
