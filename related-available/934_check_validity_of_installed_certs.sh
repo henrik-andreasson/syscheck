@@ -43,7 +43,7 @@ done
 checkJKS() {
     keystoreFile=$1
     alias=$2
-    certFile=$(tempfile -p "syscheck934") || exit
+    certFile=$(mktemp) || exit
     trap "rm -f -- '$certFile'" EXIT
 
     if [ "x$alias" = "x" ] ; then
@@ -107,7 +107,7 @@ checkDER() {
             exit
     fi
 
-    certFile=$(tempfile -p "syscheck934") || exit
+    certFile=$(mktemp) || exit
     trap "rm -f -- '$certFile'" EXIT
 
     openssl x509 -in $keystoreFile -out $certFile -inform der -outform pem
@@ -122,7 +122,7 @@ checkP12() {
     keystoreFile=$1
     keystorePass=$2
 
-    certFile=$(tempfile -p "syscheck934") || exit
+    certFile=$(mktemp) || exit
     trap "rm -f -- '$certFile'" EXIT
 
     openssl pkcs12 -info -in $keystoreFile -clcerts -nokeys -out $certFile -passin "pass:$keystorePass" 2>/dev/null
@@ -146,7 +146,7 @@ for (( j=0; j < ${#CERT_TYPE[@]} ; j++ )){
         checkP12 "${CERT_FILE[$j]}" "${CERT_PASS[$j]}"
 
     elif [ ${CERT_TYPE[$j]} = "JKS" ] ; then
-        checkJKS ${CERT_FILE[$j]}
+        checkJKS "${CERT_FILE[$j]}" "${CERT_ALIAS[$j]}"
 
 #    elif [ ${CERT_TYPE[$j]} = "P11" ] ; then
 #        checkP11 ${CERT_FILE[$j]}
