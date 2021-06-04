@@ -40,7 +40,7 @@ diskusage () {
 		return -1
 	fi
 
-  if [ "x${WARNLIMIT}" = "x" ] ; then
+  if [ "x${WARNLIMIT}" = "xdefault" ] ; then
     WARNLIMIT="${ERRLIMIT}"
 	fi
 
@@ -66,5 +66,8 @@ diskusage () {
 
 for (( i = 0 ;  i < ${#FILESYSTEM[@]} ; i++ )) ; do
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+        if [ "x${WARN_PERCENT[$i]}" == "x" ] ; then
+		WARN_PERCENT[$i]="default"
+	fi
 	diskusage ${FILESYSTEM[$i]}  ${USAGEPERCENT[$i]} ${WARN_PERCENT[$i]} ${SCRIPTINDEX}
 done
