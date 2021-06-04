@@ -58,17 +58,17 @@ checkhttpscert () {
   fi
 
   if [ "x$HOST_IP" == "xdefault" ] ; then
-    ARGCONNECT="-connect $SERVICENAME:$PORTNO"
+    ARGCONNECT="$SERVICENAME:$PORTNO"
   else
-    ARGCONNECT="-connect $HOST_IP:$PORTNO -servername $SERVICENAME"
+    ARGCONNECT="$HOST_IP:$PORTNO"
   fi
 
   cd /tmp
   outname=$(mktemp)
-  echo "" | openssl s_client $ARGCONNECT  >> $outname 2>&1
+  echo "" | openssl s_client -connect $ARGCONNECT -servername $SERVICENAME >> $outname 2>&1
   check_outname=$(cat "$outname" | grep "Server certificate")
   if [ "x$outname" == "x" ] ; then
-      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${SERVICENAME}" -2 "${PORTNO}" -3 "${HOST_IP}" -4 "${ERRDAYS}" 
+      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${SERVICENAME}" -2 "${PORTNO}" -3 "${HOST_IP}" -4 "${ERRDAYS}"
       ERRSTATUS=$(expr $ERRSTATUS + 1)
       GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${DESCR[7]}"
       return 1
@@ -100,8 +100,10 @@ checkhttpscert () {
   done < $outname
 
   issuer=$(openssl x509 -in "$certfile" -issuer -noout | sed 's/issuer=//')
-  subject=$(openssl x509 -in "$certfile" -issuer -noout | sed 's/subject=//')
+  subject=$(openssl x509 -in "$certfile" -subject -noout | sed 's/subject=//')
   certexpiredate=$(openssl x509 -in "$certfile" -enddate  -noout | sed 's/notAfter=//')
+
+  printverbose "Certinfo from server: $SERVICENAME:$PORTNO ($HOST_IP) issuer: $issuer subject: $subject expire: $certexpiredate"
 
   expireinfo=$($SYSCHECK_HOME/lib/cmp_dates.py --warnminutes="${WARNMIN}" --errorminutes="${ERRMIN}"  "$(date +'%b %d %H:%M:%S %Y %Z')" "${certexpiredate}")
   retcode=$?
