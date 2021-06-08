@@ -57,7 +57,7 @@ fi
 BASE_FILE_NAME=$(basename $SSHFILE)
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-CHECK_REMOTE_FILE_ALREADY_EXIST=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="ls -1  \"${SSHDIR}/${BASE_FILE_NAME}\"" )
+CHECK_REMOTE_FILE_ALREADY_EXIST=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="ls -1  \"${SSHDIR}/${BASE_FILE_NAME}\"" | tail -1)
 FIXED_REMOTE_FILE_ALREADY_EXIST=$(echo "${CHECK_REMOTE_FILE_ALREADY_EXIST}" | grep "${BASE_FILE_NAME}")
 if [ "x$FIXED_REMOTE_FILE_ALREADY_EXIST" == "x${SSHDIR}/${BASE_FILE_NAME}" ] ; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${SSHHOST}" -2 "${CHECK_REMOTE_FILE_ALREADY_EXIST}" -3 "${SSHFILE}"
@@ -66,7 +66,7 @@ fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 FILESIZE=$(du --block-size=M "${SSHFILE}" | grep "${SSHFILE}" | awk '{print $1}' | sed 's/M//')
-CHECK_REMOTE_SPACE=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="df  --block-size=M \"${SSHDIR}\" --output=avail | grep -v 'Avail' | sed 's/M//'" )
+CHECK_REMOTE_SPACE=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="df  --block-size=M \"${SSHDIR}\"" | tail -1 | awk '{print $4}' | sed 's/M//' )
 if [ $? -ne 0 ] ; then
    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$runresult"
    exit -1
@@ -87,7 +87,7 @@ fi
 
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-CHECK_REMOTE_FILESIZE=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="du  --block-size=M \"${SSHDIR}/${BASE_FILE_NAME}\"" )
+CHECK_REMOTE_FILESIZE=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="du  --block-size=M \"${SSHDIR}/${BASE_FILE_NAME}\"" | tail -1)
 if [ $? -ne 0 ] ; then
    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$CHECK_REMOTE_FILESIZE"
    exit -1
