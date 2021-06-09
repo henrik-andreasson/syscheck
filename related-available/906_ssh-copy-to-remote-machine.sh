@@ -65,6 +65,7 @@ if [ "x$FIXED_REMOTE_FILE_ALREADY_EXIST" == "x${SSHDIR}/${BASE_FILE_NAME}" ] ; t
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+LOCAL_SHA1=$(sha1sum "${SSHFILE}" | awk '{print $1}')
 FILESIZE=$(du --block-size=M "${SSHFILE}" | grep "${SSHFILE}" | awk '{print $1}' | sed 's/M//')
 CHECK_REMOTE_SPACE=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="df  --block-size=M \"${SSHDIR}\"" | tail -1 | awk '{print $4}' | sed 's/M//' )
 if [ $? -ne 0 ] ; then
@@ -87,15 +88,15 @@ fi
 
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+REMOTE_SHA1=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="sha1sum \"${SSHDIR}/${BASE_FILE_NAME}\"" | tail -1 | awk '{print $1}')
 CHECK_REMOTE_FILESIZE=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="du  --block-size=M \"${SSHDIR}/${BASE_FILE_NAME}\"" | tail -1)
 if [ $? -ne 0 ] ; then
    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$CHECK_REMOTE_FILESIZE"
    exit -1
 fi
 
-FIXED_REMOTE_FILESIZE=$(echo "${CHECK_REMOTE_FILESIZE}" | grep "${BASE_FILE_NAME}" | awk '{print $1}' | sed 's/M//')
-if [ $FIXED_REMOTE_FILESIZE -ne $FILESIZE ] ; then
-  printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "${SSHHOST}" -2 "${SSHDIR}" -3 "${CHECK_REMOTE_FILESIZE}" -4 "${FILESIZE}"  -5 "${SSHFILE}"
+if [ "$REMOTE_SHA1" != "$LOCAL_SHA1" ] ; then
+  printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "${SSHHOST}" -2 "${SSHDIR}" -3 "${REMOTE_SHA1}" -4 "${LOCAL_SHA1}" -5 "${SSHFILE}"
   exit -1
 else
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
