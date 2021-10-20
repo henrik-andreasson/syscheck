@@ -76,7 +76,7 @@ if [ "x$POST" = "x1" ] ; then
     if [ "x$LOGENTRY" = "x" ] ; then
         printf "${LOGBOOK_EMPTY_ENTRY}\n"
     else
-        sudo "${SYSCHECK_HOME}/lib/logbook-cli.sh" -n "${SCRIPTNAME}" -i ${SCRIPTID} -s ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${ExecutingUserName}" -2 "$LOGENTRY"
+        sudo "${SYSCHECK_HOME}/lib/logbook-cli.sh" -n "${SCRIPTNAME}" -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${ExecutingUserName}" -2 "$LOGENTRY"
     fi
 fi
 
