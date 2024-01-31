@@ -21,7 +21,7 @@ SCRIPTID=06
 ERRORNUM=0
 
 # how many info/warn/error messages
-NO_OF_ERR=6
+NO_OF_ERR=8
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
@@ -85,7 +85,7 @@ done
 # send the summary message (00)
 SCRIPTINDEX=00
 if [ "$ERRORNUM" -gt 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[8]}" -1 "number of errors detected: ${ERRORNUM}"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[8]} -d "${DESCR[8]}" -1 "number of errors detected: ${ERRORNUM}"
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[7]}"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[7]} -d "${DESCR[7]}"
 fi
