@@ -19,3 +19,6 @@ HELP[5]="Check errormessage and log-file"
 
 DESCR[6]="app: %s, MAXRESTARTS not set"
 HELP[6]="Config in the config file"
+
+DESCR[7]="app: %s, WARNING %s"
+HELP[7]="app sends WARNING please read and act accordingly"

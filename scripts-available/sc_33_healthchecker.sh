@@ -18,7 +18,7 @@ SCRIPTNAME=healthcheck
 SCRIPTID=33
 
 # how many info/warn/error messages
-NO_OF_ERR=6
+NO_OF_ERR=7
 initscript $SCRIPTID $NO_OF_ERR
 
 
@@ -140,9 +140,12 @@ for (( i = 0 ;  i < ${#HEALTHCHECKURL[@]} ; i++ )) ; do
 	FIXED_FULL_STATUS=$(echo "${FULLSTATUS}" | tr -d '\\' | tr -d "'"  | sed 's/%/%%/gi' | tr  '\n' ';' | tr -d '"')
 	if [ "x$STATUS" != "xALLOK" ] ; then
 		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
-    		if [ "x${STOP_CMD[$i]}" != "x" -a  "x${START_CMD[$i]}" != "x" ] ; then
+    if [ "x${STOP_CMD[$i]}" != "x" -a  "x${START_CMD[$i]}" != "x" ] ; then
 			restartProcess -n "${HEALTHCHECK_APP[$i]}" -p "${STOP_CMD[$i]}" -t "${START_CMD[$i]}" -w "${STOP_START_PAUSE}" -x "${MAX_RESTARTS}"
 		fi
+  elif [[ "x$STATUS" =~ "^WARNING.*" ]]; then
+  		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
+
 	else
 		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
 	fi
