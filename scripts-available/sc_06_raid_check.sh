@@ -17,8 +17,11 @@ SCRIPTNAME=raidcheck
 # uniq ID of script (please use in the name of this file also for convinice for finding next availavle number)
 SCRIPTID=06
 
+# number of errors in summary
+ERRORNUM=0
+
 # how many info/warn/error messages
-NO_OF_ERR=6
+NO_OF_ERR=8
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
@@ -37,6 +40,7 @@ raiddiskcheck () {
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$COMMAND"
   else
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$COMMAND disc: $DISCID slot: $xSLOT"
+    (( ERRORNUM++ )) || true
   fi
 }
 
@@ -54,8 +58,10 @@ raidlogiccheck () {
 
   elif [ "xRebuilding" = "x$COMMAND" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$COMMAND"
+    (( ERRORNUM++ )) || true
   else
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$COMMAND LD:$LDID slot: $xSLOT"
+    (( ERRORNUM++ )) || true
   fi
 }
 
@@ -75,3 +81,11 @@ for (( i = 0 ;  i < ${#LOGICALDRIVE[@]} ; i++ )) ; do
   SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
   raidlogiccheck "${LOGICALDRIVE[$i]}" $SLOT $SCRIPTINDEX
 done
+
+# send the summary message (00)
+SCRIPTINDEX=00
+if [ "$ERRORNUM" -gt 0 ] ; then
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[8]} -d "${DESCR[8]}" -1 "number of errors detected: ${ERRORNUM}"
+else
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[7]} -d "${DESCR[7]}"
+fi
