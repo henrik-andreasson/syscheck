@@ -73,14 +73,17 @@ if [ -f ${TOARCHIVE_DIR}/encback.lock ] ; then
     rm ${TOARCHIVE_DIR}/encback.lock
 fi
 
-for FILE in ${FULLFILENAME};do
-	touch ${TOARCHIVE_DIR}/encback.lock
-	res=$(${OPENENC_TOOL} encrypt ${FILE} ${TOARCHIVE_DIR})
+touch ${TOARCHIVE_DIR}/encback.lock
+
+while IFS= read -r SRCPATH; do
+	res=$(${OPENENC_TOOL} encrypt ${SRCPATH} ${TOARCHIVE_DIR})
 	if [ $? -ne 0 ] ;   then
-    	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$res"
+    		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$res"
 	fi
-	rm ${TOARCHIVE_DIR}/encback.lock
-done
+done <<< "$FULLFILENAME"
+
+rm ${TOARCHIVE_DIR}/encback.lock
+
 
 FILETRANS=1
 for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do
@@ -92,6 +95,10 @@ for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do
 		$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh --file="${TRANSFERFILENAME}" --host="${BACKUP_HOST[$i]}" --dir="${BACKUP_DIR[$i]}/${EXTRADIR}/" --user="${BACKUP_USER[$i]}" --key="${BACKUP_SSHFROMKEY[$i]}"
 		if [ $? -eq 0 ] ; then
 			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${TRANSFERFILENAME}"
+			if [ "$SHARED_STORAGE" = "true" ] ; then
+				FILETRANS=1
+				break
+			fi
 		else
 			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${TRANSFERFILENAME}"
 			FILETRANS=0
@@ -103,3 +110,4 @@ for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do
 		rm "${TRANSFERFILENAME}"
 	fi
 done
+
