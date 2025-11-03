@@ -40,18 +40,6 @@ jobs:
             /results/*
             /test-reports/*
 
-      - name: Create Git Tag (if triggered by workflow_dispatch and new tag needed)
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG="v${{ github.event.inputs.version }}"
-          echo "Attempting to create and push tag: $TAG"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "$TAG"
-          git push origin "$TAG"
-          echo "Tag $TAG created and pushed successfully."
       
       - name: Create GitHub Release
         # This step runs if a tag exists (pushed externally) OR if the tag was just created by the previous step.
