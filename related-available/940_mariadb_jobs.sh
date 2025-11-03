@@ -60,7 +60,7 @@ else
 
 	for (( i = 0 ;  i < "${#DBJOBS_SQL[@]}" ; i++ )) ; do
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-		sqlret=$(echo "${DBJOBS_SQL[0]}" | $MYSQL_BIN -u root --password="${MYSQLROOT_PASSWORD}" | grep -v "count" | tr '\n' ';')
+		sqlret=$(echo "${DBJOBS_SQL[$i]}" | $MYSQL_BIN -u root --password="${MYSQLROOT_PASSWORD}" | grep -v "count" | tr '\n' ';')
 		retcode=$?
 		if [ $retcode -eq 0 ] ; then
 			printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$INFO"  -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "${DBJOBS_NAME[$i]}" -2 "${sqlret}"
