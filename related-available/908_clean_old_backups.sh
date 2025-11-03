@@ -48,24 +48,26 @@ for (( i = 0 ;  i < ${#FILENAME[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
     if [ "x${DATESTR[$i]}" = "x" ] ; then
-    	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "$DESCR[4]"
-	exit
+    	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}"
+        exit
     fi
 
     realfiles=$(ls ${FILENAME[$i]} 2>/dev/null)
     if [ "x${realfiles}" != "x" ] ; then
 
-	returnstr=`rm ${FILENAME[$i]} 2>&1`
-	if [ $? -ne 0 ] ; then
-	    ERR=" ${FILENAME[$i]} ; $ERR"
-	    printtoscreen "deleted ${realfiles} failed ($returnstr)"
-	else
-	    printtoscreen "deleted ${realfiles} ok"
-	fi
+	    returnstr=`rm ${FILENAME[$i]} 2>&1`
+		if [ $? -ne 0 ] ; then
+	        ERR=" ${FILENAME[$i]} ; $ERR"
+			printtoscreen "deleted ${realfiles} failed ($returnstr)"
+            printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${FILENAME[$i]}"
+
+		else
+			printtoscreen "deleted ${realfiles} ok"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "${DESCR[1]}" -1 "${FILENAME[$i]}"
+		fi
 
     else
-
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "$DESCR[3]" -1 "${FILENAME[$i]}"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${FILENAME[$i]}"
         printtoscreen "file ${FILENAME[$i]} did not exist before deleting "
 
     fi
@@ -74,7 +76,7 @@ done
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "x$ERR" = "x" ]  ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "$DESCR[1]"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $WARN -e ${ERRNO[2]} -d "$DESCR[2]" -1 "$ERR"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $WARN -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$ERR"
 fi
