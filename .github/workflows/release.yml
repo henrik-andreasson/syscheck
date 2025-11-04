@@ -2,18 +2,17 @@ name: release
 on:
   push:
     tags:
-      - 'v*' # Trigger release creation on pushes to tags like v1.0.0, v1.0.1, etc.
+      - "v*" # Trigger release creation on pushes to tags like v1.0.0, v1.0.1, etc.
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., 1.2.3). Will create tag v1.2.3.'
+        description: "Version to release (e.g., 1.2.3). Will create tag v1.2.3."
         required: true
-        default: '2.9'
+        default: "2.9"
       tag_prefix: # Optional: Allows customization of the tag prefix
-        description: 'Prefix for the Git tag (e.g., v)'
+        description: "Prefix for the Git tag (e.g., v)"
         required: true
-        default: 'v'
-
+        default: "v"
 
 jobs:
   deploy:
@@ -22,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # This token is needed for 'git push origin <tag>' if we create a tag manually
-          token: ${{ secrets.GITHUB_TOKEN }} 
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v2
         with:
@@ -32,7 +31,7 @@ jobs:
       - run: sudo apt-get install ruby ruby-dev rubygems build-essential
       - run: sudo gem install --no-document fpm
       - run: sudo mkdir -p /results /opt/syscheck /work /test-reports
-      - run: sudo ./test/run-build-install-and-test.sh --install=/opt/syscheck --work=/work --results=/results --test=/test-reports
+      - run: sudo ./lib/release.sh  -v ${{ github.event.inputs.version }} -p syscheck
       - uses: actions/upload-artifact@v4
         with:
           name: build-results
@@ -40,7 +39,6 @@ jobs:
             /results/*
             /test-reports/*
 
-      
       - name: Create GitHub Release
         # This step runs if a tag exists (pushed externally) OR if the tag was just created by the previous step.
         shell: bash
@@ -55,7 +53,7 @@ jobs:
           This release includes the latest MSI installer."
 
           echo "Creating GitHub Release for $TAG_NAME"
-          
+
           # Try to create the release. If it already exists, upload the asset to the existing one.
           if gh release create "$TAG_NAME" \
             --title "$RELEASE_NAME" \
