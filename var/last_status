@@ -1,1 +1,291 @@
 #placeholder
+I-01011-PKI 20251103 11:52:07 eba9e0811f66: INFO - diskusage Diskusage ok (/ is 23 percent used: Limit is 75 percent)
+E-01013-PKI 20251103 11:52:07 eba9e0811f66: ERROR - diskusage Diskusage problems (/backup : df: /backup: No such file or directory)
+I-01011-PKI 20251103 11:52:07 eba9e0811f66: INFO - diskusage Diskusage ok (/var/lib is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 11:52:07 eba9e0811f66: INFO - diskusage Diskusage ok (/var/log is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 11:52:35 eba9e0811f66: INFO - diskusage Diskusage ok (/ is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 11:52:35 eba9e0811f66: INFO - diskusage Diskusage ok (/backup is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 11:52:35 eba9e0811f66: INFO - diskusage Diskusage ok (/var/lib is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 11:52:35 eba9e0811f66: INFO - diskusage Diskusage ok (/var/log is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:05:05 b998b92e8ac5: INFO - diskusage Diskusage ok (/ is 23 percent used: Limit is 75 percent)
+E-01013-PKI 20251103 12:05:05 b998b92e8ac5: ERROR - diskusage Diskusage problems (/backup : df: /backup: No such file or directory)
+I-01011-PKI 20251103 12:05:05 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/lib is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:05:05 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/log is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:05:43 b998b92e8ac5: INFO - diskusage Diskusage ok (/ is 23 percent used: Limit is 75 percent)
+E-01013-PKI 20251103 12:05:43 b998b92e8ac5: ERROR - diskusage Diskusage problems (/backup : df: /backup: No such file or directory)
+I-01011-PKI 20251103 12:05:43 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/lib is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:05:43 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/log is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:05:51 b998b92e8ac5: INFO - diskusage Diskusage ok (/ is 23 percent used: Limit is 75 percent)
+E-01013-PKI 20251103 12:05:51 b998b92e8ac5: ERROR - diskusage Diskusage problems (/backup : df: /backup: No such file or directory)
+I-01011-PKI 20251103 12:05:51 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/lib is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:05:51 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/log is 23 percent used: Limit is 75 percent)
+E-02022-PKI 20251103 12:05:51 b998b92e8ac5: ERROR - ejbca EJBCA : /opt/syscheck/scripts-available/sc_02_ejbca.sh: line 38: curl: command not found
+E-03031-PKI 20251103 12:05:51 b998b92e8ac5: ERROR - memoryusage Memory limit exceded (Memory is  KB used: Limit is  KB)
+E-03033-PKI 20251103 12:05:51 b998b92e8ac5: ERROR - memoryusage Swap limit exceded (Swap is  KB used: Limit is  KB)
+E-04042-PKI 20251103 12:05:51 b998b92e8ac5: ERROR - pcscreaders Wrong number of attached pcsc-readers current: ( line 28) should be: (1)
+E-05052-PKI 20251103 12:05:51 b998b92e8ac5: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20251103 12:05:51 b998b92e8ac5: ERROR - raidcheck HPTOOL not installed at: /sbin/ssacli
+E-07072-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - syslog syslog is not running
+E-08083-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http://localhost/crl/eSignCA.crl
+E-09091-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - firewall Cant get status from iptables.
+E-12122-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - mysql mysql is NOT running
+E-14143-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - apache Apache webserver is not running
+E-16162-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20251103 12:05:52 b998b92e8ac5: INFO - alive [3]
+W-20203-PKI 20251103 12:05:52 b998b92e8ac5: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+E-23232-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - rsa_axm At least one service is not running (DAuth) 
+E-27274-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - dss Document SignServer is not installed at this host
+E-28285-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - vip ssh tool 915 not activated
+E-29293-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - running_processes Process ntpd was not running, restart failed
+E-30303-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - running_processes Process cupsd was not running, restart failed
+E-32322-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - healthcheck app: certservice-public NOT ok error message: ;
+E-33334-PKI 20251103 12:05:52 b998b92e8ac5: ERROR - healthcheck app: certservice-public restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-public restarts in last 24h: 0
+E-33334-PKI 20251103 12:06:02 b998b92e8ac5: ERROR - healthcheck app: certservice-public restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-public restarts in last 24h: 0
+E-33332-PKI 20251103 12:06:02 b998b92e8ac5: ERROR - healthcheck app: certservice-admin NOT ok error message: ;
+E-33334-PKI 20251103 12:06:02 b998b92e8ac5: ERROR - healthcheck app: certservice-admin restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-admin restarts in last 24h: 0
+E-33334-PKI 20251103 12:06:12 b998b92e8ac5: ERROR - healthcheck app: certservice-admin restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-admin restarts in last 24h: 0
+E-33332-PKI 20251103 12:06:12 b998b92e8ac5: ERROR - healthcheck app: certservice-worker NOT ok error message: ;
+E-33334-PKI 20251103 12:06:12 b998b92e8ac5: ERROR - healthcheck app: certservice-worker restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-worker restarts in last 24h: 0
+E-33334-PKI 20251103 12:06:22 b998b92e8ac5: ERROR - healthcheck app: certservice-worker restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-worker restarts in last 24h: 0
+E-34342-PKI 20251103 12:06:22 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20251103 12:06:22 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20251103 12:06:22 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20251103 12:06:22 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20251103 12:06:22 b998b92e8ac5: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20251103 12:06:22 b998b92e8ac5: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-37372-PKI 20251103 12:06:22 b998b92e8ac5: ERROR - jnlp_checker problem: 
+I-01011-PKI 20251103 12:07:16 b998b92e8ac5: INFO - diskusage Diskusage ok (/ is 23 percent used: Limit is 75 percent)
+E-01013-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - diskusage Diskusage problems (/backup : df: /backup: No such file or directory)
+I-01011-PKI 20251103 12:07:16 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/lib is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:07:16 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/log is 23 percent used: Limit is 75 percent)
+E-02022-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - ejbca EJBCA : /opt/syscheck/scripts-available/sc_02_ejbca.sh: line 38: curl: command not found
+E-03031-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - memoryusage Memory limit exceded (Memory is  KB used: Limit is  KB)
+E-03033-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - memoryusage Swap limit exceded (Swap is  KB used: Limit is  KB)
+E-04042-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - pcscreaders Wrong number of attached pcsc-readers current: ( line 28) should be: (1)
+E-05052-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - raidcheck HPTOOL not installed at: /sbin/ssacli
+E-07072-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - syslog syslog is not running
+E-08083-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http://localhost/crl/eSignCA.crl
+E-09091-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - firewall Cant get status from iptables.
+I-10109-PKI 20251103 12:07:16 b998b92e8ac5: INFO - ocsp OCSP Summary OK
+E-12122-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - mysql mysql is NOT running
+E-14143-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - apache Apache webserver is not running
+E-16162-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20251103 12:07:16 b998b92e8ac5: INFO - alive [3]
+W-20203-PKI 20251103 12:07:16 b998b92e8ac5: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+E-23232-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - rsa_axm At least one service is not running (DAuth) 
+E-27274-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - dss Document SignServer is not installed at this host
+E-28285-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - vip ssh tool 915 not activated
+E-29293-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - running_processes Process ntpd was not running, restart failed
+E-30303-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - running_processes Process cupsd was not running, restart failed
+E-31314-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - hp_health Tool not found: /sbin/ilorest 
+E-32322-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - healthcheck app: certservice-public NOT ok error message: ;
+E-33334-PKI 20251103 12:07:16 b998b92e8ac5: ERROR - healthcheck app: certservice-public restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-public restarts in last 24h: 1
+E-33334-PKI 20251103 12:07:26 b998b92e8ac5: ERROR - healthcheck app: certservice-public restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-public restarts in last 24h: 1
+E-33332-PKI 20251103 12:07:27 b998b92e8ac5: ERROR - healthcheck app: certservice-admin NOT ok error message: ;
+E-33334-PKI 20251103 12:07:27 b998b92e8ac5: ERROR - healthcheck app: certservice-admin restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-admin restarts in last 24h: 1
+E-33334-PKI 20251103 12:07:37 b998b92e8ac5: ERROR - healthcheck app: certservice-admin restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-admin restarts in last 24h: 1
+E-33332-PKI 20251103 12:07:37 b998b92e8ac5: ERROR - healthcheck app: certservice-worker NOT ok error message: ;
+E-33334-PKI 20251103 12:07:37 b998b92e8ac5: ERROR - healthcheck app: certservice-worker restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-worker restarts in last 24h: 1
+E-33334-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - healthcheck app: certservice-worker restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-worker restarts in last 24h: 1
+E-34342-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-37372-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - jnlp_checker problem: 
+E-38382-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - mysql_connections problem reading max variable
+E-39393-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - hsm_health HSM  is Activated HSM Not Installed
+E-40402-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - check_mysql mysql is NOT running
+I-40403-PKI 20251103 12:07:47 b998b92e8ac5: INFO - check_mysql mysql is running and answering
+I-40405-PKI 20251103 12:07:47 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_cluster_size 
+I-40405-PKI 20251103 12:07:47 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_cluster_status 
+I-40405-PKI 20251103 12:07:47 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_connected 
+I-40405-PKI 20251103 12:07:47 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_local_recv_queue_avg 
+E-40408-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - check_mysql Error in MySQL checks, number of errors detected: 1
+E-42422-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - receipts missing for: RA
+E-42422-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - receipts missing for: CLOUD
+E-42422-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - receipts missing for: OCSP
+E-42422-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - receipts missing for: INVALID
+E-43431-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - rittal_rack_sensors Connect problem : Can't connect to 192.168.192.20
+E-43431-PKI 20251103 12:07:47 b998b92e8ac5: ERROR - rittal_rack_sensors Connect problem : Can't connect to 192.168.192.2
+E-44-d-PKI 20251103 12:07:50 b998b92e8ac5: ERROR - cert_from_webserver Config problem: fe1.lab.certificateservices.org
+I-01011-PKI 20251103 12:15:34 b998b92e8ac5: INFO - diskusage Diskusage ok (/ is 23 percent used: Limit is 75 percent)
+E-01013-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - diskusage Diskusage problems (/backup : df: /backup: No such file or directory)
+I-01011-PKI 20251103 12:15:34 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/lib is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:15:34 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/log is 23 percent used: Limit is 75 percent)
+E-02022-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - ejbca EJBCA : /opt/syscheck/scripts-available/sc_02_ejbca.sh: line 38: curl: command not found
+E-03031-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - memoryusage Memory limit exceded (Memory is  KB used: Limit is  KB)
+E-03033-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - memoryusage Swap limit exceded (Swap is  KB used: Limit is  KB)
+E-04042-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - pcscreaders Wrong number of attached pcsc-readers current: ( line 28) should be: (1)
+E-05052-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - raidcheck HPTOOL not installed at: /sbin/ssacli
+E-07072-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - syslog syslog is not running
+E-08083-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http://localhost/crl/eSignCA.crl
+E-09091-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - firewall Cant get status from iptables.
+I-10109-PKI 20251103 12:15:34 b998b92e8ac5: INFO - ocsp OCSP Summary OK
+E-12122-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - mysql mysql is NOT running
+E-14143-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - apache Apache webserver is not running
+E-16162-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20251103 12:15:34 b998b92e8ac5: INFO - alive [3]
+W-20203-PKI 20251103 12:15:34 b998b92e8ac5: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+E-23232-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - rsa_axm At least one service is not running (DAuth) 
+E-27274-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - dss Document SignServer is not installed at this host
+E-28285-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - vip ssh tool 915 not activated
+E-29293-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - running_processes Process ntpd was not running, restart failed
+E-30303-PKI 20251103 12:15:34 b998b92e8ac5: ERROR - running_processes Process cupsd was not running, restart failed
+E-31314-PKI 20251103 12:15:35 b998b92e8ac5: ERROR - hp_health Tool not found: /sbin/ilorest 
+E-32322-PKI 20251103 12:15:35 b998b92e8ac5: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20251103 12:15:35 b998b92e8ac5: ERROR - healthcheck app: certservice-public NOT ok error message: ;
+E-33334-PKI 20251103 12:15:35 b998b92e8ac5: ERROR - healthcheck app: certservice-public restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-public restarts in last 24h: 2
+E-33334-PKI 20251103 12:15:45 b998b92e8ac5: ERROR - healthcheck app: certservice-public restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-public restarts in last 24h: 2
+E-33332-PKI 20251103 12:15:45 b998b92e8ac5: ERROR - healthcheck app: certservice-admin NOT ok error message: ;
+E-33334-PKI 20251103 12:15:45 b998b92e8ac5: ERROR - healthcheck app: certservice-admin restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-admin restarts in last 24h: 2
+E-33334-PKI 20251103 12:15:55 b998b92e8ac5: ERROR - healthcheck app: certservice-admin restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-admin restarts in last 24h: 2
+E-33332-PKI 20251103 12:15:55 b998b92e8ac5: ERROR - healthcheck app: certservice-worker NOT ok error message: ;
+E-33334-PKI 20251103 12:15:55 b998b92e8ac5: ERROR - healthcheck app: certservice-worker restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-worker restarts in last 24h: 2
+E-33334-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - healthcheck app: certservice-worker restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-worker restarts in last 24h: 2
+E-34342-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-37372-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - jnlp_checker problem: 
+E-38382-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - mysql_connections problem reading max variable
+E-39393-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - hsm_health HSM  is Activated HSM Not Installed
+E-40402-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - check_mysql mysql is NOT running
+I-40403-PKI 20251103 12:16:05 b998b92e8ac5: INFO - check_mysql mysql is running and answering
+I-40405-PKI 20251103 12:16:05 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_cluster_size 
+I-40405-PKI 20251103 12:16:05 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_cluster_status 
+I-40405-PKI 20251103 12:16:05 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_connected 
+I-40405-PKI 20251103 12:16:05 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_local_recv_queue_avg 
+E-40408-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - check_mysql Error in MySQL checks, number of errors detected: 1
+E-42422-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - receipts missing for: RA
+E-42422-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - receipts missing for: CLOUD
+E-42422-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - receipts missing for: OCSP
+E-42422-PKI 20251103 12:16:05 b998b92e8ac5: ERROR - receipts missing for: INVALID
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:16:05 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+E-44-d-PKI 20251103 12:16:08 b998b92e8ac5: ERROR - cert_from_webserver Config problem: fe1.lab.certificateservices.org
+E-44-d-PKI 20251103 12:16:11 b998b92e8ac5: ERROR - cert_from_webserver Config problem: fe1.lab.certificateservices.org
+E-44-d-PKI 20251103 12:16:11 b998b92e8ac5: ERROR - cert_from_webserver Config problem: ;ERR fe1.lab.certificateservices.org 443 192.168.99.21;ERR fe1.lab.certificateservices.org 1443 192.168.99.21
+I-01011-PKI 20251103 12:16:36 b998b92e8ac5: INFO - diskusage Diskusage ok (/ is 23 percent used: Limit is 75 percent)
+E-01013-PKI 20251103 12:16:36 b998b92e8ac5: ERROR - diskusage Diskusage problems (/backup : df: /backup: No such file or directory)
+I-01011-PKI 20251103 12:16:36 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/lib is 23 percent used: Limit is 75 percent)
+I-01011-PKI 20251103 12:16:36 b998b92e8ac5: INFO - diskusage Diskusage ok (/var/log is 23 percent used: Limit is 75 percent)
+E-02022-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - ejbca EJBCA : /opt/syscheck/scripts-available/sc_02_ejbca.sh: line 38: curl: command not found
+E-03031-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - memoryusage Memory limit exceded (Memory is  KB used: Limit is  KB)
+E-03033-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - memoryusage Swap limit exceded (Swap is  KB used: Limit is  KB)
+E-04042-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - pcscreaders Wrong number of attached pcsc-readers current: ( line 28) should be: (1)
+E-05052-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - pcscd pcscd is NOT running
+E-06066-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - raidcheck HPTOOL not installed at: /sbin/ssacli
+E-07072-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - syslog syslog is not running
+E-08083-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - crl_from_webserver Unable to get CRL http://1.2.3.4/eIDCA.crl from webserver 
+E-08083-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - crl_from_webserver Unable to get CRL http://localhost/crl/eSignCA.crl from webserver 
+E-08089-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - crl_from_webserver CRL summary problems: ;Unable to get CRL  from webserver  http://1.2.3.4/eIDCA.crl;Unable to get CRL  from webserver  http://localhost/crl/eSignCA.crl
+E-09091-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - firewall Cant get status from iptables.
+I-10109-PKI 20251103 12:16:37 b998b92e8ac5: INFO - ocsp OCSP Summary OK
+E-12122-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - mysql mysql is NOT running
+E-14143-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - swraid Unpredicted error in SW-raid 8 / 0 ()
+E-15152-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - apache Apache webserver is not running
+E-16162-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - ldap LDAP directory server is not running
+E-17172-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - ntp ntpd is NOT running.
+E-18182-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - sql_select mysql is NOT answering to select statement check
+I-19193-PKI 20251103 12:16:37 b998b92e8ac5: INFO - alive [3]
+W-20203-PKI 20251103 12:16:37 b998b92e8ac5: WARNING - ejbcaerrorlog Cant find the specified ejbca log /usr/local/certificate-services/jboss/server/default/log/server.log
+E-22222-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - boks All BoKS replica processes IS NOT running boks_servc
+E-23232-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - rsa_axm At least one service is not running (DAuth) 
+E-27274-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - dss Document SignServer is not installed at this host
+E-28285-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - vip ssh tool 915 not activated
+E-29293-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - signserver SIGNSERVER : Application Server is unavailable
+E-30303-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - running_processes Process apache2 was not running, restart failed
+E-30303-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - running_processes Process ntpd was not running, restart failed
+E-30303-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - running_processes Process cupsd was not running, restart failed
+E-31314-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - hp_health Tool not found: /sbin/ilorest 
+E-32322-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - db_sync DB not in sync, date of CertificateData diff betwin nodes: missing script
+E-33332-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - healthcheck app: certservice-public NOT ok error message: ;
+E-33334-PKI 20251103 12:16:37 b998b92e8ac5: ERROR - healthcheck app: certservice-public restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-public restarts in last 24h: 3
+E-33334-PKI 20251103 12:16:47 b998b92e8ac5: ERROR - healthcheck app: certservice-public restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-public restarts in last 24h: 3
+E-33332-PKI 20251103 12:16:47 b998b92e8ac5: ERROR - healthcheck app: certservice-admin NOT ok error message: ;
+E-33334-PKI 20251103 12:16:47 b998b92e8ac5: ERROR - healthcheck app: certservice-admin restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-admin restarts in last 24h: 3
+E-33334-PKI 20251103 12:16:57 b998b92e8ac5: ERROR - healthcheck app: certservice-admin restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-admin restarts in last 24h: 3
+E-33332-PKI 20251103 12:16:57 b998b92e8ac5: ERROR - healthcheck app: certservice-worker NOT ok error message: ;
+E-33334-PKI 20251103 12:16:57 b998b92e8ac5: ERROR - healthcheck app: certservice-worker restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 105: systemctl: command not found command: systemctl stop tomcat-worker restarts in last 24h: 3
+E-33334-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - healthcheck app: certservice-worker restarting due to previous failure status: /opt/syscheck/scripts-available/sc_33_healthchecker.sh: line 109: systemctl: command not found command: systemctl start tomcat-worker restarts in last 24h: 3
+E-34342-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6379 ()
+E-34342-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6380 ()
+E-34342-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6381 ()
+E-34342-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - redis server is not responding 127.0.0.1:6382 ()
+E-35356-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - dell_raid TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-36363-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - dell_health TOOL not installed at: /opt/dell/srvadmin/bin/omreport
+E-37372-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - jnlp_checker problem: 
+E-38382-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - mysql_connections problem reading max variable
+E-39393-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - hsm_health HSM  is Activated HSM Not Installed
+E-40402-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - check_mysql mysql is NOT running
+I-40403-PKI 20251103 12:17:07 b998b92e8ac5: INFO - check_mysql mysql is running and answering
+I-40405-PKI 20251103 12:17:07 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_cluster_size 
+I-40405-PKI 20251103 12:17:07 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_cluster_status 
+I-40405-PKI 20251103 12:17:07 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_connected 
+I-40405-PKI 20251103 12:17:07 b998b92e8ac5: INFO - check_mysql mysql cluster variable OK: wsrep_local_recv_queue_avg 
+E-40408-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - check_mysql Error in MySQL checks, number of errors detected: 1
+E-42422-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - receipts missing for: RA
+E-42422-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - receipts missing for: CLOUD
+E-42422-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - receipts missing for: OCSP
+E-42422-PKI 20251103 12:17:07 b998b92e8ac5: ERROR - receipts missing for: INVALID
+I-43432-PKI 20251103 12:17:07 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:17:07 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:17:07 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:17:07 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:17:07 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:17:07 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:17:07 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.20  
+I-43432-PKI 20251103 12:17:07 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:17:08 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:17:08 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:17:08 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:17:08 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:17:08 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+I-43432-PKI 20251103 12:17:08 b998b92e8ac5: INFO - rittal_rack_sensors Wrong value in Rittal: 192.168.192.2  
+E-44-d-PKI 20251103 12:17:11 b998b92e8ac5: ERROR - cert_from_webserver Config problem: fe1.lab.certificateservices.org
+E-44-d-PKI 20251103 12:17:14 b998b92e8ac5: ERROR - cert_from_webserver Config problem: fe1.lab.certificateservices.org
+E-44-d-PKI 20251103 12:17:14 b998b92e8ac5: ERROR - cert_from_webserver Config problem: ;ERR fe1.lab.certificateservices.org 443 192.168.99.21;ERR fe1.lab.certificateservices.org 1443 192.168.99.21

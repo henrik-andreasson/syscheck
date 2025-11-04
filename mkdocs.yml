@@ -1,39 +1,39 @@
 site_name: Syscheck
 nav:
-    - Home: index.md
-    - Getting started: getting-started.md
-    - Install: install.md
-    - Config: config-management.md
-    - Output Formats: output-format.md
-    - MariaDB Backup: syscheck-backup-management.md
-    - SSH Keys: ssh-keys-setup.md
-    - OP5: integration-with-op5.md
-    - Output destinations: output-destinations.md
-    - All Syscheck scripts: syscheck-scripts.md
-    - Related Scripts: related-scripts.md
-    - Archiving: certificate_and_revovation_archival.md
-    - upgrade: upgrade.md
-    - getroot: getroot.md
-    - getroot help: help-getroot.md
-    - Logbook: logbook.md
-    - Logbook Help: help-logbook.md
-    - Util cmpdates: cmp_dates.md
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Install: install.md
+  - Config: config-management.md
+  - Output Formats: output-format.md
+  - MariaDB Backup: syscheck-backup-management.md
+  - SSH Keys: ssh-keys-setup.md
+  - OP5: integration-with-op5.md
+  - Output destinations: output-destinations.md
+  - All Syscheck scripts: syscheck-scripts.md
+  - Related Scripts: related-scripts.md
+  - Archiving: certificate_and_revovation_archival.md
+  - upgrade: upgrade.md
+  - getroot: getroot.md
+  - getroot help: help-getroot.md
+  - Logbook: logbook.md
+  - Logbook Help: help-logbook.md
+  - Util cmpdates: cmp_dates.md
 
 theme: material
 repo_url: https://github.com/henrik-andreasson/syscheck
 repo_name: Syscheck
-copyright: "&copy 2020 Henrik Andreasson"
+copyright: "&copy 2025 Henrik Andreasson"
 markdown_extensions:
-    - admonition
-    - smarty
-    - abbr
-    - attr_list
-    - fenced_code
-    - footnotes
-    - tables
-    - codehilite
-    - meta
-    - toc:
-        title: title
-        permalink: True
-    - sane_lists
+  - admonition
+  - smarty
+  - abbr
+  - attr_list
+  - fenced_code
+  - footnotes
+  - tables
+  - codehilite
+  - meta
+  - toc:
+      title: title
+      permalink: True
+  - sane_lists

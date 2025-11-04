@@ -72,11 +72,11 @@ echo "release step: done in $rel_delta sec"              | tee -a $ABS_TESTRESUL
 
 echo "<h2>install build start</h2>"                               | tee -a $ABS_TESTRESULT_PATH/summary.html
 install_start=$(date +"%s")
-is_syscheck_installed=$(rpm -q syscheck)
+is_syscheck_installed=$(dpkg -l | grep -q syscheck)
 if [ $? -eq 0 ] ; then
-  $SUDO rpm -e syscheck
+  $SUDO apt purge syscheck
 fi
-$SUDO rpm -Uvh "$ABS_RESULT_PATH/syscheck-${VERSION}.noarch.rpm"
+$SUDO apt install "$ABS_RESULT_PATH/syscheck-${VERSION}.*deb"
 install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
 echo "install step: done in $install_delta sec"          | tee -a $ABS_TESTRESULT_PATH/summary.html
