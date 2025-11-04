@@ -31,26 +31,18 @@ jobs:
       - run: sudo apt-get install ruby ruby-dev rubygems build-essential
       - run: sudo gem install --no-document fpm
       - run: sudo mkdir -p /results /opt/syscheck /work /test-reports
-      - run: sudo ./lib/release.sh  -v ${{ github.event.inputs.version }} -p syscheck
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-results
-          path: |
-            /results/*
-            /test-reports/*
 
-      - name: Create GitHub Release
-        # This step runs if a tag exists (pushed externally) OR if the tag was just created by the previous step.
+      - run: sudo ./lib/release.sh  -v ${{ github.event.inputs.version }} -p syscheck -o /results
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME="v${{ github.event.inputs.version }}"
-          DEB_PATH="syscheck*.deb"
+          DEB_PATH="/results/syscheck*.deb"
           RELEASE_NAME="Release $TAG_NAME"
           RELEASE_BODY="## Release Notes for $TAG_NAME
 
-          This release includes the latest MSI installer."
+          This release includes the latest deb package."
 
           echo "Creating GitHub Release for $TAG_NAME"
 
@@ -58,12 +50,12 @@ jobs:
           if gh release create "$TAG_NAME" \
             --title "$RELEASE_NAME" \
             --notes "$RELEASE_BODY" \
-            "$MSI_PATH"; then
+            "$DEB_PATH"; then
             echo "Release created successfully."
           else
             echo "Failed to create release (it might already exist). Trying to upload asset to existing release..."
             # If the release exists, try to upload/update the asset to it
-            if gh release upload "$TAG_NAME" "$MSI_PATH" --clobber; then
+            if gh release upload "$TAG_NAME" "$DEB_PATH" --clobber; then
               echo "Asset uploaded/updated successfully to existing release."
             else
               echo "Failed to upload asset to existing release. Manual intervention might be needed."
