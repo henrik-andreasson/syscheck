@@ -1,0 +1,1184 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../output-destinations/">
+      
+      
+        <link rel="next" href="../related-scripts/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>All Syscheck scripts - Syscheck</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#syscheck-version-20" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Syscheck" class="md-header__button md-logo" aria-label="Syscheck" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Syscheck
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              All Syscheck scripts
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/henrik-andreasson/syscheck" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Syscheck
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Syscheck" class="md-nav__button md-logo" aria-label="Syscheck" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Syscheck
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/henrik-andreasson/syscheck" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Syscheck
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output-format/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Output Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syscheck-backup-management.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MariaDB Backup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ssh-keys-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SSH Keys
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integration-with-op5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OP5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output-destinations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Output destinations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    All Syscheck scripts
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../related-scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Related Scripts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certificate_and_revovation_archival/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archiving
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    upgrade
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getroot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    getroot
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../help-getroot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    getroot help
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Logbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../help-logbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Logbook Help
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cmp_dates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Util cmpdates
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="title">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="syscheck-version-20">Syscheck version 2.0<a class="headerlink" href="#syscheck-version-20" title="Permanent link">&para;</a></h1>
+<p>Documentation generated: Mon 10 Aug 00:16:11 CEST 2020</p>
+<h1 id="syscheck-scripts">Syscheck scripts<a class="headerlink" href="#syscheck-scripts" title="Permanent link">&para;</a></h1>
+<h2 id="sc_01_diskusagesh">sc_01_diskusage.sh<a class="headerlink" href="#sc_01_diskusagesh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">01</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Disk</span><span class="w"> </span><span class="n">usage</span>
+
+<span class="n">sc_01_diskusage</span><span class="o">.</span><span class="na">sh</span><span class="w"> </span><span class="n">Script</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">checks</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">much</span><span class="w"> </span><span class="n">hard</span><span class="o">-</span><span class="n">disc</span><span class="w"> </span><span class="n">usage</span><span class="o">,</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="k">is</span><span class="o">:</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">011</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Diskusage</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">(%</span><span class="n">s</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">percent</span><span class="w"> </span><span class="n">used</span><span class="o">:</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">percent</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">012</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Diskusage</span><span class="w"> </span><span class="n">exceeded</span><span class="w"> </span><span class="o">(%</span><span class="n">s</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">percent</span><span class="w"> </span><span class="n">used</span><span class="o">:</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">percent</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">usage</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">limit</span><span class="o">,</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">disk</span><span class="w"> </span><span class="n">fills</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">thing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">break</span><span class="o">,</span><span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="n">some</span><span class="w"> </span><span class="n">free</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">maybe</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">machine</span>
+<span class="mi">013</span><span class="w"> </span><span class="sr">/ Diskusage problems (%s : %s) - Manually check config and also try df -Ph /</span><span class="n">path</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_02_ejbcash">sc_02_ejbca.sh<a class="headerlink" href="#sc_02_ejbcash" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">02</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">EJBCA</span><span class="w"> </span><span class="n">Health</span><span class="w"> </span><span class="n">check</span>
+
+<span class="n">sc_02_ejbca</span><span class="o">.</span><span class="na">sh</span><span class="w"> </span><span class="n">Script</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">connects</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">ejbca</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">servlet</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">ejbca</span><span class="w"> </span><span class="n">application</span><span class="o">.</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">servlet</span><span class="w"> </span><span class="n">checks</span><span class="w"> </span><span class="n">JVM</span><span class="w"> </span><span class="n">memory</span><span class="o">,</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">HSM</span><span class="w"> </span><span class="n">connection</span><span class="o">.</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">021</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">EJBCA</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">022</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">EJBCA</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Possible</span><span class="w"> </span><span class="n">errors</span><span class="o">:</span><span class="w"> </span>
+<span class="s2">&quot;Error Virtual Memory is about to run out, currently free memory : X&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">server</span><span class="o">/</span><span class="n">java</span><span class="w"> </span><span class="n">process</span>
+<span class="s2">&quot;Error Connecting to EJBCA Database&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="kd">internal</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">failed</span><span class="o">,</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">connect</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">directly</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">server</span>
+<span class="s2">&quot;CA Token is disconnected&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">activate</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">maybe</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">pcscd</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">help</span>
+<span class="mi">023</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">EJBCA</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">EJBCA</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">good</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="n">properly</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_03_memory-usagesh">sc_03_memory-usage.sh<a class="headerlink" href="#sc_03_memory-usagesh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">03</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Memory</span><span class="w"> </span><span class="n">usage</span>
+
+<span class="n">sc_03_memory</span><span class="o">-</span><span class="n">usage</span><span class="o">.</span><span class="na">sh</span><span class="w"> </span><span class="n">Script</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">checks</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">there</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">enough</span><span class="w"> </span><span class="n">free</span><span class="w"> </span><span class="n">memory</span><span class="o">.</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">script</span><span class="o">,</span><span class="w"> </span><span class="n">limit</span><span class="o">:</span><span class="w"> </span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">031</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Memory</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">exceded</span><span class="w"> </span><span class="o">(</span><span class="n">Memory</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">KB</span><span class="w"> </span><span class="n">used</span><span class="o">:</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">KB</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">currently</span><span class="w"> </span><span class="n">uses</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="n">limit</span><span class="o">,</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">warning</span><span class="o">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">also</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">sign</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">hard</span><span class="w"> </span><span class="n">workning</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">without</span><span class="w"> </span><span class="n">errors</span>
+<span class="mi">032</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Memory</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">(</span><span class="n">Memory</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">KB</span><span class="w"> </span><span class="n">used</span><span class="o">:</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">KB</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">currently</span><span class="w"> </span><span class="n">uses</span><span class="w"> </span><span class="n">below</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">limit</span>
+<span class="mi">033</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Swap</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">exceded</span><span class="w"> </span><span class="o">(</span><span class="n">Swap</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">KB</span><span class="w"> </span><span class="n">used</span><span class="o">:</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">KB</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">uses</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">swap</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">usage</span><span class="w"> </span><span class="n">dont</span><span class="w"> </span><span class="n">drop</span><span class="w"> </span><span class="n">soon</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">investigate</span><span class="o">,</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">WILL</span><span class="w"> </span><span class="n">crash</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">runs</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">swap</span><span class="w"> </span><span class="n">compleatly</span>
+<span class="mi">034</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Swap</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">(</span><span class="n">Swap</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">KB</span><span class="w"> </span><span class="n">used</span><span class="o">:</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">KB</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_04_pcsc_readerssh">sc_04_pcsc_readers.sh<a class="headerlink" href="#sc_04_pcsc_readerssh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">04</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Connected</span><span class="w"> </span><span class="n">PCSC</span><span class="w"> </span><span class="n">Readers</span>
+
+<span class="n">checks</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">defined</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">PCSC</span><span class="w"> </span><span class="n">readers</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">attached</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">computer</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">041</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Right</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">attatched</span><span class="w"> </span><span class="n">pcsc</span><span class="o">-</span><span class="n">readers</span><span class="w"> </span><span class="o">(%</span><span class="n">s</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">042</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Wrong</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">attached</span><span class="w"> </span><span class="n">pcsc</span><span class="o">-</span><span class="n">readers</span><span class="w"> </span><span class="n">current</span><span class="o">:</span><span class="w"> </span><span class="o">(%</span><span class="n">s</span><span class="o">)</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="o">:</span><span class="w"> </span><span class="o">(%</span><span class="n">s</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">means</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">reader</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">working</span><span class="w"> </span><span class="n">correctly</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">defined</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">pcscd</span>
+<span class="mi">043</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">installed</span><span class="o">(%</span><span class="n">s</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">means</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">you</span><span class="s1">&#39;ve not installed the module used by this script python pyscard</span>
+
+<span class="s1">to run with output directed to screen: add a &#39;</span><span class="o">-</span><span class="n">s</span><span class="s1">&#39; or &#39;</span><span class="o">--</span><span class="n">screen</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_05_pcscdsh">sc_05_pcscd.sh<a class="headerlink" href="#sc_05_pcscdsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">05</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pcscd</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span>
+
+<span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">pcscd</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">051</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">pcscd</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">052</span><span class="w"> </span><span class="sr">/ pcscd is NOT running - pcscd needs to be restarted, if it dont start, run it with: /path/to/</span><span class="n">pcscd</span><span class="w"> </span><span class="o">--</span><span class="n">foreground</span><span class="w"> </span><span class="o">--</span><span class="n">debug</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_06_raid_checksh">sc_06_raid_check.sh<a class="headerlink" href="#sc_06_raid_checksh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">06</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">HP</span><span class="w"> </span><span class="n">Raid</span><span class="w"> </span><span class="n">check</span>
+
+<span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raid</span><span class="w"> </span><span class="n">discs</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">061</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">PhysicalDiscs</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">062</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">PhysicalDiscs</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Change</span><span class="w"> </span><span class="n">disc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">soon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">possible</span>
+<span class="mi">063</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">LogicalDiscs</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">064</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">LogicalDiscs</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">rebuilding</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">see</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">goes</span><span class="w"> </span><span class="n">away</span><span class="o">,</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">investigate</span>
+<span class="mi">065</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">LogicalDiscs</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">some</span><span class="w"> </span><span class="n">other</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">investigate</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">ASAP</span>
+<span class="mi">066</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">HPTOOL</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">installed</span><span class="w"> </span><span class="n">at</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">hptool</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">installed</span><span class="o">,</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="kd">get</span><span class="w"> </span><span class="n">working</span><span class="w"> </span><span class="n">reports</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_07_syslogsh">sc_07_syslog.sh<a class="headerlink" href="#sc_07_syslogsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">07</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">syslog</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">running</span>
+
+<span class="n">check</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">see</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">syslog</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">delivers</span><span class="w"> </span><span class="n">messages</span><span class="w"> </span><span class="n">ok</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">071</span><span class="w"> </span><span class="sr">/ loggmessage did not come throu SYSLOG - syslog is running but the messages dont comes throu to local file, restart and/</span><span class="n">or</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="n">file</span>
+<span class="mi">072</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">syslog</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="n">amoung</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="n">processes</span>
+<span class="mi">073</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Syslog</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">delivers</span><span class="w"> </span><span class="n">messages</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">074</span><span class="w"> </span><span class="o">/</span><span class="w">  </span><span class="o">-</span><span class="w"> </span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_08_crl_from_webserversh">sc_08_crl_from_webserver.sh<a class="headerlink" href="#sc_08_crl_from_webserversh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="p">:</span><span class="w"> </span><span class="mi">08</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Download</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">Webserver</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">its</span><span class="w"> </span><span class="n">validity</span>
+
+<span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">CRL</span><span class="p">,</span><span class="w"> </span><span class="n">both</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">downloaded</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">its</span><span class="w"> </span><span class="n">valid</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">do</span>
+
+<span class="mi">081</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">creation</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">either</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">up</span><span class="p">,</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">dont</span><span class="w"> </span><span class="n">produce</span><span class="w"> </span><span class="n">CRL</span><span class="p">:</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">dont</span><span class="w"> </span><span class="n">validate</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">old</span><span class="w"> </span>
+<span class="mi">082</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">083</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Unable</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">webserver</span><span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">manually</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">webserver</span>
+<span class="mi">084</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">When</span><span class="w"> </span><span class="n">getting</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">discusage</span><span class="p">,</span><span class="w"> </span><span class="n">try</span><span class="w"> </span><span class="n">manually</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">CRL</span>
+<span class="mi">085</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Configuration</span><span class="w"> </span><span class="n">error</span><span class="p">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">config</span>
+<span class="mi">086</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">past</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">EXPIRE</span><span class="w"> </span><span class="n">date</span><span class="p">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Systems</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">probably</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="n">urgent</span><span class="w"> </span><span class="n">troubleshooting</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">087</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">past</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">ERROR</span><span class="w"> </span><span class="n">level</span><span class="p">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Systems</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">soon</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">fixed</span><span class="p">,</span><span class="w"> </span><span class="n">urgent</span><span class="w"> </span><span class="n">troubleshooting</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">088</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">past</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">WARN</span><span class="w"> </span><span class="n">level</span><span class="p">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Systems</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">soon</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">fixed</span><span class="p">,</span><span class="w"> </span><span class="n">urgent</span><span class="w"> </span><span class="n">troubleshooting</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">089</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CRL</span><span class="w"> </span><span class="n">summary</span><span class="w"> </span><span class="n">problems</span><span class="p">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Systems</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">soon</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">fixed</span><span class="p">,</span><span class="w"> </span><span class="n">urgent</span><span class="w"> </span><span class="n">troubleshooting</span><span class="w"> </span><span class="n">needed</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="p">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_09_firewallsh">sc_09_firewall.sh<a class="headerlink" href="#sc_09_firewallsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="p">:</span><span class="w"> </span><span class="mi">09</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Firewall</span><span class="w"> </span><span class="n">iptables</span>
+
+<span class="n">Check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">firewall</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">running</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">do</span>
+
+<span class="mi">091</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Cant</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">iptables</span><span class="o">.</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">manually</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">iptables</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">maybe</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">firewall</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">firewall</span><span class="w"> </span><span class="n">start</span>
+<span class="mi">092</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Firewall</span><span class="w"> </span><span class="n">doesn</span><span class="s1">&#39;t seem to have the correct ruleset configured. - Maybe something went wrong loading the firewall ruleset, because some very basic rules are&#39;</span><span class="n">nt</span><span class="w"> </span><span class="n">present</span><span class="w"> </span>
+<span class="mi">093</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Firewall</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="n">properly</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="p">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_10_ocspsh">sc_10_ocsp.sh<a class="headerlink" href="#sc_10_ocspsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Query</span><span class="w"> </span><span class="n">OCSP</span><span class="w"> </span><span class="n">Responder</span>
+
+<span class="n">all</span><span class="w"> </span><span class="n">ok</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">101</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Responder</span><span class="w"> </span><span class="n">cert</span><span class="w"> </span><span class="n">calculation</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="o">(%</span><span class="n">s</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">either</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">up</span><span class="o">,</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">don</span><span class="s1">&#39;t produce OCSP Responses:s</span>
+<span class="s1">102 / Responder cert ok: %s minutes remains: %s - No action is needed</span>
+<span class="s1">103 / Responder cert has passed validity warning level %s : %s - Schedule a update of Responder cert</span>
+<span class="s1">104 / Responder cert has passed validity ERROR level %s : %s - Urgently replace the OCSP responder certificate</span>
+<span class="s1">105 / Responder cert has PASSED EXPIRY date %s : %s - Urgently replace the OCSP responder certificate</span>
+<span class="s1">106 / Response status ok: %s - this ocsp response is ok</span>
+<span class="s1">107 / OCSP Summary ERROR msg: %s errors: %s warnings: %s - search for 10 in logs for more detailed info or run syscheck manually</span>
+<span class="s1">108 / OCSP Summary WARNING msg: %s errors: %s warnings: %s - search for 10 in logs for more detailed info or run syscheck manually</span>
+<span class="s1">109 / OCSP Summary OK - this ocsp summary is ok</span>
+<span class="s1">1010 / OCSP response not ok %s - ocsp response not ok</span>
+
+<span class="s1">to run with output directed to screen: add a &#39;</span><span class="o">-</span><span class="n">s</span><span class="s1">&#39; or &#39;</span><span class="o">--</span><span class="n">screen</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_12_mysqlsh">sc_12_mysql.sh<a class="headerlink" href="#sc_12_mysqlsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Mysql</span><span class="w"> </span><span class="n">server</span>
+
+<span class="n">Mysql</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">checks</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">121</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">mysql</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">122</span><span class="w"> </span><span class="sr">/ mysql is NOT running - mysql is not running, try /etc/init.d/mysql stop, wait, /etc/init.d/</span><span class="n">mysql</span><span class="w"> </span><span class="n">start</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_14_sw_raidsh">sc_14_sw_raid.sh<a class="headerlink" href="#sc_14_sw_raidsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">SW</span><span class="w"> </span><span class="n">Raid</span>
+
+<span class="n">Linux</span><span class="w"> </span><span class="n">software</span><span class="w"> </span><span class="n">raid</span><span class="w"> </span><span class="n">checks</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">141</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Disc</span><span class="w"> </span><span class="n">Array</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">means</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">detected</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">errors</span>
+<span class="mi">142</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Disc</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">array</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="n">disk</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">failed</span><span class="o">,</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="n">it</span>
+<span class="mi">143</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Unpredicted</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">SW</span><span class="o">-</span><span class="n">raid</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">prediced</span><span class="w"> </span><span class="n">error</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_15_apachesh">sc_15_apache.sh<a class="headerlink" href="#sc_15_apachesh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Apache</span><span class="w"> </span><span class="n">Web</span><span class="w"> </span><span class="n">server</span>
+
+<span class="n">Check</span><span class="w"> </span><span class="n">apache</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">running</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">151</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Apache</span><span class="w"> </span><span class="n">webserver</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">serving</span><span class="w"> </span><span class="n">web</span><span class="w"> </span><span class="n">pages</span>
+<span class="mi">152</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Apache</span><span class="w"> </span><span class="n">webserver</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">apache</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="na">log</span><span class="o">,</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">running</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_16_ldapsh">sc_16_ldap.sh<a class="headerlink" href="#sc_16_ldapsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">LDAP</span><span class="w"> </span><span class="n">Server</span>
+
+<span class="n">Checks</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">ldap</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="n">sure</span><span class="w"> </span><span class="n">it</span><span class="s1">&#39;s running</span>
+
+<span class="s1">Error code / description - What to do</span>
+
+<span class="s1">161 / LDAP directory server is running - all ok</span>
+<span class="s1">162 / LDAP directory server is not running - check you ldap server logs</span>
+
+<span class="s1">to run with output directed to screen: add a &#39;</span><span class="o">-</span><span class="n">s</span><span class="s1">&#39; or &#39;</span><span class="o">--</span><span class="n">screen</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_17_ntpsh">sc_17_ntp.sh<a class="headerlink" href="#sc_17_ntpsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="nx">Scriptid</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">NTP</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">sync</span>
+
+<span class="nx">Check</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">ntp</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="nx">running</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">insync</span>
+
+<span class="nx">Error</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">What</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">171</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">ntpd</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">sync</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="nx">server</span><span class="p">:</span><span class="w"> </span><span class="o">%</span><span class="nx">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="kc">all</span><span class="w"> </span><span class="nx">ok</span>
+<span class="mi">172</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">ntpd</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="ow">NOT</span><span class="w"> </span><span class="nx">running.</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Start</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">/</span><span class="nx">etc</span><span class="p">/</span><span class="nx">init.d</span><span class="p">/</span><span class="nx">xntpd</span><span class="w"> </span><span class="nx">start</span>
+<span class="mi">173</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">cant</span><span class="w"> </span><span class="nx">check</span><span class="w"> </span><span class="nx">ntp</span><span class="w"> </span><span class="nx">sync</span><span class="w"> </span><span class="k">to</span><span class="p">:</span><span class="w"> </span><span class="o">%</span><span class="nx">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">check</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">configuration</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nx">restart</span><span class="w"> </span><span class="nx">ntpd</span>
+<span class="mi">174</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">ntpd</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="ow">NOT</span><span class="w"> </span><span class="nx">synchronize</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="nx">servers</span><span class="w"> </span><span class="kd">LOCAL</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="nx">mode</span><span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="nx">Check</span><span class="w"> </span><span class="nx">network</span><span class="w"> </span><span class="nx">connectivity</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nx">configuration</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">ntp</span>
+<span class="mi">175</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">ntp</span><span class="w"> </span><span class="nx">server</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">sent</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">input</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Check</span><span class="w"> </span><span class="nx">your</span><span class="w"> </span><span class="nx">syscheck</span><span class="w"> </span><span class="nx">config</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">ntp</span>
+
+<span class="k">to</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="nb">output</span><span class="w"> </span><span class="nx">directed</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="nx">screen</span><span class="p">:</span><span class="w"> </span><span class="nx">add</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_18_sqlselectsh">sc_18_sqlselect.sh<a class="headerlink" href="#sc_18_sqlselectsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Mysql</span><span class="w"> </span><span class="n">Select</span>
+
+<span class="n">Mysql</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="n">keepalive</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">181</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">mysql</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">answering</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">182</span><span class="w"> </span><span class="sr">/ mysql is NOT answering to select statement check - mysql is not running, try /etc/init.d/mysql stop, wait, /etc/init.d/</span><span class="n">mysql</span><span class="w"> </span><span class="n">start</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_19_alivesh">sc_19_alive.sh<a class="headerlink" href="#sc_19_alivesh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">19</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Server</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">alive</span>
+
+<span class="n">Sends</span><span class="w"> </span><span class="n">alive</span><span class="w"> </span><span class="n">messages</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">central</span><span class="w"> </span><span class="n">syscheck</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="n">either</span><span class="w"> </span><span class="n">along</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">rest</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">syscheck</span><span class="w"> </span><span class="n">scripts</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">crontab</span><span class="w"> </span><span class="o">(</span><span class="n">then</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">me</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">often</span><span class="o">...)</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">191</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Operating</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">just</span><span class="w"> </span><span class="n">started</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Message</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">sent</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">server</span><span class="s1">&#39;s operating system is started</span>
+<span class="s1">192 / Operating system is shutting down - Message is sent when the server&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">operating</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">shutdown</span>
+<span class="mi">193</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">I</span><span class="s1">&#39;m alive - Message is sent to make sure central server know&#39;</span><span class="n">s</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">alive</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_20_errors_ejbcalogsh">sc_20_errors_ejbcalog.sh<a class="headerlink" href="#sc_20_errors_ejbcalogsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">EJBCA</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="n">checker</span>
+
+<span class="n">checks</span><span class="w"> </span><span class="n">fo</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">errors</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">ejbca</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">201</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">errors</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">ejbca</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">202</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">New</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">log</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">There</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ERRORS</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">LOG</span><span class="w"> </span><span class="n">file</span><span class="o">,</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="n">attend</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">them</span>
+<span class="mi">203</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Cant</span><span class="w"> </span><span class="n">find</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">ejbca</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">maybe</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">havnt</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="n">yet</span><span class="o">?</span>
+<span class="mi">204</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">New</span><span class="w"> </span><span class="n">detailed</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">log</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">There</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ERRORS</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">LOG</span><span class="w"> </span><span class="n">file</span><span class="o">,</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="n">attend</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">them</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_22_boks_replicash">sc_22_boks_replica.sh<a class="headerlink" href="#sc_22_boks_replicash" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">22</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">BOKS</span>
+
+<span class="n">BoKS</span><span class="w"> </span><span class="n">Replica</span><span class="w"> </span><span class="n">checks</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">221</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">boks</span><span class="w"> </span><span class="n">processes</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">running</span>
+<span class="mi">222</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">All</span><span class="w"> </span><span class="n">BoKS</span><span class="w"> </span><span class="n">replica</span><span class="w"> </span><span class="n">processes</span><span class="w"> </span><span class="n">IS</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Not</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">boks</span><span class="w"> </span><span class="n">processes</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">running</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_23_rsa_axmsh">sc_23_rsa_axm.sh<a class="headerlink" href="#sc_23_rsa_axmsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">23</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">RSA</span><span class="w"> </span><span class="n">Access</span><span class="w"> </span><span class="n">Manager</span>
+
+<span class="n">Checks</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">RSA</span><span class="w"> </span><span class="n">Access</span><span class="w"> </span><span class="n">Manager</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="n">sure</span><span class="w"> </span><span class="n">it</span><span class="s1">&#39;s running</span>
+
+<span class="s1">Error code / description - What to do</span>
+
+<span class="s1">231 / RSA Access Manager is running - all ok</span>
+<span class="s1">232 / At least one service is not running (%s)  - check the rsa access manager server logs</span>
+
+<span class="s1">to run with output directed to screen: add a &#39;</span><span class="o">-</span><span class="n">s</span><span class="s1">&#39; or &#39;</span><span class="o">--</span><span class="n">screen</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_27_dsssh">sc_27_dss.sh<a class="headerlink" href="#sc_27_dsssh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">27</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">SignServer</span>
+
+<span class="n">checks</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">dss</span><span class="w"> </span><span class="n">server</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">271</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Document</span><span class="w"> </span><span class="n">SignServer</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">272</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Document</span><span class="w"> </span><span class="n">SignServer</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">ONLY</span><span class="w"> </span><span class="n">ONE</span><span class="w"> </span><span class="n">NODE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">failing</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">asap</span>
+<span class="mi">273</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Document</span><span class="w"> </span><span class="n">SignServer</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">resolve</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">issue</span><span class="w"> </span><span class="n">asap</span>
+<span class="mi">274</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Document</span><span class="w"> </span><span class="n">SignServer</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">installed</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">host</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">maybe</span><span class="w"> </span><span class="n">you</span><span class="s1">&#39;ve configured wrong scripts or not yet installed signserver</span>
+
+<span class="s1">to run with output directed to screen: add a &#39;</span><span class="o">-</span><span class="n">s</span><span class="s1">&#39; or &#39;</span><span class="o">--</span><span class="n">screen</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_28_check_vipsh">sc_28_check_vip.sh<a class="headerlink" href="#sc_28_check_vipsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">VIP</span>
+
+<span class="n">Checks</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">VIP</span><span class="w"> </span><span class="n">address</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">281</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">VIP</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">282</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">VIP</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">283</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Both</span><span class="w"> </span><span class="n">nodes</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">VIP</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Resolve</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">issue</span><span class="w"> </span><span class="n">asap</span>
+<span class="mi">284</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">None</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">nodes</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">VIP</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Resolve</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">issue</span><span class="w"> </span><span class="n">asap</span>
+<span class="mi">285</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">ssh</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="mi">915</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">activated</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">enable</span><span class="w"> </span><span class="mi">915</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_29_signserversh">sc_29_signserver.sh<a class="headerlink" href="#sc_29_signserversh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">29</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">SignServer</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="n">checker</span>
+
+<span class="n">signserver</span><span class="w">  </span><span class="n">Script</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">connects</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">signserver</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">servlet</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">signserver</span><span class="w"> </span><span class="n">application</span><span class="o">.</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">servlet</span><span class="w"> </span><span class="n">checks</span><span class="w"> </span><span class="n">JVM</span><span class="w"> </span><span class="n">memory</span><span class="o">,</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">HSM</span><span class="w"> </span><span class="n">connection</span><span class="o">.</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">291</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">SIGNSERVER</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">292</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">SIGNSERVER</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Possible</span><span class="w"> </span><span class="n">errors</span><span class="o">:</span><span class="w"> </span>
+<span class="s2">&quot;Error Virtual Memory is about to run out, currently free memory : X&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">server</span><span class="o">/</span><span class="n">java</span><span class="w"> </span><span class="n">process</span>
+<span class="s2">&quot;Error Connecting to SIGNSERVER Database&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="kd">internal</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">failed</span><span class="o">,</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">connect</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">directly</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">server</span>
+<span class="s2">&quot;CA Token is disconnected&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">activate</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">maybe</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">pcscd</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">help</span>
+<span class="mi">293</span><span class="w"> </span><span class="sr">/ SIGNSERVER : Application Server is unavailable - The server is non-responding, restart application-server (jboss) and/</span><span class="n">or</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">find</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">fault</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_30_check_running_procssh">sc_30_check_running_procs.sh<a class="headerlink" href="#sc_30_check_running_procssh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Running</span><span class="w"> </span><span class="n">processes</span>
+
+<span class="n">Generic</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">proc</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">those</span><span class="w"> </span><span class="n">that</span><span class="s1">&#39;s not</span>
+
+<span class="s1">Error code / description - What to do</span>
+
+<span class="s1">301 / Process %s is running - No action is needed</span>
+<span class="s1">302 / Process %s was not running, restart succeded - If this happens regulary this need to be looked into</span>
+<span class="s1">303 / Process %s was not running, restart failed - If this needs to be this handled manually</span>
+
+<span class="s1">to run with output directed to screen: add a &#39;</span><span class="o">-</span><span class="n">s</span><span class="s1">&#39; or &#39;</span><span class="o">--</span><span class="n">screen</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_31_hp_healthsh">sc_31_hp_health.sh<a class="headerlink" href="#sc_31_hp_healthsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">31</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">HP</span><span class="w"> </span><span class="n">Server</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="n">check</span>
+
+<span class="n">Check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">HP</span><span class="w"> </span><span class="n">Server</span><span class="w"> </span><span class="n">health</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">311</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Sensor</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">312</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Temp</span><span class="w"> </span><span class="n">sensor</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Run</span><span class="w"> </span><span class="n">manual</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">hpasmcli</span>
+<span class="mi">313</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">FAN</span><span class="w"> </span><span class="n">sensor</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Run</span><span class="w"> </span><span class="n">manual</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">hpasmcli</span>
+<span class="mi">314</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Tool</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">found</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="n">Install</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="kd">set</span><span class="w"> </span><span class="n">path</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_32_check_db_syncsh">sc_32_check_db_sync.sh<a class="headerlink" href="#sc_32_check_db_syncsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">EJBCA</span><span class="w"> </span><span class="n">DB</span><span class="w"> </span><span class="n">Sync</span>
+
+<span class="n">Check</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">DB</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">sync</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">321</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">DB</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">sync</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">updating</span><span class="w"> </span><span class="n">databases</span>
+<span class="mi">322</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">DB</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">sync</span><span class="o">,</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">CertificateData</span><span class="w"> </span><span class="n">diff</span><span class="w"> </span><span class="n">betwin</span><span class="w"> </span><span class="n">nodes</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">error</span><span class="o">.</span><span class="na">log</span><span class="o">,</span><span class="w"> </span><span class="n">probebly</span><span class="w"> </span><span class="n">needing</span><span class="w"> </span><span class="n">manual</span><span class="w"> </span><span class="n">sync</span><span class="o">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="n">manual</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_33_healthcheckersh">sc_33_healthchecker.sh<a class="headerlink" href="#sc_33_healthcheckersh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">33</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">Health</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">applications</span>
+
+<span class="n">Healthcheck</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">applications</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">simple</span><span class="w"> </span><span class="n">URL</span><span class="w"> </span><span class="n">health</span><span class="w"> </span><span class="o">(</span><span class="n">should</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">ALLOK</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="mi">200</span><span class="o">)</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">331</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">332</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">message</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">errormessage</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">log</span><span class="o">-</span><span class="n">file</span>
+<span class="mi">333</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">CHECKTOOL</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="n">nor</span><span class="w"> </span><span class="n">wget</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Config</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">wget</span>
+<span class="mi">334</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">restarting</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">previous</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">status</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">command</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">restarts</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="mi">24</span><span class="n">h</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">errormessage</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">log</span><span class="o">-</span><span class="n">file</span>
+<span class="mi">335</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">restarting</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">many</span><span class="w"> </span><span class="n">restarts</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="mi">24</span><span class="n">h</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">errormessage</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">log</span><span class="o">-</span><span class="n">file</span>
+<span class="mi">336</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="o">,</span><span class="w"> </span><span class="n">MAXRESTARTS</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="kd">set</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Config</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="n">file</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_34_redissh">sc_34_redis.sh<a class="headerlink" href="#sc_34_redissh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">34</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Redis</span>
+
+<span class="n">Check</span><span class="w"> </span><span class="n">Redis</span><span class="w"> </span><span class="n">VIP</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">341</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="o">:%</span><span class="n">s</span><span class="w"> </span><span class="o">(%</span><span class="n">s</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">All</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">ok</span>
+<span class="mi">342</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">responding</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="o">:%</span><span class="n">s</span><span class="w"> </span><span class="o">(%</span><span class="n">s</span><span class="o">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">redis</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">responding</span>
+<span class="mi">343</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Input</span><span class="w"> </span><span class="n">Arg</span><span class="w"> </span><span class="n">problem</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">config</span>
+<span class="mi">344</span><span class="w"> </span><span class="sr">/ redis-cli is not found - install/</span><span class="n">configure</span><span class="w"> </span><span class="n">redis</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">config</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_35_dell_raidsh">sc_35_dell_raid.sh<a class="headerlink" href="#sc_35_dell_raidsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">35</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Dell</span><span class="w"> </span><span class="n">Hard</span><span class="w"> </span><span class="n">drive</span><span class="w"> </span><span class="n">checker</span>
+
+<span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raid</span><span class="w"> </span><span class="n">discs</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">351</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">PhysicalDiscs</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">352</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">PhysicalDiscs</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Change</span><span class="w"> </span><span class="n">disc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">soon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">possible</span>
+<span class="mi">353</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">LogicalDiscs</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">354</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">LogicalDiscs</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">rebuilding</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">see</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">goes</span><span class="w"> </span><span class="n">away</span><span class="o">,</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">investigate</span>
+<span class="mi">355</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">LogicalDiscs</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">some</span><span class="w"> </span><span class="n">other</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">investigate</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">ASAP</span>
+<span class="mi">356</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TOOL</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">installed</span><span class="w"> </span><span class="n">at</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">installed</span><span class="o">,</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="kd">get</span><span class="w"> </span><span class="n">working</span><span class="w"> </span><span class="n">reports</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_36_dell_healthsh">sc_36_dell_health.sh<a class="headerlink" href="#sc_36_dell_healthsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">36</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Dell</span><span class="w"> </span><span class="n">Server</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">components</span>
+
+<span class="n">check</span><span class="w"> </span><span class="n">dell</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">components</span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">361</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Component</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">362</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Component</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Change</span><span class="w"> </span><span class="n">component</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">soon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">possible</span>
+<span class="mi">363</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TOOL</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">installed</span><span class="w"> </span><span class="n">at</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">installed</span><span class="o">,</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="kd">get</span><span class="w"> </span><span class="n">working</span><span class="w"> </span><span class="n">reports</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+<h2 id="sc_37_monitor_jnlpsh">sc_37_monitor_jnlp.sh<a class="headerlink" href="#sc_37_monitor_jnlpsh" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="n">Scriptid</span><span class="o">:</span><span class="w"> </span><span class="mi">37</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Get</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">URL</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">status</span>
+
+<span class="n">sc_37_monitor_internal_error</span><span class="o">.</span><span class="na">sh</span><span class="w"> </span>
+
+<span class="n">Error</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="k">do</span>
+
+<span class="mi">371</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">ok</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">needed</span>
+<span class="mi">372</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">problem</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">problem</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">getting</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">URL</span><span class="o">:</span><span class="w"> </span><span class="o">%</span><span class="n">s</span>
+<span class="mi">373</span><span class="w"> </span><span class="sr">/ Can not find CURL tool: %s - Install/</span><span class="n">configure</span><span class="w"> </span><span class="n">curl</span>
+
+<span class="n">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">directed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">screen</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="s1">&#39;-s&#39;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s1">&#39;--screen&#39;</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy 2025 Henrik Andreasson
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
