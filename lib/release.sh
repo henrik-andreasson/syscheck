@@ -5,11 +5,11 @@ schelp(){
   /bin/echo
   /bin/echo -e "sysheck release tool"
   /bin/echo  "--------------------------------------"
-  /bin/echo "<-p|--program> 'syscheck'"
-	/bin/echo "<-v|--version> '1.0'"
-	/bin/echo "<-s|--sign> - gpg sign "
-	/bin/echo "<-o|--outpath> /tmp "
-	/bin/echo "<-g|--gittag> - tag in git"
+  /bin/echo "-p|--program> 'syscheck'"
+	/bin/echo "-v|--version> '1.0'"
+	/bin/echo "-s|--sign> - gpg sign "
+	/bin/echo "-o|--outpath> /tmp "
+	/bin/echo "-g|--gittag> - tag in git"
   /bin/echo
 }
 
@@ -22,9 +22,9 @@ while true; do
   case "$1" in
     -v|--version ) VERSION=$2 ; shift 2;;
     -p|--program ) PROGRAM=$2 ; shift 2;;
-		-o|--outpath ) OUTPATH=$2 ; shift 2;;
-		-s|--sign    ) SIGN=1 ; shift;;
-		-g|--gittag  ) GITTAG=1 ; shift;;
+	-o|--outpath ) OUTPATH=$2 ; shift 2;;
+	-s|--sign    ) SIGN=1 ; shift;;
+	-g|--gittag  ) GITTAG=1 ; shift;;
     -h|--help )   schelp;exit;shift;;
     --) break;;
   esac

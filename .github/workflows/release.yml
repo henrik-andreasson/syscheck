@@ -30,16 +30,16 @@ jobs:
       - run: mkdocs gh-deploy --force
       - run: sudo apt-get install ruby ruby-dev rubygems build-essential
       - run: sudo gem install --no-document fpm
-      - run: sudo mkdir -p /results /opt/syscheck /work /test-reports
+      - run: sudo mkdir -p ../results
 
       - name: Run release script
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          sudo ./lib/release.sh  -v ${{ github.event.inputs.version }} -p syscheck -o /results
+          sudo ./lib/release.sh  -v ${{ github.event.inputs.version }} -p syscheck
           TAG_NAME="v${{ github.event.inputs.version }}"
-          DEB_PATH="/results/syscheck*.deb"
+          DEB_PATH="../results/syscheck*.deb"
           RELEASE_NAME="Release $TAG_NAME"
           RELEASE_BODY="## Release Notes for $TAG_NAME
 
