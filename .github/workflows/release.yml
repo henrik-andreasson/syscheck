@@ -38,6 +38,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           sudo ./lib/release.sh  -v ${{ github.event.inputs.version }} -p syscheck
+          ls -la
+          ls -la ../results
           TAG_NAME="v${{ github.event.inputs.version }}"
           DEB_PATH="../results/syscheck*.deb"
           RELEASE_NAME="Release $TAG_NAME"
