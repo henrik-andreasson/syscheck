@@ -7,7 +7,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
@@ -17,7 +17,7 @@ jobs:
       - run: sudo gem install --no-document fpm
       - run: sudo mkdir -p /results /opt/syscheck /work /test-reports
       - run: sudo ./test/run-build-install-and-test.sh --install=/opt/syscheck --work=/work --results=/results --test=/test-reports
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: build-results
           path: |
