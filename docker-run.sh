@@ -7,4 +7,5 @@ docker build -t syscheck .
 docker run -it \
     --entrypoint "/bin/bash" \
     --mount type=bind,source=$PWD/results,target=/results \
-    syscheck 
+    --mount type=bind,source=$PWD/,target=/opt/syscheck \
+    syscheck

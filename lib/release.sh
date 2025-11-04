@@ -71,8 +71,8 @@ fi
 
 mkdir -p                     ${PROGPATH}/config
 mkdir -p                     ${PROGPATH}/misc
-cp -r ./misc/make-rpm-deb.sh ${PROGPATH}/misc/
-cp -r ./config 							 ${PROGPATH}
+cp -r ./misc/make-deb.sh     ${PROGPATH}/misc/
+cp -r ./config 				 ${PROGPATH}
 cp -r ./console_syscheck.sh  ${PROGPATH}
 cp -r ./docs                 ${PROGPATH}
 cp -r ./getroot.sh           ${PROGPATH}
@@ -108,8 +108,11 @@ if [ "x$SIGN" == "x1" ] ; then
 
 fi
 
-cd ${progname}-${rel} ; ./misc/make-rpm-deb.sh -v ${rel} -o ".."
-
+{
+    cd ${progname}-${rel}
+    ls -la
+    ./misc/make-deb.sh -v ${rel} -o ".."
+}
 
 cd $orgdir
 ls -la  ${OUTPATH}
