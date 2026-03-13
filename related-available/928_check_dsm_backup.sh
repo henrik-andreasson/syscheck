@@ -6,8 +6,6 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
   exit
 fi
 
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
-
 # Import common resources
 source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
