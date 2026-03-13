@@ -35,7 +35,19 @@ raiddiskcheck () {
 #ID;Status;Name;State;Power Status;Bus Protocol;Media;Part of Cache Pool;Remaining Rated Write Endurance;Failure Predicted;Revision;Driver Version;Model Number;T10 PI Capable;Certified;Encryption Capable;Encrypted;Progress;Mirror Set ID;Capacity;Used RAID Disk Space;Available RAID Disk Space;Hot Spare;Vendor ID;Product ID;Serial No.;Part Number;Negotiated Speed;Capable Speed;PCIe Negotiated Link Width;PCIe Maximum Link Width;Sector Size;Device Write Cache;Manufacture Day;Manufacture Week;Manufacture Year;SAS Address;Non-RAID HDD Disk Cache Policy;Disk Cache Policy;Form Factor ;Sub Vendor;ISE Capable
 # 0:1:0;Ok;Physical Disk 0:1:0;Online;Spun Up;SATA;HDD;Not Applicable;Not Applicable;No;GA6E;Not Applicable;Not Applicable;No;Yes;No;Not Applicable;Not Applicable;0;931.00 GB (999653638144 bytes);931.00 GB (999653638144 bytes);0.00 GB (0 bytes);No;DELL(tm);ST1000NM0033-9ZM173;Z1W5YDAE;TH0W69TH2123369M00VJA0;6.00 Gbps;6.00 Gbps;Not Applicable;Not Applicable;512B;Not Applicable;Not Available;Not Available;Not Available;4433221106000000;Not Applicable;Not Applicable;Not Available;Not Available;No
 
-        COMMAND=$(${DELLTOOL} storage pdisk controller=${controller} pdisk=${pdisk} -fmt ssv| grep "^${pdisk}" | head -1)
+        COMMAND=$(${DELLTOOL} storage pdisk controller=${controller} pdisk=${pdisk} -fmt ssv)
+        DISCSTAT=$(echo "${COMMAND}" | grep "^${pdisk}" | head -1)
+        if [ "x${DISCSTAT}" = "x" ] ;then
+		# if discs are attached directly in 11100 dell omreport it responds with just a single digit disk id
+		singledigit_pdisk=${pdisk#*:}
+		DISCSTAT=$(echo "${COMMAND}" | grep "^${singledigit_pdisk}" | head -1)
+        	if [ "x${DISCSTAT}" = "x" ] ;then
+                	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "disk: ${pdisk} contoller: ${controller} NOTOK $DISK_INFO"
+			continue
+		fi
+	fi
+			
+		
 
         STATUS=$(echo $COMMAND | cut -f2 -d\; )
         disk_name=$(echo $COMMAND | cut -f3 -d\; )
