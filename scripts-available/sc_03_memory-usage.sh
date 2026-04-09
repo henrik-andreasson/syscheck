@@ -30,40 +30,45 @@ checkmem(){
     INMEMORYLIMIT=$1
     INSWAPLIMIT=$2
 
-    MEMORY=$(free | grep -v total | grep -v buffers | grep -v Swap | cut -f2 -d: | sed -E 's/[[:space:]]+/;/gi')
-    SWAP=$(free | grep -v total | grep -v buffers | grep -v Mem | cut -f2 -d: | sed -E 's/[[:space:]]+/;/gi')
+    TOTALMEMORY=`free | grep Mem | awk '{print $2}'`
+    USEDMEMORY=`free | grep Mem | awk '{print $3}'`
 
-    TOTALMEMORY=`echo $MEMORY | cut -f2 -d\;`
-    USEDMEMORY=`echo $MEMORY | cut -f3 -d\;`
-    FREEMEMORY=`echo $MEMORY | cut -f4 -d\;`
-    CACHEDMEMORY=`echo $MEMORY | cut -f6 -d\;`
-    BUFFEREDMEMORY=`echo $MEMORY | cut -f7 -d\;`
 
-    TOTALSWAP=`echo $SWAP | cut -f2 -d\;`
-    USEDSWAP=`echo $SWAP | cut -f3 -d\;`
-    FREESWAP=`echo $SWAP | cut -f4 -d\;`
+    TOTALSWAP=`free | grep Swap | awk '{print $2}'`
+    USEDSWAP=`free | grep Swap | awk '{print $3}'`
 
-    MEMORYTOGETHER=`expr $FREEMEMORY + $CACHEDMEMORY + $BUFFEREDMEMORY`
 
     MEMORYLIMIT=`expr $TOTALMEMORY \* $INMEMORYLIMIT \/ 100`
     SWAPLIMIT=`expr $TOTALSWAP \* $INSWAPLIMIT \/ 100`
 
-    REALUSEDMEMORY=`expr $TOTALMEMORY - $MEMORYTOGETHER`
 
+    if [ "x$HUMAN_READABLE" == "x1" ] ; then
+        MEMORYDISPLAY=`numfmt --from-unit=Ki --to=iec-i ${USEDMEMORY}`
+        MLIMITDISPLAY=`numfmt --from-unit=Ki --to=iec-i ${MEMORYLIMIT}`
+
+        SWAPDISPLAY=`numfmt --from-unit=Ki --to=iec-i ${USEDSWAP}`
+        SLIMITDISPLAY=`numfmt --from-unit=Ki --to=iec-i ${SWAPLIMIT}`
+    else
+        MEMORYDISPLAY=${USEDMEMORY}
+        MLIMITDISPLAY=${MEMORYLIMIT}
+
+        SWAPDISPLAY=${USEDSWAP}
+        SLIMITDISPLAY=${SWAPLIMIT}
+    fi
 
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-    if [ $REALUSEDMEMORY -gt $MEMORYLIMIT ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$REALUSEDMEMORY" -2 "$MEMORYLIMIT"
+    if [ $USEDMEMORY -gt $MEMORYLIMIT ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$MEMORYDISPLAY" -2 "$MLIMITDISPLAY"
     else
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$REALUSEDMEMORY" -2 "$MEMORYLIMIT"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$MEMORYDISPLAY" -2 "$MLIMITDISPLAY"
     fi
 
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
     if [ $USEDSWAP -gt $SWAPLIMIT ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$USEDSWAP" -2 "$SWAPLIMIT"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$SWAPDISPLAY" -2 "$SLIMITDISPLAY"
     else
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$USEDSWAP" -2 "$SWAPLIMIT"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$SWAPDISPLAY" -2 "$SLIMITDISPLAY"
 
     fi
 }
