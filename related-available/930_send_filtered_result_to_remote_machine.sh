@@ -42,7 +42,7 @@ done
 for (( j=0; j < ${#REMOTE_HOSTNAME[@]} ; j++ )){
 	printtoscreen "Copying file: ${LOCAL_FILE[$j]} to:${REMOTE_HOSTNAME[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey: ${SSHKEY[$j]}"
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-	SSHCOPYRES=$(${SYSCHECK_HOME}/related-enabled/906_ssh-copy-to-remote-machine.sh "${LOCAL_FILE[$j]}" ${REMOTE_HOSTNAME[$j]} ${REMOTE_DIR[$j]}/${REMOTE_FILE[$j]} ${REMOTE_USER[$j]} ${SSHKEY[$j]})
+	SSHCOPYRES=$(${SYSCHECK_HOME}/related-enabled/906_ssh-copy-to-remote-machine.sh --file="${LOCAL_FILE[$j]}" --host="${REMOTE_HOSTNAME[$j]}" --dir="${REMOTE_DIR[$j]}" --user="${REMOTE_USER[$j]}" --key="${SSHKEY[$j]}")
 	if [ $? -ne 0 ] ; then
       		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -2 "${LOCAL_FILE[$j]}" -3 "file: ${LOCAL_FILE[$j]} to:${REMOTE_HOSTNAME[$j]} dir:${REMOTE_DIR[$j]} remotreuser:${REMOTE_USER[$j]} sshkey: ${SSHKEY[$j]} result: ${SSHCOPYRES}"
 	else

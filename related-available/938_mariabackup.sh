@@ -55,9 +55,9 @@ mariabackup_full_backup() {
        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d ${DESCR[2]} -1 "${BACKUP_TO_DIR} exist"
        exit 14
   fi
-  
+
   if  [ ${KEEP_GEN} != 0 ];then
-    while [ ${KEEP_GEN -le $(ls -d ${MARIABACKUP_BASEDIR}/* 2>/dev/null|wc -l) ] do
+    while [ ${KEEP_GEN} -le $(ls -d ${MARIABACKUP_BASEDIR}/* 2>/dev/null|wc -l) ] ; do
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "Remove backup: $(ls -td ${MARIABACKUP_BASEDIR}/*|tail -1)"
       rm -rf $(ls -td ${MARIABACKUP_BASEDIR}/*|tail -1)
     done
@@ -84,7 +84,6 @@ mariabackup_full_backup() {
 }
 
 mariabackup_incremental_backup() {
-set -x
   FULL_BACKUP_DIR=$1
   BACKUP_TO_INC_DIR=$2
   if [ -z $(pgrep mysqld) ];then
