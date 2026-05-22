@@ -50,7 +50,7 @@ fi
 FULLFILENAME=`$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh --batch ${BACKUPARG}`
 
 if [ $? -ne 0 ] ; then
-    printlogmess-n  ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e $ERRNO[2] -d "$DESCR[2]"
+    printlogmess -n  ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e $ERRNO[2] -d "${DESCR[2]}"
 fi
 
 # lock file check/wait
@@ -108,4 +108,3 @@ for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do
 		rm "${TRANSFERFILENAME}"
 	fi
 done
-

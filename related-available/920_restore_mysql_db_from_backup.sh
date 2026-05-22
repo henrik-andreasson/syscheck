@@ -30,7 +30,7 @@ while true; do
   case "$1" in
     -s|--screen  ) PRINTTOSCREEN=1; shift;;
     -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -b|--backupdile ) BACKUPFILE=$2 ; shift 2;;
+    -b|--backupfile ) BACKUPFILE=$2 ; shift 2;;
     -h|--help )   schelp;exit;shift;;
     --) break;;
   esac
