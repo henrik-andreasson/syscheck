@@ -674,3 +674,41 @@ to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
 
+##  941_make_mysql_db_backup_and_transfer_to_s3.sh 
+```  
+
+Scriptid: 941 - Mariadb backup and transfer to S3 compatible storage
+
+Script used to take a backup of the sql database, compress it and upload it to one or more S3 compatible services (eg rustfs, minio) configured via the S3_ENDPOINT/S3_REGION/S3_BUCKET/S3_PREFIX/S3_ACCESS_KEY/S3_SECRET_KEY arrays. call with -x|--default for puting the backupfile in the SUBDIR_DEFAULT ; -d|--daily to make daily backup end up in SUBDIR_DAILY; with -w|--weekly to make daily backup end up in SUBDIR_WEEKLY; -m|--monthly to make daily backup end up in SUBDIR_MONTHLY ; -y|--yearly to make daily backup end up in SUBDIR_YEARLY; -r|--remove-local to remove the local backup file after a successful upload to every configured S3 destination; -e|--encrypt to encrypt the backup with one or more keys from the PGP_PUBKEY_FILE array before uploading it, the resulting file can be decrypted by the holder of any of the configured private keys.
+
+Error code / description - What to do
+
+9411 / Backup uploaded to %s, reference: %s (etag: %s) - Ok
+9412 / Could not get the backup from MySQL (%s) - Could not make a backup.
+9413 / Could not upload the backup (%s) to %s, reason: %s - Could not upload the backup.
+9414 / Backup uploaded but could not remove local file (%s): %s - Could not remove the local backup file.
+9415 / Could not encrypt the backup (%s), reason: %s - Could not encrypt the backup with the configured PGP public key(s).
+
+to run with output directed to screen: add a '-s' or '--screen'
+
+``` 
+
+##  942_restore_mysql_db_from_s3.sh 
+```  
+
+Scriptid: 942 - Mariadb restore from S3 compatible storage
+
+Script used to download a backup made by 941_make_mysql_db_backup_and_transfer_to_s3.sh from S3, decrypt it if needed, and restore it via 920_restore_mysql_db_from_backup.sh (which itself backs up the current db first and asks for confirmation before restoring). call with -o|--object <objectkey> to select the backup to restore, this is the reference printed by 941 (eg mysql/default/<uuid>-<file>.gz or .gz.gpg) ; -i|--index <n> to pick which configured S3 destination (S3_ENDPOINT[n] from config/941.conf) to download from, defaults to 0.
+
+Error code / description - What to do
+
+9421 / Downloaded backup (%s), handing off to restore - Ok
+9422 / No -o|--object <objectkey> was given - No backup object specified.
+9423 / S3_ENDPOINT[%s] is not configured - Selected S3 destination is not configured.
+9424 / Could not download the backup from remote storage (%s), reason: %s - Could not download the backup.
+9425 / Could not decrypt the backup (%s), reason: %s - Could not decrypt the backup.
+
+to run with output directed to screen: add a '-s' or '--screen'
+
+``` 
+
