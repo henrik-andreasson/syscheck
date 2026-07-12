@@ -1,0 +1,18 @@
+SCRIPT_HUMAN_NAME="Mariadb restore from S3 compatible storage"
+
+HELP="Script used to download a backup made by 941_make_mysql_db_backup_and_transfer_to_s3.sh from S3, decrypt it if needed, and restore it via 920_restore_mysql_db_from_backup.sh (which itself backs up the current db first and asks for confirmation before restoring). call with -o|--object <objectkey> to select the backup to restore, this is the reference printed by 941 (eg mysql/default/<uuid>-<file>.gz or .gz.gpg) ; -i|--index <n> to pick which configured S3 destination (S3_ENDPOINT[n] from config/941.conf) to download from, defaults to 0."
+
+HELP[1]="Ok"
+DESCR[1]="Downloaded backup (%s), handing off to restore"
+
+HELP[2]="No backup object specified."
+DESCR[2]="No -o|--object <objectkey> was given"
+
+HELP[3]="Selected S3 destination is not configured."
+DESCR[3]="S3_ENDPOINT[%s] is not configured"
+
+HELP[4]="Could not download the backup."
+DESCR[4]="Could not download the backup from remote storage (%s), reason: %s"
+
+HELP[5]="Could not decrypt the backup."
+DESCR[5]="Could not decrypt the backup (%s), reason: %s"
