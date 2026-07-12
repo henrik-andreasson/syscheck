@@ -1,18 +1,18 @@
 SCRIPT_HUMAN_NAME="Mariadb backup and transfer to S3 compatible storage"
 
-HELP="Script used to take a backup of the sql database, compress it and upload it to an S3 compatible service (eg rustfs, minio). call with -x|--default for puting the backupfile in the SUBDIR_DEFAULT ; -d|--daily to make daily backup end up in SUBDIR_DAILY; with -w|--weekly to make daily backup end up in SUBDIR_WEEKLY; -m|--monthly to make daily backup end up in SUBDIR_MONTHLY ; -y|--yearly to make daily backup end up in SUBDIR_YEARLY; -r|--remove-local to remove the local backup file after a successful upload; -e|--encrypt to encrypt the backup with PGP_PUBKEY_FILE before uploading it."
+HELP="Script used to take a backup of the sql database, compress it and upload it to one or more S3 compatible services (eg rustfs, minio) configured via the S3_ENDPOINT/S3_REGION/S3_BUCKET/S3_PREFIX/S3_ACCESS_KEY/S3_SECRET_KEY arrays. call with -x|--default for puting the backupfile in the SUBDIR_DEFAULT ; -d|--daily to make daily backup end up in SUBDIR_DAILY; with -w|--weekly to make daily backup end up in SUBDIR_WEEKLY; -m|--monthly to make daily backup end up in SUBDIR_MONTHLY ; -y|--yearly to make daily backup end up in SUBDIR_YEARLY; -r|--remove-local to remove the local backup file after a successful upload to every configured S3 destination; -e|--encrypt to encrypt the backup with one or more keys from the PGP_PUBKEY_FILE array before uploading it, the resulting file can be decrypted by the holder of any of the configured private keys."
 
 HELP[1]="Ok"
-DESCR[1]="Backup uploaded to remote storage, reference: %s (etag: %s)"
+DESCR[1]="Backup uploaded to %s, reference: %s (etag: %s)"
 
 HELP[2]="Could not make a backup."
 DESCR[2]="Could not get the backup from MySQL (%s)"
 
 HELP[3]="Could not upload the backup."
-DESCR[3]="Could not upload the backup to remote storage (%s), reason: %s"
+DESCR[3]="Could not upload the backup (%s) to %s, reason: %s"
 
 HELP[4]="Could not remove the local backup file."
 DESCR[4]="Backup uploaded but could not remove local file (%s): %s"
 
-HELP[5]="Could not encrypt the backup with the configured PGP public key."
+HELP[5]="Could not encrypt the backup with the configured PGP public key(s)."
 DESCR[5]="Could not encrypt the backup (%s), reason: %s"
