@@ -110,5 +110,12 @@ ts4_end=$(date +"%s")
 ts4_delta=$(expr $ts4_end - $ts4_start )
 echo "test suite 4 done in $ts4_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
 
+ts5_start=$(date +"%s")
+echo "<h2>running test suite 5</h2>"                    | tee -a $ABS_TESTRESULT_PATH/summary.html
+test/bats-core/bin/bats --formatter junit test/test-s3-backup-restore.bats | tee -a $ABS_TESTRESULT_PATH/test_5_s3_backup_restore.txt
+ts5_end=$(date +"%s")
+ts5_delta=$(expr $ts5_end - $ts5_start )
+echo "test suite 5 done in $ts5_delta sec"              | tee -a $ABS_TESTRESULT_PATH/summary.html
+
 echo "end date"                                         | tee -a $ABS_TESTRESULT_PATH/summary.html
 date                                                    | tee -a $ABS_TESTRESULT_PATH/summary.html
