@@ -176,7 +176,7 @@ SCRIPTINDEX=00
 if [ "x${ERRSTATUS}" != "x0" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${GENERR}" -1 "${GLOBALERRMESSAGE}"
 elif [ "x${WARNSTATUS}" != "x0" ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN  -e ${ERRNO[5]} -d "${GENWARN}" -1 "${GLOBALERRMESSAGE}"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN  -e ${ERRNO[6]} -d "${GENWARN}" -1 "${GLOBALERRMESSAGE}"
 else
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${GENDESCR}"
 fi
