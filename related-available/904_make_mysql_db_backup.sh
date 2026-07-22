@@ -51,31 +51,42 @@ fi
 
 
 if [ ! -d "${MYSQLBACKUPDIR}/${EXTRADIR}" ] ; then
-    printlogmess ${SCRIPTNAME}  ${SCRIPTID} ${SCRIPTINDEX}   $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${MYSQLBACKUPDIR}/${EXTRADIR}"
+    printlogmess ${SCRIPTNAME}  ${SCRIPTID} ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${MYSQLBACKUPDIR}/${EXTRADIR}"
     exit 1
 fi
 
+for ((i = 0; i < ${#DBNAME[@]}; i++)); do
+    SCRIPTINDEX=$(addOneToIndex "$SCRIPTINDEX")
 
-for (( i = 0 ;  i < ${#DBNAME[@]} ; i++ )) ; do
-    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-
-    DATESTR=$(date +${DATESTING})
+    DATESTR=$(date +"$DATESTING")
     MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPDIR}/${EXTRADIR}/${DBNAME[$i]}-${DATESTR}.gz"
-    DATESTART=$(date +"%s")
-    dumpret=$($MYSQLDUMP_BIN -u root --password="${MYSQLROOT_PASSWORD}" ${MYSQLDUMP_OPTIONS} "${DBNAME[$i]}" ${TABLESNAMES[$i]} |& gzip > ${MYSQLBACKUPFULLFILENAME} 2>&1)
-    retcode=$?
-    DATEDONE=$(date +"%s")
-    let TIMETOCOMPLEATE="$DATEDONE - $DATESTART" || true # not to stop script
-    filesize=$(stat -c "%s" "$MYSQLBACKUPFULLFILENAME")
+    DATESTART=$(date +%s)
 
-    if [ $retcode -eq 0 ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$MYSQLBACKUPFULLFILENAME" -2 $TIMETOCOMPLEATE -3 $filesize
+    read -r -a table_args <<< "${TABLENAMES[$i]:-}"
+
+    if dumpret=$(set -o pipefail; { "$MYSQLDUMP_BIN" -u root --password="$MYSQLROOT_PASSWORD" $MYSQLDUMP_OPTIONS "${DBNAME[$i]}" "${table_args[@]}" | gzip -c > "$MYSQLBACKUPFULLFILENAME"; } 2>&1); then
+        retcode=0
     else
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$MYSQLBACKUPFULLFILENAME" -2 $TIMETOCOMPLEATE -3 $filesize -4 "$dumpret"
+        retcode=$?
+        rm -f -- "$MYSQLBACKUPFULLFILENAME"
     fi
 
-    if [ "x$BATCH" = "x1" ] ; then
+    DATEDONE=$(date +%s)
+    TIMETOCOMPLEATE=$((DATEDONE - DATESTART))
+
+    if [ -f "$MYSQLBACKUPFULLFILENAME" ]; then
+        filesize=$(stat -c %s "$MYSQLBACKUPFULLFILENAME")
+    else
+        filesize=0
+    fi
+
+    if [ "$retcode" -eq 0 ]; then
+        printlogmess -n "$SCRIPTNAME" -i "$SCRIPTID" -x "$SCRIPTINDEX" -l "$INFO" -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "$MYSQLBACKUPFULLFILENAME" -2 "$TIMETOCOMPLEATE" -3 "$filesize"
+    else
+        printlogmess -n "$SCRIPTNAME" -i "$SCRIPTID" -x "$SCRIPTINDEX" -l "$ERROR" -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "$MYSQLBACKUPFULLFILENAME" -2 "$TIMETOCOMPLEATE" -3 "$filesize" -4 "$dumpret"
+    fi
+
+    if [ "${BATCH:-0}" = "1" ]; then
         echo "$MYSQLBACKUPFULLFILENAME"
     fi
-
 done
