@@ -64,7 +64,7 @@ for ((i = 0; i < ${#DBNAME[@]}; i++)); do
 
     read -r -a table_args <<< "${TABLENAMES[$i]:-}"
 
-    if dumpret=$(set -o pipefail; { "$MYSQLDUMP_BIN" -u root --password="$MYSQLROOT_PASSWORD" $MYSQLDUMP_OPTIONS "${DBNAME[$i]}" "${table_args[@]}" | gzip -c > "$MYSQLBACKUPFULLFILENAME"; } 2>&1); then
+    if dumpret=$(set -o pipefail; { "$MYSQLDUMP_BIN" -u root --password="$MYSQLROOT_PASSWORD" "${MYSQLDUMP_OPTIONS[@]}" "${DBNAME[$i]}" "${table_args[@]}" | gzip -c > "$MYSQLBACKUPFULLFILENAME"; } 2>&1); then
         retcode=0
     else
         retcode=$?
