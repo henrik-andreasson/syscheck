@@ -30,7 +30,7 @@ check_failed_receipts () {
 
 for (( i = 1 ; i <= ${#TYPE[@]} ; i++ )); do
 	if check_failed_receipts ; then
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${TYPE[$i]}"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${TYPE[$i]}"
 	else
 		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${TYPE[$i]}"
 	fi
