@@ -49,20 +49,20 @@ raiddiskcheck () {
 
 
 
-    STATUS=$(echo $COMMAND | cut -f2 -d\; )
-    disk_name=$(echo $COMMAND | cut -f3 -d\; )
-    disk_state=$(echo $COMMAND | cut -f4 -d\; )
-    disk_powered=$(echo $COMMAND | cut -f5 -d\; )
-    disk_capacity=$(echo $COMMAND | cut -f20 -d\; )
-    disk_vendor=$(echo $COMMAND | cut -f24 -d\; )
-    disk_prodid=$(echo $COMMAND | cut -f25 -d\; )
-    disk_serial=$(echo $COMMAND | cut -f26 -d\; )
-    disk_partno=$(echo $COMMAND | cut -f27 -d\; )
+    STATUS=$(echo "$DISCSTAT" | cut -f2 -d\; )
+    disk_name=$(echo "$DISCSTAT" | cut -f3 -d\; )
+    disk_state=$(echo "$DISCSTAT" | cut -f4 -d\; )
+    disk_powered=$(echo "$DISCSTAT" | cut -f5 -d\; )
+    disk_capacity=$(echo "$DISCSTAT" | cut -f20 -d\; )
+    disk_vendor=$(echo "$DISCSTAT" | cut -f24 -d\; )
+    disk_prodid=$(echo "$DISCSTAT" | cut -f25 -d\; )
+    disk_serial=$(echo "$DISCSTAT" | cut -f26 -d\; )
+    disk_partno=$(echo "$DISCSTAT" | cut -f27 -d\; )
 
 	DISK_INFO="Name: $disk_name state: $disk_state powered: $disk_powered capacity: $disk_capacity vendor: $disk_vendor prodid: $disk_prodid serial: $disk_serial partno: $disk_partno"
 	printverbose "pdisk: $pdisk controller: $controller $DISK_INFO"
 
-        if [ "x$STATUS" != "x" ] ; then
+        if [ "x$STATUS" = "xOk" ] ; then
                 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "disk: ${pdisk} contoller: ${controller} OK"
         else
                 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "disk: ${pdisk} contoller: ${controller} NOTOK $DISK_INFO"
