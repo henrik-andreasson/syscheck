@@ -22,6 +22,7 @@ Maintainter is Henrik Andreasson github@han.pp.se
 
 Contributors:
 
+* @Skygfisk made their first contribution in https://github.com/henrik-andreasson/syscheck/pull/117
 * Philip V.
 * Joakim B.
 * Mats B.

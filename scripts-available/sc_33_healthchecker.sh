@@ -6,8 +6,6 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
   exit
 fi
 
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
-
 ## Import common definitions ##
 source $SYSCHECK_HOME/config/syscheck-scripts.conf
 
@@ -115,43 +113,50 @@ if [ "x${MAX_RESTARTS}" == "x" ] ; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}"
 fi
 
-for (( i = 0 ;  i < ${#HEALTHCHECKURL[@]} ; i++ )) ; do
-        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+for (( i = 0; i < ${#HEALTHCHECKURL[@]}; i++ )); do
+    SCRIPTINDEX=$(addOneToIndex "$SCRIPTINDEX")
 
-	if [ "x${PRINTFULL}" = "x1" ] ; then
-		printtoscreen "Checking ${HEALTHCHECKURL_FULL[$i]}"
-	fi
+    if [ "x${PRINTFULL}" = "x1" ]; then
+        printtoscreen "Checking ${HEALTHCHECKURL_FULL[$i]}"
+    fi
 
-	if [ "x${CHECKTOOL}" = "xwget" ] ; then
-	        STATUS=$(${CHECKTOOL} ${HEALTHCHECKURL[$i]} -T ${TIMEOUT} -t 1 2>/dev/null)
-		FULLSTATUS=$(${CHECKTOOL} ${HEALTHCHECKURL_FULL[$i]} -T ${TIMEOUT} -t 1 2>/dev/null)
-		if [ "x${PRINTFULL}" = "x1" ] ; then
-			printtoscreen ${FULLSTATUS}
-		fi
-	elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
-	        STATUS=$(${CHECKTOOL} ${HEALTHCHECKURL[$i]} --connect-timeout ${TIMEOUT} --retry 1 2>/dev/null)
-	        FULLSTATUS=$(${CHECKTOOL} ${HEALTHCHECKURL_FULL[$i]} --connect-timeout ${TIMEOUT} --retry 1 2>/dev/null)
-		if [ "x${PRINTFULL}" = "x1" ] ; then
-			printtoscreen ${FULLSTATUS}
-		fi
-	else
-	        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
-	fi
-	FIXED_FULL_STATUS=$(echo "${FULLSTATUS}" | tr -d '\\' | tr -d "'"  | sed 's/%/%%/gi' | tr  '\n' ';' | tr -d '"')
-	if [ "x$STATUS" != "xALLOK" ] ; then
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
-    if [ "x${STOP_CMD[$i]}" != "x" -a  "x${START_CMD[$i]}" != "x" ] ; then
-			restartProcess -n "${HEALTHCHECK_APP[$i]}" -p "${STOP_CMD[$i]}" -t "${START_CMD[$i]}" -w "${STOP_START_PAUSE}" -x "${MAX_RESTARTS}"
-		fi
-  elif [[ "x$STATUS" =~ "^WARNING.*" ]]; then
-  		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
+    if [ "x${CHECKTOOL}" = "xwget" ]; then
+        STATUS=$(${CHECKTOOL} "${HEALTHCHECKURL[$i]}" -T "${TIMEOUT}" -t 1 2>/dev/null)
+        FULLSTATUS=$(${CHECKTOOL} "${HEALTHCHECKURL_FULL[$i]}" -T "${TIMEOUT}" -t 1 2>/dev/null)
 
-	else
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
-	fi
+        if [ "x${PRINTFULL}" = "x1" ]; then
+            printtoscreen "${FULLSTATUS}"
+        fi
 
-	if [ "x${PRINTFULL}" = "x1" ] ; then
-		printtoscreen "----"
-	fi
+    elif [ "x${CHECKTOOL}" = "xcurl" ]; then
+        STATUS=$(${CHECKTOOL} "${HEALTHCHECKURL[$i]}" --connect-timeout "${TIMEOUT}" --retry 1 2>/dev/null)
+        FULLSTATUS=$(${CHECKTOOL} "${HEALTHCHECKURL_FULL[$i]}" --connect-timeout "${TIMEOUT}" --retry 1 2>/dev/null)
 
+        if [ "x${PRINTFULL}" = "x1" ]; then
+            printtoscreen "${FULLSTATUS}"
+        fi
+
+    else
+        printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}"
+    fi
+
+    FIXED_FULL_STATUS=$(echo "${FULLSTATUS}" | tr -d '\\' | tr -d "'" | sed 's/%/%%/gi' | tr '\n' ';' | tr -d '"')
+
+    if [[ $STATUS == ALLOK ]]; then
+        printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$INFO" -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
+
+    elif [[ $STATUS == WARNING* ]]; then
+        printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$WARN" -e "${ERRNO[7]}" -d "${DESCR[7]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
+
+    else
+        printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
+
+        if [ "x${STOP_CMD[$i]}" != "x" -a "x${START_CMD[$i]}" != "x" ]; then
+            restartProcess -n "${HEALTHCHECK_APP[$i]}" -p "${STOP_CMD[$i]}" -t "${START_CMD[$i]}" -w "${STOP_START_PAUSE}" -x "${MAX_RESTARTS}"
+        fi
+    fi
+
+    if [ "x${PRINTFULL}" = "x1" ]; then
+        printtoscreen "----"
+    fi
 done

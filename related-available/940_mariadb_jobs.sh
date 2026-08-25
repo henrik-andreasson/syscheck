@@ -6,8 +6,6 @@ if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then
   exit
 fi
 
-if [ ! -f ${SYSCHECK_HOME}/syscheck.sh ] ; then echo "Can't find $SYSCHECK_HOME/syscheck.sh" ;exit ; fi
-
 # Import common resources
 source $SYSCHECK_HOME/config/related-scripts.conf
 
@@ -47,8 +45,9 @@ if [ "x${listjob}" == "x1" ] ; then
 elif [ "x${jobname}" != "x" ] ; then
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
-    sqlret=$(echo "${DBJOBS_SQL[${jobname}]}" | $MYSQL_BIN -u root --password="${MYSQLROOT_PASSWORD}" | grep -v "count" | tr '\n' ';')
+    sqlret=$(echo "${DBJOBS_SQL[${jobname}]}" | $MYSQL_BIN -u root --password="${MYSQLROOT_PASSWORD}")
     retcode=$?
+    sqlret=$(echo "$sqlret" | grep -v "count" | tr '\n' ';')
     if [ $retcode -eq 0 ] ; then
         printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$INFO"  -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "${DBJOBS_NAME[$jobname]}" -2 "${sqlret}"
     else
@@ -60,8 +59,9 @@ else
 
 	for (( i = 0 ;  i < "${#DBJOBS_SQL[@]}" ; i++ )) ; do
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-		sqlret=$(echo "${DBJOBS_SQL[$i]}" | $MYSQL_BIN -u root --password="${MYSQLROOT_PASSWORD}" | grep -v "count" | tr '\n' ';')
+		sqlret=$(echo "${DBJOBS_SQL[$i]}" | $MYSQL_BIN -u root --password="${MYSQLROOT_PASSWORD}")
 		retcode=$?
+		sqlret=$(echo "$sqlret" | grep -v "count" | tr '\n' ';')
 		if [ $retcode -eq 0 ] ; then
 			printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$INFO"  -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "${DBJOBS_NAME[$i]}" -2 "${sqlret}"
 		else

@@ -1,18 +1,17 @@
 [ca]
-ca1.lab.certificateservices.org
-ca2.lab.certificateservices.org
-ca3.lab.certificateservices.org
+ca1.alab.gazonk.se
+ca2.alab.gazonk.se
+ca3.alab.gazonk.se
 
 [fe]
-fe1.lab.certificateservices.org
-fe2.lab.certificateservices.org
-fe3.lab.certificateservices.org
+fe1.alab.gazonk.se
+fe2.alab.gazonk.se
+fe3.alab.gazonk.se
 
 [adm]
-admin1.lab.certificateservices.org
-admin2.lab.certificateservices.org
+admin1.alab.gazonk.se
+admin2.alab.gazonk.se
 
 [logbak]
-logbak1.lab.certificateservices.org
-logbak2.lab.certificateservices.org
-
+logbak1.alab.gazonk.se
+logbak2.alab.gazonk.se
