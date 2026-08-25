@@ -3,18 +3,17 @@
 # func to output debug when using -s or --screen
 printtoscreen() {
 
-  IFS=$'\n'
-
   if [ "x$PRINTTOSCREEN" = "x1" ] ; then
-	echo "Screenonly output: $*"
+    IFS=$'\n'
+	echo "Screenonly output: $*" >&2
   fi
 }
 
 # func to output debug when using -v or --verbose
 printverbose() {
-  IFS=$'\n'
   if [ "x$PRINTVERBOSESCREEN" = "x1" ] ; then
-        echo "$*"
+      IFS=$'\n'
+      echo "$*" >&2
   fi
 }
 
@@ -188,11 +187,11 @@ printlogmess(){
 
         if [ "x${PRINTTOSCREEN}" = "x1" ] ; then
           if [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xJSON" ] ; then
-            printf "${JSONSTRING}\n"
+            printf "${JSONSTRING}\n" >&2
           elif [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xNEWFMT" ] ; then
-            printf "${NEWFMTSTRING}\n"
+            printf "${NEWFMTSTRING}\n" >&2
           elif [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xOLDFMT" ] ; then
-            printf "${OLDFMTSTRING}\n"
+            printf "${OLDFMTSTRING}\n" >&2
           else
             printf "unknown format PRINTTOSCREEN_OUTPUTTYPE: ${PRINTTOSCREEN_OUTPUTTYPE}"
             exit -1

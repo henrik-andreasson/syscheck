@@ -22,7 +22,7 @@ getconfig "mariadb"
 
 
 INPUTARGS=`/usr/bin/getopt --options "hsymwdxb" --long "help,screen,default,daily,weekly,monthly,yearly,batch" -- "$@"`
-if [ $? != 0 ] ; then help ; fi
+if [ $? != 0 ] ; then schelp ; exit 1 ; fi
 eval set -- "$INPUTARGS"
 
 while true; do
@@ -36,6 +36,7 @@ while true; do
     -b|--batch )  BATCH=1; shift;;
     -h|--help )   schelp;exit;shift;;
     --) break ;;
+    *) schelp;exit;;
   esac
 done
 

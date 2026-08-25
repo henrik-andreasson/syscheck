@@ -22,7 +22,7 @@ initscript $SCRIPTID $NO_OF_ERR
 
 
 TEMP=`/usr/bin/getopt --options "hsxdwmy" --long "help,screen,default,daily,weekly,monthly,yearly" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
+if [ $? != 0 ] ; then schelp ; exit 1 ; fi
 #echo "TEMP: >$TEMP<"
 eval set -- "$TEMP"
 
@@ -36,6 +36,7 @@ while true; do
     -y|--yearly  ) BACKUPARG=${SUBDIR_YEARLY} ; shift;;
     -h|--help )   schelp;exit;shift;;
     --) break;;
+    *) schelp;exit;;
   esac
 done
 
