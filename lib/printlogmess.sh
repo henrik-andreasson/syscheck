@@ -110,8 +110,15 @@ send_mess_to_monitoring(){
 
 # ex: printlogmess $LEVEL $SLOG_ERRNO[1] "$SLOG_DESCR[1]"
 printlogmess(){
-      INPUTARGS=`/usr/bin/getopt --options "n:i:x:l:e:d:1:2:3:4:5:6:7:8:9"  -- "$@"`
-      if [ $? != 0 ] ; then schelp ; fi
+      # keep the original call for the diagnostics below: the arg loop shifts
+      # $* away as it parses
+      PLM_CALL="$*"
+
+      INPUTARGS=`/usr/bin/getopt --options "n:i:x:l:e:d:1:2:3:4:5:6:7:8:9:"  -- "$@"`
+      if [ $? != 0 ] ; then
+        echo "printlogmess: cannot parse arguments, called by ${0##*/}: ${PLM_CALL}" >&2
+        return 1
+      fi
       eval set -- "$INPUTARGS"
 
       while true; do
@@ -132,40 +139,40 @@ printlogmess(){
         esac
       done
 
+        if [ "x${SCRIPTNAME}" = "x" ] ; then
+          echo "printlogmess: missing scriptname (-n), called by ${0##*/}: ${PLM_CALL}" >&2
+          return 1
+        fi
+        if [ "x${SCRIPTID}" = "x" ] ; then
+          echo "printlogmess: missing scriptid (-i), called by ${0##*/}: ${PLM_CALL}" >&2
+          return 1
+        fi
+        if [ "x${SCRIPTINDEX}" = "x" ] ; then
+          echo "printlogmess: missing scriptindex (-x), called by ${0##*/}: ${PLM_CALL}" >&2
+          return 1
+        fi
+        if [ "x${DESCR}" = "x" ] ; then
+          echo "printlogmess: missing description (-d), called by ${0##*/}: ${PLM_CALL}" >&2
+          return 1
+        fi
+        case "x${LEVEL}" in
+          xI|xW|xE ) ;;
+          *        )
+            echo "printlogmess: bad level (-l) '${LEVEL}', expected I, W or E, called by ${0##*/}: ${PLM_CALL}" >&2
+            return 1 ;;
+        esac
+
+        # LEVEL is guaranteed to be one of I/W/E by this point
         if [ "x${LEVEL}" = "xI" ] ;then
           SYSLOGLEVEL="info"
           LONGLEVEL="INFO"
         elif [ "x${LEVEL}" = "xW" ] ;then
           SYSLOGLEVEL="warning"
           LONGLEVEL="WARNING"
-        elif [ "x${LEVEL}" = "xE" ] ;then
+        else
           SYSLOGLEVEL="err"
           LONGLEVEL="ERROR"
-        else
-          echo "wrong type of LEVEL (${LEVEL})"
-          exit;
         fi
-
-        if [ "x$SCRIPTNAME" = "x" ] ;then
-          echo "scriptname must be passed to printlogmess"
-          exit
-        fi
-
-        if [ "x$SCRIPTID" = "x" ] ;then
-          echo "scriptid must be passed to printlogmess"
-          exit
-        fi
-
-        if [ "x$SCRIPTINDEX" = "x" ] ;then
-          echo "scriptindex must be passed to printlogmess"
-          exit
-        fi
-        if [ "x$DESCR" = "x" ] ;then
-          echo "DESCR must be passed to printlogmess"
-          exit
-        fi
-
-
 
         DATE=`date +"%Y%m%d %H:%M:%S"`
         HOST=`hostname `

@@ -266,13 +266,6 @@ def test_help_does_not_emit_a_log_message(syscheck):
 # ------------------------------------------------------------- known bugs --
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="sc_01:69 expands ${FILESYSTEM[$i]} unquoted, so a path containing "
-           "spaces shifts every following argument: the error limit becomes a "
-           "word of the path and SCRIPTINDEX becomes the limit",
-)
 def test_filesystem_path_containing_spaces_is_checked_correctly(syscheck):
     syscheck.exec(f"mkdir -p '{FS_A}/dir with space'").check()
     syscheck.set_script_config("01", config((f"{FS_A}/dir with space", 95, 90)))
@@ -284,13 +277,6 @@ def test_filesystem_path_containing_spaces_is_checked_correctly(syscheck):
     assert f"{FS_A}/dir with space" in msg.text
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="an empty FILESYSTEM entry is dropped by unquoted word splitting, so "
-           "SCRIPTINDEX ends up empty and printlogmess aborts with 'wrong type "
-           "of LEVEL ()' - the check silently produces no message at all",
-)
 def test_empty_filesystem_entry_reports_a_config_error(syscheck):
     syscheck.set_script_config("01", config(("", 90, 80)))
     run = syscheck.run_script(SCRIPT)
@@ -301,13 +287,6 @@ def test_empty_filesystem_entry_reports_a_config_error(syscheck):
     assert "No filesystem specified" in msg.text
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="a missing USAGEPERCENT entry is dropped by unquoted word splitting, "
-           "so ERRLIMIT becomes the literal string 'default' and the comparison "
-           "dies with 'integer expression expected' - no message is produced",
-)
 def test_missing_usagepercent_reports_a_config_error(syscheck, filled):
     syscheck.set_script_config("01", config((FS_A, None, None)))
     run = syscheck.run_script(SCRIPT)

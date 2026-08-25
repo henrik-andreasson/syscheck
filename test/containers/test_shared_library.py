@@ -88,22 +88,81 @@ def test_message_is_truncated_to_messagelength(syscheck):
     assert len(tail) == 40, f"expected 40 chars, got {len(tail)}: {tail!r}"
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="printlogmess silently drops the message when a required argument is "
-           "empty: it prints 'scriptindex must be passed' / 'wrong type of "
-           "LEVEL ()' on stdout and returns, so nothing reaches syslog, "
-           "last_status or the monitoring API",
+PLM_PRELUDE = (
+    "export SYSCHECK_HOME=/opt/syscheck; "
+    "source /opt/syscheck/config/syscheck-scripts.conf; "
+    "PRINTTOSCREEN=1 SAVELASTSTATUS=0 SENDTOSYSLOG=0 PRINTTOFILE=0; "
 )
-def test_printlogmess_with_an_empty_scriptindex_still_reports_something(syscheck):
+
+
+@pytest.mark.parametrize(
+    "args, missing",
+    [
+        ('-i 99 -x 01 -l E -e 991 -d "boom"', "scriptname"),
+        ('-n probe -x 01 -l E -e 991 -d "boom"', "scriptid"),
+        ('-n probe -i 99 -l E -e 991 -d "boom"', "scriptindex"),
+        ('-n probe -i 99 -x 01 -l E -e 991', "description"),
+        ('-n probe -i 99 -x 01 -e 991 -d "boom"', "bad level"),
+        ('-n probe -i 99 -x 01 -l Q -e 991 -d "boom"', "bad level"),
+    ],
+)
+def test_printlogmess_rejects_a_malformed_call(syscheck, args, missing):
+    """A malformed call is a bug in the caller: say so on stderr, return
+    non-zero, and do not fabricate a log line."""
+    res = syscheck.bash(PLM_PRELUDE + f"printlogmess {args}; echo rc=$?")
+
+    assert missing in res.stderr, res.output
+    assert "printlogmess:" in res.stderr
+    assert "rc=1" in res.stdout, res.output
+    # nothing was invented and passed off as a real check result
+    assert "PKI" not in res.output
+
+
+def test_printlogmess_reports_the_calling_script(syscheck):
+    res = syscheck.bash(PLM_PRELUDE + 'printlogmess -n probe -i 99 -l E -e 991 -d "boom"')
+
+    assert "called by" in res.stderr, res.stderr
+    assert "boom" in res.stderr, "the offending call should be echoed back"
+
+
+def test_printlogmess_accepts_a_well_formed_call(syscheck):
+    res = syscheck.bash(
+        PLM_PRELUDE + 'printlogmess -n probe -i 99 -x 01 -l E -e 991 -d "boom"; echo rc=$?'
+    )
+
+    assert "99-01-E-991-PKI" in res.output, res.output
+    assert "boom" in res.output
+    assert "rc=0" in res.stdout
+
+
+def test_printlogmess_does_not_exit_its_caller(syscheck):
+    """The guards used to `exit`, which killed the calling script's remaining
+    checks. A bad call must cost one message, not the whole run."""
     res = syscheck.bash(
         "export SYSCHECK_HOME=/opt/syscheck; "
         "source /opt/syscheck/config/syscheck-scripts.conf; "
-        "PRINTTOSCREEN=1 SAVELASTSTATUS=0 SENDTOSYSLOG=0 PRINTTOFILE=0 "
-        'printlogmess -n probe -i 99 -x "" -l E -e 991 -d "something broke"'
+        "PRINTTOSCREEN=1 SAVELASTSTATUS=0 SENDTOSYSLOG=0 PRINTTOFILE=0; "
+        'printlogmess -n probe -i 99 -x "" -l E -e 991 -d "first"; '
+        'echo CALLER-STILL-ALIVE'
     )
-    assert "something broke" in res.output, res.output
+    assert "CALLER-STILL-ALIVE" in res.output, res.output
+
+
+def test_one_bad_config_entry_does_not_disable_the_whole_check(syscheck):
+    """Regression guard for the original defect: an empty FILESYSTEM entry used
+    to abort sc_01 entirely, leaving every later filesystem unchecked."""
+    syscheck.fill_filesystem("/mnt/tfs_a", 60)
+    syscheck.set_script_config(
+        "01",
+        'FILESYSTEM[0]=""\nUSAGEPERCENT[0]=90\n'
+        'FILESYSTEM[1]="/mnt/tfs_a"\nUSAGEPERCENT[1]=95\n'
+        'FILESYSTEM[2]="/mnt/tfs_b"\nUSAGEPERCENT[2]=95\n',
+    )
+    run = syscheck.run_script(SC01)
+
+    assert len(run.messages) == 3, run.describe()
+    assert run.levels == ["E", "I", "I"]
+    assert run.indexes == ["01", "02", "03"]
 
 
 @pytest.mark.known_bug

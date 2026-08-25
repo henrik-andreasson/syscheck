@@ -30,11 +30,11 @@ diskusage () {
   SCRIPTINDEX=$4
 
 	if [ "x${FILESYSTEM}" = "x" ] ; then
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "No filesystem specified"
+		printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "No filesystem specified"
 		return -1
 	fi
   if [ "x${ERRLIMIT}" = "x" ] ; then
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "No limit specified"
+		printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "No limit specified"
 		return -1
 	fi
 
@@ -42,21 +42,21 @@ diskusage () {
     WARNLIMIT="${ERRLIMIT}"
 	fi
 
-	DFPH=`df -Ph $FILESYSTEM 2>&1`
+	DFPH=`df -Ph "$FILESYSTEM" 2>&1`
 
 	if [ $? -ne 0 ] ; then
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$FILESYSTEM" -2 "$DFPH"
+		printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "$FILESYSTEM" -2 "$DFPH"
 	else
 
-		PERCENT=`df -Ph $FILESYSTEM | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
+		PERCENT=`df -Ph "$FILESYSTEM" | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
 
 
-    if [ $PERCENT -gt $ERRLIMIT ] ; then
-       	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$ERRLIMIT"
-    elif [ $PERCENT -gt $WARNLIMIT ] ; then
-       	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$WARNLIMIT"
+    if [ "$PERCENT" -gt "$ERRLIMIT" ] ; then
+       	printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$ERRLIMIT"
+    elif [ "$PERCENT" -gt "$WARNLIMIT" ] ; then
+       	printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$WARN" -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$WARNLIMIT"
 		else
-      	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]}  -d "${DESCR[1]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$WARNLIMIT"
+      	printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$INFO" -e "${ERRNO[1]}"  -d "${DESCR[1]}" -1 "$FILESYSTEM" -2 "$PERCENT" -3 "$WARNLIMIT"
 		fi
 	fi
 }
@@ -67,5 +67,5 @@ for (( i = 0 ;  i < ${#FILESYSTEM[@]} ; i++ )) ; do
         if [ "x${WARN_PERCENT[$i]}" == "x" ] ; then
 		WARN_PERCENT[$i]="default"
 	fi
-	diskusage ${FILESYSTEM[$i]}  ${USAGEPERCENT[$i]} ${WARN_PERCENT[$i]} ${SCRIPTINDEX}
+	diskusage "${FILESYSTEM[$i]}" "${USAGEPERCENT[$i]}" "${WARN_PERCENT[$i]}" "${SCRIPTINDEX}"
 done
