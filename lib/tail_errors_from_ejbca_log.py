@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import re
 from datetime import datetime
 import argparse
@@ -33,7 +33,9 @@ sys.stderr.write("searchfor {}\n".format(searchfor))
 ts_last_match = epoch
 if not os.path.exists(posfilename):
     posfile = open(posfilename, mode='w')
-    print("deltat {}".format(ts_last_match.isoformat()))
+    # diagnostics belong on stderr like the ones above: stdout is the result
+    # stream and the caller treats every line on it as a matched error
+    sys.stderr.write("deltat {}\n".format(ts_last_match.isoformat()))
     posfile.write(ts_last_match.isoformat())
     posfile.close()
 else:
