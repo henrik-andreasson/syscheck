@@ -61,8 +61,15 @@ Sub_Check_Cluster(){
     SCRIPTINDEX=$3
     OPERAND=$4
 
-    STATUS=$(echo "show status like '${CLUSTER}';" | mysql | awk '{print $2}' | sed 's/Value//;s/^$//;/^$/d')
-    if Sub_Compare "${STATUS} ${OPERAND} ${RESULT}" ; then
+    STATUS=$(echo "show status like '${CLUSTER}';" | mysql 2>&1)
+    retcode=$?
+    if [ $retcode -eq 0 ] ; then
+      STATUS=$(echo "$STATUS" | awk '{print $2}' | sed 's/Value//;s/^$//;/^$/d')
+    fi
+    if [ $retcode -ne 0 -o "x${STATUS}" = "x" ] ; then
+      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$CLUSTER $STATUS should be $RESULT"
+      (( ERRORNUM++ )) || true
+    elif Sub_Compare "${STATUS} ${OPERAND} ${RESULT}" ; then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$CLUSTER $STATUS should be $RESULT"
       (( ERRORNUM++ )) || true
     else
