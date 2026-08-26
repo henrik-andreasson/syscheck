@@ -10,3 +10,45 @@ HELP[2]=" no action needed"
 
 DESCR[3]="(%s)"
 HELP[3]="Check space on device"
+
+DESCR[4]="Incremental backup: %s (time: %s size: %s)"
+HELP[4]="no action needed"
+
+DESCR[5]="Incremental backup FAILED: %s (time: %s size: %s error: %s)"
+HELP[5]="Check the mariabackup output and free space on the device"
+
+DESCR[6]="Prepare full backup: no backup directory given (%s)"
+HELP[6]="Pass the full backup directory to mariabackup_prepare_full"
+
+DESCR[7]="Prepare full backup: directory does not exist (%s)"
+HELP[7]="Check MARIABACKUP_BASEDIR and that a full backup has been taken"
+
+DESCR[9]="Prepare full backup FAILED: %s (time: %s error: %s)"
+HELP[9]="Check the mariabackup --prepare output"
+
+DESCR[10]="Prepare incremental backup: no incremental directory given (%s)"
+HELP[10]="Pass the incremental backup directory to mariabackup_prepare_incrementel"
+
+DESCR[11]="Prepare incremental backup: incremental directory does not exist (%s)"
+HELP[11]="Check MARIABACKUP_BASEDIR and that an incremental backup has been taken"
+
+DESCR[12]="Prepare incremental backup: no full backup directory given (%s)"
+HELP[12]="An incremental backup can only be prepared against a full backup"
+
+DESCR[13]="Prepare incremental backup: full backup directory does not exist (%s)"
+HELP[13]="Check MARIABACKUP_BASEDIR and that a full backup has been taken"
+
+DESCR[16]="Restore: no full backup directory given (%s)"
+HELP[16]="Pass the backup directory to restore from"
+
+DESCR[17]="Restore: full backup directory does not exist (%s)"
+HELP[17]="Check the path of the backup you are restoring from"
+
+DESCR[19]="Restore FAILED: %s (time: %s error: %s)"
+HELP[19]="Check the mariabackup --copy-back output and that /var/lib/mysql is empty"
+
+DESCR[21]="Restore: could not set ownership on the database directory %s (time: %s error: %s)"
+HELP[21]="Check MYSQL_FILESYSTEM_USER and MYSQL_FILESYSTEM_GROUP, and run chown manually"
+
+DESCR[23]="Restore: could not restore the selinux context on the database directory %s (time: %s error: %s)"
+HELP[23]="Run restorecon manually, or ignore if selinux is not in use"

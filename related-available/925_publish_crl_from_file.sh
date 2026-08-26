@@ -16,7 +16,7 @@ SCRIPTNAME=publish_crl_from_file
 SCRIPTID=925
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR
 
 

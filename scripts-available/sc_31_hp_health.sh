@@ -16,7 +16,7 @@ SCRIPTNAME=hp_health
 SCRIPTID=31
 
 # how many info/warn/error messages
-NO_OF_ERR=5
+NO_OF_ERR=6
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*

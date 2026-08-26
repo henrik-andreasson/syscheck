@@ -16,7 +16,7 @@ SCRIPTNAME=ejbca
 SCRIPTID=02
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*

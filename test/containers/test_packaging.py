@@ -84,14 +84,6 @@ def _error_code_usage():
     return out
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="8 scripts reference an ERRNO[] index above their own NO_OF_ERR, so "
-           "initscript never generates it. The -e argument is then empty and, "
-           "being unquoted, swallows the following -d, so printlogmess rejects "
-           "the call and the message is lost entirely",
-)
 def test_no_of_err_covers_every_errno_index_used():
     offenders = {
         name: (declared, max(used))
@@ -101,13 +93,6 @@ def test_no_of_err_covers_every_errno_index_used():
     assert not offenders, f"NO_OF_ERR too low: {offenders}"
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="some scripts reference an ERRNO[] index with no matching DESCR[] in "
-           "their language file, so -d is empty and printlogmess rejects the "
-           "call; 938_mariabackup.sh is missing 14 of them",
-)
 def test_every_errno_index_used_has_a_description():
     offenders = {
         name: sorted(set(used) - descr)

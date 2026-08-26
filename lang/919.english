@@ -9,3 +9,6 @@ HELP[2]="try to run the command manually"
 
 DESCR[3]="File input error, failed (%s)"
 HELP[3]="input file not set ok"
+
+DESCR[4]="Could not read UID from certificate subject (%s)"
+HELP[4]="Check that the certificate subject contains a UID field"

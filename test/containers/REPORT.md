@@ -10,17 +10,17 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 | | |
 | --- | --- |
 | Tests written | 110 |
-| Passing (behaviour verified correct) | 106 |
-| Strict xfail (confirmed open defect) | 4 |
+| Passing (behaviour verified correct) | 108 |
+| Strict xfail (confirmed open defect) | 2 |
 | Failing unexpectedly | 0 |
 | Defects found | 21 (D5 withdrawn on review) |
-| Defects fixed in this pass | 15 |
+| Defects fixed in this pass | 16 |
 | Scripts fully covered | 3 of 38 (`sc_01`, `sc_20`, `sc_44`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-106 passed, 4 xfailed in 172s
+108 passed, 2 xfailed in 168.37s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -391,17 +391,13 @@ generated certificate of a chosen lifetime (valid / inside the warn window /
 inside the error window), the timeout being configurable, and the 5s default
 applying when the setting is absent.
 
----
-
-# Open defects
-
-## D20 — 14 scripts declare the wrong number of error codes
-`NO_OF_ERR` in 8 `sc_*` / `9*` scripts, plus 6 language-file gaps
+## D20 — 8 scripts silently dropped messages on real error paths ✅ FIXED
+`NO_OF_ERR` in 7 scripts, plus 2 language files
 
 `initscript` generates `ERRNO[1]`..`ERRNO[$NO_OF_ERR]`. A script referencing an
-index above its own `NO_OF_ERR` passes an **empty** `-e`, and since the flag is
-unquoted at every call site it swallows the following `-d`. `printlogmess` then
-rejects the call:
+index above its own `NO_OF_ERR` passed an **empty** `-e`, and since the flag is
+unquoted at every call site it swallowed the following `-d`, so `printlogmess`
+rejected the call and the message was lost:
 
 ```
 $ printlogmess -n ejbca -i 02 -x 01 -l E -e ${ERRNO[4]} -d "${DESCR[4]}" -1 arg
@@ -409,53 +405,64 @@ printlogmess: missing description (-d), called by bash: -n ejbca -i 02 -x 01 -l 
 rc=1
 ```
 
-**The message is lost.** Before D1 was fixed the same calls produced corrupted
-lines instead - `E-44-d-PKI` in the old `var/last_status` is one of them, with
-`-d` as the error number.
+Before D1 was fixed the same calls emitted corrupted lines instead - the
+`E-44-d-PKI` entries in the old `var/last_status`, with `-d` as the error
+number, are this bug.
 
-This was found by `sc_44`, which was wrong by three. A scan of all 38 `sc_` and
-43 `related` scripts found 13 more.
+Found via `sc_44`, which was wrong by three; a scan of all 38 `sc_` and 43
+`related` scripts found 13 more.
 
-### Messages lost at runtime
-
-| script | declares | uses up to |
+| script | was | now |
 | --- | --- | --- |
-| `sc_02_ejbca.sh` | 3 | `ERRNO[4]` |
-| `sc_31_hp_health.sh` | 5 | `ERRNO[6]` (also no `DESCR[6]`) |
-| `905_publish_crl.sh` | 3 | `ERRNO[8]` — five broken paths |
-| `911_activate_VIP.sh` | 4 | `ERRNO[6]` |
-| `919_certpublisher_remotecommand.sh` | 3 | `ERRNO[4]` (also no `DESCR[4]`) |
-| `925_publish_crl_from_file.sh` | 3 | `ERRNO[4]` |
-| `931_mysql_backup_encrypt_send_to_remote_host.sh` | 3 | `ERRNO[5]` |
-| `938_mariabackup.sh` | 23 | `ERRNO[23]`, but the lang file defines only `DESCR[1..3]` — **14 indexes have no description at all** |
+| `sc_02_ejbca.sh` | 3 | 4 |
+| `sc_31_hp_health.sh` | 5 | 6, `DESCR[6]` added |
+| `905_publish_crl.sh` | 3 | 8 - five paths restored |
+| `911_activate_VIP.sh` | 4 | 6 |
+| `919_certpublisher_remotecommand.sh` | 3 | 4, `DESCR[4]` added |
+| `925_publish_crl_from_file.sh` | 3 | 4 |
+| `931_mysql_backup_encrypt_send_to_remote_host.sh` | 3 | 5 |
+| `938_mariabackup.sh` | 23 | 23; 14 missing `DESCR[]` written |
 
-`938_mariabackup.sh` is the worst: `NO_OF_ERR` is high enough, but its language
-file was never filled in, so most of its error paths fail the `-d` check instead
-of the `-e` one. Same outcome, different guard.
+Verified emitting again:
 
-`sc_02_ejbca.sh` is the one to fix first — it is the EJBCA application-server
-health check, and `ERRNO[4]` is its "application server unavailable" path.
+```
+02-01-E-024-PKI ... ERROR - ejbca EJBCA : application server unavailable
+31-01-E-316-PKI ... ERROR - hp_health Warning in HP Healthcheck (detail)
+```
 
-### Cosmetic only
+`938_mariabackup.sh` had a different form of the same fault: `NO_OF_ERR` was
+high enough, but its language file defined only `DESCR[1..3]` against `ERRNO[]`
+indexes up to 23, so 14 paths failed the `-d` guard rather than the `-e` one.
+Descriptions were written from each call site's surrounding code and arguments.
 
-`NO_OF_ERR` higher than the language file defines. No runtime effect; `schelp`
-prints blank entries in `--help`.
+`919` used `-e ${ERRNO[4]} -d "${DESCR[3]}"`; it now uses `DESCR[4]`, a new
+entry describing the UID-extraction failure that path actually detects.
 
-`sc_07_syslog.sh` (4 vs 3), `903_make_hsm_backup.sh`, `927_create_crls.sh`,
-`928_check_dsm_backup.sh`, `930_send_filtered_result_to_remote_machine.sh`
-(3 vs 2), `935_mysql_console_as_root.sh` (3 vs 0).
+Two static guards in `test_packaging.py` now hold the line:
+`test_no_of_err_covers_every_errno_index_used` and
+`test_every_errno_index_used_has_a_description`. Neither needs a container.
 
-### Guards
+### Still open: cosmetic only
 
-Three static tests in `test_packaging.py` now enforce the invariants, so a new
-mismatch fails the suite rather than waiting for the error path to fire in
-production:
+`test_help_does_not_list_undefined_error_codes` remains xfail. `NO_OF_ERR`
+promises more codes than the language file defines in `sc_07_syslog.sh`,
+`903_make_hsm_backup.sh`, `927_create_crls.sh`, `928_check_dsm_backup.sh`,
+`930_send_filtered_result_to_remote_machine.sh`,
+`935_mysql_console_as_root.sh`, and now `938_mariabackup.sh` for the seven
+indexes it never emits. `schelp` prints a blank entry for each. No runtime
+effect.
 
-- `test_no_of_err_covers_every_errno_index_used`
-- `test_every_errno_index_used_has_a_description`
-- `test_help_does_not_list_undefined_error_codes`
+### Worth a decision
 
-They need no container and run in under a second.
+`938_mariabackup.sh` uses `ERRNO[4]` for two different things - `INFO`
+"incremental backup done" at line 112 and `ERROR` "full backup directory
+missing" at line 97. One description cannot serve both; the text written covers
+the success case. Giving the error path its own code needs someone who knows the
+backup workflow.
+
+---
+
+# Open defects
 
 ## ~~D5 — scripts exit 0 regardless of what they found~~ ❌ WITHDRAWN, not a defect
 

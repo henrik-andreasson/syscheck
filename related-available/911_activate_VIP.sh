@@ -17,7 +17,7 @@ SCRIPTID=911
 
 
 # how many info/warn/error messages
-NO_OF_ERR=4
+NO_OF_ERR=6
 initscript $SCRIPTID $NO_OF_ERR
 
 

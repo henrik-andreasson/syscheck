@@ -16,7 +16,7 @@ SCRIPTNAME=mysql_db_encrypt_send_to_remote_machine
 SCRIPTID=931
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=5
 initscript $SCRIPTID $NO_OF_ERR
 
 # get command line arguments

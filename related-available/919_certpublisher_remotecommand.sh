@@ -16,7 +16,7 @@ SCRIPTNAME=certpublish_remote_command
 SCRIPTID=919
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR || exit 1;
 
 
@@ -73,7 +73,7 @@ fi
 
 CERTUID=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout | grep -oi 'uid=[[:alnum:][:space:]]*' |sed 's/uid=//gi')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$?"
 fi
 
 CERTCN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'cn=[[:alnum:][:space:]]*'  |sed 's/cn=//gi')
