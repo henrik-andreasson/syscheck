@@ -10,17 +10,17 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 | | |
 | --- | --- |
 | Tests written | 96 |
-| Passing (behaviour verified correct) | 91 |
-| Strict xfail (confirmed open defect) | 5 |
+| Passing (behaviour verified correct) | 92 |
+| Strict xfail (confirmed open defect) | 4 |
 | Failing unexpectedly | 0 |
 | Defects found | 19 (D5 withdrawn on review) |
-| Defects fixed in this pass | 9 |
+| Defects fixed in this pass | 10 |
 | Scripts fully covered | 2 of 38 (`sc_01`, `sc_20`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-91 passed, 5 xfailed in 103.62s
+92 passed, 4 xfailed in 103.37s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -246,6 +246,30 @@ interpreted by design (`C:\file` becomes a form feed). Volatile data belongs in
 the numbered arguments, which printf substitutes without interpreting. Scripts
 already do this; it is only a trap for anyone writing a new lang file.
 
+## D18 — the shipped OP5 URL was doubled ✅ FIXED
+`lib/printlogmess.sh:94`, `config/monitoring.conf`
+
+`config/monitoring.conf` sets
+
+```
+OP5_API_URL="https://op5servername/api/command/PROCESS_SERVICE_CHECK_RESULT"
+```
+
+and the code posted to `"${OP5_API_URL}/PROCESS_SERVICE_CHECK_RESULT"`, giving
+`.../PROCESS_SERVICE_CHECK_RESULT/PROCESS_SERVICE_CHECK_RESULT`. The code and
+the shipped config disagreed about who owns the endpoint, so the out-of-the-box
+configuration posted to the wrong URL.
+
+**Fix:** the config owns the full URL. The code no longer appends the endpoint.
+
+The Icinga side keeps the opposite split, because the code picks the *action*
+(`process-check-result`) and other actions exist: `ICINGA_API_URL` is the base
+`/v1/actions`, and its trailing slash was removed so the path no longer contains
+`//`.
+
+Covered by `test_op5_url_from_the_shipped_config_is_not_doubled`, and the whole
+monitoring suite now uses the shipped URL shapes rather than convenient ones.
+
 ---
 
 # Open defects
@@ -379,24 +403,6 @@ tick.
 
 *Found this pass; test lands with the `sc_44` suite in Phase 2.*
 
-## D18 — the shipped OP5 URL is doubled
-`lib/printlogmess.sh:86` + `config/monitoring.conf`
-
-`config/monitoring.conf` sets
-
-```
-OP5_API_URL="https://op5servername/api/command/PROCESS_SERVICE_CHECK_RESULT"
-```
-
-and line 86 posts to `"${OP5_API_URL}/PROCESS_SERVICE_CHECK_RESULT"`, producing
-`.../PROCESS_SERVICE_CHECK_RESULT/PROCESS_SERVICE_CHECK_RESULT`. Either the code
-should not append the endpoint or the shipped config should not include it;
-today they disagree, so the out-of-the-box config posts to the wrong URL.
-
-Cosmetic sibling: `ICINGA_API_URL` ends with `/` and line 105 adds another, so
-the Icinga path contains `//`. Harmless, but the same inconsistency.
-
-`test_monitoring_integration.py::test_op5_url_from_the_shipped_config_is_not_doubled`
 
 ---
 
@@ -465,7 +471,6 @@ empty pipe.
 
 2. **D16** — add a timeout to `sc_44`; a hanging check is worse than a failing
    one. Audit the other `openssl`/`curl` call sites for the same gap.
-3. **D18** — decide whether the endpoint lives in the code or the config.
 4. **D15 + D10** — one-word fixes, both currently losing a message.
 5. **D12** — `git rm --cached var/last_status`, add to `.gitignore`.
 6. **D8 + D9 + D13 + D14** — small and independent.

@@ -91,7 +91,7 @@ send_mess_to_monitoring(){
         j_check_name=$(json_escape "${check_name}")
         j_message=$(json_escape "${MESSAGE}")
 
-        sendresult=$(curl --silent --show-error -u "${OP5_USER}:${OP5_PASS}" --no-progress-bar -H 'content-type: application/json' -d "{\"host_name\":\"${j_host}\",\"service_description\":\"${j_check_name}\", \"status_code\":\"${status_code}\",\"plugin_output\":\"${j_message}\"}" "${OP5_API_URL}/PROCESS_SERVICE_CHECK_RESULT" 2>&1)
+        sendresult=$(curl --silent --show-error -u "${OP5_USER}:${OP5_PASS}" --no-progress-bar -H 'content-type: application/json' -d "{\"host_name\":\"${j_host}\",\"service_description\":\"${j_check_name}\", \"status_code\":\"${status_code}\",\"plugin_output\":\"${j_message}\"}" "${OP5_API_URL}" 2>&1)
 
         isresultok=$(echo "$sendresult" | grep "Successfully submitted" )
 

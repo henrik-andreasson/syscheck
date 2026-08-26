@@ -82,9 +82,9 @@ def emit(syscheck, level: str, backend: str, descr: str = "the check failed",
     syscheck.write_file(
         "/opt/syscheck/config/monitoring.conf",
         'ICINGA_USER="root"\nICINGA_PASS="secret"\n'
-        f'ICINGA_API_URL="http://127.0.0.1:{MOCK_PORT}/v1/actions/"\n'
+        f'ICINGA_API_URL="http://127.0.0.1:{MOCK_PORT}/v1/actions"\n'
         'OP5_USER="root"\nOP5_PASS="secret"\n'
-        f'OP5_API_URL="http://127.0.0.1:{MOCK_PORT}/api/command"\n',
+        f'OP5_API_URL="http://127.0.0.1:{MOCK_PORT}/api/command/PROCESS_SERVICE_CHECK_RESULT"\n',
     )
     syscheck.bash(
         "export SYSCHECK_HOME=/opt/syscheck; "
@@ -123,7 +123,7 @@ def test_icinga_receives_a_request_at_all(monitoring):
     reqs = requests_made(monitoring)
     assert len(reqs) == 1, reqs
     assert reqs[0]["method"] == "POST"
-    assert "process-check-result" in reqs[0]["path"]
+    assert reqs[0]["path"].startswith("/v1/actions/process-check-result")
     assert "host=" in reqs[0]["path"]
 
 
@@ -136,14 +136,6 @@ def test_icinga_maps_syscheck_level_to_exit_status(monitoring, level, status_cod
     assert "the check failed" in body["plugin_output"]
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="config/monitoring.conf already ends OP5_API_URL with "
-           "/PROCESS_SERVICE_CHECK_RESULT and printlogmess.sh:86 appends it "
-           "again, so the shipped config posts to "
-           "/PROCESS_SERVICE_CHECK_RESULT/PROCESS_SERVICE_CHECK_RESULT",
-)
 def test_op5_url_from_the_shipped_config_is_not_doubled(syscheck):
     syscheck.write_file("/usr/local/bin/mock-monitoring", MOCK_SERVER, mode=0o755)
     syscheck.exec(f"rm -f {MOCK_LOG}")
