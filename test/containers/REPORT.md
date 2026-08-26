@@ -9,237 +9,377 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 47 |
-| Passing (behaviour verified correct) | 34 |
-| Strict xfail (confirmed defect) | 13 |
+| Tests written | 92 |
+| Passing (behaviour verified correct) | 84 |
+| Strict xfail (confirmed open defect) | 8 |
 | Failing unexpectedly | 0 |
-| Distinct defects found | 14 |
-| Scripts fully covered | 1 of 38 (`sc_01`) |
-| Runtime | ~90s |
+| Defects found | 18 (D5 withdrawn on review) |
+| Defects fixed in this pass | 7 |
+| Scripts fully covered | 2 of 38 (`sc_01`, `sc_20`) + `logbook.sh` |
+| Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-34 passed, 13 xfailed in 92.81s
+84 passed, 8 xfailed in 140.63s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
-Each has a test that asserts the *correct* behaviour and is marked
-`xfail(strict=True)`, so fixing the bug turns the test into a failure — that is
-the signal to delete the marker.
+Open defects have a test asserting the *correct* behaviour marked
+`xfail(strict=True)`, so fixing one turns the test into a failure — that is the
+signal to delete the marker.
 
-## Defects
+---
 
-Ordered by blast radius. "Scope" is how many scripts the defect affects.
+# Fixed in this pass
 
-### D1 — `printlogmess` silently discards the message when any required argument is empty
-**Scope: all 38 scripts.** `lib/printlogmess.sh:150-167`
+## D1 — `printlogmess` aborted its caller and swallowed the message ✅ FIXED
+`lib/printlogmess.sh`
 
-If `-n`, `-i`, `-x` or `-d` receives an empty value, `printlogmess` prints a
-diagnostic and returns without writing to *any* sink — screen, syslog,
-`var/last_status`, the plain logfile, and the OP5/Icinga API all get nothing.
+The four validation guards ended in `exit`, not `return`. Since `printlogmess`
+is a *function*, that terminated the **calling script**. Verified: with one
+empty `FILESYSTEM[0]` and two healthy filesystems configured, `sc_01` produced
+**zero messages and exited 0** — a single typo in `config/01.conf` silently
+disabled disk monitoring for the whole host.
 
-Worse, the arguments are passed unquoted at every call site
-(`-x ${SCRIPTINDEX}`), so an empty variable does not arrive as an empty string;
-it vanishes and the *next* flag is consumed as its value. `-x "" -l E` becomes
-`-x -l`, `LEVEL` is never assigned, and the function aborts at `wrong type of
-LEVEL ()`.
+Compounding it, arguments are passed unquoted at every call site
+(`-x ${SCRIPTINDEX}`), so an empty variable does not arrive as an empty string —
+it vanishes, and the *next* flag is consumed as its value. `-x "" -l E` became
+`-x -l`, so `LEVEL` was never assigned and the function died at
+`wrong type of LEVEL ()`.
 
-Net effect: **a misconfigured check reports nothing at all rather than
-reporting that it is misconfigured.** For a monitoring system this is the worst
-possible failure mode — the operator sees a green board.
+**Fix:** each guard now reports the missing flag, the calling script and the
+offending call on stderr, then `return 1`. No `exit`, and no invented
+substitute values — a fabricated log line is worse than none. The getopt-failure
+path also returns instead of calling `schelp`, which used to dump help text into
+the log stream and then log a garbage message anyway. `-9` also gained its
+missing colon in the option string, without which `ARG9` — referenced in
+`JSONSTRING` — could never be set.
 
-`test_shared_library.py::test_printlogmess_with_an_empty_scriptindex_still_reports_something`
+Covered by 9 tests: one per missing field, both bad-level cases, the caller
+surviving, and a well-formed call still returning 0.
 
-### D2 — a typo'd command-line flag hangs the script forever
-**Scope: all 38 scripts + `syscheck.sh`.** `lib/libsyscheck.sh:17`
+## D2 — a typo'd command-line flag hung the script forever ✅ FIXED
+`lib/libsyscheck.sh:17`, `syscheck.sh:30`
 
-`default_script_getopt` declares short options `"hsvcin"` but the `case`
-statement has no arm for `-c` (`syscheck.sh:30` has the same problem with `-t`
-declared as `hsvct`). An unmatched arm means nothing shifts, and the enclosing
-`while true` loop spins on the same argument forever, burning a core.
+`default_script_getopt` declared short options `"hsvcin"` while the `case`
+handled `s v i n a h`. The two sets disagreed in both directions:
 
-```
-$ timeout 10 scripts-available/sc_01_diskusage.sh -c
-$ echo $?
-124
-```
+- **`c` declared, no case arm.** getopt accepted `-c`, no branch matched, so
+  nothing shifted and `while true` spun on the same argument forever at 100%
+  CPU. `timeout 5 sc_01_diskusage.sh -c` → exit 124. `syscheck.sh -c` had the
+  identical bug via its `"hsvct"` string. From cron that pins one core per tick.
+- **`a` had a case arm but was not declared.** GNU getopt writes a usable `--`
+  to stdout even when it fails, and there was no `exit` after `schelp`, so a
+  bogus flag printed the help text *and then ran the check anyway* — `-z`, `-a`
+  and a normal run all wrote the same 4 lines to `last_status`. `-a`, the
+  intended short form of `--scripthumanname`, could therefore never work.
 
-If this runs from cron the process accumulates: one stuck process per tick.
+**Fix:** option string aligned to `"hsvain"` (`syscheck.sh` to `"hsvt"`), a
+`*)` backstop arm added so an unhandled option can never reach the top of the
+loop, and `exit 1` after `schelp` on getopt failure.
 
-`test_shared_library.py::test_declared_but_unhandled_short_option_does_not_hang`
+Covered by 11 tests: four unknown-flag variants against `sc_01` and `syscheck.sh`,
+a check that a rejected flag writes nothing to any sink, and both the short and
+long form of all three metadata flags.
 
-### D3 — unquoted config expansion corrupts the check identity
-**Scope: `sc_01`, and the same pattern appears in every array-driven script.**
+## D3 — unquoted config expansion corrupted the check identity ✅ FIXED
 `scripts-available/sc_01_diskusage.sh:69`
 
 ```bash
 diskusage ${FILESYSTEM[$i]} ${USAGEPERCENT[$i]} ${WARN_PERCENT[$i]} ${SCRIPTINDEX}
 ```
 
-With `FILESYSTEM[0]="/mnt/data/dir with space"` the four arguments become seven,
-and every parameter shifts:
+With `FILESYSTEM[0]="/mnt/data/dir with space"` the four arguments became seven
+and everything shifted: `ERRLIMIT` became the word `with`, and `SCRIPTINDEX`
+became `95`. The index is not cosmetic — `send_mess_to_monitoring` builds the
+service name as `sc_${SCRIPTNAME}_${SCRIPTID}_${SCRIPTINDEX}`, so a corrupted
+index submits the result against a service that does not exist in Icinga/OP5.
+And the disk that was supposed to be checked never was.
 
-| intended | actual |
-| --- | --- |
-| `FILESYSTEM=/mnt/data/dir with space` | `/mnt/data/dir` |
-| `ERRLIMIT=95` | `with` |
-| `WARNLIMIT=90` | `space` |
-| `SCRIPTINDEX=01` | `95` |
+**Fix:** quoted the call site, the two `df` invocations, and the `-gt`
+comparisons.
 
-Observed output: `01-95-E-013-PKI ... Diskusage problems (/mnt/data/dir : df:
-/mnt/data/dir: No such file or directory)`. The script index is what
-nagios/icinga correlate alerts on, so this silently reassigns the alert to a
-different check id — and the disk that was supposed to be checked never was.
+## D4 — a config entry with an empty or missing value produced no message ✅ FIXED
+Consequence of D1 + D3.
 
-`test_sc_01_diskusage.py::test_filesystem_path_containing_spaces_is_checked_correctly`
+The guard clauses at `sc_01:33` and `sc_01:37`, written precisely to catch this,
+were **unreachable** — word splitting removed the empty argument before the
+function saw it. With D1 and D3 fixed they now fire:
 
-### D4 — a config entry with an empty or missing value produces no message
-**Scope: `sc_01`, likely all array-driven scripts.** Consequence of D1 + D3.
+```
+01-01-E-013-PKI ... ERROR - diskusage Diskusage problems (No filesystem specified : )
+01-02-I-011-PKI ... INFO - diskusage Diskusage ok (/mnt/tfs_a is 61 percent used...)
+01-03-I-011-PKI ... INFO - diskusage Diskusage ok (/mnt/tfs_b is 0 percent used...)
+```
 
-| config | intended | actual |
-| --- | --- | --- |
-| `FILESYSTEM[0]=""` | ERROR 013 "No filesystem specified" | nothing |
-| `USAGEPERCENT[0]` unset | ERROR 013 "No limit specified" | nothing, plus `[: default: integer expression expected` on stderr |
+The bad entry alarms, later entries are still checked, and the indexes are right.
 
-The two guard clauses at `sc_01:33` and `sc_01:37` that exist precisely to catch
-this are **unreachable** through the loop, because word splitting removes the
-empty argument before the function sees it.
+## D6 — `sc_20_errors_ejbcalog.sh` reported a clean log it never read ✅ FIXED
+`lib/tail_errors_from_ejbca_log.py:1`, `scripts-available/sc_20_errors_ejbcalog.sh:38`
 
-`test_sc_01_diskusage.py::test_empty_filesystem_entry_reports_a_config_error`,
-`::test_missing_usagepercent_reports_a_config_error`
+The helper's shebang was `#!/usr/bin/python`, which does not exist on Debian, so
+it exited 127. Verified against a log containing two genuine errors:
 
-### D5 — scripts exit 0 regardless of what they found
-**Scope: 31 of 38 scripts.**
+```
+2026-08-25 10:00:02,200 ERROR [org.ejbca.core] CA Token is disconnected
+2026-08-25 10:00:03,300 ERROR [org.ejbca.core] Error Connecting to EJBCA Database
 
-Every `sc_*.sh` header says the script name is "used when integrating with
-nagios/icinga", and nagios decides state from the **exit code**. `sc_01` exits 0
-after emitting `ERROR - Diskusage exceeded`. Only 7 scripts ever exit non-zero
-(`sc_07`, `sc_10`, `sc_12`, `sc_17`, `sc_18`, `sc_22`, `sc_23`) and they do not
-agree on a convention — `sc_18` uses `exit 3`, which in nagios terms is
-UNKNOWN, not CRITICAL.
+  -> 20-02-I-201-PKI ... INFO - ejbcaerrorlog No new errors in ejbca server log
+```
 
-Any integration that shells out to these scripts and checks `$?` sees success
-100% of the time.
+A disconnected CA token and a dead database connection, reported to monitoring
+as green. Commit `b8c636f` fixed the other two helpers and missed this one, so
+this check has been dead on every Debian host since the Python 2 sunset.
 
-`test_sc_01_diskusage.py::test_exit_code_is_nonzero_when_an_error_is_reported`
+Two things made it silent rather than loud: `sc_20:38` sent the helper's stderr
+to `/dev/null`, and it never checked the exit status — an empty `NEWERRORS`
+could not be told apart from "the helper never ran", and both took the INFO
+branch.
 
-### D6 — `sc_20_errors_ejbcalog.sh` cannot run on Debian at all
-**Scope: `sc_20`.** `lib/tail_errors_from_ejbca_log.py:1`
+**Fix:** shebang to `python3`; stderr captured instead of discarded; exit status
+checked, with a new `ERRNO[5]` / `DESCR[5]` ("Log checker tool failed") so
+"tool broken" is distinguishable in monitoring from "log missing" (`ERRNO[3]`)
+and from "log clean" (`ERRNO[1]`). The helper's `deltat` first-run notice moved
+from stdout to stderr, where its three sibling diagnostics already went — on
+stdout it was counted as a matched error line.
 
-The shebang is `#!/usr/bin/python`, which does not exist on Debian (or any
-distro since the Python 2 sunset). The helper exits 127 with *"cannot execute:
-required file not found"*, `NEWERRORS` is empty, and `sc_20` reports "no new
-errors" — for an EJBCA log it never read.
+Covered by 10 tests: clean log, errors found, position-file resume across runs,
+appended errors, `IGNORE[]` filtering, missing logfile, a helper that cannot
+start, a helper that crashes, and the diagnostics-not-counted-as-errors case.
 
-Commit `b8c636f` ("Fix unambigous/incorrect python shebang") fixed
-`cmp_dates.py` and `list-pcsc-readers.py` and missed this one.
+**Watch out when patching these scripts:** `initscript` sets `set -o noclobber`
+(`libsyscheck.sh:53`), so a plain `2>"$file"` into an existing `mktemp` file
+fails with "cannot overwrite existing file". The fix needs `2>|`. The test suite
+caught this in the first version of the patch.
 
-`test_packaging.py::test_python_helpers_are_executable_on_a_stock_debian`
+## D7 — `logbook.sh` could not display any entry, and `--read` never terminated ✅ FIXED
+`logbook.sh:91`, `logbook.sh:108`, `logbook.sh:123`
 
-### D7 — `logbook.sh --list` is dead code
-**Scope: `logbook.sh`.** Lines 91 and 108
+Two independent defects on the same code path.
+
+The JSON renderer was
 
 ```bash
 echo $row | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["LEGACYFMT"]'
 ```
 
-Two problems at once: bare `python` (absent on Debian) and Python 2 `print`
-syntax (a `SyntaxError` even where `python` exists). Listing the logbook emits
-nothing.
+which is wrong twice over: bare `python` does not exist on Debian, and
+`print obj[...]` is Python 2 syntax that would be a `SyntaxError` anywhere it
+did exist. Every logbook entry was invisible.
 
-`test_packaging.py::test_logbook_list_renders_entries`
+Separately, `logbook.sh:123` looped on `while [ true ]` with a bare `read a`.
+Whenever stdin is not a terminal — cron, a pipe, `< /dev/null` — `read` returns
+immediately at EOF and the loop spins forever, walking one day further back on
+each pass and spawning a `date`, a `grep` and a `python` every time. This is the
+same shape as D2 and it was found the hard way: it hung the test suite for the
+full 600s timeout.
 
-### D8 — the "syscheck is on hold" notice prints the literal string `00`
-**Scope: all 38 scripts.** `lib/libsyscheck.sh:82`
+Verified before and after against the same logbook file:
+
+```
+HEAD (before fix)    exit=124   renders_entry=False
+     | logbook.sh: line 108: python: command not found
+fixed                exit=0     renders_entry=True
+     | 701-00-I-7011-PKI 20260825 09:00:00 h: INFO - logbook restarted the CA service
+```
+
+**Fix:** the two duplicated one-liners replaced by a single
+`render_logbook_entries` helper that runs one `python3` for the whole batch
+rather than one process per row, and prints an unparseable row verbatim instead
+of dying on it, so one corrupt line cannot hide the rest of the day. `read a`
+became `read a || break`. `logbook.sh` also got the D2 treatment its getopt
+block was missing: `exit 1` after `schelp`, and a `*)` backstop arm.
+
+Covered by 7 tests in `test_logbook.py`, all driven as an unprivileged user
+because `logbook.sh` refuses to run as root.
+
+**A note on the evidence:** the original D7 entry cited
+`test_packaging.py::test_logbook_list_renders_entries`. That test was invalid —
+it passed a `--list` flag that does not exist and ran as root, so it never
+reached the renderer at all. It has been deleted and replaced by the real suite.
+The defect itself was genuine, as the before/after above shows.
+
+---
+
+# Open defects
+
+## ~~D5 — scripts exit 0 regardless of what they found~~ ❌ WITHDRAWN, not a defect
+
+I originally filed this on the assumption that syscheck scripts are nagios
+plugins whose exit status nagios reads. They are not. Syscheck runs from cron
+and **pushes** a passive check result to the Icinga/OP5 HTTP API via
+`send_mess_to_monitoring`, which maps the message level to a `status_code`.
+Nothing consumes the scripts' exit status, so exiting 0 is correct and
+deliberate.
+
+The real integration contract is the API payload, which was untested. Testing it
+turned up D17 and D18 below. `sc_01`'s exit code is now pinned at 0 by
+`test_exit_code_is_zero_even_when_an_error_is_reported` so nobody "fixes" it.
+
+## D8 — the "syscheck is on hold" notice prints the literal string `00`
+`lib/libsyscheck.sh:82`
 
 ```bash
 printf "00" "0" $WARN "00" "SYSCHECK IS ON HOLD BY: ${ONHOLDBY} OPERATION CANCELED SCRIPTID: ${SCRIPTID}"
 ```
 
-The format string contains no conversion specifiers, so `printf` writes `00` and
-throws away all five arguments. When maintenance puts syscheck on hold the
-operator sees `00` and no explanation of why every check went quiet.
+The format string has no conversion specifiers, so `printf` writes `00` and
+discards all five arguments. When maintenance puts syscheck on hold the operator
+sees `00` and no explanation of why every check went quiet.
 
 `test_shared_library.py::test_syscheck_on_hold_tells_the_operator_who_holds_it`
 
-### D9 — the on-hold path hard-depends on `sudo`
-**Scope: all 38 scripts.** `lib/libsyscheck.sh:81`
+## D9 — the on-hold path hard-depends on `sudo`
+`lib/libsyscheck.sh:81`
 
 The hold notice is logged via `sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh`.
-Where `sudo` is not installed — or where syscheck already runs as root, which is
-the normal case — this prints `sudo: command not found` and the hold is never
-recorded in syslog.
+Where `sudo` is absent — or where syscheck already runs as root, the normal
+case — this prints `sudo: command not found` and the hold is never recorded.
 
 `test_shared_library.py::test_syscheck_on_hold_is_logged_without_requiring_sudo`
 
-### D10 — `sc_19_alive.sh` reports `[3]` instead of a message
-**Scope: `sc_19`.** `scripts-available/sc_19_alive.sh:27`
+## D10 — `sc_19_alive.sh` reports `[3]` instead of a message
+`scripts-available/sc_19_alive.sh:27`
 
 `-d "$DESCR[3]"` should be `-d "${DESCR[3]}"`. Bash expands `$DESCR` as
-`${DESCR[0]}` (unset) followed by the literal text `[3]`:
+`${DESCR[0]}` (unset) followed by the literal `[3]`:
 
 ```
-19-01-I-193-PKI 20260825 16:08:55 syscheck-test: INFO - alive [3]
+19-01-I-193-PKI ... INFO - alive [3]
 ```
 
 The heartbeat message the script exists to send is empty.
 
-*Confirmed by observation; the test lands with the `sc_19` suite in Phase 1.*
+*Confirmed by observation; test lands with the `sc_19` suite in Phase 1.*
 
-### D11 — `sc_32_check_db_sync.sh` is disabled in place
-**Scope: `sc_32`.** `scripts-available/sc_32_check_db_sync.sh:33`
+## D11 — `sc_32_check_db_sync.sh` is disabled in place
+`scripts-available/sc_32_check_db_sync.sh:33`
 
-The script contains a hard-coded `echo "This script is broken"` followed by
-`exit`, with the real comparison logic stranded as dead code below it. In a
-default install it never reaches that line either — it exits earlier because
-`$SYSCHECK_HOME/database-replication/808-test-table-update-and-check-master-and-slave.sh`
-is not shipped, and reports:
+A hard-coded `echo "This script is broken"` followed by `exit`, with the real
+comparison logic stranded as dead code below. In a default install it exits even
+earlier, because the `808-test-table-update-and-check-master-and-slave.sh` it
+requires is not shipped, and emits a permanent ERROR into monitoring. Note the
+index is `00`, not `01` — the early-exit path returns before `addOneToIndex`, so
+this is the only message in the system using index `00`.
 
-```
-32-00-E-322-PKI ... ERROR - db_sync DB not in sync ... missing script
-```
+*Confirmed by observation; test lands with the `sc_32` suite in Phase 1.*
 
-So a check that is *known broken* emits a permanent ERROR into monitoring.
-Note also the script index is `00`, not `01` — the early-exit path returns
-before `addOneToIndex`, so this message is the only one in the system using
-index `00`.
+## D12 — the package ships 291 lines of someone else's status
+`var/last_status`
 
-*Confirmed by observation; the test lands with the `sc_32` suite in Phase 1.*
-
-### D12 — the package ships 291 lines of someone else's status
-**Scope: install / packaging.** `var/last_status`
-
-`var/last_status` is committed to git containing status from a Nov-2025 build
-container (`eba9e0811f66`, `b998b92e8ac5`), including `ERROR` lines.
-`lib/release.sh:83` copies `var/` into the package, so a freshly installed
-syscheck reports historical failures from another machine before it has run
-once. Anything that reads `last_status` — `console_syscheck.sh`, `929_filter`,
-`930_send_filtered_result_to_remote_machine` — will pick them up.
+Committed to git containing status from a Nov-2025 build container
+(`eba9e0811f66`, `b998b92e8ac5`), including `ERROR` lines. `lib/release.sh:83`
+copies `var/` into the package, so a freshly installed syscheck reports
+historical failures from another machine before it has run once. Anything
+reading `last_status` — `console_syscheck.sh`, `929_filter`, `930_send…` — picks
+them up.
 
 `test_packaging.py::test_fresh_install_has_no_pre_existing_status`
 
-### D13 — `df` is executed twice per filesystem
-**Scope: `sc_01`.** `sc_01:45` and `sc_01:51`
+## D13 — `df` is executed twice per filesystem
+`sc_01:45` and `sc_01:51`
 
-The first call captures output for the error path, the second re-runs `df` to
-extract the percentage. On a hung NFS mount that doubles the stall, and the
-percentage reported to the operator is not the one the threshold was evaluated
-against.
+The first call captures output for the error path, the second re-runs `df` for
+the percentage. On a hung NFS mount that doubles the stall, and the percentage
+reported is not the one the threshold was evaluated against.
 
 `test_sc_01_diskusage.py::test_df_is_only_executed_once_per_filesystem`
 
-### D14 — `diskusage()` uses `return -1`
-**Scope: `sc_01`.** `sc_01:34`, `sc_01:38`
+## D14 — `diskusage()` uses `return -1`
+`sc_01:34`, `sc_01:38`
 
-`return -1` is not valid in bash; the status wraps to 255. The return value is
-never checked by the caller either way, so this is cosmetic — but it signals the
-guard clauses were meant to do something they do not do (see D4).
+Not valid in bash; wraps to 255. The caller ignores it either way. Cosmetic, but
+it signals the guards were meant to do something they did not (see D4).
 
 *No test; noted for the cleanup pass.*
 
-## What is verified working
+## D15 — `sc_41_ra_verifier.sh` references a variable that does not exist
+`scripts-available/sc_41_ra_verifier.sh:29`
 
-`sc_01_diskusage.sh` — 22 passing tests against real tmpfs filesystems filled to
+```bash
+-d "$DESCR_3"
+```
+
+There is no `DESCR_3`; the lang file defines `DESCR[3]="RA : health check tool
+failure"`. Same class as D10. Under the old library this hit the `DESCR must be
+passed` guard and **killed the script**; with D1 fixed it now surfaces:
+
+```
+printlogmess: missing description (-d), called by sc_41_ra_verifier.sh: -n ra_verifier -i 41 -x 00 -l E -e 413 -d
+```
+
+Found by sweeping all 38 scripts after the D1 fix — it was invisible before.
+Note `-x 00`: `SCRIPTINDEX` is also never incremented on this path.
+
+*Found this pass; test lands with the `sc_41` suite in Phase 1.*
+
+## D16 — `sc_44_cert_from_webserver.sh` hangs indefinitely on an unreachable host
+`scripts-available/sc_44_cert_from_webserver.sh:66`
+
+```bash
+echo "" | openssl s_client -connect $ARGCONNECT -servername $SERVICENAME >> $outname 2>&1
+```
+
+No timeout. Against the shipped config (`192.168.99.21`, unroutable here) the
+script runs past 120s with zero output and has to be killed. **Verified
+pre-existing** — it behaves identically with the `HEAD` versions of
+`libsyscheck.sh`/`printlogmess.sh`/`syscheck.sh` restored, so it is not a
+regression from this pass. `sc_10_ocsp.sh` passes `-timeout` to `openssl ocsp`;
+`sc_44` passes nothing.
+
+Same failure mode as D2 from a monitoring standpoint: a stuck process per cron
+tick.
+
+*Found this pass; test lands with the `sc_44` suite in Phase 2.*
+
+## D17 — every Icinga check result is submitted as literal, unexpanded text
+**Scope: the entire Icinga integration.** `lib/printlogmess.sh:105`
+
+```bash
+curl ... -d '{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }'
+```
+
+The payload is **single-quoted**, so bash never expands any of it. Verified
+against a mock endpoint — this is the exact body Icinga receives:
+
+```
+POST /v1/actions//process-check-result?host=syscheck-test
+{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }
+```
+
+No status, no message, and not even valid JSON — `$status_code` is a bare token
+where a number belongs. Anyone running with `SENDTO_ICINGA=1` gets nothing
+usable, for every check, on every host.
+
+The OP5 branch fifteen lines above builds the same thing correctly with escaped
+double quotes, which is presumably where the working version lives.
+
+`test_monitoring_integration.py::test_icinga_maps_syscheck_level_to_exit_status`
+
+## D18 — the shipped OP5 URL is doubled
+`lib/printlogmess.sh:86` + `config/monitoring.conf`
+
+`config/monitoring.conf` sets
+
+```
+OP5_API_URL="https://op5servername/api/command/PROCESS_SERVICE_CHECK_RESULT"
+```
+
+and line 86 posts to `"${OP5_API_URL}/PROCESS_SERVICE_CHECK_RESULT"`, producing
+`.../PROCESS_SERVICE_CHECK_RESULT/PROCESS_SERVICE_CHECK_RESULT`. Either the code
+should not append the endpoint or the shipped config should not include it;
+today they disagree, so the out-of-the-box config posts to the wrong URL.
+
+Cosmetic sibling: `ICINGA_API_URL` ends with `/` and line 105 adds another, so
+the Icinga path contains `//`. Harmless, but the same inconsistency.
+
+`test_monitoring_integration.py::test_op5_url_from_the_shipped_config_is_not_doubled`
+
+---
+
+# What is verified working
+
+`sc_01_diskusage.sh` — 27 passing tests against real tmpfs filesystems filled to
 known percentages:
 
 - INFO / WARN / ERROR selection across the `USAGEPERCENT` / `WARN_PERCENT` pair
@@ -248,61 +388,69 @@ known percentages:
 - `WARN_PERCENT` omitted, and the literal `default` keyword, both fall back to
   the error limit
 - a non-existent filesystem reports ERROR 013 and forwards the `df` error text
-- a broken entry does not stop later entries from being checked
+- a filesystem path containing spaces is checked correctly (D3 regression guard)
+- an empty entry or missing limit reports a config error and does not stop later
+  entries (D1/D4 regression guard)
+- a broken entry does not stop the remaining filesystems
 - script indexes are per-filesystem, zero-padded, and keep counting past 9
 - all four output sinks: screen, `var/last_status` (OLDFMT), the plain logfile
   (NEWFMT), and syslog via a real `rsyslogd`
 - all three formats: NEWFMT, OLDFMT, and JSON with correct `EXTRAARG*` mapping
 - silence without `--screen`, while still writing the other sinks
-- `--scriptid`, `--scriptname`, `--scripthumanname`, `--help`
 - `--help` does not emit a fake check result
 
-Shared library — 5 passing tests: `addOneToIndex` padding, refusal to run with a
-missing config or language file, `MESSAGELENGTH` truncation, and the on-hold file
-genuinely suppressing the check.
+Monitoring integration — 5 passing tests against a mock Icinga/OP5 endpoint:
+the OP5 payload maps I/W/E to `status_code` 0/1/2 correctly, carries
+`sc_<name>_<id>_<index>` as the service description and the rendered message as
+`plugin_output`, and is valid JSON. This is the path that actually feeds
+monitoring and it had no coverage at all before this pass.
+
+Shared library — 20 passing tests: `addOneToIndex` padding, refusal to run with a
+missing config or language file, `MESSAGELENGTH` truncation, the on-hold file
+suppressing the check, the full `printlogmess` validation contract, and the
+argument parser (unknown flags rejected without hanging or running the check;
+short and long metadata flags).
 
 Install-wide — every script answers `--scriptid`/`--scriptname`, and all 38 ids
 are unique.
 
-## Notes on the test infrastructure
+# Notes on the test infrastructure
 
-The suite is pytest + testcontainers under `test/containers/`. It does not
-replace the existing bats suites; those check that each script prints *a* line
-starting with its id, which is a smoke test. These check *which* line, at which
-level, with which error number, in which sink.
+pytest + testcontainers under `test/containers/`. It does not replace the
+existing bats suites; those check that each script prints *a* line starting with
+its id. These check *which* line, at which level, with which error number, in
+which sink.
 
-Two decisions worth flagging:
-
-**Real filesystems over a stubbed `df`.** `sc_01` is driven against tmpfs mounts
-that the harness fills to a measured percentage, so `df -Ph` parsing is covered
-for real. The same principle applies through the plan: real MariaDB, Redis,
-nginx, MinIO and a real OpenSSL OCSP responder rather than fake binaries,
+**Real filesystems over a stubbed `df`.** `sc_01` runs against tmpfs mounts the
+harness fills to a measured percentage. The same principle applies through the
+plan: real MariaDB, Redis, nginx, MinIO and a real OpenSSL OCSP responder
 wherever the dependency can be containerised.
 
 **Vendor tooling is the fidelity gap.** `omreport`, `ilorest`, `ssacli`,
 `lunacm` and `mdadm` cannot be containerised, so Phase 3 fakes them. Those tests
-will prove the parsing and threshold logic but not that the real tools speak
-that dialect. One captured output sample per tool from production hardware would
-be worth more than any number of additional invented cases — that is the single
-most useful thing to collect before Phase 3.
+will prove the parsing and threshold logic but not that the real tools speak that
+dialect. One captured output sample per tool from production hardware is the
+single most useful thing to collect before Phase 3.
 
-**Mid-session change picked up.** `lib/printlogmess.sh` was edited during this
-work to send `--screen` output to stderr (and to stop leaking `IFS=$'\n'` into
-the caller). The harness reads both streams, so the suite covers the new
-behaviour. Worth checking `console_syscheck.sh` and any downstream consumer that
-pipes script stdout, since they will now see an empty pipe.
+**`--screen` now goes to stderr.** `lib/printlogmess.sh` was changed during this
+work to write screen output to stderr and to stop leaking `IFS=$'\n'` into the
+caller. The harness reads both streams. Worth checking `console_syscheck.sh` and
+any downstream consumer that pipes script stdout, since they will now see an
+empty pipe.
 
-## Recommended order of fixes
+# Recommended order for the remaining fixes
 
-D1 and D3 are the same root cause — unquoted expansion — and fixing them
-requires quoting call sites throughout, so they are best done as one pass with
-`shellcheck` wired into CI to keep them from coming back. That single pass also
-resolves D4.
+1. **D17** — one pair of quotes. If anyone runs with `SENDTO_ICINGA=1`, every
+   check result they have ever submitted was unexpanded literal text. Nothing
+   else on this list is silently wrong at that scale.
+2. **D16** — add a timeout to `sc_44`; a hanging check is worse than a failing
+   one. Audit the other `openssl`/`curl` call sites for the same gap.
+3. **D18** — decide whether the endpoint lives in the code or the config.
+4. **D15 + D10** — one-word fixes, both currently losing a message.
+5. **D12** — `git rm --cached var/last_status`, add to `.gitignore`.
+6. **D8 + D9 + D13 + D14** — small and independent.
+7. **D11** — decide whether `sc_32` is repaired or removed; today it is neither.
 
-1. **D1 + D3 + D4** — quote every expansion; add `shellcheck` to `.github/workflows/ci.yml`
-2. **D2** — add the missing `case` arms, or a `*) shift;;` fallback
-3. **D6 + D7** — `python` → `python3`, and port the two `logbook.sh` one-liners
-4. **D5** — decide a convention (nagios: 0/1/2/3) and apply it uniformly
-5. **D12** — `git rm --cached var/last_status`, add to `.gitignore`
-6. **D8 + D9 + D10 + D13 + D14** — small, independent
-7. **D11** — decide whether `sc_32` is repaired or removed; today it is neither
+A `shellcheck` step in `.github/workflows/ci.yml` would have caught D1, D3, D10,
+D15 and D17 statically (SC2016 flags exactly the D17 single-quote mistake), and
+is the cheapest guard against the whole class returning.
