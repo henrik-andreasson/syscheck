@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 98 |
-| Passing (behaviour verified correct) | 97 |
+| Tests written | 107 |
+| Passing (behaviour verified correct) | 106 |
 | Strict xfail (confirmed open defect) | 1 |
 | Failing unexpectedly | 0 |
 | Defects found | 20 (D5 withdrawn on review) |
-| Defects fixed in this pass | 14 |
-| Scripts fully covered | 2 of 38 (`sc_01`, `sc_20`) + `logbook.sh` |
+| Defects fixed in this pass | 15 |
+| Scripts fully covered | 3 of 38 (`sc_01`, `sc_20`, `sc_44`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-97 passed, 1 xfailed in 135.32s
+106 passed, 1 xfailed in 170.02s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -356,6 +356,41 @@ been evaluated against.
 `test_sc_01_diskusage.py::test_df_is_only_executed_once_per_filesystem` puts a
 counting `df` shim on PATH and asserts exactly one invocation.
 
+## D16 — `sc_44_cert_from_webserver.sh` hung indefinitely on an unreachable host ✅ FIXED
+`scripts-available/sc_44_cert_from_webserver.sh:66`
+
+```bash
+echo "" | openssl s_client -connect $ARGCONNECT -servername $SERVICENAME >> $outname 2>&1
+```
+
+No timeout. Against the shipped config (`192.168.99.21`, unroutable here) the
+script ran past 120s with zero output and had to be killed. Verified
+pre-existing, not a regression from this pass. `openssl s_client` has no
+connect-timeout option, so a `timeout` wrapper is the reliable fix.
+
+**Fix:** `TIMEOUT=5` added to `config/44.conf`, applied as
+`timeout "${TIMEOUT:-5}"` so an older config file without the setting still
+gets the 5s default.
+
+Two further defects had to be cleared for that timeout to be of any use:
+
+- `if [ "x$outname" == "x" ]` tested the `mktemp` *filename*, which is never
+  empty, instead of `check_outname`, the grep result. The "Cant get server
+  certificate" branch was therefore unreachable, and a failed handshake fell
+  through to parsing an empty file with `openssl x509`. Now tests
+  `check_outname`.
+- `NO_OF_ERR=5` while the script uses `ERRNO[6]`, `ERRNO[7]` and `ERRNO[8]`,
+  which `initscript` therefore never generated. Those three call sites passed an
+  empty `-e`, and since the `-e` was unquoted the flag swallowed the following
+  `-d` - the same argument-shifting failure as D3, visible in old logs as
+  `E-44-d-PKI`. The lang file already defined `DESCR[1]` through `DESCR[8]`, so
+  `NO_OF_ERR` is now 8.
+
+Covered by 9 tests, including three against a real `openssl s_server` holding a
+generated certificate of a chosen lifetime (valid / inside the warn window /
+inside the error window), the timeout being configurable, and the 5s default
+applying when the setting is absent.
+
 ---
 
 # Open defects
@@ -440,97 +475,3 @@ Note `-x 00`: `SCRIPTINDEX` is also never incremented on this path.
 
 *Found this pass; test lands with the `sc_41` suite in Phase 1.*
 
-## D16 — `sc_44_cert_from_webserver.sh` hangs indefinitely on an unreachable host
-`scripts-available/sc_44_cert_from_webserver.sh:66`
-
-```bash
-echo "" | openssl s_client -connect $ARGCONNECT -servername $SERVICENAME >> $outname 2>&1
-```
-
-No timeout. Against the shipped config (`192.168.99.21`, unroutable here) the
-script runs past 120s with zero output and has to be killed. **Verified
-pre-existing** — it behaves identically with the `HEAD` versions of
-`libsyscheck.sh`/`printlogmess.sh`/`syscheck.sh` restored, so it is not a
-regression from this pass. `sc_10_ocsp.sh` passes `-timeout` to `openssl ocsp`;
-`sc_44` passes nothing.
-
-Same failure mode as D2 from a monitoring standpoint: a stuck process per cron
-tick.
-
-*Found this pass; test lands with the `sc_44` suite in Phase 2.*
-
-
----
-
-# What is verified working
-
-`sc_01_diskusage.sh` — 27 passing tests against real tmpfs filesystems filled to
-known percentages:
-
-- INFO / WARN / ERROR selection across the `USAGEPERCENT` / `WARN_PERCENT` pair
-- boundary semantics: usage exactly at the limit is not an error (`-gt`), one
-  percent over is
-- `WARN_PERCENT` omitted, and the literal `default` keyword, both fall back to
-  the error limit
-- a non-existent filesystem reports ERROR 013 and forwards the `df` error text
-- a filesystem path containing spaces is checked correctly (D3 regression guard)
-- an empty entry or missing limit reports a config error and does not stop later
-  entries (D1/D4 regression guard)
-- a broken entry does not stop the remaining filesystems
-- script indexes are per-filesystem, zero-padded, and keep counting past 9
-- all four output sinks: screen, `var/last_status` (OLDFMT), the plain logfile
-  (NEWFMT), and syslog via a real `rsyslogd`
-- all three formats: NEWFMT, OLDFMT, and JSON with correct `EXTRAARG*` mapping
-- silence without `--screen`, while still writing the other sinks
-- `--help` does not emit a fake check result
-
-Monitoring integration — 5 passing tests against a mock Icinga/OP5 endpoint:
-the OP5 payload maps I/W/E to `status_code` 0/1/2 correctly, carries
-`sc_<name>_<id>_<index>` as the service description and the rendered message as
-`plugin_output`, and is valid JSON. This is the path that actually feeds
-monitoring and it had no coverage at all before this pass.
-
-Shared library — 20 passing tests: `addOneToIndex` padding, refusal to run with a
-missing config or language file, `MESSAGELENGTH` truncation, the on-hold file
-suppressing the check, the full `printlogmess` validation contract, and the
-argument parser (unknown flags rejected without hanging or running the check;
-short and long metadata flags).
-
-Install-wide — every script answers `--scriptid`/`--scriptname`, and all 38 ids
-are unique.
-
-# Notes on the test infrastructure
-
-pytest + testcontainers under `test/containers/`. It does not replace the
-existing bats suites; those check that each script prints *a* line starting with
-its id. These check *which* line, at which level, with which error number, in
-which sink.
-
-**Real filesystems over a stubbed `df`.** `sc_01` runs against tmpfs mounts the
-harness fills to a measured percentage. The same principle applies through the
-plan: real MariaDB, Redis, nginx, MinIO and a real OpenSSL OCSP responder
-wherever the dependency can be containerised.
-
-**Vendor tooling is the fidelity gap.** `omreport`, `ilorest`, `ssacli`,
-`lunacm` and `mdadm` cannot be containerised, so Phase 3 fakes them. Those tests
-will prove the parsing and threshold logic but not that the real tools speak that
-dialect. One captured output sample per tool from production hardware is the
-single most useful thing to collect before Phase 3.
-
-**`--screen` now goes to stderr.** `lib/printlogmess.sh` was changed during this
-work to write screen output to stderr and to stop leaking `IFS=$'\n'` into the
-caller. The harness reads both streams. Worth checking `console_syscheck.sh` and
-any downstream consumer that pipes script stdout, since they will now see an
-empty pipe.
-
-# Recommended order for the remaining fixes
-
-2. **D16** — add a timeout to `sc_44`; a hanging check is worse than a failing
-   one. Audit the other `openssl`/`curl` call sites for the same gap.
-4. **D15 + D10** — one-word fixes, both currently losing a message.
-6. **D8 + D14** — small and independent.
-7. **D11** — decide whether `sc_32` is repaired or removed; today it is neither.
-
-A `shellcheck` step in `.github/workflows/ci.yml` would have caught D1, D3, D10,
-D15 and D17 statically (SC2016 flags exactly the D17 single-quote mistake), and
-is the cheapest guard against the whole class returning.

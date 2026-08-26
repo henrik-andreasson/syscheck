@@ -16,7 +16,7 @@ SCRIPTNAME=cert_from_webserver
 SCRIPTID=44
 
 # how many info/warn/error messages
-NO_OF_ERR=5
+NO_OF_ERR=8
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
@@ -63,9 +63,9 @@ checkhttpscert () {
 
   cd /tmp
   outname=$(mktemp)
-  echo "" | openssl s_client -connect $ARGCONNECT -servername $SERVICENAME >> $outname 2>&1
+  echo "" | timeout "${TIMEOUT:-5}" openssl s_client -connect $ARGCONNECT -servername $SERVICENAME >> $outname 2>&1
   check_outname=$(cat "$outname" | grep "Server certificate")
-  if [ "x$outname" == "x" ] ; then
+  if [ "x$check_outname" == "x" ] ; then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${SERVICENAME}" -2 "${PORTNO}" -3 "${HOST_IP}" -4 "${ERRDAYS}"
       ERRSTATUS=$(expr $ERRSTATUS + 1)
       GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${DESCR[7]}"
