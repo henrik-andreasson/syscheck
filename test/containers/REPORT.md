@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 109 |
-| Passing (behaviour verified correct) | 108 |
+| Tests written | 118 |
+| Passing (behaviour verified correct) | 117 |
 | Strict xfail (confirmed open defect) | 1 |
 | Failing unexpectedly | 0 |
 | Defects found | 21 (D5 and D8 withdrawn on review) |
-| Defects fixed in this pass | 16 |
-| Scripts fully covered | 3 of 38 (`sc_01`, `sc_20`, `sc_44`) + `logbook.sh` |
-| Runtime | ~100s |
+| Defects fixed in this pass | 18 |
+| Scripts fully covered | 5 of 38 (`sc_01`, `sc_19`, `sc_20`, `sc_41`, `sc_44`) + `logbook.sh` |
+| Runtime | ~180s |
 
 ```
 $ ./run.sh -q
-108 passed, 1 xfailed in 169s
+117 passed, 1 xfailed in 179.36s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -468,6 +468,51 @@ was given its own code from the free range (1, 8, 14, 15, 18, 20, 22):
 condition from the prepare step. Monitoring can now distinguish a successful
 incremental backup from one that never ran.
 
+## D10 — `sc_19_alive.sh` reported `[3]` instead of its heartbeat ✅ FIXED
+`scripts-available/sc_19_alive.sh:27`
+
+`-d "$DESCR[3]"` should have been `-d "${DESCR[3]}"`. Bash expanded `$DESCR` as
+`${DESCR[0]}`, which is unset, followed by the literal text `[3]`:
+
+```
+19-01-I-193-PKI ... INFO - alive [3]
+```
+
+The one message this script exists to send carried no content. Now:
+
+```
+19-01-I-193-PKI ... INFO - alive I'm alive
+```
+
+Covered by 3 tests in `test_sc_19_alive.py`, including the round trip to syslog.
+
+## D15 — `sc_41_ra_verifier.sh` dropped its "tool missing" message ✅ FIXED
+`scripts-available/sc_41_ra_verifier.sh:29`
+
+`-d "$DESCR_3"` named a variable that does not exist; the language file defines
+`DESCR[3]`. `printlogmess` received an empty description and rejected the call,
+so a missing RA verifier tool was reported nowhere. Found by the all-script
+sweep after D1 was fixed - before that, the old guards killed the script here
+instead.
+
+Two further problems on the same three lines:
+
+- `SCRIPTINDEX` was never incremented, so this was the only message in the
+  script using index `00`.
+- The script carried on and executed the tool it had just reported missing,
+  producing a second, meaningless set of results from an empty output file. It
+  now exits.
+
+`DESCR[3]` gained a `%s` so the message names the path that was not found:
+
+```
+41-01-E-413-PKI ... ERROR - ra_verifier RA : health check tool failure (/opt/certificate-services/vcc-factoryra-verifier/verify-factoryra.sh)
+```
+
+Covered by 6 tests in `test_sc_41_ra_verifier.py` driving a fake verifier: all
+three checks passing, all three failing, one failing in isolation, the missing
+tool, and that a missing tool stops the run.
+
 ---
 
 # Open defects
@@ -498,20 +543,6 @@ honour `--screen`. The bare `printf` is what an operator sees on stdout. The
 message itself does reach syslog, `last_status` and the monitoring API - see D9
 and D19.
 
-## D10 — `sc_19_alive.sh` reports `[3]` instead of a message
-`scripts-available/sc_19_alive.sh:27`
-
-`-d "$DESCR[3]"` should be `-d "${DESCR[3]}"`. Bash expands `$DESCR` as
-`${DESCR[0]}` (unset) followed by the literal `[3]`:
-
-```
-19-01-I-193-PKI ... INFO - alive [3]
-```
-
-The heartbeat message the script exists to send is empty.
-
-*Confirmed by observation; test lands with the `sc_19` suite in Phase 1.*
-
 ## D11 — `sc_32_check_db_sync.sh` is disabled in place
 `scripts-available/sc_32_check_db_sync.sh:33`
 
@@ -531,24 +562,4 @@ Not valid in bash; wraps to 255. The caller ignores it either way. Cosmetic, but
 it signals the guards were meant to do something they did not (see D4).
 
 *No test; noted for the cleanup pass.*
-
-## D15 — `sc_41_ra_verifier.sh` references a variable that does not exist
-`scripts-available/sc_41_ra_verifier.sh:29`
-
-```bash
--d "$DESCR_3"
-```
-
-There is no `DESCR_3`; the lang file defines `DESCR[3]="RA : health check tool
-failure"`. Same class as D10. Under the old library this hit the `DESCR must be
-passed` guard and **killed the script**; with D1 fixed it now surfaces:
-
-```
-printlogmess: missing description (-d), called by sc_41_ra_verifier.sh: -n ra_verifier -i 41 -x 00 -l E -e 413 -d
-```
-
-Found by sweeping all 38 scripts after the D1 fix — it was invisible before.
-Note `-x 00`: `SCRIPTINDEX` is also never incremented on this path.
-
-*Found this pass; test lands with the `sc_41` suite in Phase 1.*
 
