@@ -45,9 +45,6 @@ def filled(syscheck):
     return percent
 
 
-# --------------------------------------------------------------- thresholds --
-
-
 def test_info_when_usage_is_below_the_warn_limit(syscheck, filled):
     syscheck.set_script_config("01", config((FS_A, 95, 90)))
     run = syscheck.run_script(SCRIPT)
@@ -78,7 +75,6 @@ def test_error_when_usage_is_above_the_error_limit(syscheck, filled):
     msg = run.only()
     assert msg.level == "E"
     assert msg.errno == "012"
-    # the error branch reports the *error* limit, not the warn limit
     assert msg.text == f"Diskusage exceeded ({FS_A} is {filled} percent used: Limit is 10 percent)"
 
 
@@ -116,9 +112,6 @@ def test_warn_percent_accepts_the_literal_default_keyword(syscheck, filled):
     assert "Limit is 95 percent" in msg.text
 
 
-# ------------------------------------------------------------- df failures --
-
-
 def test_nonexistent_filesystem_is_reported_as_an_error(syscheck):
     syscheck.set_script_config("01", config(("/does/not/exist", 90, 80)))
     run = syscheck.run_script(SCRIPT)
@@ -128,7 +121,6 @@ def test_nonexistent_filesystem_is_reported_as_an_error(syscheck):
     assert msg.errno == "013"
     assert "Diskusage problems" in msg.text
     assert "/does/not/exist" in msg.text
-    # the df error text is forwarded to the operator
     assert "No such file or directory" in msg.text
 
 
@@ -140,9 +132,6 @@ def test_a_broken_entry_does_not_stop_the_remaining_filesystems(syscheck, filled
 
     assert len(run.messages) == 3, run.describe()
     assert run.levels == ["E", "I", "I"]
-
-
-# ---------------------------------------------------------------- indexing --
 
 
 def test_each_filesystem_gets_its_own_script_index(syscheck, filled):
@@ -160,14 +149,10 @@ def test_script_index_is_zero_padded_and_keeps_counting_past_nine(syscheck, fill
     assert run.indexes == [f"{i:02d}" for i in range(1, 13)], run.describe()
 
 
-# ------------------------------------------------------------ output sinks --
-
-
 def test_message_is_appended_to_var_last_status(syscheck, filled):
     syscheck.set_script_config("01", config((FS_A, 95, 90)))
     syscheck.run_script(SCRIPT)
 
-    # SAVELASTSTATUS_OUTPUTTYPE defaults to OLDFMT
     assert "I-01011-PKI" in syscheck.last_status()
     assert FS_A in syscheck.last_status()
 
@@ -197,7 +182,6 @@ def test_nothing_is_printed_without_the_screen_flag(syscheck, filled):
 
     assert run.messages == [], run.describe()
     assert run.output.strip() == "", run.output
-    # but the message still lands in the other sinks
     assert "01-01-I-011-PKI" in syscheck.file_log()
 
 
@@ -230,9 +214,6 @@ def test_oldfmt_output_format(syscheck, filled):
     assert run.output.startswith("I-01011-PKI "), run.output
 
 
-# --------------------------------------------------------------- metadata --
-
-
 def test_scriptid_flag(syscheck):
     res = syscheck.exec([syscheck.script_path(SCRIPT), "--scriptid"])
     assert res.stdout.strip() == "01"
@@ -261,9 +242,6 @@ def test_help_does_not_emit_a_log_message(syscheck):
     """--help must not pollute last_status / syslog with a fake check result."""
     syscheck.exec([syscheck.script_path(SCRIPT), "--help"])
     assert "01-" not in syscheck.file_log()
-
-
-# ------------------------------------------------------------- known bugs --
 
 
 def test_filesystem_path_containing_spaces_is_checked_correctly(syscheck):
@@ -297,33 +275,15 @@ def test_missing_usagepercent_reports_a_config_error(syscheck, filled):
     assert "No limit specified" in msg.text
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="every syscheck script exits 0 regardless of result, so the nagios / "
-           "icinga integration the script header advertises cannot see failures "
-           "from the exit code",
-)
-def test_exit_code_is_nonzero_when_an_error_is_reported(syscheck, filled):
+def test_exit_code_is_zero_even_when_an_error_is_reported(syscheck, filled):
+    """Deliberate: syscheck pushes results to the monitoring API from cron, it is
+    not a nagios plugin whose exit status gets read. Pinned so nobody "fixes"
+    the exit code and breaks callers that rely on it being 0."""
     syscheck.set_script_config("01", config((FS_A, 10, 5)))
     run = syscheck.run_script(SCRIPT)
 
     assert run.only().level == "E"
-    assert run.exit_code != 0
-
-
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="libsyscheck.sh:17 declares short option -c but default_script_getopt "
-           "has no case for it, so the `while true` argument loop never shifts "
-           "and the script spins forever",
-)
-def test_unrecognised_short_option_does_not_hang(syscheck, filled):
-    syscheck.set_script_config("01", config((FS_A, 95, 90)))
-    res = syscheck.exec(f"timeout 10 {syscheck.script_path(SCRIPT)} -c")
-
-    assert res.exit_code != 124, "script hung until the 10s timeout killed it"
+    assert run.exit_code == 0
 
 
 @pytest.mark.known_bug

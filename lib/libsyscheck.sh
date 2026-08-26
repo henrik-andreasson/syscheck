@@ -13,20 +13,23 @@ script_human_name(){
 }
 
 default_script_getopt() {
-  # get command line arguments
-  INPUTARGS=`/usr/bin/getopt --options "hsvcin" --long "help,screen,verbose,scriptid,scriptname,scripthumanname" -- "$@"`
-  if [ $? != 0 ] ; then schelp ; fi
+  INPUTARGS=`/usr/bin/getopt --options "hsvain" --long "help,screen,verbose,scriptid,scriptname,scripthumanname" -- "$@"`
+  if [ $? != 0 ] ; then
+    schelp
+    exit 1
+  fi
   eval set -- "$INPUTARGS"
 
   while true; do
     case "$1" in
       -s|--screen  ) PRINTTOSCREEN=1; shift;;
       -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-      -i|--scriptid        ) scriptid          ; exit ; shift;;
-      -n|--scriptname      ) scriptname        ; exit ; shift;;
-      -a|--scripthumanname ) script_human_name ; exit ; shift;;
-      -h|--help            ) schelp            ; exit ; shift;;
+      -i|--scriptid        ) scriptid          ; exit ;;
+      -n|--scriptname      ) scriptname        ; exit ;;
+      -a|--scripthumanname ) script_human_name ; exit ;;
+      -h|--help            ) schelp            ; exit ;;
       --) break;;
+      * ) echo "${0##*/}: unhandled option '$1'" >&2 ; exit 1 ;;
     esac
   done
 

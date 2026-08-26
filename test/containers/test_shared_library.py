@@ -82,7 +82,6 @@ def test_message_is_truncated_to_messagelength(syscheck):
     )
     run = syscheck.run_script(SC01)
 
-    # NEWFMT is "<prefix> <date> <time> <message>" where only the message is capped
     line = run.output.strip().splitlines()[0]
     tail = line.split(" ", 3)[3]
     assert len(tail) == 40, f"expected 40 chars, got {len(tail)}: {tail!r}"
@@ -114,7 +113,6 @@ def test_printlogmess_rejects_a_malformed_call(syscheck, args, missing):
     assert missing in res.stderr, res.output
     assert "printlogmess:" in res.stderr
     assert "rc=1" in res.stdout, res.output
-    # nothing was invented and passed off as a real check result
     assert "PKI" not in res.output
 
 
@@ -165,13 +163,43 @@ def test_one_bad_config_entry_does_not_disable_the_whole_check(syscheck):
     assert run.indexes == ["01", "02", "03"]
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="libsyscheck.sh:17 declares short option -c in the getopt string but "
-           "default_script_getopt has no case arm for it, so the argument loop "
-           "never shifts and every syscheck script spins forever on -c",
+TIMEOUT = 10
+
+
+@pytest.mark.parametrize("flag", ["-c", "-z", "-q", "--nonsense"])
+def test_unknown_option_is_rejected_without_hanging(syscheck, flag):
+    """An option the case statement does not handle must never reach the top of
+    the `while true` loop: with no `shift` it spins forever."""
+    res = syscheck.exec(f"timeout {TIMEOUT} {syscheck.script_path(SC01)} {flag}")
+
+    assert res.exit_code != 124, f"{flag} hung until the {TIMEOUT}s timeout killed it"
+    assert res.exit_code != 0, f"{flag} should be a usage error"
+
+
+@pytest.mark.parametrize("flag", ["-z", "--nonsense"])
+def test_unknown_option_does_not_run_the_check(syscheck, flag):
+    """getopt writes a usable '--' to stdout even when it fails, so without an
+    exit the script printed help and then ran the check anyway."""
+    syscheck.exec(f"timeout {TIMEOUT} {syscheck.script_path(SC01)} {flag}")
+
+    assert syscheck.last_status().strip() == "", syscheck.last_status()
+    assert syscheck.file_log().strip() == ""
+
+
+@pytest.mark.parametrize(
+    "flag, expected",
+    [("-i", "01"), ("-n", "diskusage"), ("-a", "Disk usage"),
+     ("--scriptid", "01"), ("--scriptname", "diskusage"),
+     ("--scripthumanname", "Disk usage")],
 )
-def test_declared_but_unhandled_short_option_does_not_hang(syscheck):
-    res = syscheck.exec(f"timeout 10 {syscheck.script_path(SC01)} -c")
-    assert res.exit_code != 124, "script hung until the 10s timeout killed it"
+def test_metadata_flags_have_working_short_and_long_forms(syscheck, flag, expected):
+    res = syscheck.exec(f"timeout {TIMEOUT} {syscheck.script_path(SC01)} {flag}")
+
+    assert res.stdout.strip() == expected, res.output
+
+
+def test_syscheck_sh_rejects_an_unknown_option_without_hanging(syscheck):
+    res = syscheck.exec(f"timeout {TIMEOUT} {syscheck.home}/syscheck.sh -c")
+
+    assert res.exit_code != 124, f"syscheck.sh hung until the {TIMEOUT}s timeout"
+    assert res.exit_code != 0

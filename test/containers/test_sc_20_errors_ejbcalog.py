@@ -38,9 +38,6 @@ def ejbca(syscheck):
     return syscheck
 
 
-# ------------------------------------------------------------ happy paths --
-
-
 def test_clean_log_reports_no_new_errors(ejbca):
     ejbca.write_file(LOG, CLEAN_LOG)
     ejbca.set_script_config("20", config())
@@ -117,9 +114,6 @@ def test_ignored_errors_are_filtered_from_the_detail_lines(ejbca):
     details = [m.text for m in run.messages if m.errno == "204"]
     assert len(details) == 1, run.describe()
     assert "Error Connecting to EJBCA Database" in details[0]
-
-
-# --------------------------------------------------------- failure paths --
 
 
 def test_missing_logfile_warns(ejbca):

@@ -36,47 +36,21 @@ def test_script_ids_are_unique(syscheck):
     assert not clashes, f"duplicate script ids: {clashes}"
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="lib/tail_errors_from_ejbca_log.py still has a `#!/usr/bin/python` "
-           "shebang. Debian has no /usr/bin/python, so sc_20_errors_ejbcalog.sh "
-           "can never read the EJBCA log - commit b8c636f fixed the other two "
-           "helpers and missed this one",
-)
 def test_python_helpers_are_executable_on_a_stock_debian(syscheck):
+    """Regression guard for D6: a `#!/usr/bin/python` shebang left
+    sc_20_errors_ejbcalog.sh silently reporting a clean EJBCA log it had never
+    managed to read."""
     helpers = syscheck.exec(
         "ls /opt/syscheck/lib/*.py"
     ).check().stdout.split()
 
     broken = []
     for path in helpers:
-        # run through bash so a missing interpreter surfaces as exit 127
         res = syscheck.exec(f"{path} --help")
         if res.exit_code == 127 or "cannot execute" in res.output:
             shebang = syscheck.exec(["head", "-1", path]).stdout.strip()
             broken.append((path, shebang))
     assert not broken, f"helpers whose interpreter is missing: {broken}"
-
-
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="logbook.sh lines 91 and 108 call bare `python` with Python 2 syntax "
-           "(`print obj[...]` without parentheses); on Debian there is no "
-           "`python` at all, so --list output is empty either way",
-)
-def test_logbook_list_renders_entries(syscheck):
-    syscheck.write_file(
-        "/var/log/syscheck-logbook.log",
-        '{ "FROM": "SYSCHECK", "LOGFMT": "LOGBOOK-1.1", "SCRIPTID": "99", '
-        '"LEGACYFMT": "99-01-I-991-PKI 20260101 00:00:00 host: INFO - probe entry" }\n',
-    )
-    res = syscheck.exec(
-        "/opt/syscheck/logbook.sh --list", env={"SYSCHECK_HOME": "/opt/syscheck"}
-    )
-
-    assert "probe entry" in res.output, res.output
 
 
 @pytest.mark.known_bug

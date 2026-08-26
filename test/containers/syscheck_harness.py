@@ -27,8 +27,6 @@ from testcontainers.core.waiting_utils import wait_for_logs
 REPO_ROOT = Path(__file__).resolve().parents[2]
 IMAGE_TAG = "syscheck-testcontainers:latest"
 
-# Directories/files that lib/release.sh puts into a package. Copied from the
-# read-only /src mount into $SYSCHECK_HOME so tests can freely mutate config.
 INSTALL_PAYLOAD = [
     "config",
     "lang",
@@ -44,22 +42,17 @@ INSTALL_PAYLOAD = [
     "getroot.sh",
 ]
 
-# tmpfs mounts the container gets, so disk-usage style scripts can be pointed at
-# a real filesystem of a known size that tests can fill to an exact percentage.
 TMPFS_MOUNTS = {
     "/mnt/tfs_a": "size=64m,mode=1777",
     "/mnt/tfs_b": "size=16m,mode=1777",
 }
 
-# NEWFMT, produced by printlogmess.sh:
-#   ${SCRIPTID}-${SCRIPTINDEX}-${LEVEL}-${ERRNO}-${SYSTEMNAME} <date> <time> <host>: <LONGLEVEL> - <scriptname> <text>
 _NEWFMT_RE = re.compile(
     r"^(?P<scriptid>[0-9]+)-(?P<index>[0-9]+)-(?P<level>[IWE])-(?P<errno>[^-]*)-(?P<systemname>\S+)"
     r"\s+(?P<date>[0-9]{8})\s+(?P<time>[0-9]{2}:[0-9]{2}:[0-9]{2})"
     r"\s+(?P<host>[^:]+):\s+(?P<longlevel>INFO|WARNING|ERROR)\s+-\s+(?P<scriptname>\S+)\s*(?P<text>.*)$"
 )
 
-# OLDFMT: ${LEVEL}-${SCRIPTID}${ERRNO}-${SYSTEMNAME} <date> <time> <host>: ...
 _OLDFMT_RE = re.compile(
     r"^(?P<level>[IWE])-(?P<scriptid_errno>[^-]*)-(?P<systemname>\S+)"
     r"\s+(?P<date>[0-9]{8})\s+(?P<time>[0-9]{2}:[0-9]{2}:[0-9]{2})"
@@ -90,7 +83,7 @@ class Message:
     text: str
     raw: str
 
-    def __str__(self) -> str:  # pragma: no cover - debugging aid
+    def __str__(self) -> str:
         return self.raw
 
 
@@ -264,7 +257,6 @@ class SyscheckContainer:
         self._tc = container
         self._raw = container.get_wrapped_container()
 
-    # ---------------------------------------------------------------- exec --
 
     def exec(self, command: list[str] | str, env: dict | None = None,
              workdir: str | None = None, user: str | None = None) -> ExecResult:
@@ -293,7 +285,6 @@ class SyscheckContainer:
     def bash(self, script: str, env: dict | None = None) -> ExecResult:
         return self.exec(script, env=env)
 
-    # ---------------------------------------------------------------- files --
 
     def write_file(self, path: str, content: str, mode: int = 0o644) -> None:
         data = content.encode("utf-8")
@@ -325,7 +316,6 @@ class SyscheckContainer:
         self.write_file(path, body, mode=0o755)
         return path
 
-    # --------------------------------------------------------------- config --
 
     def set_script_config(self, scriptid: str, content: str) -> None:
         """Replace config/<scriptid>.conf.
@@ -335,8 +325,6 @@ class SyscheckContainer:
         """
         self.write_file(f"{self.home}/config/{scriptid}.conf", content)
 
-    # Restored before every test: tests are free to delete a config or a
-    # language file to exercise an error path without poisoning the next one.
     MUTABLE_TREES = ("config", "lang", "lib", "scripts-available", "related-available")
 
     def reset(self) -> None:
@@ -359,7 +347,6 @@ class SyscheckContainer:
         for mount in TMPFS_MOUNTS:
             self.exec(f"rm -rf {mount:s}/* || true")
 
-    # ---------------------------------------------------------------- runner --
 
     def script_path(self, script: str) -> str:
         if "/" in script:
@@ -377,8 +364,6 @@ class SyscheckContainer:
         run_env.update(env or {})
         res = self.exec(argv, env=run_env)
 
-        # printlogmess.sh writes --screen output to stderr; libsyscheck.sh
-        # writes its own errors to stdout. Parse both.
         messages, json_messages, unparsed = parse_messages(res.stdout + res.stderr)
         return ScriptRun(
             script=shlex.join(argv),
@@ -390,7 +375,6 @@ class SyscheckContainer:
             unparsed=unparsed,
         )
 
-    # ------------------------------------------------------------- outputs --
 
     def last_status(self) -> str:
         path = f"{self.home}/var/last_status"
@@ -402,7 +386,6 @@ class SyscheckContainer:
     def syslog(self) -> str:
         return self.read_file("/var/log/syslog") if self.file_exists("/var/log/syslog") else ""
 
-    # ---------------------------------------------------------------- disks --
 
     def fill_filesystem(self, mountpoint: str, percent: int, name: str = "filler") -> int:
         """Consume `percent` of `mountpoint` and return the real df Use% after.
@@ -458,7 +441,6 @@ def start_syscheck_container(image: str = IMAGE_TAG,
         f"find {sc.home} -name '*.py' -exec chmod 755 {{}} +"
     ).check()
 
-    # Real syslog daemon so SENDTOSYSLOG=1 (the shipped default) is exercised.
     sc.exec("rsyslogd 2>/dev/null || true")
     sc.exec("for i in 1 2 3 4 5 6 7 8 9 10; do [ -S /dev/log ] && break; sleep 0.2; done")
 

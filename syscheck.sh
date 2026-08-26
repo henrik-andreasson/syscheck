@@ -27,8 +27,11 @@ PRINTTOSCREEN=${PRINTTOSCREEN:-0}
 PRINTVERBOSESCREEN=${PRINTVERBOSESCREEN:-0}
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvct" --long "help,screen,verbose,testall" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
+INPUTARGS=`/usr/bin/getopt --options "hsvt" --long "help,screen,verbose,testall" -- "$@"`
+if [ $? != 0 ] ; then
+  schelp
+  exit 1
+fi
 eval set -- "$INPUTARGS"
 
 while true; do
@@ -36,8 +39,9 @@ while true; do
     -s|--screen  ) PRINTTOSCREEN=1; shift;;
     -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
     -t|--testall ) TESTALL=1 ; shift;;
-    -h|--help )   schelp;exit;shift;;
+    -h|--help )   schelp; exit;;
     --) break;;
+    * ) echo "${0##*/}: unhandled option '$1'" >&2 ; exit 1 ;;
   esac
 done
 

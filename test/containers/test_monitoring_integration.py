@@ -93,9 +93,6 @@ def emit(syscheck, level: str, backend: str, descr: str = "the check failed") ->
     )
 
 
-# ------------------------------------------------------------------- OP5 --
-
-
 @pytest.mark.parametrize("level, status_code", [("I", "0"), ("W", "1"), ("E", "2")])
 def test_op5_maps_syscheck_level_to_status_code(monitoring, level, status_code):
     """I/W/E must arrive as OK/WARNING/CRITICAL. This mapping is the whole
@@ -117,17 +114,12 @@ def test_op5_sends_a_parseable_json_body(monitoring):
     assert set(body) == {"host_name", "service_description", "status_code", "plugin_output"}
 
 
-# ---------------------------------------------------------------- Icinga --
-
-
 def test_icinga_receives_a_request_at_all(monitoring):
     emit(monitoring, "E", "icinga")
 
     reqs = requests_made(monitoring)
     assert len(reqs) == 1, reqs
     assert reqs[0]["method"] == "POST"
-    # note the shipped ICINGA_API_URL ends in "/" and printlogmess.sh:105 adds
-    # another, so the real path contains "//" - harmless, but faithful here
     assert "process-check-result" in reqs[0]["path"]
     assert "host=" in reqs[0]["path"]
 
@@ -164,7 +156,6 @@ def test_op5_url_from_the_shipped_config_is_not_doubled(syscheck):
     syscheck.exec(
         f"for i in $(seq 30); do (echo > /dev/tcp/127.0.0.1/{MOCK_PORT}) 2>/dev/null && break; sleep 0.2; done"
     )
-    # the shipped config's URL shape, only the host swapped for the mock
     syscheck.write_file(
         "/opt/syscheck/config/monitoring.conf",
         'OP5_USER="root"\nOP5_PASS="secret"\n'

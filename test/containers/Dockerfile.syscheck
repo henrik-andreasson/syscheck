@@ -1,10 +1,3 @@
-# Base image for the syscheck testcontainers suite.
-#
-# Contains everything the *core* of syscheck needs (bash, getopt, coreutils,
-# procps, hostname, a real syslog daemon) plus the handful of tools that a
-# large number of scripts shell out to. Per-script exotic dependencies
-# (omreport, mdadm, lunacm, ...) are injected as fake binaries by the tests
-# themselves, they are not installed here.
 FROM debian:trixie-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -33,9 +26,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         tar \
     && rm -rf /var/lib/apt/lists/*
 
-# syscheck's shipped common.conf sends every message to syslog; run a real
-# rsyslogd so that path is exercised for real instead of being stubbed out.
-# Log everything to /var/log/syslog so tests can assert on it.
 RUN printf '%s\n' \
         '$ModLoad imuxsock' \
         '$OmitLocalLogging off' \

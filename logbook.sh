@@ -25,6 +25,30 @@ SCRIPTID=701
 SCRIPTINDEX=00
 
 
+# Render logbook rows read on stdin. JSON rows carry the human-readable line in
+# LEGACYFMT; a row that is not valid JSON is printed as-is rather than dropped,
+# so a single corrupt line cannot hide the rest of the day's entries.
+# One python3 for the whole batch, not one per row.
+render_logbook_entries() {
+  if [ "x${LOGBOOK_OUTPUTTYPE}" = "xJSON" ] ; then
+    python3 -c '
+import json, sys
+
+for line in sys.stdin:
+    line = line.strip()
+    if not line:
+        continue
+    try:
+        print(json.loads(line)["LEGACYFMT"])
+    except (ValueError, KeyError):
+        print(line)
+'
+  else
+    cat
+  fi
+}
+
+
 # main part start
 
 printf "$0: ${LOGBOOK_GREETING}\n\n"
@@ -38,8 +62,13 @@ NO_OF_ERR=1
 initscript $SCRIPTID $NO_OF_ERR
 
 # get command line arguments
+# the short options here must stay in sync with the case arms below, see the
+# same note in lib/libsyscheck.sh
 INPUTARGS=`/usr/bin/getopt --options "hsvrp" --long "help,screen,verbose,read,post" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
+if [ $? != 0 ] ; then
+  schelp
+  exit 1
+fi
 eval set -- "$INPUTARGS"
 
 while true; do
@@ -48,8 +77,10 @@ while true; do
     -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
     -r|--read    ) READ=1 ; shift;;
     -p|--post    ) POST=1 ; shift;;
-    -h|--help )   schelp;exit;shift;;
+    -h|--help )   schelp; exit;;
     --) break;;
+    # backstop: never let an unhandled option reach the top of the loop
+    * ) echo "${0##*/}: unhandled option '$1'" >&2 ; exit 1 ;;
   esac
 done
 
@@ -84,15 +115,7 @@ if [ $DAYS -gt 1 ] ; then
   while [ $i -lt $DAYS ] ; do
     datestr=$(date +"%Y%m%d" -d "now - $i day")
     printf "${LOGBOOK_ENTRIES_FOR_DATE}: $datestr\n"
-    if [ ${LOGBOOK_OUTPUTTYPE} = "JSON" ] ; then
-      LOGENTRIES=$(grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME})
-      IFS=$'\n'
-      for row in $LOGENTRIES ; do
-        echo $row |  python -c 'import json,sys;obj=json.load(sys.stdin);print obj["LEGACYFMT"]';
-      done
-    else
-      grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME}
-    fi
+    grep "${SYSTEMNAME} ${datestr}" "${LOGBOOK_FILENAME}" | render_logbook_entries
     let i="i + 1"
   done
 else
@@ -101,18 +124,10 @@ else
     while [ true ] ; do
       datestr=$(date +"%Y%m%d" -d "now - $daysago day")
       printf "${LOGBOOK_ENTRIES_FOR_DATE}: $datestr\n"
-      if [ "x${LOGBOOK_OUTPUTTYPE}" = "xJSON" ] ; then
-        LOGENTRIES=$(grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME})
-        IFS=$'\n'
-        for row in $LOGENTRIES ; do
-          echo $row |  python -c 'import json,sys;obj=json.load(sys.stdin);print obj["LEGACYFMT"]';
-        done
-      else
-        grep "${SYSTEMNAME} ${datestr}" ${LOGBOOK_FILENAME}
-      fi
+      grep "${SYSTEMNAME} ${datestr}" "${LOGBOOK_FILENAME}" | render_logbook_entries
       let daysago="daysago + 1"
       printf "${LOGBOOK_END_OF_ENTRIES_PRESS_ENTER}"
-      read a
+      read a || break
     done
   fi
 fi
