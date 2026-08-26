@@ -12,6 +12,7 @@ so tests can assert on the exact body that was sent.
 from __future__ import annotations
 
 import json
+import shlex
 
 import pytest
 
@@ -73,7 +74,8 @@ def requests_made(syscheck) -> list[dict]:
     return [json.loads(l) for l in syscheck.read_file(MOCK_LOG).splitlines() if l.strip()]
 
 
-def emit(syscheck, level: str, backend: str, descr: str = "the check failed") -> None:
+def emit(syscheck, level: str, backend: str, descr: str = "the check failed",
+         arg1: str | None = None) -> None:
     """Drive printlogmess once with the given backend pointed at the mock."""
     op5 = "1" if backend == "op5" else "0"
     icinga = "1" if backend == "icinga" else "0"
@@ -90,6 +92,7 @@ def emit(syscheck, level: str, backend: str, descr: str = "the check failed") ->
         f"SENDTO_OP5={op5} SENDTO_ICINGA={icinga} "
         "PRINTTOSCREEN=0 SAVELASTSTATUS=0 SENDTOSYSLOG=0 PRINTTOFILE=0 "
         f'printlogmess -n probe -i 99 -x 01 -l {level} -e 991 -d "{descr}"'
+        + (f" -1 {shlex.quote(arg1)}" if arg1 is not None else "")
     )
 
 
@@ -124,14 +127,6 @@ def test_icinga_receives_a_request_at_all(monitoring):
     assert "host=" in reqs[0]["path"]
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="printlogmess.sh:105 single-quotes the Icinga -d payload, so "
-           "$status_code, ${MESSAGE} and ${check_source} are never expanded; "
-           "Icinga receives those literal strings and the body is not even "
-           "valid JSON",
-)
 @pytest.mark.parametrize("level, status_code", [("I", "0"), ("W", "1"), ("E", "2")])
 def test_icinga_maps_syscheck_level_to_exit_status(monitoring, level, status_code):
     emit(monitoring, level, "icinga")
@@ -171,3 +166,19 @@ def test_op5_url_from_the_shipped_config_is_not_doubled(syscheck):
 
     path = requests_made(syscheck)[0]["path"]
     assert path.count("PROCESS_SERVICE_CHECK_RESULT") == 1, path
+
+
+@pytest.mark.parametrize("backend", ["op5", "icinga"])
+def test_a_quote_in_a_message_argument_does_not_break_the_payload(monitoring, backend):
+    emit(monitoring, "E", backend, descr="cert %s expired", arg1='CN="my host"')
+
+    parsed = json.loads(requests_made(monitoring)[0]["body"])
+    assert 'CN="my host"' in parsed["plugin_output"], parsed
+
+
+@pytest.mark.parametrize("backend", ["op5", "icinga"])
+def test_a_backslash_in_a_message_argument_does_not_break_the_payload(monitoring, backend):
+    emit(monitoring, "E", backend, descr="path %s failed", arg1=r"C:\temp\file")
+
+    parsed = json.loads(requests_made(monitoring)[0]["body"])
+    assert r"C:\temp\file" in parsed["plugin_output"], parsed

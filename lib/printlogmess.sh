@@ -26,6 +26,10 @@ addOneToIndex() {
 }
 
 
+json_escape(){
+    printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/\t/\\t/g' -e 's/\r/\\r/g' | tr -d '\n'
+}
+
 #        send_mess_to_monitoring "${SCRIPTID}-${SCRIPTINDEX}" "${HOST}"  "${DESCR_W_ARGS}"
 send_mess_to_monitoring(){
 #    set -x
@@ -83,7 +87,11 @@ send_mess_to_monitoring(){
         plugin_output=$MESSAGE
         check_name="sc_${SCRIPTNAME}_${SCRIPTID}_${SCRIPTINDEX}"
 
-        sendresult=$(curl --silent --show-error -u "${OP5_USER}:${OP5_PASS}" --no-progress-bar -H 'content-type: application/json' -d "{\"host_name\":\"$xHOSTNAME\",\"service_description\":\"$check_name\", \"status_code\":\"$status_code\",\"plugin_output\":\"$MESSAGE\"}" "${OP5_API_URL}/PROCESS_SERVICE_CHECK_RESULT" 2>&1)
+        j_host=$(json_escape "${xHOSTNAME}")
+        j_check_name=$(json_escape "${check_name}")
+        j_message=$(json_escape "${MESSAGE}")
+
+        sendresult=$(curl --silent --show-error -u "${OP5_USER}:${OP5_PASS}" --no-progress-bar -H 'content-type: application/json' -d "{\"host_name\":\"${j_host}\",\"service_description\":\"${j_check_name}\", \"status_code\":\"${status_code}\",\"plugin_output\":\"${j_message}\"}" "${OP5_API_URL}/PROCESS_SERVICE_CHECK_RESULT" 2>&1)
 
         isresultok=$(echo "$sendresult" | grep "Successfully submitted" )
 
@@ -102,7 +110,10 @@ send_mess_to_monitoring(){
         plugin_output=$MESSAGE
         check_name="sc_${SCRIPTNAME}_${SCRIPTID}_${SCRIPTINDEX}"
 #        check_name="sc_$SCRIPTID_$SCRIPTINDEX"
-        curl -k -s -u "${ICINGA_USER}:${ICINGA_PASS}" -H 'Accept: application/json' -X POST "${ICINGA_API_URL}/process-check-result?host=${xHOSTNAME}" -d '{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }'
+        j_message=$(json_escape "${MESSAGE}")
+        j_check_source=$(json_escape "${check_source}")
+
+        curl -k -s -u "${ICINGA_USER}:${ICINGA_PASS}" -H 'Accept: application/json' -H 'content-type: application/json' -X POST "${ICINGA_API_URL}/process-check-result?host=${xHOSTNAME}" -d "{ \"exit_status\": ${status_code}, \"plugin_output\": \"${j_message}\", \"check_source\": \"${j_check_source}\" }"
 
     fi
 

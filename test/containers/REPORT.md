@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 92 |
-| Passing (behaviour verified correct) | 84 |
-| Strict xfail (confirmed open defect) | 8 |
+| Tests written | 96 |
+| Passing (behaviour verified correct) | 91 |
+| Strict xfail (confirmed open defect) | 5 |
 | Failing unexpectedly | 0 |
-| Defects found | 18 (D5 withdrawn on review) |
-| Defects fixed in this pass | 7 |
+| Defects found | 19 (D5 withdrawn on review) |
+| Defects fixed in this pass | 9 |
 | Scripts fully covered | 2 of 38 (`sc_01`, `sc_20`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-84 passed, 8 xfailed in 140.63s
+91 passed, 5 xfailed in 103.62s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -199,6 +199,53 @@ it passed a `--list` flag that does not exist and ran as root, so it never
 reached the renderer at all. It has been deleted and replaced by the real suite.
 The defect itself was genuine, as the before/after above shows.
 
+## D17 — every Icinga check result was submitted as literal, unexpanded text ✅ FIXED
+`lib/printlogmess.sh:105`
+
+```bash
+curl ... -d '{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }'
+```
+
+The payload was **single-quoted**, so bash never expanded any of it. Verified
+against a mock endpoint - this is the exact body Icinga received:
+
+```
+POST /v1/actions//process-check-result?host=syscheck-test
+{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }
+```
+
+No status, no message, and not valid JSON - `$status_code` is a bare token where
+a number belongs. Anyone running with `SENDTO_ICINGA=1` got nothing usable, for
+every check, on every host. The OP5 branch fifteen lines above built the same
+object correctly with escaped double quotes.
+
+**Fix:** double-quoted so the values expand, `exit_status` left unquoted so it
+stays a JSON number, and a `content-type: application/json` header added to
+match the OP5 call.
+
+While verifying, a second defect surfaced on the same line: a `"` anywhere in
+the message produced invalid JSON on **both** backends.
+
+```
+plugin_output":"ERROR - probe cert CN="my host" expired"   <- invalid
+```
+
+Certificate subjects, `lunacm` output and `curl` errors can all contain quotes,
+so this was reachable in normal operation. A `json_escape` helper now escapes
+backslashes, double quotes, tabs and carriage returns, and is applied to the
+message, hostname, check name and check source on both the OP5 and Icinga
+payloads.
+
+Covered by 12 tests: the I/W/E to status_code mapping for both backends, JSON
+validity, and hostile content (a quote, a backslash) passed through a
+`printlogmess` argument.
+
+**Worth knowing:** `-d` is the printf *format string* - it holds the `%s`
+placeholders that `-1`..`-9` fill - so backslash escapes in a description are
+interpreted by design (`C:\file` becomes a form feed). Volatile data belongs in
+the numbered arguments, which printf substitutes without interpreting. Scripts
+already do this; it is only a trap for anyone writing a new lang file.
+
 ---
 
 # Open defects
@@ -332,30 +379,6 @@ tick.
 
 *Found this pass; test lands with the `sc_44` suite in Phase 2.*
 
-## D17 — every Icinga check result is submitted as literal, unexpanded text
-**Scope: the entire Icinga integration.** `lib/printlogmess.sh:105`
-
-```bash
-curl ... -d '{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }'
-```
-
-The payload is **single-quoted**, so bash never expands any of it. Verified
-against a mock endpoint — this is the exact body Icinga receives:
-
-```
-POST /v1/actions//process-check-result?host=syscheck-test
-{ "exit_status": $status_code, "plugin_output": "${MESSAGE}", "check_source": "${check_source}" }
-```
-
-No status, no message, and not even valid JSON — `$status_code` is a bare token
-where a number belongs. Anyone running with `SENDTO_ICINGA=1` gets nothing
-usable, for every check, on every host.
-
-The OP5 branch fifteen lines above builds the same thing correctly with escaped
-double quotes, which is presumably where the working version lives.
-
-`test_monitoring_integration.py::test_icinga_maps_syscheck_level_to_exit_status`
-
 ## D18 — the shipped OP5 URL is doubled
 `lib/printlogmess.sh:86` + `config/monitoring.conf`
 
@@ -440,9 +463,6 @@ empty pipe.
 
 # Recommended order for the remaining fixes
 
-1. **D17** — one pair of quotes. If anyone runs with `SENDTO_ICINGA=1`, every
-   check result they have ever submitted was unexpanded literal text. Nothing
-   else on this list is silently wrong at that scale.
 2. **D16** — add a timeout to `sc_44`; a hanging check is worse than a failing
    one. Audit the other `openssl`/`curl` call sites for the same gap.
 3. **D18** — decide whether the endpoint lives in the code or the config.
