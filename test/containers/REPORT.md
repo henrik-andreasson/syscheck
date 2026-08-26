@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 110 |
+| Tests written | 109 |
 | Passing (behaviour verified correct) | 108 |
-| Strict xfail (confirmed open defect) | 2 |
+| Strict xfail (confirmed open defect) | 1 |
 | Failing unexpectedly | 0 |
-| Defects found | 21 (D5 withdrawn on review) |
+| Defects found | 21 (D5 and D8 withdrawn on review) |
 | Defects fixed in this pass | 16 |
 | Scripts fully covered | 3 of 38 (`sc_01`, `sc_20`, `sc_44`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-108 passed, 2 xfailed in 168.37s
+108 passed, 1 xfailed in 169s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -485,18 +485,18 @@ The real integration contract is the API payload, which was untested. Testing it
 turned up D17 and D18 below. `sc_01`'s exit code is now pinned at 0 by
 `test_exit_code_is_zero_even_when_an_error_is_reported` so nobody "fixes" it.
 
-## D8 — the "syscheck is on hold" notice prints the literal string `00`
-`lib/libsyscheck.sh:82`
+## ~~D8 — the "syscheck is on hold" notice prints the literal string `00`~~ ❌ WITHDRAWN, by design
 
-```bash
-printf "00" "0" $WARN "00" "SYSCHECK IS ON HOLD BY: ${ONHOLDBY} OPERATION CANCELED SCRIPTID: ${SCRIPTID}"
-```
+`libsyscheck.sh:82` is `printf "00" "0" $WARN "00" "SYSCHECK IS ON HOLD BY: ..."`
+- a format string with no conversion specifiers, so it prints `00` and discards
+its five arguments. Confirmed by the maintainer as intentional, not a defect.
 
-The format string has no conversion specifiers, so `printf` writes `00` and
-discards all five arguments. When maintenance puts syscheck on hold the operator
-sees `00` and no explanation of why every check went quiet.
-
-`test_shared_library.py::test_syscheck_on_hold_tells_the_operator_who_holds_it`
+Context for anyone reading the code later: `isSyscheckOnHold` is called from
+`initscript`, which runs *before* `default_script_getopt`, so `PRINTTOSCREEN` is
+still 0 at that point and the message routed through `printlogmess` cannot
+honour `--screen`. The bare `printf` is what an operator sees on stdout. The
+message itself does reach syslog, `last_status` and the monitoring API - see D9
+and D19.
 
 ## D10 — `sc_19_alive.sh` reports `[3]` instead of a message
 `scripts-available/sc_19_alive.sh:27`

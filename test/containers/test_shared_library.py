@@ -76,22 +76,6 @@ def test_syscheck_on_hold_suppresses_the_check(syscheck):
     assert "diskusage" not in syscheck.file_log()
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason='libsyscheck.sh:82 is `printf "00" "0" $WARN "00" "SYSCHECK IS ON '
-           'HOLD BY: ..."` - the format string has no conversion specifiers, so '
-           "printf prints the literal 00 and discards all five arguments; the "
-           "operator is never told why the check produced nothing",
-)
-def test_syscheck_on_hold_tells_the_operator_who_holds_it(syscheck):
-    write_hold_file(syscheck)
-    run = syscheck.run_script(SC01)
-
-    assert "SYSCHECK IS ON HOLD BY" in run.output, run.output
-    assert "operator" in run.output
-
-
 def test_syscheck_on_hold_is_logged_without_requiring_sudo(syscheck):
     syscheck.exec("rm -f /usr/bin/sudo /usr/local/bin/sudo")
     write_hold_file(syscheck)
