@@ -24,4 +24,4 @@ default_script_getopt $*
 # main part of script
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "$DESCR[3]"
+printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "${DESCR[3]}"

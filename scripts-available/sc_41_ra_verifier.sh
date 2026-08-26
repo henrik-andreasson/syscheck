@@ -26,7 +26,9 @@ OUTPUT='/tmp/rahealth.log'
 
 cd /tmp
 if [ ! -f "${CHECKTOOL_PATH}/${CHECKTOOL}" ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[3]}" -d "$DESCR_3"
+        SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "${CHECKTOOL_PATH}/${CHECKTOOL}"
+        exit
 fi
 
 runres=$(${CHECKTOOL_PATH}/${CHECKTOOL} -c ${CHECKTOOL_PATH}/verify-factoryra.properties > $OUTPUT 2>&1 )
