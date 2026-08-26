@@ -23,6 +23,9 @@ HELP[6]="Pass the full backup directory to mariabackup_prepare_full"
 DESCR[7]="Prepare full backup: directory does not exist (%s)"
 HELP[7]="Check MARIABACKUP_BASEDIR and that a full backup has been taken"
 
+
+DESCR[8]="Incremental backup: full backup directory does not exist (%s)"
+HELP[8]="An incremental backup needs a full backup to build on. Check MARIABACKUP_BASEDIR and take a full backup first."
 DESCR[9]="Prepare full backup FAILED: %s (time: %s error: %s)"
 HELP[9]="Check the mariabackup --prepare output"
 

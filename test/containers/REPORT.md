@@ -452,13 +452,21 @@ promises more codes than the language file defines in `sc_07_syslog.sh`,
 indexes it never emits. `schelp` prints a blank entry for each. No runtime
 effect.
 
-### Worth a decision
+### Error-code collision resolved
 
-`938_mariabackup.sh` uses `ERRNO[4]` for two different things - `INFO`
+`938_mariabackup.sh` used `ERRNO[4]` for two unrelated outcomes - `INFO`
 "incremental backup done" at line 112 and `ERROR` "full backup directory
-missing" at line 97. One description cannot serve both; the text written covers
-the success case. Giving the error path its own code needs someone who knows the
-backup workflow.
+missing" at line 97. One description could not serve both, so the error path
+was given its own code from the free range (1, 8, 14, 15, 18, 20, 22):
+
+```
+938-01-E-9388-PKI ... ERROR - mariabackup Incremental backup: full backup directory does not exist (/backup/2026-08-26/FULL)
+938-02-I-9384-PKI ... INFO  - mariabackup Incremental backup: /backup/2026-08-26/INC (time: 42 size: 1.2G)
+```
+
+`ERRNO[8]` sits alongside `ERRNO[13]`, which reports the same missing-full-backup
+condition from the prepare step. Monitoring can now distinguish a successful
+incremental backup from one that never ran.
 
 ---
 

@@ -94,7 +94,7 @@ mariabackup_incremental_backup() {
   fi
 
   if [ ! -d "${FULL_BACKUP_DIR}" ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${FULL_BACKUP_DIR}"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[8]} -d "${DESCR[8]}" -1 "${FULL_BACKUP_DIR}"
   fi
 
   SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
