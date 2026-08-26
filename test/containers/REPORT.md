@@ -10,17 +10,17 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 | | |
 | --- | --- |
 | Tests written | 98 |
-| Passing (behaviour verified correct) | 95 |
-| Strict xfail (confirmed open defect) | 3 |
+| Passing (behaviour verified correct) | 97 |
+| Strict xfail (confirmed open defect) | 1 |
 | Failing unexpectedly | 0 |
 | Defects found | 20 (D5 withdrawn on review) |
-| Defects fixed in this pass | 12 |
+| Defects fixed in this pass | 14 |
 | Scripts fully covered | 2 of 38 (`sc_01`, `sc_20`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-95 passed, 3 xfailed in 139.41s
+97 passed, 1 xfailed in 135.32s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -314,6 +314,48 @@ exactly as `getroot.sh` does. Three pre-existing hold tests were corrected at
 the same time - they invented a `operator: maintenance` format rather than
 using the real one, which is why this went unnoticed.
 
+## D9 — the on-hold notice reached no sink when `sudo` was unavailable ✅ FIXED
+`lib/libsyscheck.sh:81`
+
+```bash
+sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh -n "common" -i "00" ...
+```
+
+This was the only route by which a hold reached syslog, `last_status` or the
+monitoring API - the already-sourced local `printlogmess` was never called.
+`isSyscheckOnHold` runs from `initscript`, i.e. at the top of all 38 scripts,
+which under cron are already root; the `sudo` was redundant there and simply
+failed on a host without it installed:
+
+```
+libsyscheck.sh: line 84: sudo: command not found
+```
+
+**Fix:** call `printlogmess` directly, as every other call site in the library
+already does. No new dependency, no subprocess, and the hold now lands in all
+four sinks.
+
+**Scope note:** this was about `lib/libsyscheck.sh` only. `getroot.sh` also uses
+`sudo` throughout, but that is an interactive operator tool for escalating
+privilege - requiring `sudo` there is its purpose, not a defect.
+
+`test_shared_library.py::test_syscheck_on_hold_is_logged_without_requiring_sudo`
+now deletes `sudo` from the container before running, and asserts the hold
+still reaches the log.
+
+## D13 — `df` was executed twice per filesystem ✅ FIXED
+`scripts-available/sc_01_diskusage.sh:45,51`
+
+The first call captured output for the error path; the second re-ran `df` purely
+to extract the percentage. On a hung NFS mount that doubled the stall, and the
+percentage shown to the operator was not necessarily the one the threshold had
+been evaluated against.
+
+**Fix:** the percentage is parsed out of the output already captured in `DFPH`.
+
+`test_sc_01_diskusage.py::test_df_is_only_executed_once_per_filesystem` puts a
+counting `df` shim on PATH and asserts exactly one invocation.
+
 ---
 
 # Open defects
@@ -344,32 +386,6 @@ sees `00` and no explanation of why every check went quiet.
 
 `test_shared_library.py::test_syscheck_on_hold_tells_the_operator_who_holds_it`
 
-## D9 — the on-hold notice reaches no sink when `sudo` is unavailable
-`lib/libsyscheck.sh:81`
-
-```bash
-sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh -n "common" -i "00" ...
-```
-
-This is the only route by which a hold reaches syslog, `last_status` or the
-monitoring API - the already-sourced local `printlogmess` is never called.
-`isSyscheckOnHold` runs from `initscript`, i.e. at the top of all 38 scripts,
-which under cron are already root; the `sudo` is redundant there and simply
-fails on a host that does not have it installed:
-
-```
-libsyscheck.sh: line 84: sudo: command not found
-```
-
-Combined with D8 the result is total silence on every channel while syscheck is
-on hold, which is indistinguishable from all checks passing.
-
-**Scope note:** this is about `libsyscheck.sh` only. `getroot.sh` also uses
-`sudo` throughout, but that is an interactive operator tool for escalating
-privilege - requiring `sudo` there is its purpose, not a defect.
-
-`test_shared_library.py::test_syscheck_on_hold_is_logged_without_requiring_sudo`
-
 ## D10 — `sc_19_alive.sh` reports `[3]` instead of a message
 `scripts-available/sc_19_alive.sh:27`
 
@@ -395,15 +411,6 @@ index is `00`, not `01` — the early-exit path returns before `addOneToIndex`, 
 this is the only message in the system using index `00`.
 
 *Confirmed by observation; test lands with the `sc_32` suite in Phase 1.*
-
-## D13 — `df` is executed twice per filesystem
-`sc_01:45` and `sc_01:51`
-
-The first call captures output for the error path, the second re-runs `df` for
-the percentage. On a hung NFS mount that doubles the stall, and the percentage
-reported is not the one the threshold was evaluated against.
-
-`test_sc_01_diskusage.py::test_df_is_only_executed_once_per_filesystem`
 
 ## D14 — `diskusage()` uses `return -1`
 `sc_01:34`, `sc_01:38`
@@ -521,7 +528,7 @@ empty pipe.
 2. **D16** — add a timeout to `sc_44`; a hanging check is worse than a failing
    one. Audit the other `openssl`/`curl` call sites for the same gap.
 4. **D15 + D10** — one-word fixes, both currently losing a message.
-6. **D8 + D9 + D13 + D14** — small and independent.
+6. **D8 + D14** — small and independent.
 7. **D11** — decide whether `sc_32` is repaired or removed; today it is neither.
 
 A `shellcheck` step in `.github/workflows/ci.yml` would have caught D1, D3, D10,

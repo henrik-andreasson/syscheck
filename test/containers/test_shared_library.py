@@ -47,14 +47,7 @@ def write_hold_file(syscheck, user: str = HOLD_USER, reason: str = HOLD_REASON) 
     ).check()
 
 
-def install_sudo_shim(syscheck) -> None:
-    """The hold notice is logged via `sudo printlogmess-cli.sh`; the container
-    has no sudo, so stand in a shim that just runs the command."""
-    syscheck.install_fake_bin("sudo", 'exec "$@"\n')
-
-
 def test_syscheck_on_hold_identifies_the_user_who_set_it(syscheck):
-    install_sudo_shim(syscheck)
     write_hold_file(syscheck)
     syscheck.run_script(SC01)
 
@@ -65,7 +58,6 @@ def test_syscheck_on_hold_identifies_the_user_who_set_it(syscheck):
 
 
 def test_syscheck_on_hold_is_logged_as_a_warning(syscheck):
-    install_sudo_shim(syscheck)
     write_hold_file(syscheck)
     syscheck.run_script(SC01)
 
@@ -100,19 +92,13 @@ def test_syscheck_on_hold_tells_the_operator_who_holds_it(syscheck):
     assert "operator" in run.output
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="libsyscheck.sh:81 shells out to `sudo printlogmess-cli.sh` to log "
-           "the hold, so on a host without sudo (or when already root) the hold "
-           "notice never reaches syslog and a bare error is printed instead",
-)
 def test_syscheck_on_hold_is_logged_without_requiring_sudo(syscheck):
     syscheck.exec("rm -f /usr/bin/sudo /usr/local/bin/sudo")
     write_hold_file(syscheck)
     run = syscheck.run_script(SC01)
 
-    assert "sudo: command not found" not in run.output, run.output
+    assert "sudo" not in run.output, run.output
+    assert f"HOLD BY: {HOLD_USER} " in syscheck.file_log(), syscheck.file_log()
 
 
 def test_message_is_truncated_to_messagelength(syscheck):

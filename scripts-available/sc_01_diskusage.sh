@@ -48,7 +48,7 @@ diskusage () {
 		printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "$FILESYSTEM" -2 "$DFPH"
 	else
 
-		PERCENT=`df -Ph "$FILESYSTEM" | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
+		PERCENT=`printf '%s\n' "$DFPH" | grep -v Filesystem| awk '{print $5}' | sed 's/%//'`
 
 
     if [ "$PERCENT" -gt "$ERRLIMIT" ] ; then

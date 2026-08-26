@@ -81,7 +81,7 @@ isSyscheckOnHold(){
     if [ -f ${SYSCHECK_HOME}/var/syscheck-on-hold ] ; then
         ONHOLDBY=$(cat ${SYSCHECK_HOME}/var/syscheck-on-hold | cut -f3 -d\;)
 
-        sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh -n "common" -i "00" -x "0" -l $WARN -e "00" -d "SYSCHECK IS ON HOLD BY: ${ONHOLDBY} OPERATION CANCELED SCRIPTID: ${SCRIPTID}"
+        printlogmess -n "common" -i "00" -x "0" -l "$WARN" -e "00" -d "SYSCHECK IS ON HOLD BY: ${ONHOLDBY} OPERATION CANCELED SCRIPTID: ${SCRIPTID}"
         printf "00" "0" $WARN "00" "SYSCHECK IS ON HOLD BY: ${ONHOLDBY} OPERATION CANCELED SCRIPTID: ${SCRIPTID}"
 		exit
 	fi

@@ -286,13 +286,6 @@ def test_exit_code_is_zero_even_when_an_error_is_reported(syscheck, filled):
     assert run.exit_code == 0
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="df -Ph is executed twice per filesystem (sc_01:45 and sc_01:51); the "
-           "percentage reported to the operator can differ from the one the "
-           "threshold was evaluated against",
-)
 def test_df_is_only_executed_once_per_filesystem(syscheck, filled):
     syscheck.install_fake_bin(
         "df",
