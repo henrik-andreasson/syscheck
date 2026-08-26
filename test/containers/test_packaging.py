@@ -53,14 +53,6 @@ def test_python_helpers_are_executable_on_a_stock_debian(syscheck):
     assert not broken, f"helpers whose interpreter is missing: {broken}"
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(
-    strict=True,
-    reason="var/last_status is committed to git with 291 lines of stale status "
-           "from a Nov-2025 build container, and lib/release.sh copies var/ "
-           "into the package, so a fresh install reports historical ERRORs "
-           "before syscheck has ever run",
-)
 def test_fresh_install_has_no_pre_existing_status(syscheck):
     syscheck.exec("rm -rf /opt/syscheck/var && cp -a /src/var /opt/syscheck/var").check()
     status = syscheck.read_file("/opt/syscheck/var/last_status")

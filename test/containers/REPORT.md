@@ -10,17 +10,17 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 | | |
 | --- | --- |
 | Tests written | 96 |
-| Passing (behaviour verified correct) | 92 |
-| Strict xfail (confirmed open defect) | 4 |
+| Passing (behaviour verified correct) | 93 |
+| Strict xfail (confirmed open defect) | 3 |
 | Failing unexpectedly | 0 |
 | Defects found | 19 (D5 withdrawn on review) |
-| Defects fixed in this pass | 10 |
+| Defects fixed in this pass | 11 |
 | Scripts fully covered | 2 of 38 (`sc_01`, `sc_20`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-92 passed, 4 xfailed in 103.37s
+93 passed, 3 xfailed in 135.21s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -270,6 +270,25 @@ The Icinga side keeps the opposite split, because the code picks the *action*
 Covered by `test_op5_url_from_the_shipped_config_is_not_doubled`, and the whole
 monitoring suite now uses the shipped URL shapes rather than convenient ones.
 
+## D12 — the package shipped 291 lines of someone else's status ✅ FIXED
+`var/last_status`
+
+The file was committed to git containing status from a Nov-2025 build container
+(`eba9e0811f66`, `b998b92e8ac5`), including `ERROR` lines, and
+`lib/release.sh:83` copies `var/` into the package. A freshly installed syscheck
+therefore reported historical failures from another machine before it had run
+once, and everything that reads `last_status` - `console_syscheck.sh`,
+`929_filter_syscheck_messages.sh`,
+`930_send_filtered_result_to_remote_machine.sh` - would have picked them up.
+
+**Fix:** truncated to the single `#placeholder` line it already began with. The
+file stays tracked so the path exists in the package and on a fresh install;
+only the stale content is gone. `syscheck.sh` recreates it on every run anyway.
+
+Covered by `test_packaging.py::test_fresh_install_has_no_pre_existing_status`,
+which copies `var/` straight from the source tree and asserts no non-comment
+line survives.
+
 ---
 
 # Open defects
@@ -334,18 +353,6 @@ index is `00`, not `01` — the early-exit path returns before `addOneToIndex`, 
 this is the only message in the system using index `00`.
 
 *Confirmed by observation; test lands with the `sc_32` suite in Phase 1.*
-
-## D12 — the package ships 291 lines of someone else's status
-`var/last_status`
-
-Committed to git containing status from a Nov-2025 build container
-(`eba9e0811f66`, `b998b92e8ac5`), including `ERROR` lines. `lib/release.sh:83`
-copies `var/` into the package, so a freshly installed syscheck reports
-historical failures from another machine before it has run once. Anything
-reading `last_status` — `console_syscheck.sh`, `929_filter`, `930_send…` — picks
-them up.
-
-`test_packaging.py::test_fresh_install_has_no_pre_existing_status`
 
 ## D13 — `df` is executed twice per filesystem
 `sc_01:45` and `sc_01:51`
@@ -472,7 +479,6 @@ empty pipe.
 2. **D16** — add a timeout to `sc_44`; a hanging check is worse than a failing
    one. Audit the other `openssl`/`curl` call sites for the same gap.
 4. **D15 + D10** — one-word fixes, both currently losing a message.
-5. **D12** — `git rm --cached var/last_status`, add to `.gitignore`.
 6. **D8 + D9 + D13 + D14** — small and independent.
 7. **D11** — decide whether `sc_32` is repaired or removed; today it is neither.
 
