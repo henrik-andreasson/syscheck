@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 96 |
-| Passing (behaviour verified correct) | 93 |
+| Tests written | 98 |
+| Passing (behaviour verified correct) | 95 |
 | Strict xfail (confirmed open defect) | 3 |
 | Failing unexpectedly | 0 |
-| Defects found | 19 (D5 withdrawn on review) |
-| Defects fixed in this pass | 11 |
+| Defects found | 20 (D5 withdrawn on review) |
+| Defects fixed in this pass | 12 |
 | Scripts fully covered | 2 of 38 (`sc_01`, `sc_20`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-93 passed, 3 xfailed in 135.21s
+95 passed, 3 xfailed in 139.41s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -289,6 +289,31 @@ Covered by `test_packaging.py::test_fresh_install_has_no_pre_existing_status`,
 which copies `var/` straight from the source tree and asserts no non-comment
 line survives.
 
+## D19 — the hold notice named a date fragment instead of the user ✅ FIXED
+`getroot.sh:95`, `lib/libsyscheck.sh:82`
+
+`getroot.sh` wrote the hold file as `DATE:REASON:USER` and `isSyscheckOnHold`
+read the user with `cut -f1 -d\:`. Field 1 is the *date*, and `date` output is
+itself full of colons, so the variable named `ONHOLDBY` ended up holding a
+truncated timestamp:
+
+```
+file:      Wed Aug 26 12:13:40 UTC 2026;disk maintenance;alice
+old parse: ONHOLDBY = "Wed Aug 26 12"
+```
+
+The user and the reason were both discarded. Invisible until now because D8
+prevents the message being displayed at all.
+
+**Fix:** the delimiter is `;`, which cannot collide with `date` output, and the
+user is read from field 3.
+
+Covered by `test_syscheck_on_hold_identifies_the_user_who_set_it` and
+`test_syscheck_on_hold_is_logged_as_a_warning`, which write the hold file
+exactly as `getroot.sh` does. Three pre-existing hold tests were corrected at
+the same time - they invented a `operator: maintenance` format rather than
+using the real one, which is why this went unnoticed.
+
 ---
 
 # Open defects
@@ -319,12 +344,29 @@ sees `00` and no explanation of why every check went quiet.
 
 `test_shared_library.py::test_syscheck_on_hold_tells_the_operator_who_holds_it`
 
-## D9 — the on-hold path hard-depends on `sudo`
+## D9 — the on-hold notice reaches no sink when `sudo` is unavailable
 `lib/libsyscheck.sh:81`
 
-The hold notice is logged via `sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh`.
-Where `sudo` is absent — or where syscheck already runs as root, the normal
-case — this prints `sudo: command not found` and the hold is never recorded.
+```bash
+sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh -n "common" -i "00" ...
+```
+
+This is the only route by which a hold reaches syslog, `last_status` or the
+monitoring API - the already-sourced local `printlogmess` is never called.
+`isSyscheckOnHold` runs from `initscript`, i.e. at the top of all 38 scripts,
+which under cron are already root; the `sudo` is redundant there and simply
+fails on a host that does not have it installed:
+
+```
+libsyscheck.sh: line 84: sudo: command not found
+```
+
+Combined with D8 the result is total silence on every channel while syscheck is
+on hold, which is indistinguishable from all checks passing.
+
+**Scope note:** this is about `libsyscheck.sh` only. `getroot.sh` also uses
+`sudo` throughout, but that is an interactive operator tool for escalating
+privilege - requiring `sudo` there is its purpose, not a defect.
 
 `test_shared_library.py::test_syscheck_on_hold_is_logged_without_requiring_sudo`
 

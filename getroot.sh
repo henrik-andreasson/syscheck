@@ -92,7 +92,7 @@ fi
 if [ "x$SYSCHECKONHOLD" = "xy" -o "x$SYSCHECKONHOLD" = "xY" ] ; then
     sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l $INFO -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${ExecutingUserName}" -2 "${ExecutingUserId}" -3 "$REASON"
     sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh      -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l $INFO -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${ExecutingUserName}" -2 "${ExecutingUserId}" -3 "$REASON"
-    printf "$(date):${REASON}:${ExecutingUserName}" | sudo tee ${SYSCHECK_HOME}/var/syscheck-on-hold > /dev/null
+    printf "$(date);${REASON};${ExecutingUserName}" | sudo tee ${SYSCHECK_HOME}/var/syscheck-on-hold > /dev/null
 else
     sudo ${SYSCHECK_HOME}/lib/printlogmess-cli.sh -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" "${ExecutingUserName} (${ExecutingUserId})" "$REASON"
     sudo ${SYSCHECK_HOME}/lib/logbook-cli.sh      -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${ExecutingUserName}" -2 "${ExecutingUserId}" -3 "$REASON"

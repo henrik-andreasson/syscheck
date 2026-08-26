@@ -35,9 +35,49 @@ def test_getlangfiles_refuses_to_run_with_a_missing_language_file(syscheck):
     assert run.messages == []
 
 
+HOLD_FILE = "/opt/syscheck/var/syscheck-on-hold"
+HOLD_USER = "alice"
+HOLD_REASON = "disk maintenance"
+
+
+def write_hold_file(syscheck, user: str = HOLD_USER, reason: str = HOLD_REASON) -> None:
+    """getroot.sh writes DATE;REASON;USER with no trailing newline."""
+    syscheck.exec(
+        f'printf "$(date);{reason};{user}" > {HOLD_FILE}'
+    ).check()
+
+
+def install_sudo_shim(syscheck) -> None:
+    """The hold notice is logged via `sudo printlogmess-cli.sh`; the container
+    has no sudo, so stand in a shim that just runs the command."""
+    syscheck.install_fake_bin("sudo", 'exec "$@"\n')
+
+
+def test_syscheck_on_hold_identifies_the_user_who_set_it(syscheck):
+    install_sudo_shim(syscheck)
+    write_hold_file(syscheck)
+    syscheck.run_script(SC01)
+
+    log = syscheck.file_log()
+    assert "SYSCHECK IS ON HOLD BY" in log, log
+    assert f"HOLD BY: {HOLD_USER} " in log, log
+    assert "SCRIPTID: 01" in log
+
+
+def test_syscheck_on_hold_is_logged_as_a_warning(syscheck):
+    install_sudo_shim(syscheck)
+    write_hold_file(syscheck)
+    syscheck.run_script(SC01)
+
+    hold_lines = [l for l in syscheck.file_log().splitlines() if "ON HOLD" in l]
+    assert hold_lines, syscheck.file_log()
+    assert "-W-" in hold_lines[0], hold_lines[0]
+    assert "WARNING" in hold_lines[0]
+
+
 def test_syscheck_on_hold_suppresses_the_check(syscheck):
     """The hold file must stop the check from running and reporting."""
-    syscheck.write_file("/opt/syscheck/var/syscheck-on-hold", "operator: maintenance\n")
+    write_hold_file(syscheck)
     run = syscheck.run_script(SC01)
 
     assert not any(m.scriptname == "diskusage" for m in run.messages), run.describe()
@@ -53,7 +93,7 @@ def test_syscheck_on_hold_suppresses_the_check(syscheck):
            "operator is never told why the check produced nothing",
 )
 def test_syscheck_on_hold_tells_the_operator_who_holds_it(syscheck):
-    syscheck.write_file("/opt/syscheck/var/syscheck-on-hold", "operator: maintenance\n")
+    write_hold_file(syscheck)
     run = syscheck.run_script(SC01)
 
     assert "SYSCHECK IS ON HOLD BY" in run.output, run.output
@@ -69,7 +109,7 @@ def test_syscheck_on_hold_tells_the_operator_who_holds_it(syscheck):
 )
 def test_syscheck_on_hold_is_logged_without_requiring_sudo(syscheck):
     syscheck.exec("rm -f /usr/bin/sudo /usr/local/bin/sudo")
-    syscheck.write_file("/opt/syscheck/var/syscheck-on-hold", "operator: maintenance\n")
+    write_hold_file(syscheck)
     run = syscheck.run_script(SC01)
 
     assert "sudo: command not found" not in run.output, run.output
