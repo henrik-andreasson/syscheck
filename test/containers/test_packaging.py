@@ -59,3 +59,74 @@ def test_fresh_install_has_no_pre_existing_status(syscheck):
 
     stale = [ln for ln in status.splitlines() if ln.strip() and not ln.startswith("#")]
     assert not stale, f"{len(stale)} stale status lines shipped in the package"
+
+
+def _error_code_usage():
+    import re
+    from syscheck_harness import REPO_ROOT
+
+    out = []
+    for folder, pattern in (("scripts-available", "sc_*.sh"), ("related-available", "9*.sh")):
+        for path in sorted((REPO_ROOT / folder).glob(pattern)):
+            src = path.read_text(errors="replace")
+            declared = re.search(r"^NO_OF_ERR=(\d+)", src, re.M)
+            if not declared:
+                continue
+            declared = int(declared.group(1))
+            used = sorted({int(n) for n in re.findall(r"ERRNO\[(\d+)\]", src)})
+            sid = re.search(r"^SCRIPTID=(\S+)", src, re.M)
+            sid = sid.group(1).strip('"') if sid else None
+            lang = REPO_ROOT / "lang" / f"{sid}.english"
+            descr = set()
+            if lang.exists():
+                descr = {int(n) for n in re.findall(r"^DESCR\[(\d+)\]", lang.read_text(errors="replace"), re.M)}
+            out.append((path.name, declared, used, descr))
+    return out
+
+
+@pytest.mark.known_bug
+@pytest.mark.xfail(
+    strict=True,
+    reason="8 scripts reference an ERRNO[] index above their own NO_OF_ERR, so "
+           "initscript never generates it. The -e argument is then empty and, "
+           "being unquoted, swallows the following -d, so printlogmess rejects "
+           "the call and the message is lost entirely",
+)
+def test_no_of_err_covers_every_errno_index_used():
+    offenders = {
+        name: (declared, max(used))
+        for name, declared, used, _ in _error_code_usage()
+        if used and max(used) > declared
+    }
+    assert not offenders, f"NO_OF_ERR too low: {offenders}"
+
+
+@pytest.mark.known_bug
+@pytest.mark.xfail(
+    strict=True,
+    reason="some scripts reference an ERRNO[] index with no matching DESCR[] in "
+           "their language file, so -d is empty and printlogmess rejects the "
+           "call; 938_mariabackup.sh is missing 14 of them",
+)
+def test_every_errno_index_used_has_a_description():
+    offenders = {
+        name: sorted(set(used) - descr)
+        for name, _, used, descr in _error_code_usage()
+        if set(used) - descr
+    }
+    assert not offenders, f"ERRNO[] used with no DESCR[]: {offenders}"
+
+
+@pytest.mark.known_bug
+@pytest.mark.xfail(
+    strict=True,
+    reason="NO_OF_ERR promises more codes than the language file defines, so "
+           "--help prints blank entries for them",
+)
+def test_help_does_not_list_undefined_error_codes():
+    offenders = {
+        name: sorted(n for n in range(1, declared + 1) if n not in descr)
+        for name, declared, _, descr in _error_code_usage()
+        if descr and any(n not in descr for n in range(1, declared + 1))
+    }
+    assert not offenders, f"NO_OF_ERR promises codes the lang file lacks: {offenders}"

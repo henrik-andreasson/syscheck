@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 107 |
+| Tests written | 110 |
 | Passing (behaviour verified correct) | 106 |
-| Strict xfail (confirmed open defect) | 1 |
+| Strict xfail (confirmed open defect) | 4 |
 | Failing unexpectedly | 0 |
-| Defects found | 20 (D5 withdrawn on review) |
+| Defects found | 21 (D5 withdrawn on review) |
 | Defects fixed in this pass | 15 |
 | Scripts fully covered | 3 of 38 (`sc_01`, `sc_20`, `sc_44`) + `logbook.sh` |
 | Runtime | ~100s |
 
 ```
 $ ./run.sh -q
-106 passed, 1 xfailed in 170.02s
+106 passed, 4 xfailed in 172s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -394,6 +394,68 @@ applying when the setting is absent.
 ---
 
 # Open defects
+
+## D20 — 14 scripts declare the wrong number of error codes
+`NO_OF_ERR` in 8 `sc_*` / `9*` scripts, plus 6 language-file gaps
+
+`initscript` generates `ERRNO[1]`..`ERRNO[$NO_OF_ERR]`. A script referencing an
+index above its own `NO_OF_ERR` passes an **empty** `-e`, and since the flag is
+unquoted at every call site it swallows the following `-d`. `printlogmess` then
+rejects the call:
+
+```
+$ printlogmess -n ejbca -i 02 -x 01 -l E -e ${ERRNO[4]} -d "${DESCR[4]}" -1 arg
+printlogmess: missing description (-d), called by bash: -n ejbca -i 02 -x 01 -l E -e -d EJBCA : application server unavailable -1 arg
+rc=1
+```
+
+**The message is lost.** Before D1 was fixed the same calls produced corrupted
+lines instead - `E-44-d-PKI` in the old `var/last_status` is one of them, with
+`-d` as the error number.
+
+This was found by `sc_44`, which was wrong by three. A scan of all 38 `sc_` and
+43 `related` scripts found 13 more.
+
+### Messages lost at runtime
+
+| script | declares | uses up to |
+| --- | --- | --- |
+| `sc_02_ejbca.sh` | 3 | `ERRNO[4]` |
+| `sc_31_hp_health.sh` | 5 | `ERRNO[6]` (also no `DESCR[6]`) |
+| `905_publish_crl.sh` | 3 | `ERRNO[8]` — five broken paths |
+| `911_activate_VIP.sh` | 4 | `ERRNO[6]` |
+| `919_certpublisher_remotecommand.sh` | 3 | `ERRNO[4]` (also no `DESCR[4]`) |
+| `925_publish_crl_from_file.sh` | 3 | `ERRNO[4]` |
+| `931_mysql_backup_encrypt_send_to_remote_host.sh` | 3 | `ERRNO[5]` |
+| `938_mariabackup.sh` | 23 | `ERRNO[23]`, but the lang file defines only `DESCR[1..3]` — **14 indexes have no description at all** |
+
+`938_mariabackup.sh` is the worst: `NO_OF_ERR` is high enough, but its language
+file was never filled in, so most of its error paths fail the `-d` check instead
+of the `-e` one. Same outcome, different guard.
+
+`sc_02_ejbca.sh` is the one to fix first — it is the EJBCA application-server
+health check, and `ERRNO[4]` is its "application server unavailable" path.
+
+### Cosmetic only
+
+`NO_OF_ERR` higher than the language file defines. No runtime effect; `schelp`
+prints blank entries in `--help`.
+
+`sc_07_syslog.sh` (4 vs 3), `903_make_hsm_backup.sh`, `927_create_crls.sh`,
+`928_check_dsm_backup.sh`, `930_send_filtered_result_to_remote_machine.sh`
+(3 vs 2), `935_mysql_console_as_root.sh` (3 vs 0).
+
+### Guards
+
+Three static tests in `test_packaging.py` now enforce the invariants, so a new
+mismatch fails the suite rather than waiting for the error path to fire in
+production:
+
+- `test_no_of_err_covers_every_errno_index_used`
+- `test_every_errno_index_used_has_a_description`
+- `test_help_does_not_list_undefined_error_codes`
+
+They need no container and run in under a second.
 
 ## ~~D5 — scripts exit 0 regardless of what they found~~ ❌ WITHDRAWN, not a defect
 
