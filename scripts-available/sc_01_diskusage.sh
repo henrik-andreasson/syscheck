@@ -31,11 +31,11 @@ diskusage () {
 
 	if [ "x${FILESYSTEM}" = "x" ] ; then
 		printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "No filesystem specified"
-		return -1
+		return 1
 	fi
   if [ "x${ERRLIMIT}" = "x" ] ; then
 		printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "No limit specified"
-		return -1
+		return 1
 	fi
 
   if [ "x${WARNLIMIT}" = "xdefault" ] ; then
