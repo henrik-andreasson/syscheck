@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 118 |
-| Passing (behaviour verified correct) | 117 |
+| Tests written | 119 |
+| Passing (behaviour verified correct) | 118 |
 | Strict xfail (confirmed open defect) | 1 |
 | Failing unexpectedly | 0 |
 | Defects found | 21 (D5 and D8 withdrawn on review) |
-| Defects fixed in this pass | 18 |
+| Defects fixed in this pass | 19 |
 | Scripts fully covered | 5 of 38 (`sc_01`, `sc_19`, `sc_20`, `sc_41`, `sc_44`) + `logbook.sh` |
 | Runtime | ~180s |
 
 ```
 $ ./run.sh -q
-117 passed, 1 xfailed in 179.36s
+118 passed, 1 xfailed in 187.11s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -513,6 +513,21 @@ Covered by 6 tests in `test_sc_41_ra_verifier.py` driving a fake verifier: all
 three checks passing, all three failing, one failing in isolation, the missing
 tool, and that a missing tool stops the run.
 
+## D14 — `diskusage()` returned an invalid status ✅ FIXED
+`scripts-available/sc_01_diskusage.sh:34,38`
+
+`return -1` is not valid in bash; the status wraps to 255. Both guard clauses
+now `return 1`.
+
+The caller still ignores the value, so nothing observable changes today - but
+the two guards were unreachable until D3/D4 were fixed, and a wrapped status
+would have been the next thing to trip anyone who started checking it.
+
+`test_sc_01_diskusage.py::test_a_rejected_config_entry_returns_a_valid_status`
+sources the script with an empty config, so the main loop is a no-op and the
+function can be called directly, then asserts both guards return 1 rather than
+255.
+
 ---
 
 # Open defects
@@ -554,12 +569,4 @@ index is `00`, not `01` — the early-exit path returns before `addOneToIndex`, 
 this is the only message in the system using index `00`.
 
 *Confirmed by observation; test lands with the `sc_32` suite in Phase 1.*
-
-## D14 — `diskusage()` uses `return -1`
-`sc_01:34`, `sc_01:38`
-
-Not valid in bash; wraps to 255. The caller ignores it either way. Cosmetic, but
-it signals the guards were meant to do something they did not (see D4).
-
-*No test; noted for the cleanup pass.*
 

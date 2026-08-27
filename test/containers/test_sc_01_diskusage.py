@@ -297,3 +297,19 @@ def test_df_is_only_executed_once_per_filesystem(syscheck, filled):
 
     calls = syscheck.read_file("/tmp/df-calls").strip().splitlines()
     assert len(calls) == 1, f"df ran {len(calls)} times: {calls}"
+
+
+def test_a_rejected_config_entry_returns_a_valid_status(syscheck):
+    """`return -1` is not valid in bash: the status wraps to 255. With no
+    FILESYSTEM entries the main loop is a no-op, so sourcing the script just
+    defines the function."""
+    syscheck.set_script_config("01", "# no filesystems configured\n")
+    res = syscheck.bash(
+        f"source {syscheck.script_path(SCRIPT)} >/dev/null 2>&1\n"
+        'diskusage "" 90 80 01 >/dev/null 2>&1 ; echo "empty-fs rc=$?"\n'
+        f'diskusage "{FS_A}" "" 80 01 >/dev/null 2>&1 ; echo "no-limit rc=$?"\n',
+        env={"SYSCHECK_HOME": syscheck.home},
+    )
+
+    assert "empty-fs rc=1" in res.output, res.output
+    assert "no-limit rc=1" in res.output, res.output
