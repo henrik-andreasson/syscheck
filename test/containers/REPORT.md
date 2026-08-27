@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 133 |
-| Passing (behaviour verified correct) | 132 |
+| Tests written | 132 |
+| Passing (behaviour verified correct) | 131 |
 | Strict xfail (confirmed open defect) | 1 |
 | Failing unexpectedly | 0 |
 | Defects found | 21 (D5 and D8 withdrawn on review) |
 | Defects fixed in this pass | 20 |
 | Scripts fully covered | 6 of 38 (`sc_01`, `sc_19`, `sc_20`, `sc_32`, `sc_41`, `sc_44`) + `logbook.sh` |
-| Runtime | ~250s |
+| Runtime | ~215s |
 
 ```
 $ ./run.sh -q
-132 passed, 1 xfailed in 251.24s
+131 passed, 1 xfailed in 213.46s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -556,13 +556,15 @@ The method is documented in `docs/db-consistency-check.md`; the short version:
 Eight error codes replace the previous two, so monitoring can tell a divergence
 from lag, from an unreachable node, from a missing table, from a config error.
 
-Covered by 14 tests in `test_sc_32_check_db_sync.py` running against **two real
+Covered by 13 tests in `test_sc_32_check_db_sync.py` running against **two real
 MariaDB nodes** on a shared docker network: identical nodes, a missing row, a
 changed value, two extra identical rows (the case the checksum alone misses), a
 write inside the settle window being ignored and the same write outside it being
 caught, a lagging node converging into a WARNING, whole-table comparison for a
-table with no cutoff column, several tables reported separately, an unreachable
-node, a missing table, and both config errors.
+table with no cutoff column, whole-table comparison for a table with no cutoff
+column (which also covers several tables being reported separately with their
+own script indexes), an unreachable node, a missing table, and both config
+errors.
 
 This is the first suite to use real service containers, so the harness gained
 `create_network` and `start_mariadb_node`, and the base image gained
