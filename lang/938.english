@@ -2,56 +2,23 @@ SCRIPT_HUMAN_NAME="mariadb backup tool"
 
 HELP="syntax: $0 [ -b|--backup] -i|--incremental -c|--cumulative [-s|--screen] [-r|--restore]\n\n-b or --backup will put the backup in the directory defined in config as MARIABACKUP_BASEDIR/YY-MM-DD/FULL\n-i or --incrementel will put the incrementel backup in the directory defined in config as  MARIABACKUP_BASEDIR/YY-MM-DD/INC, last FULL backup or last INC backup is used as startpoint for backup\n-c or --cumulativ will put the backup in the directory defined in config as  MARIABACKUP_BASEDIR/YY-MM-DD/CUM, take a full incremental backup from last FULL backup\n -r or --restore will tore database in /var/lib/mysql\n OBSERVE that it's up to the admin to run this script with cron or alike at these intervals, so run this script once a day with --daily to get only one daily backup and so on\n -b or --batch will echo the resulting filename for processing by other scripts"
 
-DESCR[1]="(%s)"
-HELP[1]=" Start mysql"
+DESCR[1]="no name for fullbackup sent"
+HELP[1]="configure fullbackup name"
 
-DESCR[2]="(%s)"
-HELP[2]=" no action needed"
+DESCR[2]="Mariadb full backup dir already exist"
+HELP[2]="Use a non-existing directory"
 
-DESCR[3]="(%s)"
-HELP[3]="Check space on device"
+DESCR[3]="run failed (%s)"
+HELP[3]="Check error code"
 
-DESCR[4]="Incremental backup: %s (time: %s size: %s)"
+DESCR[4]="backup successful %s (time: %s size: %s)"
 HELP[4]="no action needed"
 
-DESCR[5]="Incremental backup FAILED: %s (time: %s size: %s error: %s)"
-HELP[5]="Check the mariabackup output and free space on the device"
+DESCR[7]="Mariadb full backup dir do not exist"
+HELP[7]="Use a existing directory with a full backup"
 
-DESCR[6]="Prepare full backup: no backup directory given (%s)"
-HELP[6]="Pass the full backup directory to mariabackup_prepare_full"
+DESCR[5]="Incremental backup (%s/%s) (time: %s size: %s error: %s)"
+HELP[5]="Check the mariabackup output"
 
-DESCR[7]="Prepare full backup: directory does not exist (%s)"
-HELP[7]="Check MARIABACKUP_BASEDIR and that a full backup has been taken"
-
-
-DESCR[8]="Incremental backup: full backup directory does not exist (%s)"
-HELP[8]="An incremental backup needs a full backup to build on. Check MARIABACKUP_BASEDIR and take a full backup first."
-DESCR[9]="Prepare full backup FAILED: %s (time: %s error: %s)"
-HELP[9]="Check the mariabackup --prepare output"
-
-DESCR[10]="Prepare incremental backup: no incremental directory given (%s)"
-HELP[10]="Pass the incremental backup directory to mariabackup_prepare_incrementel"
-
-DESCR[11]="Prepare incremental backup: incremental directory does not exist (%s)"
-HELP[11]="Check MARIABACKUP_BASEDIR and that an incremental backup has been taken"
-
-DESCR[12]="Prepare incremental backup: no full backup directory given (%s)"
-HELP[12]="An incremental backup can only be prepared against a full backup"
-
-DESCR[13]="Prepare incremental backup: full backup directory does not exist (%s)"
-HELP[13]="Check MARIABACKUP_BASEDIR and that a full backup has been taken"
-
-DESCR[16]="Restore: no full backup directory given (%s)"
-HELP[16]="Pass the backup directory to restore from"
-
-DESCR[17]="Restore: full backup directory does not exist (%s)"
-HELP[17]="Check the path of the backup you are restoring from"
-
-DESCR[19]="Restore FAILED: %s (time: %s error: %s)"
-HELP[19]="Check the mariabackup --copy-back output and that /var/lib/mysql is empty"
-
-DESCR[21]="Restore: could not set ownership on the database directory %s (time: %s error: %s)"
-HELP[21]="Check MYSQL_FILESYSTEM_USER and MYSQL_FILESYSTEM_GROUP, and run chown manually"
-
-DESCR[23]="Restore: could not restore the selinux context on the database directory %s (time: %s error: %s)"
-HELP[23]="Run restorecon manually, or ignore if selinux is not in use"
+DESCR[6]="Incremental backup successful (%s/%s) (time: %s size: %s error: %s)"
+HELP[6]="no action needed"
