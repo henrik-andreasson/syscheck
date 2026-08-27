@@ -9,18 +9,18 @@ library every script depends on. The plan for the remaining 37 `sc_` scripts and
 
 | | |
 | --- | --- |
-| Tests written | 119 |
-| Passing (behaviour verified correct) | 118 |
+| Tests written | 133 |
+| Passing (behaviour verified correct) | 132 |
 | Strict xfail (confirmed open defect) | 1 |
 | Failing unexpectedly | 0 |
 | Defects found | 21 (D5 and D8 withdrawn on review) |
-| Defects fixed in this pass | 19 |
-| Scripts fully covered | 5 of 38 (`sc_01`, `sc_19`, `sc_20`, `sc_41`, `sc_44`) + `logbook.sh` |
-| Runtime | ~180s |
+| Defects fixed in this pass | 20 |
+| Scripts fully covered | 6 of 38 (`sc_01`, `sc_19`, `sc_20`, `sc_32`, `sc_41`, `sc_44`) + `logbook.sh` |
+| Runtime | ~250s |
 
 ```
 $ ./run.sh -q
-118 passed, 1 xfailed in 187.11s
+132 passed, 1 xfailed in 251.24s
 ```
 
 Every defect below was reproduced in a container, not inferred from reading.
@@ -528,6 +528,46 @@ sources the script with an empty config, so the main loop is a no-op and the
 function can be called directly, then asserts both guards return 1 rather than
 255.
 
+## D11 — `sc_32_check_db_sync.sh` was disabled in place ✅ REWRITTEN
+`scripts-available/sc_32_check_db_sync.sh`
+
+The script contained a hard-coded `echo "This script is broken"; exit` with the
+real comparison logic stranded as dead code below it. In a default install it
+exited even earlier, because the
+`database-replication/808-test-table-update-and-check-master-and-slave.sh` it
+required is not shipped, and emitted a permanent ERROR into monitoring using
+index `00`.
+
+Rewritten to compare a configurable set of tables across two or three nodes.
+The method is documented in `docs/db-consistency-check.md`; the short version:
+
+- **Settle window.** Only rows older than `DBSYNC_SETTLE_SECONDS` are compared,
+  so writes in flight cannot make two nodes look different. This is what makes
+  the check deterministic on a database that is still moving.
+- **Retry before reporting.** A mismatch is recomputed up to
+  `DBSYNC_RECHECK_TRIES` times. Converging means replication lag and is reported
+  as a WARNING; still differing after the last attempt is a real divergence and
+  is an ERROR. This distinguishes "node2 is 3 seconds behind" from "node2 is
+  missing 400 rows" without reading replication status at all.
+- **Order-independent checksum.** `BIT_XOR(CRC32(CONCAT_WS(...)))` over the
+  columns read from `information_schema` at runtime, compared alongside
+  `COUNT(*)` because XOR cancels duplicate identical rows.
+
+Eight error codes replace the previous two, so monitoring can tell a divergence
+from lag, from an unreachable node, from a missing table, from a config error.
+
+Covered by 14 tests in `test_sc_32_check_db_sync.py` running against **two real
+MariaDB nodes** on a shared docker network: identical nodes, a missing row, a
+changed value, two extra identical rows (the case the checksum alone misses), a
+write inside the settle window being ignored and the same write outside it being
+caught, a lagging node converging into a WARNING, whole-table comparison for a
+table with no cutoff column, several tables reported separately, an unreachable
+node, a missing table, and both config errors.
+
+This is the first suite to use real service containers, so the harness gained
+`create_network` and `start_mariadb_node`, and the base image gained
+`mariadb-client`.
+
 ---
 
 # Open defects
@@ -557,16 +597,4 @@ still 0 at that point and the message routed through `printlogmess` cannot
 honour `--screen`. The bare `printf` is what an operator sees on stdout. The
 message itself does reach syslog, `last_status` and the monitoring API - see D9
 and D19.
-
-## D11 — `sc_32_check_db_sync.sh` is disabled in place
-`scripts-available/sc_32_check_db_sync.sh:33`
-
-A hard-coded `echo "This script is broken"` followed by `exit`, with the real
-comparison logic stranded as dead code below. In a default install it exits even
-earlier, because the `808-test-table-update-and-check-master-and-slave.sh` it
-requires is not shipped, and emits a permanent ERROR into monitoring. Note the
-index is `00`, not `01` — the early-exit path returns before `addOneToIndex`, so
-this is the only message in the system using index `00`.
-
-*Confirmed by observation; test lands with the `sc_32` suite in Phase 1.*
 

@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
         wget \
         openssl \
+        mariadb-client \
         netcat-openbsd \
         iputils-ping \
         python3 \

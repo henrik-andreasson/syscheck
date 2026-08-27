@@ -18,6 +18,8 @@ import re
 import shlex
 import subprocess
 import tarfile
+import time
+import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -445,3 +447,44 @@ def start_syscheck_container(image: str = IMAGE_TAG,
     sc.exec("for i in 1 2 3 4 5 6 7 8 9 10; do [ -S /dev/log ] && break; sleep 0.2; done")
 
     return tc, sc
+
+
+def create_network(prefix: str = "syscheck-test") -> str:
+    name = f"{prefix}-{uuid.uuid4().hex[:8]}"
+    proc = subprocess.run(["docker", "network", "create", name],
+                          capture_output=True, text=True)
+    if proc.returncode != 0:
+        raise HarnessError(f"docker network create failed: {proc.stderr}")
+    return name
+
+
+def remove_network(name: str) -> None:
+    subprocess.run(["docker", "network", "rm", name], capture_output=True, text=True)
+
+
+def start_mariadb_node(network: str, root_password: str = "rootpw",
+                       database: str = "syscheckdb", user: str = "syscheck",
+                       password: str = "syscheckpw",
+                       image: str = "mariadb:11") -> tuple[DockerContainer, str]:
+    """Start one MariaDB node on `network`, reachable by its container name."""
+    name = f"mariadb-{uuid.uuid4().hex[:8]}"
+    tc = DockerContainer(image)
+    tc.with_env("MARIADB_ROOT_PASSWORD", root_password)
+    tc.with_env("MARIADB_DATABASE", database)
+    tc.with_env("MARIADB_USER", user)
+    tc.with_env("MARIADB_PASSWORD", password)
+    tc.with_name(name)
+    tc.with_kwargs(network=network)
+    tc.start()
+
+    raw = tc.get_wrapped_container()
+    deadline = time.monotonic() + 120
+    while time.monotonic() < deadline:
+        code, _ = raw.exec_run(
+            ["mariadb-admin", "ping", "-h", "127.0.0.1", "--protocol=TCP",
+             "-uroot", f"-p{root_password}", "--silent"]
+        )
+        if code == 0:
+            return tc, name
+        time.sleep(1)
+    raise HarnessError(f"mariadb node {name} did not become ready")

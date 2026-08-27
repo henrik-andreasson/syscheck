@@ -11,6 +11,7 @@ nav:
   - Output destinations: output-destinations.md
   - All Syscheck scripts: syscheck-scripts.md
   - Related Scripts: related-scripts.md
+  - DB consistency: db-consistency-check.md
   - Archiving: certificate_and_revovation_archival.md
   - upgrade: upgrade.md
   - getroot: getroot.md

@@ -7,6 +7,8 @@ import pytest
 from syscheck_harness import (
     SyscheckContainer,
     build_image,
+    create_network,
+    remove_network,
     start_syscheck_container,
 )
 
@@ -24,8 +26,18 @@ def syscheck_image() -> str:
 
 
 @pytest.fixture(scope="session")
-def _syscheck_session(syscheck_image: str):
-    tc, sc = start_syscheck_container(syscheck_image)
+def syscheck_network():
+    name = create_network()
+    try:
+        yield name
+    finally:
+        remove_network(name)
+
+
+@pytest.fixture(scope="session")
+def _syscheck_session(syscheck_image: str, syscheck_network: str):
+    tc, sc = start_syscheck_container(syscheck_image, network=syscheck_network)
+    sc.network = syscheck_network
     try:
         yield sc
     finally:

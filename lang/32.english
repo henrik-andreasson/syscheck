@@ -1,9 +1,27 @@
-SCRIPT_HUMAN_NAME="EJBCA DB Sync"
+SCRIPT_HUMAN_NAME="Database consistency between nodes"
 
-HELP="Check if DB in sync"
+HELP="Compares a set of tables across two or three database nodes. Rows written inside the settle window are excluded so that writes in flight cannot cause a false alarm, and a mismatch is retried before it is reported so that replication lag is reported as a warning rather than an error. See docs/db-consistency-check.md"
 
-DESCR[1]="DB in sync"
-HELP[1]="and updating databases"
+DESCR[1]="Table %s is identical on all %s nodes (%s)"
+HELP[1]="No action is needed"
 
-DESCR[2]="DB not in sync, date of CertificateData diff betwin nodes:"
-HELP[2]="check error.log, probebly needing manual sync, se manual"
+DESCR[2]="Table %s differs between nodes: %s has %s, %s has %s"
+HELP[2]="The nodes did not converge after the configured retries, so this is a real divergence and not replication lag. Use pt-table-checksum and pt-table-sync, or related-available/914_compare_master_slave_db.sh, to find the differing rows"
+
+DESCR[3]="Table %s converged only after %s attempts (%s), the nodes are lagging"
+HELP[3]="The data is consistent but at least one node was behind. Check replication status and load, and raise DBSYNC_SETTLE_SECONDS if this happens on every run"
+
+DESCR[4]="Cant query node %s for table %s: %s"
+HELP[4]="Check that the node is up, that DB_USER from mariadb.conf may connect from this host, and that DBSYNC_PORT is right"
+
+DESCR[5]="Table %s does not exist on node %s"
+HELP[5]="Check SYNCTABLE in config/32.conf against the schema, the table may have been renamed or dropped"
+
+DESCR[6]="Config problem: %s"
+HELP[6]="Fix config/32.conf, see docs/db-consistency-check.md"
+
+DESCR[7]="All %s tables are in sync across %s nodes"
+HELP[7]="No action is needed"
+
+DESCR[8]="Database consistency problems, number of tables out of sync: %s (%s)"
+HELP[8]="See the per table messages above for which tables differ"
