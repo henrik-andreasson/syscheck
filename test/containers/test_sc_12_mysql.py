@@ -78,31 +78,42 @@ def test_a_correctly_configured_check_finds_the_database_process(syscheck):
     assert (msg.level, msg.errno) == ("I", "121"), run.describe()
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(strict=True,
-                   reason="D40: the shipped procname is /usr/sbin/mysqld, a current MariaDB runs mariadbd")
 def test_the_shipped_procname_matches_a_real_server(shipped_config, server_facts):
-    """`config/12.conf` ships `procname=/usr/sbin/mysqld`. MariaDB 10.5 renamed
-    the daemon, and `mariadb:11` runs `mariadbd`, so the name fallback — the
-    path that runs whenever the pidfile is missing, which it also is — matches
-    nothing. The check reports `mysql is NOT running` and exits 3 on a host
-    whose database is perfectly healthy."""
-    name = shipped_config["procname"].rsplit("/", 1)[-1]
+    """D40, fixed 2026-09-18. `config/12.conf` shipped
+    `procname=/usr/sbin/mysqld`. MariaDB 10.5 renamed the daemon and `mariadb:11`
+    runs `mariadbd`, so the name fallback — the path taken whenever the pidfile
+    is missing, which it also was — matched nothing. The check reported `mysql
+    is NOT running` and exited 3 on a host whose database was perfectly healthy.
 
-    assert name in server_facts["argv"], (
-        f"config/12.conf procname={shipped_config['procname']!r}, "
-        f"server runs:\n{server_facts['argv']}"
+    It now ships `'mysqld|mariadbd'`, which is an **egrep pattern** rather than
+    a path, so this asserts it *matches* rather than that it is a substring.
+    `lib/proc_checker.sh` had to quote `"$the_name"` for that to be possible: an
+    unquoted alternation makes bash read the `|` as a pipe, so `egrep mysqld`
+    would feed into a command called `mariadbd`.
+
+    The path prefix went deliberately. A container shows the process as bare
+    `mariadbd`, systemd shows `/usr/sbin/mariadbd`, and a path-anchored pattern
+    matches only one of them."""
+    import re
+
+    pattern = shipped_config["procname"].strip("'\"")
+
+    assert re.search(pattern, server_facts["argv"]), (
+        f"config/12.conf procname={pattern!r} matches nothing in:\n"
+        f"{server_facts['argv']}"
     )
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(strict=True,
-                   reason="D40: the shipped pidfile is /var/lib/mysql/mysqld.pid, a current MariaDB writes /run/mysqld/mysqld.pid")
 def test_the_shipped_pidfile_matches_a_real_server(shipped_config, server_facts):
     """The other half of the same default: the pidfile moved to `/run` years
-    ago. Both halves being wrong is what makes this a false alarm rather than a
-    slow one — the pidfile misses, so the check falls back to the name, and the
-    name misses too."""
+    ago. Both halves being wrong is what made this a false alarm rather than a
+    slow one — the pidfile missed, so the check fell back to the name, and the
+    name missed too.
+
+    Fixed alongside. The pidfile matters less than it looks: `proc_checker.sh`
+    falls through to the name check when the file is absent, so a wrong path
+    degrades rather than fails. Correcting it means the check uses the faster and
+    more precise pid path instead."""
     assert shipped_config["pidfile"] in server_facts["pidfiles"], (
         f"config/12.conf pidfile={shipped_config['pidfile']!r}, "
         f"server wrote {server_facts['pidfiles']}"
