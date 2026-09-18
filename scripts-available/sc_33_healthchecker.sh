@@ -19,23 +19,7 @@ SCRIPTID=33
 NO_OF_ERR=7
 initscript $SCRIPTID $NO_OF_ERR
 
-
-INPUTARGS=`/usr/bin/getopt --options "hsvcinf" --long "help,screen,verbose,scriptid,scriptname,scripthumanname,full" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -i|--scriptid        ) scriptid          ; exit ; shift;;
-    -n|--scriptname      ) scriptname        ; exit ; shift;;
-    -a|--scripthumanname ) script_human_name ; exit ; shift;;
-    -h|--help            ) schelp            ; exit ; shift;;
-    -f|--full            ) PRINTFULL=1       ; shift;;
-    --) break;;
-  esac
-done
+default_script_getopt $*
 
 # main part of script
 
@@ -94,7 +78,7 @@ restartProcess() {
     touch "${RESTARTLOG}"
   fi
 
-  if [ $restartsin24h -gt $MAXRESTARTS ] ; then
+  if [ $restartsin24h -ge $MAXRESTARTS ] ; then
   	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "${PROCESSNAME}" -2 "${restartsin24h}"
 	return 1
   fi
@@ -121,8 +105,8 @@ for (( i = 0; i < ${#HEALTHCHECKURL[@]}; i++ )); do
     fi
 
     if [ "x${CHECKTOOL}" = "xwget" ]; then
-        STATUS=$(${CHECKTOOL} "${HEALTHCHECKURL[$i]}" -T "${TIMEOUT}" -t 1 2>/dev/null)
-        FULLSTATUS=$(${CHECKTOOL} "${HEALTHCHECKURL_FULL[$i]}" -T "${TIMEOUT}" -t 1 2>/dev/null)
+        STATUS=$(${CHECKTOOL} "${HEALTHCHECKURL[$i]}" -T "${TIMEOUT}" -t 1 -O - 2>/dev/null)
+        FULLSTATUS=$(${CHECKTOOL} "${HEALTHCHECKURL_FULL[$i]}" -T "${TIMEOUT}" -t 1 -O - 2>/dev/null)
 
         if [ "x${PRINTFULL}" = "x1" ]; then
             printtoscreen "${FULLSTATUS}"
@@ -137,10 +121,11 @@ for (( i = 0; i < ${#HEALTHCHECKURL[@]}; i++ )); do
         fi
 
     else
-        printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}"
+        printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "${HEALTHCHECK_APP[$i]}"
+        continue
     fi
 
-    FIXED_FULL_STATUS=$(echo "${FULLSTATUS}" | tr -d '\\' | tr -d "'" | sed 's/%/%%/gi' | tr '\n' ';' | tr -d '"')
+    FIXED_FULL_STATUS=$(echo "${FULLSTATUS}" | tr -d '\\' | tr -d "'" | tr '\n' ';' | tr -d '"')
 
     if [[ $STATUS == ALLOK ]]; then
         printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$INFO" -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "${HEALTHCHECK_APP[$i]}" -2 "$FIXED_FULL_STATUS"
