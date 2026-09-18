@@ -10,8 +10,9 @@ what this one proves is the join: that the filename `904` prints on stdout is
 the file `906` is asked to send, and that a failure in either half is reported
 rather than swallowed.
 
-Like `930`, `907` reaches `906` through `related-enabled/`, so the fixture makes
-the symlink an install would.
+`907` used to reach `906` through `related-enabled/`, requiring it to have been
+enabled rather than merely installed; that path moved to `related-available/` on
+2026-09-18 along with `905`, `919`, `925`, `930` and `931`.
 """
 
 from __future__ import annotations
@@ -24,7 +25,7 @@ from conftest import (MARIADB_DATABASE, MARIADB_ROOT_PASSWORD,
 SCRIPT = ("related-available/"
           "907_make_mysql_db_backup_and_transfer_to_remote_mashine.sh")
 HELPER_SRC = "related-available/906_ssh-copy-to-remote-machine.sh"
-HELPER_LINK = "related-enabled/906_ssh-copy-to-remote-machine.sh"
+HELPER_LINK = "related-available/906_ssh-copy-to-remote-machine.sh"
 BACKUPDIR = "/tmp/907/backup"
 REMOTE_DIR = f"/home/{SSH_REMOTE_USER}/dbbackup"
 
@@ -67,8 +68,8 @@ def config(sc, *, hosts=None) -> str:
 def transfer(syscheck, mariadb_node, sshd_node):
     syscheck.sshd = sshd_node
     syscheck.write_file("/root/.my.cnf", f"[client]\nhost={mariadb_node}\n")
-    syscheck.exec(f"ln -sf {syscheck.home}/{HELPER_SRC} "
-                  f"{syscheck.home}/{HELPER_LINK}").check()
+    # 907 reaches 906 through related-available/ since 2026-09-18, so there is
+    # nothing to link; the real script is already there
     syscheck.exec(f"rm -rf /tmp/907 && mkdir -p {BACKUPDIR}/default").check()
     syscheck.exec(["mariadb", "-h", mariadb_node, "-uroot",
                    f"-p{MARIADB_ROOT_PASSWORD}", MARIADB_DATABASE, "-e",
@@ -133,7 +134,10 @@ def test_the_remote_copy_is_a_valid_dump(transfer):
 def test_a_successful_run_is_reported(transfer):
     run = transfer.run_script(SCRIPT)
 
-    assert any(m.errno == "9071" and m.level == "I" for m in own(run)), run.describe()
+    ok = [m for m in own(run) if m.errno == "9071" and m.level == "I"]
+    assert ok, run.describe()
+    assert transfer.sshd in ok[0].text, ok[0].text
+    assert ".gz" in ok[0].text, ok[0].text
 
 
 def test_every_configured_host_receives_the_backup(transfer):
@@ -199,26 +203,26 @@ def test_one_failing_host_does_not_stop_the_others(transfer):
 
 # --- known defect -----------------------------------------------------------
 
-@pytest.mark.xfail(strict=True, reason="D117: neither outcome message names the file "
-                                       "or the host, though DESCR[3] has a placeholder")
 def test_the_failure_message_names_the_host_it_could_not_reach(transfer):
-    """Both calls pass no arguments at all:
+    """D117, fixed 2026-09-18. Both calls passed no arguments at all:
 
         printlogmess ... -e ${ERRNO[3]} -d "${DESCR[3]}"
 
-    `DESCR[3]` is `"Could not send the backup, maybe connection problem or
-    problem logging in (%s) "` — the `%s` is never filled, and neither the host
-    nor the filename appears anywhere in the message.
+    `DESCR[3]`'s `%s` was never filled, and `DESCR[1]` had no placeholder at
+    all, so neither the host nor the filename appeared in either message. With
+    several backup hosts configured the log said a transfer failed but not which
+    destination, leaving the index as the only way to tell them apart.
 
-    With several backup hosts configured, the log says a transfer failed but not
-    which destination, and the index is the only way to tell them apart. `931`,
-    which does the same job, passes `-1 "${TRANSFERFILENAME}"`."""
+    Both descriptions now carry file and host, matching what `930` and `931`
+    were given for the same problem."""
     transfer.set_script_config("907", config(transfer, hosts=["no-such-host"]))
 
     run = transfer.run_script(SCRIPT)
 
     failed = [m for m in own(run) if m.errno == "9073"]
-    assert failed and "no-such-host" in failed[0].text, failed[0].text if failed else ""
+    assert failed, run.describe()
+    assert "no-such-host" in failed[0].text, failed[0].text
+    assert ".gz" in failed[0].text, failed[0].text
 
 
 def test_help_documents_every_error_code(transfer):
