@@ -38,7 +38,10 @@ done
 
 # main part of script
 
-date +'%Y-%m-%d_%H.%m.%S'> ${SYSCHECK_HOME}/var/${SQL_SUMMARY_FILE}
+# initscript sets noclobber, these files are rewritten on every run
+set +o noclobber
+
+date +'%Y-%m-%d_%H.%M.%S'> ${SYSCHECK_HOME}/var/${SQL_SUMMARY_FILE}
 
 for (( j=0; j < ${#SQL_SELECT[@]} ; j++ )){
 
