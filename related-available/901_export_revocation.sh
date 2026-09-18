@@ -21,7 +21,7 @@ NO_OF_ERR=3
 initscript $SCRIPTID $NO_OF_ERR
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "hsvc:" --long "help,screen,verbose,cert:" -- "$@"`
 if [ $? != 0 ] ; then schelp ; fi
 #echo "TEMP: >$TEMP<"
 eval set -- "$INPUTARGS"
@@ -44,8 +44,8 @@ fi
 
 
 if [ "x$CERTFILE" = "x" -o ! -r "$CERTFILE" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
-	printtoscreen $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+	printtoscreen $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 	exit
 fi
 
@@ -55,7 +55,7 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 date >> ${REVLOG}
 CERTSERIAL=`openssl x509 -inform der -in "$CERTFILE" -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CERTFILE"
 	# we really need a serial
 	exit
 fi
@@ -63,7 +63,7 @@ fi
 
 CERTSUBJECT=$(openssl x509 -inform der -in "$CERTFILE" -subject -noout | sed 's/\//_/gi' | sed 's/subject=//gi' | sed s/=/-/gi | sed  's/\ /_/gi')
 if [ $? -ne 0 ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CERTFILE"
 	# also without subject we cant continiue
 	exit
 fi
@@ -72,7 +72,7 @@ echo "CERTSERIAL: $CERTSERIAL" >> ${REVLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${REVLOG}
 CERT=`openssl x509 -inform der -in "$CERTFILE"`
 if [ $? -ne 0 ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CERTFILE"
 	# if we cant parse the cert
 	exit
 fi
@@ -86,9 +86,9 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 OUTFILE="${OUTPATH2}/revoked-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in "$CERTFILE" > ${OUTFILE}
 if [ $? -eq 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$OUTFILE"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

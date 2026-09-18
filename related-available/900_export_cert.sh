@@ -21,7 +21,7 @@ initscript $SCRIPTID $NO_OF_ERR
 
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,cert" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "hsvc:" --long "help,screen,verbose,cert:" -- "$@"`
 if [ $? != 0 ] ; then schelp ; fi
 #echo "TEMP: >$TEMP<"
 eval set -- "$INPUTARGS"
@@ -54,20 +54,20 @@ fi
 date >> ${CERTLOG}
 CERTSERIAL=`openssl x509 -inform der -in ${CERTFILE} -serial -noout | sed 's/serial=//'`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CERTFILE"
     exit;
 fi
 
 CERTSUBJECT=`openssl x509 -inform der -in ${CERTFILE} -subject -noout | sed 's/\//_/gi' | sed 's/subject=//gi' | sed s/=/-/gi | sed  's/\ /_/gi'`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CERTFILE"
 fi
 
 echo "CERTSERIAL: $CERTSERIAL" >> ${CERTLOG}
 echo "CERTSUBJECT: $CERTSUBJECT" >> ${CERTLOG}
 CERT=`openssl x509 -inform der -in ${CERTFILE}`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CERTFILE"
 fi
 
 # putting the base64 string in the log (livrem och h�ngslen)
@@ -79,9 +79,9 @@ SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 OUTFILE="${OUTPATH2}/archived-cert-${DATE}-${CERTSUBJECT}-${CERTSERIAL}"
 openssl x509 -inform der -in ${CERTFILE} > ${OUTFILE}
 if [ $? -eq 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$OUTFILE"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){

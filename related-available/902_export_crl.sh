@@ -20,7 +20,7 @@ NO_OF_ERR=3
 initscript $SCRIPTID $NO_OF_ERR
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvc" --long "help,screen,verbose,crl" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "hsvc:" --long "help,screen,verbose,crl:" -- "$@"`
 if [ $? != 0 ] ; then schelp ; fi
 #echo "TEMP: >$TEMP<"
 eval set -- "$INPUTARGS"
@@ -43,8 +43,8 @@ fi
 
 
 if [ "x$CRLFILE" = "x" -o ! -r "$CRLFILE" ] ; then
-	 -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[2]}"
-	printtoscreen $ERROR -e ${ERRNO[3]} -d "${DESCR[2]}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+	printtoscreen "${DESCR[3]}"
 	# no file as input
 	exit
 fi
@@ -56,37 +56,37 @@ date >> ${CRLLOG}
 
 CRLISSUER=`openssl crl -inform der -in "$CRLFILE" -issuer -noout`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CRLFILE"
     exit
 fi
 
 CRLISSUER2=$(echo ${CRLISSUER} |  sed 's/issuer=//' | sed 's/\ /_/gi' | sed 's/=/-/gi' | sed 's/,/-/gi')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CRLFILE"
     exit
 fi
 
 CRLLASTUPDATE=`openssl crl -inform der -in "$CRLFILE" -lastupdate -noout`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CRLFILE"
     exit
 fi
 
 CRLLASTUPDATE2=$(echo ${CRLLASTUPDATE} | sed 's/lastUpdate=//gi' | sed 's/\ /_/gi' | sed 's/:/./gi')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CRLFILE"
     exit
 fi
 
 CRL=`openssl crl -inform der -in "$CRLFILE"`
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CRLFILE"
     exit
 fi
 
 CRLSTRING=$(echo $CRL | tr -d '\n')
 if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CRLFILE"
     exit
 fi
 
@@ -102,9 +102,9 @@ OUTFILE="${OUTPATH2}/${CRLISSUER2}.crl"
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 openssl crl -inform der -in "$CRLFILE" > ${OUTFILE}
 if [ $? -eq 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$OUTFILE"
 fi
 
 for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
