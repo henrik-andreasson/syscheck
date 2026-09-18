@@ -50,9 +50,13 @@ for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
         fi
 
         SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-        ./bin/ejbca.sh ca activateca $NAME $PIN | tee ${SYSCHECK_HOME}/var/$0.output
-        error=$(grep -v "Enter authorization code:" ${SYSCHECK_HOME}/var/$0.output)
-        if [ "x$error" = "x"  ] ; then
+        CAOUT=$(mktemp)
+        ./bin/ejbca.sh ca activateca $NAME $PIN 2>&1 | tee "${CAOUT}"
+        retcode=${PIPESTATUS[0]}
+        error=$(grep -v "Enter authorization code:" "${CAOUT}")
+        rm -f "${CAOUT}"
+
+        if [ "$retcode" -eq 0 ] ; then
             printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$NAME"
         else
             printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$NAME" -2 "$error"
