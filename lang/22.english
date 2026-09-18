@@ -1,9 +1,0 @@
-SCRIPT_HUMAN_NAME="BOKS"
-
-HELP="BoKS Replica checks"
-
-DESCR[1]="No action is needed"
-HELP[1]="all boks processes are running"
-
-DESCR[2]="All BoKS replica processes IS NOT running %s"
-HELP[2]="Not all boks processes are running"
