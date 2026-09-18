@@ -40,7 +40,7 @@ done
 for (( j=0; j < ${#SEND_MSG_COMMAND[@]} ; j++ )){
 	printtoscreen "Sending status as message with: ${SEND_MSG_COMMAND[$j]} ${SEND_MSG_FILE[$j]}"
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-	SENDRES=$(${SEND_MSG_COMMAND[$j]} -c ${SEND_MSG_CONFIG[$j]} -m ${SEND_MSG_FILE[$j]} | tr -d '\n')
+	SENDRES=$(set -o pipefail ; ${SEND_MSG_COMMAND[$j]} -c ${SEND_MSG_CONFIG[$j]} -m ${SEND_MSG_FILE[$j]} | tr -d '\n')
 	if [ $? -ne 0 ] ; then
       		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${SEND_MSG_COMMAND[$j]} ${SEND_MSG_FILE[$j]}" -2 "result: ${SENDRES}"
 	else
