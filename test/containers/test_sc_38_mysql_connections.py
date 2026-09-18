@@ -109,7 +109,8 @@ def test_crossing_the_warn_threshold_is_reported(connections):
     run = connections.run_script(SCRIPT)
 
     msg = run.only()
-    assert msg.errno == "385", run.describe()
+    assert msg.errno == "384", run.describe()
+    assert msg.level == "W", run.describe()
     assert "percent" in msg.text, msg.text
 
 
@@ -118,7 +119,8 @@ def test_crossing_the_error_threshold_is_reported(connections):
 
     run = connections.run_script(SCRIPT)
 
-    assert run.only().errno == "384", run.describe()
+    assert run.only().errno == "385", run.describe()
+    assert run.only().level == "E", run.describe()
 
 
 def test_sitting_exactly_on_the_threshold_is_not_a_breach(connections):
@@ -179,15 +181,17 @@ def test_help_documents_every_error_code(connections):
         assert f"{errno} / " in res.output, res.output
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(strict=True,
-                   reason="D36: the two read-failure messages are swapped")
 def test_the_read_failure_messages_match_what_failed(connections):
-    """`lang/38.english` has `DESCR[2]="problem reading max variable"` and
-    `DESCR[3]="problem reading connections"`, but the script sends `ERRNO[2]`
-    when *Threads_connected* could not be read and `ERRNO[3]` when
-    *max_connections* could not be. An operator reading either message is sent
-    to look at the wrong figure."""
+    """D36, fixed 2026-09-18. `lang/38.english` has `DESCR[2]="problem reading
+    max variable"` and `DESCR[3]="problem reading connections"`, but the script
+    sent `ERRNO[2]` when *Threads_connected* could not be read and `ERRNO[3]`
+    when *max_connections* could not be. An operator reading either message was
+    sent to look at the wrong figure.
+
+    Fixed by swapping the indices in the **script**, not the texts in the
+    language file: the errno is the monitoring contract, so redefining what
+    `382` means would have silently changed every historical record and any
+    alert rule keyed on it."""
     connections.write_file("/root/.my.cnf", "[client]\nhost=no-such-database-host\n")
 
     run = connections.run_script(SCRIPT)
@@ -195,16 +199,16 @@ def test_the_read_failure_messages_match_what_failed(connections):
     assert "connections" in run.only().text, run.describe()
 
 
-@pytest.mark.known_bug
-@pytest.mark.xfail(strict=True,
-                   reason="D37: the warning threshold is reported at ERROR level with the more severe text")
 def test_the_warning_threshold_is_a_warning(connections):
-    """The script defines two thresholds and reports both at `$ERROR`, and the
-    texts are the wrong way round on top of that: crossing `WARN_PERCENT` sends
-    `DESCR[5]`, "Very Hugh level of connections", while crossing the higher
-    `ERROR_PERCENT` sends `DESCR[4]`, "High level". So the milder condition
-    produces the louder message, and neither can be told apart by level — which
-    is what the Icinga integration maps to a status code."""
+    """D37, fixed 2026-09-18. The script defined two thresholds and reported
+    both at `$ERROR`, with the texts the wrong way round on top of that:
+    crossing `WARN_PERCENT` sent `DESCR[5]`, "Very Hugh level of connections",
+    while crossing the higher `ERROR_PERCENT` sent `DESCR[4]`, "High level". The
+    milder condition produced the louder message, and neither could be told
+    apart by level — which is what the Icinga integration maps to a status code.
+
+    `384` is now the warning and `385` the error, matching their texts and their
+    severity ordering."""
     connections.set_script_config("38", config(warn=0, error=99))
 
     run = connections.run_script(SCRIPT)
