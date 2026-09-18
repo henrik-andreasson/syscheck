@@ -24,6 +24,8 @@ default_script_getopt $*
 
 # main part of script
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
 threads_connected=$(mysqladmin extended-status | grep "Threads_connected" | awk '{print $4}')
 if [ "x${threads_connected}" = "x" ] ; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "${threads_connected}"
@@ -35,8 +37,6 @@ if [ "x${max_connections}" = "x" ] ; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "${max_connections}"
   exit
 fi
-
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
 percent_used=$((100 * ${threads_connected} / ${max_connections}))
 if [ ${percent_used} -gt "${ERROR_PERCENT}" ]; then
