@@ -21,7 +21,7 @@ initscript $SCRIPTID $NO_OF_ERR
 
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose,crlfile:" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "hsvc:" --long "help,screen,verbose,crlfile:" -- "$@"`
 if [ $? != 0 ] ; then schelp ; fi
 #echo "TEMP: >$TEMP<"
 eval set -- "$INPUTARGS"
@@ -60,7 +60,7 @@ put () {
 	SSHKEY=$4
 	SSHUSER=$5
 
-	$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $CRLHOST $SSHSERVER_DIR $SSHUSER $SSHKEY
+	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh -s --file="$CRLFILE" --host="$CRLHOST" --dir="$SSHSERVER_DIR" --user="$SSHUSER" --key="$SSHKEY"
 	if [ $? != 0 ] ; then
                 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[4]}" -d "${DESCR[4]}" -1 "$CRLHOST" -2 "$CRLFILE"
 	else
@@ -71,6 +71,7 @@ put () {
 
 for (( i=0; i < ${#VERIFY_HOST[@]} ; i++ )){
 
+    		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     		put ${VERIFY_HOST[$i]} "${CRLFILE}" ${CRLTO_DIR[$i]} ${SSHKEY[$i]}  ${SSHUSER[$i]}
 
 }
