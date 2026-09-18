@@ -1,3 +1,5 @@
 pytest>=8
 testcontainers>=4.8
 docker>=7
+jinja2
+pyyaml
