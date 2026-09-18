@@ -65,17 +65,17 @@ if [ "x$valhost1" != "x" ] ; then
 	if [ "x$valhost2" != "x" ] ; then
 		if [ "x$valhost1" = "x$valhost2" ] ; then
 			#ok
-			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $LEVEL_1 ${ERRNO[1]} -d "${DESCR[1]}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $LEVEL_1 -e ${ERRNO[1]} -d "${DESCR[1]}"
 		else
 			#failed, not the same values
-			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $LEVEL_2 ${ERRNO[2]} -d "${DESCR[2]}" "$valhost1" "$valhost2"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $LEVEL_2 -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$valhost1" -2 "$valhost2"
 		fi
 	else
 		#failed, no value from $valhost2
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $LEVEL_3 ${ERRNO[3]} -d "${DESCR[3]}" "$valhost2"
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $LEVEL_3 -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${HOSTNAME_NODE2}"
 	fi
 
 else
 	#failed, no value from $valhost1
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $LEVEL_4 ${ERRNO[4]} -d "${DESCR[4]}" "$valhost1"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $LEVEL_4 -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${HOSTNAME_NODE1}"
 fi
