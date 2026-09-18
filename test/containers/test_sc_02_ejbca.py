@@ -159,8 +159,6 @@ def test_a_refused_connection_is_reported_as_an_error(ejbca, syscheck_network):
     assert "curl" in msg.text.lower() or "connect" in msg.text.lower(), msg.text
 
 
-@pytest.mark.xfail(strict=True, reason="D41: a connection failure is reported at "
-                                      "SCRIPTINDEX 00, every other outcome at 01")
 def test_a_connection_failure_keeps_the_same_script_index_as_a_healthy_check(ejbca):
     """`SCRIPTINDEX` is initialised to `00` and raised to `01` by
     `addOneToIndex` — but that call sits *after* the curl error branch, so the
@@ -266,9 +264,6 @@ def test_an_unknown_checktool_is_reported_as_a_tool_failure(ejbca):
     assert "023" in run.errnos, run.describe()
 
 
-@pytest.mark.xfail(strict=True, reason="D42: an unknown CHECKTOOL reports the tool "
-                                      "failure and then carries on to claim the "
-                                      "application server is unavailable")
 def test_an_unknown_checktool_reports_only_the_tool_failure(ejbca):
     """The `else` branch prints ERRNO[3] but does not `exit`, so the script runs
     on and `cat`s a response file that was never written. The result is two
