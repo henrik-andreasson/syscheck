@@ -1,0 +1,188 @@
+# dell health
+
+## omreport  storage pdisk controller=0 pdisk=0:0:0
+
+Table 1: Physical Disks on Controller 0
+
+ID                                : 0:0:0
+Status                            : Ok
+Name                              : Physical Disk 0:0:0
+State                             : Online
+Power Status                      : Spun Up
+Bus Protocol                      : SAS
+Media                             : HDD
+Capacity                          : 558.38 GB
+Used RAID Disk Space              : 558.38 GB
+Available RAID Disk Space         : 0.00 GB
+Hot Spare                         : No
+Encrypted                         : No
+Failure Predicted                 : No
+SAS Address                       : 0x5000C5003E123456
+Manufactured Day                  : 12
+Manufactured Month                : 5
+Manufactured Year                 : 2018
+Model Number                      : ST600MM0088
+Revision                          : ES06
+Serial No.                        : W00123AB
+
+ID                                : 0:0:1
+Status                            : Ok
+Name                              : Physical Disk 0:0:1
+State                             : Online
+Power Status                      : Spun Up
+Bus Protocol                      : SAS
+Media                             : HDD
+Capacity                          : 558.38 GB
+Used RAID Disk Space              : 558.38 GB
+Available RAID Disk Space         : 0.00 GB
+Hot Spare                         : No
+Encrypted                         : No
+Failure Predicted                 : No
+SAS Address                       : 0x5000C5003E654321
+Manufactured Day                  : 12
+Manufactured Month                : 5
+Manufactured Year                 : 2018
+Model Number                      : ST600MM0088
+Revision                          : ES06
+Serial No.                        : W00123AC
+
+# omreport storage vdisk
+
+Virtual Disk 0 on Controller PERC H730 Mini (Embedded)
+
+Controller PERC H730 Mini (Embedded)
+ID                                : 0
+Status                            : Ok
+Name                              : SYSTEM
+State                             : Ready
+Environmential Severities
+- Fan                             : Not Applicable
+- Temperature                     : Not Applicable
+Layout                            : RAID-1
+Size                              : 465.25 GB (499558383616 bytes)
+Device Name                       : /dev/sda
+Bus Protocol                      : SAS
+Media                             : HDD
+Read Policy                       : Adaptive Read Ahead
+Write Policy                      : Write Back
+Cache Policy                      : Not Applicable
+Stripe Element Size               : 64 KB
+Disk Cache Policy                 : Disabled
+Encrypted                         : No
+Progress                          : Not Requested
+
+Virtual Disk 16 on Controller PERC H730 Mini (Embedded)
+
+Controller PERC H730 Mini (Embedded)
+ID                                : 16
+Status                            : Ok
+Name                              : Virtual Disk 16
+State                             : Ready
+Environmential Severities
+- Fan                             : Not Applicable
+- Temperature                     : Not Applicable
+Layout                            : RAID-0
+Size                              : 3,725.50 GB (4000225165312 bytes)
+Device Name                       : /dev/sdb
+Bus Protocol                      : SAS
+Media                             : HDD
+Read Policy                       : Adaptive Read Ahead
+Write Policy                      : Write Back
+Cache Policy                      : Not Applicable
+Stripe Element Size               : 64 KB
+Disk Cache Policy                 : Disabled
+Encrypted                         : No
+Progress                          : Not Requested
+
+## omreport chassis fans
+
+Health State:
+SEVERITY : COMPONENT
+Ok       : Fans
+
+Fan Probes:
+Index      : 0
+Status     : Ok
+Reading    : 5400 RPM
+Location   : Fan 1
+Warning Low  : 1200 RPM
+Warning High : 11000 RPM
+Failure Low  : 600 RPM
+Failure High : 12000 RPM
+
+Index      : 1
+Status     : Ok
+Reading    : 5400 RPM
+Location   : Fan 2
+Warning Low  : 1200 RPM
+Warning High : 11000 RPM
+Failure Low  : 600 RPM
+Failure High : 12000 RPM
+
+## omreport psu
+
+
+Main System Chassis
+
+Index                     : 0
+Status                    : Ok
+Location                  : PS 1 Status
+Type                      : AC
+Rated Input Wattage       : 750 W
+Maximum Output Wattage    : 750 W
+Online Status             : Presence Detected
+Power Monitoring Capable : Yes
+
+Index                     : 1
+Status                    : Ok
+Location                  : PS 2 Status
+Type                      : AC
+Rated Input Wattage       : 750 W
+Maximum Output Wattage    : 750 W
+Online Status             : Presence Detected
+Power Monitoring Capable : Yes
+
+## omreport chassis temps
+
+Temperature Probes Information
+------------------------------------
+Main System Chassis Temperatures: Ok
+------------------------------------
+
+Index                         : 0
+Status                        : Ok
+Probe Name                    : System Board Ambient Temp
+Reading                       : 27.0 C
+Minimum Warning Threshold     : 8.0 C
+Maximum Warning Threshold     : 42.0 C
+Minimum Failure Threshold     : 3.0 C
+Maximum Failure Threshold     : 47.0 C
+
+Index                         : 1
+Status                        : Ok
+Probe Name                    : CPU1 Temp
+Reading                       : 37.0 C
+Minimum Warning Threshold     : 8.0 C
+Maximum Warning Threshold     : 95.0 C
+Minimum Failure Threshold     : 3.0 C
+Maximum Failure Threshold     : 100.0 C
+```
+
+### Key Fields Explained
+
+* **Index**: The unique numeric ID for the specific sensor (used if you want to target a single probe with `omreport chassis temps index=n`).
+* **Status**: The health state of the sensor (e.g., *Ok*, *Warning*, or *Critical*).
+* **Probe Name**: The physical location or component being monitored (such as ambient air or CPU temperature).
+* **Reading**: The current temperature measured in Celsius.
+* **Warning Thresholds**: The low or high limits that trigger a warning event.
+* **Failure Thresholds**: The critical limits that trigger hardware alerts or automatic thermal shutdown actions.
+
+
+## Omreport chassis pwrmonitoring
+
+Power Consumption Information
+
+Reading               : 539W
+Warning Threshold     : 994W
+Failure Threshold     : 1400W
+Amperage              :
