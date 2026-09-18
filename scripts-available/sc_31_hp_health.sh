@@ -135,30 +135,31 @@ if [ ! -x $HP_HEALTH_TOOL ] ; then
 fi
 lockfilewait () {
         LOCKFILE=$1
-# lock file check/wait
-    if [ -f ${LOCKFILE} ] ; then
-    lockFileIsChangedAt=$(stat --format="%Z" ${LOCKFILE})
-    nowSec=$(date +"%s")
-    let diff="$nowSec-$lockFileIsChangedAt"
-    while [ $diff -lt ${LOCKFILE_MAX_WAIT_SEC} ] ; do
-        printtoscreen "Lockfile (${LOCKFILE}) exist, waiting for maximum ${LOCKFILE_MAX_WAIT_SEC} sec, now at $diff "
-        sleep 1
+# noclobber makes the create fail atomically if another run got there first
+    until ( set -o noclobber ; echo $$ > "${LOCKFILE}" ) 2>/dev/null ; do
+        lockFileIsChangedAt=$(stat --format="%Z" "${LOCKFILE}" 2>/dev/null) || continue
         nowSec=$(date +"%s")
         let diff="$nowSec-$lockFileIsChangedAt"
+        if [ "$diff" -ge "${LOCKFILE_MAX_WAIT_SEC}" ] ; then
+            lockFileIsChangedAtHuman=$(stat --format="%z" "${LOCKFILE}")
+            printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$lockFileIsChangedAtHuman"
+            WARNSTATUS=1
+            rm -f "${LOCKFILE}"
+            continue
+        fi
+        printtoscreen "Lockfile (${LOCKFILE}) exist, waiting for maximum ${LOCKFILE_MAX_WAIT_SEC} sec, now at $diff "
+        sleep 1
     done
-    lockFileIsChangedAtHuman=$(stat --format="%z" ${LOCKFILE})
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$lockFileIsChangedAtHuman"
-    rm ${LOCKFILE}
-fi
 }
-LOCKFILE="${SYSCHECK_HOME}/var/${SCRIPTID}.lock"
-lockfilewait ${LOCKFILE}
-touch ${LOCKFILE}
 
 # global ERRSTATUS for all healthchecks (0 is ok)
 ERRSTATUS=0
 WARNSTATUS=0
 GLOBALERRMESSAGE=""
+
+LOCKFILE="${SYSCHECK_HOME}/var/${SCRIPTID}.lock"
+trap '[ "$(cat "${LOCKFILE}" 2>/dev/null)" = "$$" ] && rm -f "${LOCKFILE}"' EXIT
+lockfilewait ${LOCKFILE}
 GENDESCR="All HP Healthchecks are OK"
 GENERR="Error in HP Healthcheck"
 GENWARN="Warning in HP Healthcheck"
