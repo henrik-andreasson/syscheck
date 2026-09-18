@@ -16,7 +16,7 @@ SCRIPTNAME=ocsp
 SCRIPTID=10
 
 # how many info/warn/error messages
-NO_OF_ERR=10
+NO_OF_ERR=11
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
@@ -70,16 +70,22 @@ checkocsp() {
 
   if [ ! -f "$OCSP_CERT"  ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "Can NOT find OCSP_CERT $OCSP_CERT"
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
+    GLOBALMESSAGE="${GLOBALMESSAGE}; cannot read $OCSP_CERT"
     return 1
   fi
 
   if [ ! -f "$OCSP_ISSUER" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "Can NOT find OCSP_ISSUER $OCSP_ISSUER"
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
+    GLOBALMESSAGE="${GLOBALMESSAGE}; cannot read $OCSP_ISSUER"
     return 1
   fi
 
 	if [ ! -f "$OCSP_CACHAIN" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "Can NOT find OCSP_CACHAIN $OCSP_CACHAIN"
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
+    GLOBALMESSAGE="${GLOBALMESSAGE}; cannot read $OCSP_CACHAIN"
     return 1
   fi
 
@@ -173,6 +179,13 @@ ERRSTATUS=0
 WARNSTATUS=0
 GLOBALMESSAGE=""
 
+
+if [ ${#OCSP_TEST[@]} -eq 0 ] ; then
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[11]} -d "${DESCR[11]}"
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
+    GLOBALMESSAGE="${GLOBALMESSAGE}; no OCSP_TEST directories configured"
+fi
 
 for (( i = 0 ;  i < ${#OCSP_TEST[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)

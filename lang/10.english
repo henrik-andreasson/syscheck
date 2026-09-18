@@ -33,3 +33,6 @@ HELP[9]="this ocsp summary is ok"
 
 DESCR[10]="OCSP response not ok %s"
 HELP[10]="ocsp response not ok"
+
+DESCR[11]="No OCSP tests configured, nothing was checked"
+HELP[11]="Set OCSP_TEST[] to a directory of test certificates and OCSP_URL[] to the responder, see config/10.conf"
