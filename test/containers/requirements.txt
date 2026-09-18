@@ -4,3 +4,4 @@ docker>=7
 jinja2
 pyyaml
 ansible
+pytest-html

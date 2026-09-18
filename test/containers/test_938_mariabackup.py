@@ -154,9 +154,6 @@ def test_no_mode_flag_does_nothing(mb):
 
 # --- known defects ----------------------------------------------------------
 
-@pytest.mark.xfail(strict=True, reason="D100: the full-backup function is called with "
-                                       "no argument, so its own name guard always "
-                                       "fires")
 def test_a_full_backup_does_not_report_a_missing_name(mb):
     """`mariabackup_full_backup` opens with
 

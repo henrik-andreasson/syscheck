@@ -22,7 +22,7 @@ getconfig "mariadb"
 
 #test $# == 0 &&schelp&&exit
 
-INPUTARGS=`/usr/bin/getopt --options "fisxh" --long "full,incremental,screen,batch,help" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "fisxhn:c:" --long "full,incremental,screen,batch,help,fullname:,incrementalname:" -- "$@"`
 if [ $? != 0 ] ; then schelp ; exit 1 ; fi
 eval set -- "$INPUTARGS"
 
@@ -32,16 +32,15 @@ while true; do
     -f|--full)         TYPE="full"; shift;;
     -s|--screen )      PRINTTOSCREEN=1; shift;;
     -x|--batch )       BATCH=1; shift;;
+    -n|--fullname )    FULL_BACKUP_NAME=$2; shift 2;;
+    -c|--incrementalname ) INC_BACKUP_NAME=$2; shift 2;;
     -h|--help )        schelp;exit;shift;;
-    *) break ; shift;;
+    --) shift; break;;
+    *) break ;;
   esac
 done
 
 mariabackup_full_backup() {
-    FULL_BACKUP_NAME=$1
-    if [[ -z "${FULL_BACKUP_NAME}" ]] ; then
-        printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l $ERROR -e "${ERRNO[1]}" -d "${DESCR[1]}"
-    fi
     BACKUP_TO_DIR="${MARIABACKUP_BASEDIR}/"
     if [ -f ${BACKUP_TO_DIR}/xtrabackup_logfile.qp ];then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${BACKUP_TO_DIR}"
@@ -65,8 +64,15 @@ mariabackup_full_backup() {
 }
 
 mariabackup_incremental_backup() {
-    FULL_BACKUP_NAME=$1
-    INC_BACKUP_NAME=$2
+    FULL_BACKUP_NAME="${FULL_BACKUP_NAME:-FULL}"
+    INC_BACKUP_NAME="${INC_BACKUP_NAME:-INC}"
+
+    FULL_BACKUP_NAME="${1:-$FULL_BACKUP_NAME}"
+    INC_BACKUP_NAME="${2:-$INC_BACKUP_NAME}"
+    if [ "x${FULL_BACKUP_NAME}" = "x" ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "Full backup name is empty"
+        exit 1
+    fi
     if [ ! -d "${FULL_BACKUP_DIR}" ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${FULL_BACKUP_DIR}"
     fi
