@@ -16,7 +16,7 @@ SCRIPTNAME=remote_ssh_command
 SCRIPTID=915
 
 # how many info/warn/error messages
-NO_OF_ERR=4
+NO_OF_ERR=5
 initscript $SCRIPTID $NO_OF_ERR
 
 
@@ -43,28 +43,34 @@ done
 # main part of script
 
 if [ "x$SSHHOST" = "x"  ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
-	exit -1
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${SSHCMD}"
+	exit 1
 fi
 
 if [ "x$SSHCMD" = "x"  ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
-        exit -1
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${SSHHOST}"
+        exit 1
 fi
 
 if [ "x$SSHTOUSER" = "x"  ] ; then
-  printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
-  exit -1
+  printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "${SSHHOST}"
+  exit 1
 fi
 
 
 
-ssh ${SSHOPTIONS} -i ${SSHFROMKEY} -l ${SSHTOUSER} ${SSHHOST} ${SSHCMD} 2>&1
+# an empty SSHFROMKEY would leave -i to swallow the -l that follows it
+KEYARGS=()
+if [ "x${SSHFROMKEY}" != "x" ] ; then
+	KEYARGS=(-i "${SSHFROMKEY}")
+fi
+
+ssh ${SSHOPTIONS} "${KEYARGS[@]}" -l "${SSHTOUSER}" "${SSHHOST}" ${SSHCMD} 2>&1
 retcode=$?
 
-if [ $retcode -eq 0 ] ; then
+if [ "$retcode" -eq 0 ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${SSHTOUSER}" -2 "${SSHHOST}" -3 "${SSHCMD}"
 else
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$retcode"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$retcode" -2 "${SSHHOST}" -3 "${SSHCMD}"
 	exit $retcode
 fi

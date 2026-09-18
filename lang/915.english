@@ -1,11 +1,14 @@
 SCRIPT_HUMAN_NAME="SSH remote command tool"
 
 HELP="Run command on another host with ssh $0 --host host --command cmd --user sshtouser --key sshfromkey"
-DESCR[1]="Command executed successfully (%s)"
+DESCR[1]="Command executed successfully (user: %s host: %s command: %s)"
 DESCR[2]="Host not found (%s)"
 DESCR[3]="Command not found (%s)"
-DESCR[4]="Command not executed (%s)"
+DESCR[4]="Command not executed (exit: %s host: %s command: %s)"
 HELP[1]="All is ok"
 HELP[2]="You have to specify a hostname to connect to"
 HELP[3]="Specify a command to run"
 HELP[4]="Check connection, username and password"
+
+DESCR[5]="User not found (%s)"
+HELP[5]="You have to specify a user to connect as"
