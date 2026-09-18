@@ -23,8 +23,6 @@ default_script_getopt $*
 
 # main part of script
 
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-
 checkredis () {
         SCRIPTINDEX=$1
         if [ "x${SCRIPTINDEX}" = "x" ] ; then
@@ -60,6 +58,7 @@ checkredis () {
 
 
 if [ x"$REDISCLI" = "x" ] ; then
+	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}"
 	exit
 fi
