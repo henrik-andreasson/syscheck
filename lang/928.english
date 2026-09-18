@@ -1,9 +1,0 @@
-SCRIPT_HUMAN_NAME="DSM Backup"
-
-HELP="Check if DSM Backup working"
-
-DESCR[1]="DSM Backup ok (file:%s result:%s)"
-HELP[1]="no action needed"
-
-DESCR[2]="DSM Backup failed file:%s result:%s"
-HELP[2]="Check DSM tool for troubleshooting"
