@@ -3,7 +3,7 @@ SCRIPT_HUMAN_NAME="Backup, encrypt backup and send to remote hosts"
 HELP="Script used to take backup of the sql database, compress and send to a separate server. call with -x|--default for puting the backupfile in the SUBDIR_DEFAULT ; -d|--daily to make daily backup end up in SUBDIR_DAILY; with -w|--weekly to make daily backup end up in SUBDIR_WEEKLY; -m|--monthly to make daily backup end up in SUBDIR_MONTHLY ; -y|--yearly to make daily backup end up in SUBDIR_YEARLY;"
 
 HELP[1]="Ok"
-DESCR[1]="Backup and transfer was ok. (%s)"
+DESCR[1]="Backup and transfer was ok. (%s to %s)"
 
 HELP[2]="Could not make a backup."
 DESCR[2]="Could not get the backup from MySQL (%s) "
@@ -12,7 +12,7 @@ HELP[3]="Could not compress the backup."
 DESCR[3]="Compression of the backup failed (%s) "
 
 HELP[4]="Could not send the backup."
-DESCR[4]="Could not send the backup, maybe connection problem or problem logging in (%s) "
+DESCR[4]="Could not send the backup, maybe connection problem or problem logging in (%s to %s) "
 
 HELP[5]="Other encrypt process might have terminated wrong, this do not happen under normal situations."
 DESCR[5]="Removed stale encrypt lock file, it was created at: %s."

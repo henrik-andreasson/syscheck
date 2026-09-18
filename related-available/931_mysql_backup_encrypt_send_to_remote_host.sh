@@ -50,28 +50,27 @@ fi
 FULLFILENAME=`$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh --batch ${BACKUPARG}`
 
 if [ $? -ne 0 ] ; then
-    printlogmess -n  ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e $ERRNO[2] -d "${DESCR[2]}"
+    printlogmess -n  ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${FULLFILENAME}"
 fi
+
+ENCBACK_LOCK="${TOARCHIVE_DIR}/encback.lock"
+trap '[ "$(cat "${ENCBACK_LOCK}" 2>/dev/null)" = "$$" ] && rm -f "${ENCBACK_LOCK}"' EXIT
 
 # lock file check/wait
-if [ -f ${TOARCHIVE_DIR}/encback.lock ] ; then
-
-    lockFileIsChangedAt=$(stat --format="%Z" ${TOARCHIVE_DIR}/encback.lock)
+# noclobber makes the create fail atomically if another run got there first
+until ( set -o noclobber ; echo $$ > "${ENCBACK_LOCK}" ) 2>/dev/null ; do
+    lockFileIsChangedAt=$(stat --format="%Z" "${ENCBACK_LOCK}" 2>/dev/null) || continue
     nowSec=$(date +"%s")
     let diff="$nowSec-$lockFileIsChangedAt"
-    while [ $diff -lt ${LOCKFILE_MAX_WAIT_SEC} ] ; do
-        printtoscreen "Lockfile (${TOARCHIVE_DIR}/encback.lock) exist, waiting for maximum ${LOCKFILE_MAX_WAIT_SEC} sec, now at $diff "
-        sleep 1
-        nowSec=$(date +"%s")
-        let diff="$nowSec-$lockFileIsChangedAt"
-    done
-
-    lockFileIsChangedAtHuman=$(stat --format="%z" ${TOARCHIVE_DIR}/encback.lock)
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $WARN -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$lockFileIsChangedAtHuman"
-    rm ${TOARCHIVE_DIR}/encback.lock
-fi
-
-touch ${TOARCHIVE_DIR}/encback.lock
+    if [ "$diff" -ge "${LOCKFILE_MAX_WAIT_SEC}" ] ; then
+        lockFileIsChangedAtHuman=$(stat --format="%z" "${ENCBACK_LOCK}")
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $WARN -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$lockFileIsChangedAtHuman"
+        rm -f "${ENCBACK_LOCK}"
+        continue
+    fi
+    printtoscreen "Lockfile (${ENCBACK_LOCK}) exist, waiting for maximum ${LOCKFILE_MAX_WAIT_SEC} sec, now at $diff "
+    sleep 1
+done
 
 while IFS= read -r SRCPATH; do
 	res=$(${OPENENC_TOOL} encrypt ${SRCPATH} ${TOARCHIVE_DIR})
@@ -80,31 +79,34 @@ while IFS= read -r SRCPATH; do
 	fi
 done <<< "$FULLFILENAME"
 
-rm ${TOARCHIVE_DIR}/encback.lock
+rm -f "${ENCBACK_LOCK}"
 
 
-FILETRANS=1
 for TRANSFERFILENAME in $(find ${TOARCHIVE_DIR}/ -type f ) ; do
-    if [ "x${TRANSFERFILENAME}" = "xencback.log" ] ; then
+    # reset per file, or one failure keeps every later file staged too
+    FILETRANS=1
+
+    # find yields full paths, so the bare name would never match
+    if [ "x$(basename "${TRANSFERFILENAME}")" = "xencback.log" ] ; then
         continue;
     fi
 	for (( i = 0 ;  i < "${#BACKUP_HOST[@]}" ; i++ )) ; do
 		SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-		$SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh --file="${TRANSFERFILENAME}" --host="${BACKUP_HOST[$i]}" --dir="${BACKUP_DIR[$i]}/${EXTRADIR}/" --user="${BACKUP_USER[$i]}" --key="${BACKUP_SSHFROMKEY[$i]}"
+		$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh --file="${TRANSFERFILENAME}" --host="${BACKUP_HOST[$i]}" --dir="${BACKUP_DIR[$i]}/${EXTRADIR}/" --user="${BACKUP_USER[$i]}" --key="${BACKUP_SSHFROMKEY[$i]}"
 		if [ $? -eq 0 ] ; then
-			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${TRANSFERFILENAME}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${TRANSFERFILENAME}" -2 "${BACKUP_HOST[$i]}"
 			if [ "$SHARED_STORAGE" = "true" ] ; then
 				FILETRANS=1
 				break
 			fi
 		else
-			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${TRANSFERFILENAME}"
+			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x $SCRIPTINDEX -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${TRANSFERFILENAME}" -2 "${BACKUP_HOST[$i]}"
 			FILETRANS=0
 		fi
 	done
 
 	# no server failed
-	if [ "x${FILETRANS}" = "x1" ] ; then
+	if [ "x${FILETRANS}" = "x1" ] && [ -f "${TRANSFERFILENAME}" ] ; then
 		rm "${TRANSFERFILENAME}"
 	fi
 done
