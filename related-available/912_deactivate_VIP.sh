@@ -46,7 +46,7 @@ done
 
 CHECK_VIP=`$IFCONFIG ${IF_VIRTUAL} | grep 'inet addr' | grep  ${HOSTNAME_VIRTUAL}`
 if [ "x${CHECK_VIP}" = "x" ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "$DESCR[3]"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[3]} -d "${DESCR[3]}"
         exit
 fi
 
@@ -54,11 +54,11 @@ fi
 $IFCONFIG ${IF_VIRTUAL} down
 
 if [ $? -eq 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "$DESCR[1]" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
     rm ${SYSCHECK_HOME}/var/this_node_has_the_vip
 
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "$DESCR[2]" -1 "$?"
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${IF_VIRTUAL}"
 fi
 
 #ifconfig $IF_VIRTUAL del $HOSTNAME_VIRTUAL
