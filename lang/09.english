@@ -9,3 +9,6 @@ HELP[2]="Maybe something went wrong loading the firewall ruleset, because some v
 
 DESCR[3]="Firewall is up and configured properly"
 HELP[3]="No action is needed"
+
+DESCR[4]="Firewall check is not configured (%s)"
+HELP[4]="IPTABLES_RULE1 and IPTABLES_RULE2 in config/09.conf must both be set to a line of 'iptables -L -n' output; an empty value would match every rule and make this check meaningless"
