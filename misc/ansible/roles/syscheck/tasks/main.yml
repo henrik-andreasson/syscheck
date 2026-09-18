@@ -119,35 +119,11 @@
  - file: path={{syscheck_home}}/scripts-enabled/sc_20_errors_ejbcalog.sh state=absent
    when: not enable_sc_20_errors_ejbcalog
 
- - file: src={{syscheck_home}}/scripts-available/sc_22_boks_replica.sh dest={{syscheck_home}}/scripts-enabled/sc_22_boks_replica.sh state=link
-   when: enable_sc_22_boks_replica
-
- - file: path={{syscheck_home}}/scripts-enabled/sc_22_boks_replica.sh state=absent
-   when: not enable_sc_22_boks_replica
-
- - file: src={{syscheck_home}}/scripts-available/sc_23_rsa_axm.sh dest={{syscheck_home}}/scripts-enabled/sc_23_rsa_axm.sh state=link
-   when: enable_sc_23_rsa_axm
-
- - file: path={{syscheck_home}}/scripts-enabled/sc_23_rsa_axm.sh state=absent
-   when: not enable_sc_23_rsa_axm
-
- - file: src={{syscheck_home}}/scripts-available/sc_27_dss.sh dest={{syscheck_home}}/scripts-enabled/sc_27_dss.sh state=link
-   when: enable_sc_27_dss
-
- - file: path={{syscheck_home}}/scripts-enabled/sc_27_dss.sh state=absent
-   when: not enable_sc_27_dss
-
  - file: src={{syscheck_home}}/scripts-available/sc_28_check_vip.sh dest={{syscheck_home}}/scripts-enabled/sc_28_check_vip.sh state=link
    when: enable_sc_28_check_vip
 
  - file: path={{syscheck_home}}/scripts-enabled/sc_28_check_vip.sh state=absent
    when: not enable_sc_28_check_vip
-
- - file: src={{syscheck_home}}/scripts-available/sc_29_signserver.sh dest={{syscheck_home}}/scripts-enabled/sc_29_signserver.sh state=link
-   when: enable_sc_29_signserver
-
- - file: path={{syscheck_home}}/scripts-enabled/sc_29_signserver.sh state=absent
-   when: not enable_sc_29_signserver
 
  - file: src={{syscheck_home}}/scripts-available/sc_30_check_running_procs.sh dest={{syscheck_home}}/scripts-enabled/sc_30_check_running_procs.sh state=link
    when: enable_sc_30_check_running_procs
@@ -201,12 +177,6 @@
 
  - file: path={{syscheck_home}}/related-enabled/902_export_crl.sh state=absent
    when: not enable_902_export_crl
-
- - file: src={{syscheck_home}}/related-available/903_make_hsm_backup.sh dest={{syscheck_home}}/related-enabled/903_make_hsm_backup.sh state=link
-   when: enable_903_make_hsm_backup
-
- - file: path={{syscheck_home}}/related-enabled/903_make_hsm_backup.sh state=absent
-   when: not enable_903_make_hsm_backup
 
  - file: src={{syscheck_home}}/related-available/904_make_mysql_db_backup.sh dest={{syscheck_home}}/related-enabled/904_make_mysql_db_backup.sh state=link
    when: enable_904_make_mysql_db_backup
@@ -262,18 +232,6 @@
  - file: path={{syscheck_home}}/related-enabled/912_deactivate_VIP.sh state=absent
    when: not enable_912_deactivate_VIP
 
- - file: src={{syscheck_home}}/related-available/913_copy_ejbca_conf.sh dest={{syscheck_home}}/related-enabled/913_copy_ejbca_conf.sh state=link
-   when: enable_913_copy_ejbca_conf
-
- - file: path={{syscheck_home}}/related-enabled/913_copy_ejbca_conf.sh state=absent
-   when: not enable_913_copy_ejbca_conf
-
- - file: src={{syscheck_home}}/related-available/914_compare_master_slave_db.sh dest={{syscheck_home}}/related-enabled/914_compare_master_slave_db.sh state=link
-   when: enable_914_compare_master_slave_db
-
- - file: path={{syscheck_home}}/related-enabled/914_compare_master_slave_db.sh state=absent
-   when: not enable_914_compare_master_slave_db
-
  - file: src={{syscheck_home}}/related-available/915_remote_command_via_ssh.sh dest={{syscheck_home}}/related-enabled/915_remote_command_via_ssh.sh state=link
    when: enable_915_remote_command_via_ssh
 
@@ -292,12 +250,6 @@
  - file: path={{syscheck_home}}/related-enabled/917_archive_file.sh state=absent
    when: not enable_917_archive_file
 
- - file: src={{syscheck_home}}/related-available/918_server_alive.sh dest={{syscheck_home}}/related-enabled/918_server_alive.sh state=link
-   when: enable_918_server_alive
-
- - file: path={{syscheck_home}}/related-enabled/918_server_alive.sh state=absent
-   when: not enable_918_server_alive
-
  - file: src={{syscheck_home}}/related-available/919_certpublisher_remotecommand.sh dest={{syscheck_home}}/related-enabled/919_certpublisher_remotecommand.sh state=link
    when: enable_919_certpublisher_remotecommand
 
@@ -310,29 +262,11 @@
  - file: path={{syscheck_home}}/related-enabled/920_restore_mysql_db_from_backup.sh state=absent
    when: not enable_920_restore_mysql_db_from_backup
 
- - file: src={{syscheck_home}}/related-available/921_copy_htmf_conf.sh dest={{syscheck_home}}/related-enabled/921_copy_htmf_conf.sh state=link
-   when: enable_921_copy_htmf_conf
-
- - file: path={{syscheck_home}}/related-enabled/921_copy_htmf_conf.sh state=absent
-   when: not enable_921_copy_htmf_conf
-
  - file: src={{syscheck_home}}/related-available/922-simple-database-replication-check.sh dest={{syscheck_home}}/related-enabled/922-simple-database-replication-check.sh state=link
    when: enable_922_simple_database_replication_check
 
  - file: path={{syscheck_home}}/related-enabled/922-simple-database-replication-check.sh state=absent
    when: not enable_922_simple_database_replication_check
-
- - file: src={{syscheck_home}}/related-available/923-rsync-to-remote-machine.sh dest={{syscheck_home}}/related-enabled/923-rsync-to-remote-machine.sh state=link
-   when: enable_923_rsync_to_remote_machine
-
- - file: path={{syscheck_home}}/related-enabled/923-rsync-to-remote-machine.sh state=absent
-   when: not enable_923_rsync_to_remote_machine
-
- - file: src={{syscheck_home}}/related-available/924-backup-this-machine-to-remote-machine.sh dest={{syscheck_home}}/related-enabled/924-backup-this-machine-to-remote-machine.sh state=link
-   when: enable_924_backup_this_machine_to_remote_machine
-
- - file: path={{syscheck_home}}/related-enabled/924-backup-this-machine-to-remote-machine.sh state=absent
-   when: not enable_924_backup_this_machine_to_remote_machine
 
  - file: src={{syscheck_home}}/related-available/925_publish_crl_from_file.sh dest={{syscheck_home}}/related-enabled/925_publish_crl_from_file.sh state=link
    when: enable_925_publish_crl_from_file
@@ -340,23 +274,11 @@
  - file: path={{syscheck_home}}/related-enabled/925_publish_crl_from_file.sh state=absent
    when: not enable_925_publish_crl_from_file
 
- - file: src={{syscheck_home}}/related-available/926_local_htmf_copy_conf.sh dest={{syscheck_home}}/related-enabled/926_local_htmf_copy_conf.sh state=link
-   when: enable_926_local_htmf_copy_conf
-
- - file: path={{syscheck_home}}/related-enabled/926_local_htmf_copy_conf.sh state=absent
-   when: not enable_926_local_htmf_copy_conf
-
  - file: src={{syscheck_home}}/related-available/927_create_crls.sh dest={{syscheck_home}}/related-enabled/927_create_crls.sh state=link
    when: enable_927_create_crls
 
  - file: path={{syscheck_home}}/related-enabled/927_create_crls.sh state=absent
    when: not enable_927_create_crls
-
- - file: src={{syscheck_home}}/related-available/928_check_dsm_backup.sh dest={{syscheck_home}}/related-enabled/928_check_dsm_backup.sh state=link
-   when: enable_928_check_dsm_backup
-
- - file: path={{syscheck_home}}/related-enabled/928_check_dsm_backup.sh state=absent
-   when: not enable_928_check_dsm_backup
 
  - file: src={{syscheck_home}}/related-available/929_filter_syscheck_messages.sh dest={{syscheck_home}}/related-enabled/929_filter_syscheck_messages.sh state=link
    when: enable_929_filter_syscheck_messages
@@ -434,22 +356,10 @@
  - template: src=20.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
    when: enable_sc_20_errors_ejbcalog
 
- - template: src=22.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
-   when: enable_sc_22_boks_replica
-
- - template: src=23.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
-   when: enable_sc_23_rsa_axm
-
  - template: src=24.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
-
- - template: src=27.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
-   when: enable_sc_27_dss
 
  - template: src=28.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
    when: enable_sc_28_check_vip
-
- - template: src=29.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
-   when: enable_sc_29_signserver
 
  - template: src=30.conf dest="{{syscheck_home}}/config/" owner=root group=root mode=0440
    when: enable_sc_30_check_running_procs
@@ -500,9 +410,6 @@
  - template: src=902.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_902_export_crl
 
- - template: src=903.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_903_make_hsm_backup
-
  - template: src=904.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_904_make_mysql_db_backup
 
@@ -530,12 +437,6 @@
  - template: src=912.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_912_deactivate_VIP
 
- - template: src=913.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_913_copy_ejbca_conf
-
- - template: src=914.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_914_compare_master_slave_db
-
  - template: src=915.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_915_remote_command_via_ssh
 
@@ -545,38 +446,20 @@
  - template: src=917.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_917_archive_file
 
- - template: src=918.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_918_server_alive
-
  - template: src=919.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_919_certpublisher_remotecommand
 
  - template: src=920.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_920_restore_mysql_db_from_backup
 
- - template: src=921.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_921_copy_htmf_conf
-
  - template: src=922.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_922_simple_database_replication_check
-
- - template: src=923.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_923_rsync_to_remote_machine
-
- - template: src=924.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_924_backup_this_machine_to_remote_machine
 
  - template: src=925.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_925_publish_crl_from_file
 
- - template: src=926.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_926_local_htmf_copy_conf
-
  - template: src=927.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_927_create_crls
-
- - template: src=928.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
-   when: enable_928_check_dsm_backup
 
  - template: src=929.conf dest={{syscheck_home}}/config/ owner=root group=root mode=0440
    when: enable_929_filter_syscheck_messages
