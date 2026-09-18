@@ -29,6 +29,7 @@ raiddiskcheck () {
     pdisk="$1"
 	controller="$2"
 	SCRIPTINDEX=$3
+    local DISK_INFO=""
 
 #sample
 #omreport storage pdisk controller=0 pdisk=0:1:0 -fmt ssv | grep ^0 | head -1
@@ -43,7 +44,7 @@ raiddiskcheck () {
         DISCSTAT=$(echo "${COMMAND}" | grep "^${singledigit_pdisk}" | head -1)
        	if [ "x${DISCSTAT}" = "x" ] ;then
             printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "disk: ${pdisk} contoller: ${controller} NOTOK $DISK_INFO"
-            continue
+            return 1
         fi
     fi
 
@@ -92,8 +93,10 @@ raidlogiccheck () {
 
 	if [ "x$vdisk_status" = "xOk" ] ; then
                 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "controller: $controller vdisk: $vdisk OK"
+	elif echo "$vdisk_state" | grep -qiE "rebuild|resync|initializ" ; then
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "controller: $controller vdisk: $vdisk REBUILDING $VDISK_INFO"
 	else
-                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "controller: $controller vdisk: $vdisk NOT OK $VDISK_INFO"
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "controller: $controller vdisk: $vdisk NOT OK $VDISK_INFO"
 	fi
 }
 
