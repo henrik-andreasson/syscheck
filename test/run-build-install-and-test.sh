@@ -81,5 +81,10 @@ install_end=$(date +"%s")
 install_delta=$(expr $install_end - $install_start )
 echo "install step: done in $install_delta sec"          | tee -a $ABS_TESTRESULT_PATH/summary.html
 
+
+echo "<h2>running container test suite</h2>"                     | tee -a $ABS_TESTRESULT_PATH/summary.html
+test/containers/run.sh                                   | tee -a $ABS_TESTRESULT_PATH/test_containers.txt
+
+
 echo "end date"                                         | tee -a $ABS_TESTRESULT_PATH/summary.html
 date                                                    | tee -a $ABS_TESTRESULT_PATH/summary.html
