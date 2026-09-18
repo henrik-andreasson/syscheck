@@ -47,7 +47,8 @@ checkcrl () {
     return
   fi
 
-
+  local ARGWARNMIN=""
+  local ARGERRMIN=""
   # Limitminutes is now optional, if not configured the limits is crl WARN: validity/2 ERROR: validity/4 eg: CRL is valid to 12h, warn will be 6h and error 3h
   if [ "x$LIMITMINUTES" != "xdefault" ] ; then
     ARGWARNMIN="--warnminutes=$LIMITMINUTES"
@@ -57,22 +58,24 @@ checkcrl () {
     ARGERRMIN="--errorminutes=$ERRMINUTES"
   fi
 
+  # array not two strings, an empty one would be passed on as a blank argument
+  local CHECK_HOST_ARG=()
   # rework of url to access the server via ip instead and send the hostname in the "Host" header variable
   if [ "x$CRL_HOST_IPx" != "xdefault" ] ; then
     HOSTNAME_FROM_URL=$(echo "${CRLNAME}" | cut -d'/' -f3 | cut -d':' -f1)
     PATH_FROM_URL=$(echo "${CRLNAME}" | cut -d'/' -f4-)
 
-    CHECK_HOST_ARG1="--header"
-    CHECK_HOST_ARG2="Host: ${HOSTNAME_FROM_URL}"
+    CHECK_HOST_ARG=(--header "Host: ${HOSTNAME_FROM_URL}")
     CRLNAME="http://${CRL_HOST_IPx}/${PATH_FROM_URL}"
   fi
 
 
   cd /tmp
   outname=$(mktemp)
+  trap 'rm -f "$outname"' RETURN
   if [ "x${CHECKTOOL}" = "xwget" ] ; then
 
-    ${CHECKTOOL} ${CRLNAME}  -T ${TIMEOUT} -t ${RETRIES}    ${CHECK_HOST_ARG1} "${CHECK_HOST_ARG2}"      -O $outname -o /dev/null
+    ${CHECKTOOL} ${CRLNAME}  -T ${TIMEOUT} -t ${RETRIES}    "${CHECK_HOST_ARG[@]}"      -O $outname -o /dev/null
 
     if [ $? -ne 0 ] ; then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$CRLNAME"
@@ -83,7 +86,7 @@ checkcrl () {
 
   elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
 
-    ${CHECKTOOL} ${CRLNAME} --retry ${RETRIES} ${CHECK_HOST_ARG1} "${CHECK_HOST_ARG2}" --max-time ${TIMEOUT} --output $outname 2>/dev/null
+    ${CHECKTOOL} ${CRLNAME} --retry ${RETRIES} "${CHECK_HOST_ARG[@]}" --max-time ${TIMEOUT} --output $outname 2>/dev/null
 
     if [ $? -ne 0 ] ; then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$CRLNAME"
@@ -130,6 +133,7 @@ checkcrl () {
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLNAME (Cant parse file,lastupdate)"
     ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$CRLNAME (Cant parse file,lastupdate)"
+    return 5
   fi
 
   NEXTUPDATE=$(openssl crl -inform der -in $outname -nextupdate -noout | sed 's/nextUpdate=//')
@@ -137,6 +141,7 @@ checkcrl () {
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLNAME (Cant parse file,nextupdate)"
     ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};$CRLNAME (Cant parse file,nextupdate)"
+    return 5
   fi
 
   CRLMESSAGE=$(${SYSCHECK_HOME}/lib/cmp_dates.py "$LASTUPDATE" "$NEXTUPDATE" ${ARGWARNMIN} ${ARGERRMIN} )
@@ -169,7 +174,6 @@ checkcrl () {
     ERRSTATUS=$(expr $ERRSTATUS + 1)
     GLOBALERRMESSAGE="${GLOBALERRMESSAGE};${CRLNAME} problem calculating validity"
   fi
-  rm "$outname"
 }
 
 #force Timezone to UTC
@@ -179,6 +183,13 @@ export TZ=UTC
 ERRSTATUS=0
 WARNSTATUS=0
 GLOBALERRMESSAGE=""
+
+if [ ${#CRLS[@]} -eq 0 ] ; then
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "no CRLS configured, nothing was checked"
+    ERRSTATUS=$(expr $ERRSTATUS + 1)
+    GLOBALERRMESSAGE="${GLOBALERRMESSAGE};no CRLS configured"
+fi
 
 for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
@@ -206,6 +217,7 @@ for (( i = 0 ;  i < ${#CRLS[@]} ; i++ )) ; do
 done
 
 # send the summary message (00)
+export SCRIPTINDEX="00"
 
 if [ "x${ERRSTATUS}" != "x0" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[9]} -d "${DESCR[9]}" -1 "${GLOBALERRMESSAGE}"
