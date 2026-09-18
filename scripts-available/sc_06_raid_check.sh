@@ -54,7 +54,7 @@ raidlogiccheck () {
   if [ "x$STATUS" != "x" ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $INFO -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$COMMAND"
 
-  elif [ "xRebuilding" = "x$COMMAND" ] ; then
+  elif echo "$COMMAND" | grep -qiE "rebuild|recover" ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$COMMAND"
     (( ERRORNUM++ )) || true
   else
