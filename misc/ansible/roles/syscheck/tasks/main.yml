@@ -9,13 +9,16 @@
 
  - name: copy new syscheck rpm
    copy: src=syscheck-1.8.1b1-1.x86_64.rpm dest=/var/tmp/
+   when: ansible_pkg_mgr == 'yum' and (install_rpm | default(true) | bool)
 
  - name: install new syscheck rpm
    yum: name=/var/tmp/syscheck-1.8.1-1.x86_64.rpm state=installed
+   when: ansible_pkg_mgr == 'yum' and (install_rpm | default(true) | bool)
    
  - name: add cron jobs
    cron: name="{{item.value.name}}" minute="{{item.value.min}}" hour="{{item.value.hour}}" day="{{item.value.day}}" weekday="{{item.value.weekday}}" month="{{item.value.month}}" state=present job="{{item.value.job}}"
    with_dict: "{{syscheck_cron_setup}}"
+   when: setup_cron | default(true) | bool
 
  - file: src={{syscheck_home}}/scripts-available/sc_01_diskusage.sh dest={{syscheck_home}}/scripts-enabled/sc_01_diskusage.sh state=link
    when: enable_sc_01_diskusage
