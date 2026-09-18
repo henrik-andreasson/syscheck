@@ -4129,3 +4129,26 @@ both already asserted the right thing.
 
 **Still open in this family:** `sc_37` has the identical D42 pattern — its
 `CHECKTOOL` guard reports and then carries on to claim the fetch failed.
+
+## 2026-09-18 — the D42 pattern in `sc_37`
+
+The same defect `sc_02` had: the `else` branch reporting `ERRNO[3]` ("Can not
+find CURL tool") had no `exit`, so it fell through to the output parsing.
+`$OUTPUT` had never been written, so `cat` returned nothing and the script
+emitted a second message — `ERRNO[2]`, "problem: " with an empty body —
+reporting a failed fetch that was never attempted.
+
+Two adjacent corrections went in with it, both verified in `sc_02` minutes
+earlier:
+
+* `addOneToIndex` ran **after** the dispatch, so that guard reported at
+  `SCRIPTINDEX` `00` while every other outcome reported at `01` — D41's shape
+  exactly, splitting one check across two monitoring keys. The increment moved
+  above the dispatch.
+* `DESCR[3]` is `"Can not find CURL tool: %s"` and the call passed nothing, so
+  the placeholder rendered empty. It now passes `${CHECKTOOL}`, which is the one
+  fact worth having: the message exists to tell you what was configured.
+
+`test_sc_37_monitor_jnlp.py` is 20 passed, 0 xfailed.
+
+With this, the D41/D42 family is closed in both scripts that carried it.
