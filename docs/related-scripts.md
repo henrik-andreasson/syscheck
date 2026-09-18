@@ -52,23 +52,6 @@ to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
 
-##  903_make_hsm_backup.sh 
-```  
-
-Scriptid: 903 - Nfast backup
-
-Backup a HSM
-
-Error code / description - What to do
-
-9031 / Backup of Nfast HSM run successfully - no action needed
-9032 / Backup of Nfast HSM failed (%s)  - TODO
-9033 /  - 
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
 ##  904_make_mysql_db_backup.sh 
 ```  
 
@@ -237,38 +220,6 @@ to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
 
-##  913_copy_ejbca_conf.sh 
-```  
-
-Scriptid: 913 - Copy config to NODE2
-
-Copy EJBCA conf/, p12/ and syscheck
-
-Error code / description - What to do
-
-9131 / Copy run successfully - Check config and keys to remote hosts
-9132 / Copy failed (%s)  - 
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
-##  914_compare_master_slave_db.sh 
-```  
-
-Scriptid: 914 - Deactivate VIP
-
-Compare tables on master and slave database
-
-Error code / description - What to do
-
-9141 / Data read successfully - All is ok
-9142 / Could not get table data - Check connection, username and password
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
 ##  915_remote_command_via_ssh.sh 
 ```  
 
@@ -329,23 +280,6 @@ to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
 
-##  918_server_alive.sh 
-```  
-
-Scriptid: 918 - Passive server monitoring
-
-Passive server monitoring, all server that should be monitored should be listed in 918.conf and run sc_19.sh every x:th minute, example: if you run syscheck every 10:th minute set warn to 15(missed one log and some margin) and error to 25(missed one log and some margin)
-
-Error code / description - What to do
-
-9181 / machine(%s) has called in as it's supposed to (lastcall: %s). - no action is needed
-9182 / machine(%s) has not called in within error limit (lastcall: %s) - two missed log messages, this needs attention
-9183 / machine(%s) has not called in within warn limit (lastcall: %s) - one missed log message, may be a glitch but should be checked
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
 ##  919_certpublisher_remotecommand.sh 
 ```  
 
@@ -380,21 +314,6 @@ to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
 
-##  921_copy_htmf_conf.sh 
-```  
-
-Scriptid: 921 - Copy HTMF config
-
-Copy HTMF config
-
-Error code / description - What to do
-
-9211 / Interactive script to copy htmf / ejbca config - files are added in config file
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
 ##  922-simple-database-replication-check.sh 
 ```  
 
@@ -408,44 +327,6 @@ Error code / description - What to do
 9222 / Value differs - databse not replicating (%s != %s), manually check the database with check master and check slave script
 9223 / No value from node2 (%s) - check connection manually, ping, telnet, mysql -h node2 -u dbadmin -p ... 
 9224 / No value from node1 (%s) - check connection manually, ping, telnet, mysql -h node1 -u dbadmin -p ... 
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
-##  923-rsync-to-remote-machine.sh 
-```  
-
-Scriptid: 923 - Sync files to remote host
-
-Script used to sync files with rsync to other hosts/directorys usage: ./923-rsync-to-remote-machine.sh: file host <directory> <to-username> <from-ssh-key> 
-(if you dont specify directory the file will end up in the user's homedirectory, 
-if you dont specify to-username the same user as the one executing this script will be used, 
-if from-ssh-key is not specified default key will be used)
-
-Error code / description - What to do
-
-9231 / file transfered ok - ok
-9232 / specify a filename as first argument to this script - filename not specified as argument
-9233 / specify a hostname as second argument to this script - Hostname not specified as argument
-9234 / rsync  transfer failed (%s) - check the error message and try to fix it
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
-##  924-backup-this-machine-to-remote-machine.sh 
-```  
-
-Scriptid: 924 - Sync several directories and files to remote host
-
-Script used to rsync configured files/dirs to other hosts
-
-Error code / description - What to do
-
-9241 / file transfered ok - ok
-9242 / Could not find transfer script - The underlying script for making the transfers SYSCHECK_HOME/related-enabled/923-rsync-to-remote-machine.sh dont exist, read docs for guide howto enable it
-9243 / Failed to sync files (%s) - check the config and run SYSCHECK_HOME/related-enabled/923-rsync-to-remote-machine.sh manually with the same options
 
 to run with output directed to screen: add a '-s' or '--screen'
 
@@ -469,23 +350,6 @@ to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
 
-##  926_local_htmf_copy_conf.sh 
-```  
-
-Scriptid: 926 - Locally copy config and keystores
-
-Copy all config/keystore files to /tmp/bckup_htmf_conf before system upgrade
-
-Error code / description - What to do
-
-9261 / File copied ok(%s) - no action needed
-9262 / Failed to copy file (%s) - check permissions and paths
-9263 / Failed to create backup dir (%s) - check permissions and paths
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
 ##  927_create_crls.sh 
 ```  
 
@@ -498,23 +362,6 @@ Error code / description - What to do
 9271 / Create CRL run successfully (%s) - No action needed
 9272 / Create CRL failed (%s) - Try manually to run this command or direct do 'cd /opt/ejbca ; ./bin/ejbca.sh ca createcrl'
 9273 /  - 
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
-##  928_check_dsm_backup.sh 
-```  
-
-Scriptid: 928 - DSM Backup
-
-Check if DSM Backup working
-
-Error code / description - What to do
-
-9281 / DSM Backup ok (file:%s result:%s) - no action needed
-9282 / DSM Backup failed file:%s result:%s - Check DSM tool for troubleshooting
-9283 /  - 
 
 to run with output directed to screen: add a '-s' or '--screen'
 
@@ -614,61 +461,6 @@ Error code / description - What to do
 9341 / File: %s subj: %s days until expiry: %s - no action needed
 9342 / File: %s subj: %s days until expiry: %s - schedule replacement soon
 9343 / File: %s subj: %s days until expiry: %s - Certificate indicent is close
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
-##  935_mysql_console_as_root.sh 
-```  
-
-Scriptid: 935 - Start mysql as root
-
-as a convenience tool
-
-Error code / description - What to do
-
-9351 /  - 
-9352 /  - 
-9353 /  - 
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
-##  936_mysql_console_as_db_user.sh 
-```  
-
-Scriptid: 936 - Start mysql as dbuser
-
-as a convenience tool
-
-Error code / description - What to do
-
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-
-##  937_delete_old_CRLData.sh 
-```  
-
-Scriptid: 937 - Delete old records from CRL Data
-
-Delete records from crldata, keep default 20 record in crltable, see config file 817.conf
-
-Error code / description - What to do
-
-9371 / No Value in ROW_SAVE - Check scripts config file 
-9372 / The value is less then 5 - Check  scripts config file 
-9373 / Can't make a backup - Check permisson and dbuser
-9374 / Can't get uniq issuerDN from CRLData  - Check database and logs 
-9375 / Can't copy CRLData to db crldata.CRLDatalog for each issuerDN  - Check database and logs 
-9376 / Cant delete record from CRLData for uniq issuerDN - Check database and logs 
-9377 / Delete to crlnumber  - Delet ok 
-9378 / Can't Optimize table  - Check vendor of database, and adjust command 
-9379 / Can't zip dbbackup  - Check permission  
-93710 / Delete to crlnumber, restart jboss and check sync  - Delete ok 
 
 to run with output directed to screen: add a '-s' or '--screen'
 

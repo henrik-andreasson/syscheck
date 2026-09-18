@@ -12,6 +12,7 @@ the exact date/hostname in every line.
 
 from __future__ import annotations
 
+import base64
 import io
 import json
 import re
@@ -319,6 +320,55 @@ class SyscheckContainer:
         return path
 
 
+    def start_process(self, name: str, seconds: int = 600) -> int:
+        """Start a long-lived process whose argv[0] is /usr/local/bin/<name>.
+
+        A copy of `sleep` is enough: the process checks only ever look at the
+        command line `ps` reports, never at what the process does. Returns the
+        pid, for writing into a pidfile.
+        """
+        quoted = shlex.quote(f"/usr/local/bin/{name}")
+        # not an unconditional cp: copying over a binary that is already
+        # running fails with ETXTBSY, and a test may want two instances
+        self.exec(f"test -x {quoted} || cp /bin/sleep {quoted}").check()
+        res = self.exec(
+            f"nohup {quoted} {int(seconds)} >/dev/null 2>&1 & echo $!"
+        ).check()
+        return int(res.stdout.strip())
+
+    def kill_stray_processes(self) -> None:
+        """Kill anything a previous test started from /usr/local/bin.
+
+        Deleting the binaries does not stop the processes, so without this a
+        process started in one test is still running for every test that
+        follows — and a process check looking it up by name would find it.
+
+        Waits for them to actually go, rather than assuming: the container runs
+        with init=True so they are reaped promptly, but `ps` must not be able to
+        see them at all by the time the next test looks.
+        """
+        self.exec(
+            "pkill -9 -f '^/usr/local/bin/' 2>/dev/null || true ; "
+            "for i in $(seq 50) ; do "
+            "  pgrep -f '^/usr/local/bin/' >/dev/null 2>&1 || break ; "
+            "  sleep 0.1 ; "
+            "done"
+        )
+
+    def free_pid(self) -> int:
+        """A pid that is not in use, for the stale-pidfile cases.
+
+        Picked by probing rather than assumed, so the test cannot accidentally
+        name a live process.
+        """
+        res = self.exec(
+            "for p in $(seq 30000 32768) ; do "
+            "  kill -0 $p 2>/dev/null || { echo $p ; exit 0 ; } ; "
+            "done ; exit 1"
+        ).check()
+        return int(res.stdout.strip())
+
+
     def set_script_config(self, scriptid: str, content: str) -> None:
         """Replace config/<scriptid>.conf.
 
@@ -327,7 +377,11 @@ class SyscheckContainer:
         """
         self.write_file(f"{self.home}/config/{scriptid}.conf", content)
 
-    MUTABLE_TREES = ("config", "lang", "lib", "scripts-available", "related-available")
+    # scripts-enabled and related-enabled are restored too: a test that enables a
+    # check would otherwise leave it enabled for every test that follows, and
+    # `syscheck.sh` runs whatever it finds there.
+    MUTABLE_TREES = ("config", "lang", "lib", "scripts-available",
+                     "related-available", "scripts-enabled", "related-enabled")
 
     def reset(self) -> None:
         """Restore a pristine install and clear anything a previous test produced."""
@@ -345,13 +399,21 @@ class SyscheckContainer:
             "/var/tmp/syscheck2.log /var/log/syscheck-logbook.log "
             "&& : > /var/log/syslog"
         ).check()
+        self.kill_stray_processes()
         self.exec("rm -rf /usr/local/bin/* || true")
         for mount in TMPFS_MOUNTS:
             self.exec(f"rm -rf {mount:s}/* || true")
 
 
+    # the entry points that live at the install root rather than in
+    # scripts-available/ — syscheck.sh is the orchestrator, not a check
+    TOP_LEVEL_SCRIPTS = ("syscheck.sh", "logbook.sh", "getroot.sh",
+                         "console_syscheck.sh")
+
     def script_path(self, script: str) -> str:
         if "/" in script:
+            return f"{self.home}/{script}"
+        if script in self.TOP_LEVEL_SCRIPTS:
             return f"{self.home}/{script}"
         return f"{self.home}/scripts-available/{script}"
 
@@ -425,7 +487,12 @@ def start_syscheck_container(image: str = IMAGE_TAG,
     tc.with_volume_mapping(str(REPO_ROOT), "/src", "ro")
     for mountpoint, options in TMPFS_MOUNTS.items():
         tc.with_tmpfs_mount(mountpoint, options)
-    kwargs: dict = {"hostname": "syscheck-test"}
+    # init=True gives the container a real init (tini) as PID 1. Without it PID 1
+    # is the image's `sleep infinity`, which never reaps, so every process a test
+    # starts and stops stays behind as a zombie — and `ps -ef` still lists a
+    # zombie as `[name] <defunct>`, which the name-based process checks in
+    # sc_05/12/15/16/22/23/30 would happily match.
+    kwargs: dict = {"hostname": "syscheck-test", "init": True}
     if network:
         kwargs["network"] = network
     tc.with_kwargs(**kwargs)
@@ -462,6 +529,204 @@ def remove_network(name: str) -> None:
     subprocess.run(["docker", "network", "rm", name], capture_output=True, text=True)
 
 
+def docker_exec(container_name: str, argv: list[str]) -> str:
+    """Run a command in a container by name and return its stdout.
+
+    For asking a service container about itself — what its process is called,
+    where it puts its pidfile — which is not something the syscheck container
+    can see from outside.
+    """
+    proc = subprocess.run(["docker", "exec", container_name, *argv],
+                          capture_output=True, text=True)
+    if proc.returncode != 0:
+        raise HarnessError(
+            f"docker exec {container_name} {shlex.join(argv)} failed:\n{proc.stderr}")
+    return proc.stdout
+
+
+# A tiny HTTP server for the checks that poll a web endpoint (sc_02, sc_33,
+# sc_37). PLAN.md proposed the repo's own test/pyhton-dummy-health-web-server.py,
+# but that needs Flask installed in the container and serves three fixed routes
+# (/health, /ok, /fail) — while the checks request paths of their own
+# (/ejbca/publicweb/healthcheck/ejbcahealth, a .jnlp file). This serves any path,
+# any status, any body, with an optional delay for timeout cases, out of the
+# standard library and therefore out of the image the suite already builds.
+_HTTP_SERVER_PY = """
+import base64, json, os, time
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+ROUTES_FILE = os.environ["ROUTES_FILE"]
+
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        # re-read per request, so a test can change the served response without
+        # restarting the container. The checks under test hard-code their URL
+        # path, so varying the body is the only way to drive their branches.
+        with open(ROUTES_FILE) as fh:
+            routes = json.load(fh)
+
+        route = routes.get(self.path)
+        if route is None:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b"not found")
+            return
+        time.sleep(route.get("delay", 0))
+        if "body_b64" in route:
+            # binary payloads - a DER-encoded CRL or certificate cannot be
+            # carried as a JSON string, so it travels base64 encoded
+            payload = base64.b64decode(route["body_b64"])
+            ctype = "application/pkix-crl"
+        else:
+            body = route.get("body", "")
+            # lets a test prove which Host header the client actually sent
+            body = body.replace("{HOST}", self.headers.get("Host", ""))
+            payload = body.encode()
+            ctype = "text/plain"
+        self.send_response(route.get("status", 200))
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
+    def log_message(self, *args):
+        pass
+
+HTTPServer(("0.0.0.0", int(os.environ.get("PORT", "8080"))), Handler).serve_forever()
+"""
+
+ROUTES_FILE = "/tmp/routes.json"
+
+
+class HttpServer:
+    """A running mock HTTP server, addressable by container name on the network."""
+
+    def __init__(self, container: DockerContainer, name: str, port: int):
+        self._tc = container
+        self.name = name
+        self.port = port
+
+    def set_routes(self, routes: dict) -> None:
+        """Replace what the server answers, effective on the next request.
+
+        Base64 so that a body containing quotes, newlines or shell
+        metacharacters survives the trip through `docker exec sh -c`.
+        """
+        encoded = base64.b64encode(json.dumps(routes).encode()).decode()
+        docker_exec(self.name, ["sh", "-c",
+                                f"echo {encoded} | base64 -d > {ROUTES_FILE}"])
+
+    def stop(self) -> None:
+        self._tc.stop()
+
+
+def start_http_server(network: str, routes: dict, port: int = 8080,
+                      image: str = IMAGE_TAG) -> tuple[HttpServer, str]:
+    """Serve `routes` — {path: {"status": int, "body": str, "delay": float}} —
+    on `network`, reachable by container name. Call `set_routes` to change them."""
+    name = f"httpd-{uuid.uuid4().hex[:8]}"
+    encoded = base64.b64encode(_HTTP_SERVER_PY.encode()).decode()
+    seed = base64.b64encode(json.dumps(routes).encode()).decode()
+    tc = DockerContainer(image)
+    tc.with_name(name)
+    tc.with_env("ROUTES_FILE", ROUTES_FILE)
+    tc.with_env("PORT", str(port))
+    tc.with_command(
+        f"bash -c 'echo {seed} | base64 -d > {ROUTES_FILE} && "
+        f"echo {encoded} | base64 -d > /tmp/server.py && exec python3 /tmp/server.py'"
+    )
+    tc.with_kwargs(network=network)
+    tc.start()
+
+    raw = tc.get_wrapped_container()
+    deadline = time.monotonic() + 30
+    # probe a path that is not in `routes`: the 404 handler proves the server is
+    # accepting connections without depending on a route the test may replace,
+    # and without consuming a route whose `delay` would stall the probe.
+    while time.monotonic() < deadline:
+        probe = (
+            "import urllib.request as u, urllib.error as e\n"
+            f"try: u.urlopen('http://127.0.0.1:{port}/-readiness-probe')\n"
+            "except e.HTTPError: pass\n"
+        )
+        code, _ = raw.exec_run(["python3", "-c", probe])
+        if code == 0:
+            return HttpServer(tc, name, port), name
+        time.sleep(0.3)
+    raise HarnessError(f"http server {name} did not become ready")
+
+
+def start_redis_node(network: str, password: str = "redispw",
+                     image: str = "redis:7") -> tuple[DockerContainer, str]:
+    """Start one password-protected Redis on `network`, reachable by its name.
+
+    `requirepass` is set on the command line rather than through a config file
+    so the container needs no volume; the checks under test only ever send PING.
+    """
+    name = f"redis-{uuid.uuid4().hex[:8]}"
+    tc = DockerContainer(image)
+    tc.with_name(name)
+    # with_command, not with_kwargs(command=...): testcontainers passes its own
+    # _command through to docker create, and the two collide
+    tc.with_command(f"redis-server --requirepass {shlex.quote(password)}")
+    tc.with_kwargs(network=network)
+    tc.start()
+
+    raw = tc.get_wrapped_container()
+    deadline = time.monotonic() + 60
+    while time.monotonic() < deadline:
+        code, _ = raw.exec_run(["redis-cli", "-a", password, "ping"])
+        if code == 0:
+            return tc, name
+        time.sleep(0.5)
+    raise HarnessError(f"redis node {name} did not become ready")
+
+
+def start_sshd_node(network: str, public_key: str, image: str = IMAGE_TAG,
+                    user: str = "syscheckbak") -> tuple[DockerContainer, str]:
+    """Start one sshd on `network`, reachable by name, accepting `public_key`.
+
+    Built from the syscheck image rather than a dedicated sshd image so the
+    remote end has the same coreutils the scripts assume when they run things
+    like `df --block-size=M` and `mktemp -p` over the connection.
+
+    Key-only: `PasswordAuthentication no`, and the account is locked with `!` so
+    nothing can log in without the key. `user` owns a writable home, which is
+    where `906` and friends drop files.
+    """
+    name = f"sshd-{uuid.uuid4().hex[:8]}"
+    setup = (
+        "set -e ; "
+        "ssh-keygen -A ; "
+        "mkdir -p /run/sshd ; "
+        # debian already ships users named backup, sync and so on
+        f"id -u {shlex.quote(user)} >/dev/null 2>&1 || "
+        f"useradd -m -s /bin/bash {shlex.quote(user)} ; "
+        f"passwd -l {shlex.quote(user)} >/dev/null ; "
+        f"mkdir -p /home/{user}/.ssh ; "
+        f"printf '%s\n' {shlex.quote(public_key)} > /home/{user}/.ssh/authorized_keys ; "
+        f"chown -R {user}:{user} /home/{user}/.ssh ; "
+        f"chmod 700 /home/{user}/.ssh ; chmod 600 /home/{user}/.ssh/authorized_keys ; "
+        "printf 'PasswordAuthentication no\nPermitRootLogin no\n' "
+        ">> /etc/ssh/sshd_config ; "
+        "exec /usr/sbin/sshd -D -e"
+    )
+    tc = DockerContainer(image)
+    tc.with_name(name)
+    tc.with_command(f"bash -lc {shlex.quote(setup)}")
+    tc.with_kwargs(network=network)
+    tc.start()
+
+    raw = tc.get_wrapped_container()
+    deadline = time.monotonic() + 60
+    while time.monotonic() < deadline:
+        code, _ = raw.exec_run(["bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/22"])
+        if code == 0:
+            return tc, name
+        time.sleep(0.5)
+    raise HarnessError(f"sshd node {name} did not become ready")
+
+
 def start_mariadb_node(network: str, root_password: str = "rootpw",
                        database: str = "syscheckdb", user: str = "syscheck",
                        password: str = "syscheckpw",
@@ -488,3 +753,120 @@ def start_mariadb_node(network: str, root_password: str = "rootpw",
             return tc, name
         time.sleep(1)
     raise HarnessError(f"mariadb node {name} did not become ready")
+
+
+# A throwaway PKI and a real `openssl ocsp` responder, for sc_10. Everything is
+# genuine: a CA, leaf certificates, a revocation recorded in the CA database,
+# and an OCSP responder answering signed responses over HTTP. Only the hostname
+# is ours.
+OCSP_PKI_SH = r"""
+set -e
+D=$1
+rm -rf "$D"; mkdir -p "$D/newcerts"; cd "$D"
+: > index.txt; echo 01 > serial
+cat > ca.cnf <<'EOF'
+[ ca ]
+default_ca = CA_default
+[ CA_default ]
+dir             = PKIDIR
+database        = $dir/index.txt
+new_certs_dir   = $dir/newcerts
+serial          = $dir/serial
+certificate     = $dir/ca.crt
+private_key     = $dir/ca.key
+default_md      = sha256
+default_days    = 3650
+policy          = pol
+email_in_dn     = no
+rand_serial     = no
+unique_subject  = no
+[ pol ]
+commonName = supplied
+[ req ]
+distinguished_name = dn
+prompt = no
+[ dn ]
+CN = syscheck-ocsp-ca
+[ v3_ocsp ]
+basicConstraints = CA:FALSE
+keyUsage = critical, digitalSignature
+extendedKeyUsage = OCSPSigning
+EOF
+sed -i "s#PKIDIR#$D#" ca.cnf
+
+openssl req -x509 -newkey rsa:2048 -nodes -keyout ca.key -out ca.crt \
+        -days 3650 -subj "/CN=syscheck-ocsp-ca" 2>/dev/null
+
+leaf() {
+  openssl req -newkey rsa:2048 -nodes -keyout "$1.key" -out "$1.csr" \
+          -subj "/CN=$1" 2>/dev/null
+  openssl ca -batch -config ca.cnf ${2:-} -in "$1.csr" -out "$1.crt" 2>/dev/null
+}
+
+leaf good
+leaf revoked
+leaf "responder" "-extensions v3_ocsp"
+openssl ca -batch -config ca.cnf -revoke revoked.crt 2>/dev/null
+
+# an unrelated CA: its leaf is genuinely "unknown" to this responder, because
+# the responder's database has never heard of that issuer
+openssl req -x509 -newkey rsa:2048 -nodes -keyout other-ca.key -out other-ca.crt \
+        -days 3650 -subj "/CN=other-ca" 2>/dev/null
+openssl req -newkey rsa:2048 -nodes -keyout unknown.key -out unknown.csr \
+        -subj "/CN=unknown" 2>/dev/null
+openssl x509 -req -in unknown.csr -CA other-ca.crt -CAkey other-ca.key \
+        -CAcreateserial -out unknown.crt -days 3650 2>/dev/null
+echo READY
+"""
+
+
+class OcspResponder:
+    """A real `openssl ocsp` responder in its own container."""
+
+    def __init__(self, container: DockerContainer, name: str, port: int):
+        self._tc = container
+        self.name = name
+        self.port = port
+
+    @property
+    def url(self) -> str:
+        return f"http://{self.name}:{self.port}"
+
+    def stop(self) -> None:
+        self._tc.stop()
+
+
+def start_ocsp_responder(network: str, pki_tar_b64: str, pki_dir: str = "/pki",
+                         port: int = 8888,
+                         image: str = IMAGE_TAG) -> tuple[OcspResponder, str]:
+    """Serve OCSP for the PKI in `pki_tar_b64` (a base64 tar of `pki_dir`).
+
+    Runs in its own container so that the syscheck container's per-test
+    `reset()` — which kills stray processes — cannot take the responder with it.
+    """
+    name = f"ocsp-{uuid.uuid4().hex[:8]}"
+    tc = DockerContainer(image)
+    tc.with_name(name)
+    tc.with_command(
+        "bash -c '"
+        f"mkdir -p {pki_dir} && echo {pki_tar_b64} | base64 -d | tar -x -C {pki_dir} && "
+        f"cd {pki_dir} && exec openssl ocsp -index index.txt -port {port} "
+        f"-rsigner responder.crt -rkey responder.key -CA ca.crt -text"
+        "'"
+    )
+    tc.with_kwargs(network=network)
+    tc.start()
+
+    raw = tc.get_wrapped_container()
+    deadline = time.monotonic() + 60
+    while time.monotonic() < deadline:
+        code, _ = raw.exec_run(
+            ["bash", "-c",
+             f"cd {pki_dir} && openssl ocsp -issuer ca.crt -cert good.crt "
+             f"-CAfile ca.crt -url http://127.0.0.1:{port} 2>&1 | grep -q ': good'"]
+        )
+        if code == 0:
+            return OcspResponder(tc, name, port), name
+        time.sleep(0.5)
+    raise HarnessError(f"ocsp responder {name} did not become ready")
+

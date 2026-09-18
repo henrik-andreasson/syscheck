@@ -308,53 +308,6 @@ Error code / description - What to do
 to run with output directed to screen: add a '-s' or '--screen'
 
 ``` 
-##  sc_22_boks_replica.sh 
-```  
-
-Scriptid: 22 - BOKS
-
-BoKS Replica checks
-
-Error code / description - What to do
-
-221 / No action is needed - all boks processes are running
-222 / All BoKS replica processes IS NOT running %s - Not all boks processes are running
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-##  sc_23_rsa_axm.sh 
-```  
-
-Scriptid: 23 - RSA Access Manager
-
-Checks the RSA Access Manager server to make sure it's running
-
-Error code / description - What to do
-
-231 / RSA Access Manager is running - all ok
-232 / At least one service is not running (%s)  - check the rsa access manager server logs
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-##  sc_27_dss.sh 
-```  
-
-Scriptid: 27 - SignServer
-
-checks the dss server
-
-Error code / description - What to do
-
-271 / Document SignServer is active - No action needed
-272 / Document SignServer is running at ONLY ONE NODE - Check the failing node asap
-273 / Document SignServer is NOT active - resolve this issue asap
-274 / Document SignServer is not installed at this host - maybe you've configured wrong scripts or not yet installed signserver
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
 ##  sc_28_check_vip.sh 
 ```  
 
@@ -369,25 +322,6 @@ Error code / description - What to do
 283 / Both nodes has the VIP - Resolve this issue asap
 284 / None of the nodes has the VIP - Resolve this issue asap
 285 / ssh tool 915 not activated - enable 915
-
-to run with output directed to screen: add a '-s' or '--screen'
-
-``` 
-##  sc_29_signserver.sh 
-```  
-
-Scriptid: 29 - SignServer health checker
-
-signserver  Script that connects to the signserver health check servlet to check the status of the signserver application. The health check servlet checks JVM memory, database connection and HSM connection.
-
-Error code / description - What to do
-
-291 / SIGNSERVER : %s - No action is needed
-292 / SIGNSERVER : %s - Possible errors: 
-"Error Virtual Memory is about to run out, currently free memory : X" - you need to add more virtual memory to application server/java process
-"Error Connecting to SIGNSERVER Database" - The internal check of database failed, try to connect to database directly or restart database server
-"CA Token is disconnected" - activate token or maybe a restart of pcscd can help
-293 / SIGNSERVER : Application Server is unavailable - The server is non-responding, restart application-server (jboss) and/or check server log to find the fault
 
 to run with output directed to screen: add a '-s' or '--screen'
 
@@ -449,7 +383,7 @@ Healthcheck of applications with simple URL health (should return ALLOK and stat
 
 Error code / description - What to do
 
-331 / app: %s ok - No action is needed
+331 / app: %s ok (%s) - No action is needed
 332 / app: %s NOT ok error message: %s - Check errormessage and log-file
 333 / app: %s CHECKTOOL not curl nor wget - Config curl or wget
 334 / app: %s restarting due to previous failure status: %s command: %s restarts in last 24h: %s - Check errormessage and log-file

@@ -19,6 +19,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
         openssl \
         mariadb-client \
+        redis-tools \
+        openssh-client \
+        openssh-server \
+        rsync \
         netcat-openbsd \
         iputils-ping \
         python3 \
@@ -27,6 +31,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         tar \
     && rm -rf /var/lib/apt/lists/*
 
+# The rsyslog rule below is deliberately the only one writing /var/log/syslog:
+# Debian's stock `*.*;auth,authpriv.none -/var/log/syslog` is commented out, so
+# a message logged once appears in the file once. With both rules active every
+# message lands twice, and no test can tell one delivery from two.
 RUN printf '%s\n' \
         '$ModLoad imuxsock' \
         '$OmitLocalLogging off' \
@@ -34,7 +42,8 @@ RUN printf '%s\n' \
         '*.*  -/var/log/syslog' \
         > /etc/rsyslog.d/00-testcontainers.conf \
     && sed -i 's/^\$ModLoad imklog/#$ModLoad imklog/' /etc/rsyslog.conf \
-    && sed -i 's/^module(load="imklog")/#module(load="imklog")/' /etc/rsyslog.conf
+    && sed -i 's/^module(load="imklog")/#module(load="imklog")/' /etc/rsyslog.conf \
+    && sed -i 's|^\*\.\*;auth,authpriv\.none|#&|' /etc/rsyslog.conf
 
 ENV SYSCHECK_HOME=/opt/syscheck
 RUN mkdir -p /opt/syscheck /var/log && touch /var/log/syslog

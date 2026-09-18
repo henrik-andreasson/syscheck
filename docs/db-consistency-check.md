@@ -92,9 +92,7 @@ This is a monitoring check, not a repair tool, and not a substitute for
   convergence on retry. That is less precise but needs no replication
   privileges and behaves the same on Galera as on classic replication.
 - It does not tell you *which rows* differ. When it reports a divergence, use
-  `pt-table-checksum` / `pt-table-sync`, or
-  `related-available/914_compare_master_slave_db.sh` for a per-table row-count
-  overview.
+  `pt-table-checksum` / `pt-table-sync`.
 - `BIT_XOR` over CRC32 is a monitoring-grade checksum, not a cryptographic one.
   It will not detect a deliberately crafted collision.
 

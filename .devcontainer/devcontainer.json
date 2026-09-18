@@ -6,6 +6,18 @@
   "ghcr.io/devcontainers/features/python:1": {}
  },
  "name": "Debian",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+
+	// Required for Docker-in-Docker: the inner dockerd cannot create networks or
+	// mount overlay filesystems without it.
+	"runArgs": [
+		"--privileged"
+	],
+
+	"remoteUser": "vscode",
+	"containerUser": "vscode",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/base:trixie",
 
@@ -17,4 +29,6 @@
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
+	"postStartCommand": "bash /workspaces/syscheck/.devcontainer/start-docker.sh"
+
 }
