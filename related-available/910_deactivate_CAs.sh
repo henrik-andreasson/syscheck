@@ -19,6 +19,7 @@ SCRIPTID=910
 NO_OF_ERR=2
 
 initscript $SCRIPTID $NO_OF_ERR
+getconfig "909"
 
 
 # get command line arguments
@@ -42,10 +43,15 @@ cd $EJBCA_HOME
 for (( i = 0 ;  i < ${#CANAME[@]} ; i++ )) ; do
 
 	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-	printtoscreen "Deactivating CA :  ${CANAME[$i]} on node $HOSTNAME_NODE2"
-        ./bin/ejbca.sh ca deactivateca $NAME | tee ${SYSCHECK_HOME}/var/$0.output
-        error=$(cat ${SYSCHECK_HOME}/var/$0.output)
-        if [ "x$error" = "x"  ] ; then
+	NAME=${CANAME[$i]}
+	printtoscreen "Deactivating CA :  ${CANAME[$i]}"
+        CAOUT=$(mktemp)
+        ./bin/ejbca.sh ca deactivateca $NAME 2>&1 | tee "${CAOUT}"
+        retcode=${PIPESTATUS[0]}
+        error=$(cat "${CAOUT}")
+        rm -f "${CAOUT}"
+
+        if [ "$retcode" -eq 0 ] ; then
 	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$NAME"
 	else
 	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$NAME" -2 "$error"

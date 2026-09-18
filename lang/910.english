@@ -5,5 +5,5 @@ HELP="Deactivate the CA:s"
 DESCR[1]="Deactivate CA:s run successfully"
 HELP[1]="All is ok"
 
-DESCR[2]="Deactivate CA failed (%s) "
+DESCR[2]="Deactivate CA failed (%s/%s)"
 HELP[2]="Could be problems accessing the application server, or token is not available  %s"
