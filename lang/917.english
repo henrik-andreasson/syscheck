@@ -31,3 +31,4 @@ DESCR[9]="Intransit dir not found"
 
 PTS_1="Processing NEW file"
 PTS_2="Processing OLD file"
+PTS_3="Skipping file, not readable"

@@ -25,39 +25,34 @@ initscript $SCRIPTID $NO_OF_ERR
 
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
+INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose,keep-org" -- "$@"`
+if [ $? != 0 ] ; then schelp ; exit 1 ; fi
 #echo "TEMP: >$TEMP<"
 eval set -- "$INPUTARGS"
 
+KeepOrg=
 while true; do
   case "$1" in
     -s|--screen  ) PRINTTOSCREEN=1; shift;;
     -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
     -h|--help )   schelp;exit;shift;;
-    --) break;;
+    --keep-org )  KeepOrg=1 ; shift;;
+    --) shift ; break;;
   esac
 done
 
 # main part of script
 
-KeepOrg=
-if [ "x$1" =  "x--keep-org"  ] ; then
-    shift
-    KeepOrg=1
-fi
-
-
 if [ ! -d ${InTransitDir} ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[9]} "$ARCHIVE_DESCR[9]"
-	exit -1
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[9]} -d "${DESCR[9]}"
+	exit 1
 fi
 
 # arg1
 FileToArchive=
 if [ "x$1" = "x" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} "$ARCHIVE_DESCR[3]"
-	exit -1
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+	exit 1
 else
     FileToArchive=$1
 fi
@@ -65,8 +60,8 @@ fi
 # arg2 hostname
 ArchiveServer=
 if [ "x$2" = "x"  ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} "$ARCHIVE_DESCR[3]"
-	exit -1
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+	exit 1
 else
     ArchiveServer=$2
 fi
@@ -75,8 +70,8 @@ fi
 # arg3 mandatory, eg.: "/store/logs/hostname/"
 ArchiveDir=
 if [ "x$3" = "x"  ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} "$ARCHIVE_DESCR[3]"
-        exit -1
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+        exit 1
 else
 	ArchiveDir=$3
 fi
@@ -102,8 +97,8 @@ moveToIntransit() {
 	IntransitFileName=`basename $reultFromLocalClaim `
 
 	if [ "x${IntransitFileName}" = "x" ] ; then
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[8]} "$ARCHIVE_DESCR[8]" ${IntransitFileName}
-		exit -1
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[8]} -d "${DESCR[8]}" -1 "${IntransitFileName}"
+		exit 1
 	fi
 # move the file into the intransit dir and give it a unique name
 	if [ "x${KeepOrg}" = "x" ] ; then
@@ -115,10 +110,10 @@ moveToIntransit() {
 	fi
 
 	if [ $? != 0 ] ; then
-	 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} "$ARCHIVE_DESCR[2]" ${file} ${InTransitDir}/${IntransitFileName}
-		exit -1
+	 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${file}" -2 "${InTransitDir}/${IntransitFileName}"
+		exit 1
 	else
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[7]} "$ARCHIVE_DESCR[7]" ${file} ${InTransitDir}/${IntransitFileName}
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${file}" -2 "${InTransitDir}/${IntransitFileName}"
 		echo "${IntransitFileName}"
 	fi
 }
@@ -128,46 +123,46 @@ transferFile(){
 	IntransitFileName=$2
 
 # claim the filename that the file is not already there
-	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX\" ${SSHTOUSER} ${SSHFROMKEY}"
-	reultFromClaim=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX" ${SSHTOUSER} ${SSHFROMKEY}`
+	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh --host=\"${ArchiveServer}\" --command=\"mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX\" --user=\"${SSHTOUSER}\" --key=\"${SSHFROMKEY}\""
+	reultFromClaim=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh --host="${ArchiveServer}" --command="mktemp -p ${ArchiveDir} ${ShortFileName}.XXXXXXXXX" --user="${SSHTOUSER}" --key="${SSHFROMKEY}"`
 	if [ $? != 0 ] ; then
-                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} "$ARCHIVE_DESCR[4]"
-		exit -1
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}"
+		exit 1
 	fi
 	baseFile=`echo $reultFromClaim | grep ${ShortFileName}`
 	remoteFileName=`basename $baseFile`
 
 # transfer the file
- 	printtoscreen "$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER ${SSHFROMKEY}"
- 	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh "${InTransitDir}/${IntransitFileName}" $ArchiveServer ${ArchiveDir}/${remoteFileName} $SSHTOUSER ${SSHFROMKEY}
+ 	printtoscreen "$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh --file=\"${InTransitDir}/${IntransitFileName}\" --host=\"${ArchiveServer}\" --dir=\"${ArchiveDir}/${remoteFileName}\" --user=\"${SSHTOUSER}\" --key=\"${SSHFROMKEY}\""
+ 	$SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh --file="${InTransitDir}/${IntransitFileName}" --host="${ArchiveServer}" --dir="${ArchiveDir}/${remoteFileName}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}"
 	if [ $? != 0 ] ; then
-                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} "$ARCHIVE_DESCR[5]" "${InTransitDir}/${IntransitFileName} $ArchiveServer ${ArchiveDir}/${remoteFileName}"
-		exit -1
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "${InTransitDir}/${IntransitFileName} ${ArchiveServer} ${ArchiveDir}/${remoteFileName}"
+		exit 1
 	fi
 
-	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} \"md5sum ${ArchiveDir}/${remoteFileName}\" ${SSHTOUSER} ${SSHFROMKEY}"
-	sshresult=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh ${ArchiveServer} "md5sum ${ArchiveDir}/${remoteFileName}" ${SSHTOUSER} ${SSHFROMKEY}`
+	printtoscreen "$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh --host=\"${ArchiveServer}\" --command=\"md5sum ${ArchiveDir}/${remoteFileName}\" --user=\"${SSHTOUSER}\" --key=\"${SSHFROMKEY}\""
+	sshresult=`$SYSCHECK_HOME/related-available/915_remote_command_via_ssh.sh --host="${ArchiveServer}" --command="md5sum ${ArchiveDir}/${remoteFileName}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}"`
 	if [ $? != 0 ] ; then
-                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} "$ARCHIVE_DESCR[5]" "md5sum check failed"
-		exit -1
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "md5sum check failed"
+		exit 1
 	fi
 	remoteMD5sum=`echo $sshresult | cut -f1 -d\  `
 	localMD5sum=`md5sum ${InTransitDir}/${IntransitFileName} | cut -f1 -d\ `
 	if [ "x${remoteMD5sum}" = "x" -o "x${localMD5sum}" = "x" -o ${remoteMD5sum} != ${localMD5sum} ] ; then
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} "$ARCHIVE_DESCR[5]" "md5sum check failed"
-                exit -1
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "md5sum check failed"
+                exit 1
 	fi
 
 # return the filename
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[6]} "$ARCHIVE_DESCR[6]" "${InTransitDir}/${IntransitFileName} $ArchiveServer ${ArchiveDir}/${remoteFileName}"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "${InTransitDir}/${IntransitFileName} ${ArchiveServer} ${ArchiveDir}/${remoteFileName}"
 	echo "${remoteFileName}"
 }
 
 archiveLocally() {
 	remoteFileName=$1
-	if [ "x${remoteFileName}" = "x" ] ; then exit -1 ; fi
+	if [ "x${remoteFileName}" = "x" ] ; then exit 1 ; fi
 	IntransitFileName=$2
-	if [ "x${IntransitFileName}" = "x" ] ; then exit -1 ; fi
+	if [ "x${IntransitFileName}" = "x" ] ; then exit 1 ; fi
 # ensure local file is uniq (should be, but just in case)
 	i=0
 	while [ -r ${remoteFileName} ] ; do
@@ -179,10 +174,10 @@ archiveLocally() {
         printtoscreen "mv ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}"
         mv ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
 	if [ $? != 0 ] ; then
-	 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} "$ARCHIVE_DESCR[2]" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
-		exit -1
+	 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${InTransitDir}/${IntransitFileName}" -2 "${ArchiveDir}/${remoteFileName}"
+		exit 1
 	else
-		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} "$ARCHIVE_DESCR[1]" ${InTransitDir}/${IntransitFileName} ${ArchiveDir}/${remoteFileName}
+		printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${InTransitDir}/${IntransitFileName}" -2 "${ArchiveDir}/${remoteFileName}"
 	fi
 }
 
@@ -192,10 +187,10 @@ archiveLocally() {
 ### loop over new files #####
 
 for file in ${FileToArchive} ; do
-	printtoscreen $ARCHIVE_PTS_1 $file
+	printtoscreen "${PTS_1}" "$file"
 # it the file really there ?
 	if [ ! -r $file ] ;  then
-                printtoscreen "$ARCHIVE_PTS_3" $file
+                printtoscreen "${PTS_3}" "$file"
 		continue
 	fi
 
@@ -213,7 +208,7 @@ done
 ### loop over failed to transfer files ####
 
 for file in $(ls ${InTransitDir}/* 2>/dev/null) ; do
-	printtoscreen $ARCHIVE_PTS_2 $file
+	printtoscreen "${PTS_2}" "$file"
 	infile=`basename $file`
         reFile=`transferFile ${infile} ${infile} `
         archiveLocally ${reFile} ${infile}
