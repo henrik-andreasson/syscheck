@@ -2,7 +2,7 @@ SCRIPT_HUMAN_NAME="Check Health of applications"
 
 HELP="Healthcheck of applications with simple URL health (should return ALLOK and status 200)"
 
-DESCR[1]="app: %s ok"
+DESCR[1]="app: %s ok (%s)"
 HELP[1]="No action is needed"
 
 DESCR[2]="app: %s NOT ok error message: %s"
