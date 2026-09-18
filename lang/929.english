@@ -7,3 +7,6 @@ HELP[1]="no action needed"
 
 DESCR[2]="Filter failed"
 HELP[2]="try the commands manually"
+
+DESCR[3]="No messages matched the configured script ids (%s)"
+HELP[3]="normal on a quiet system, check SEND_ONLY_SCRIPT_IDS in config/929.conf if it persists"
