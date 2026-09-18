@@ -86,6 +86,7 @@
 
  sc_06_hpraid_tool: "/usr/sbin/hpacucli"
  sc_06_hpriad_slot: 0
+ sc_06_slot: 0
 
 #logical drives
  sc_06_hpraid_ldrives:
@@ -158,10 +159,13 @@
   - { id: "3", ip: "10.0.0.4", port: "6379", pw: "foo123" }
 
  sc_35_dell_health_tool: /opt/dell/srvadmin/bin/omreport
+ sc_35_dell_raid_tool: /opt/dell/srvadmin/bin/omreport
  sc_35_dell_raid_controller: 0
 
 #logical drives
  sc_35_dell_health_ldrives:
+  - { id: "0", ldriveid: "0" }
+ sc_35_dell_raid_ldrives:
   - { id: "0", ldriveid: "0" }
 
 #physical drives
@@ -170,6 +174,47 @@
   - { id: "1", pdriveid: "0:1:1" }
   - { id: "2", pdriveid: "0:1:2" }
   - { id: "3", pdriveid: "0:1:3" }
+ sc_35_dell_raid_pdrives:
+  - { id: "0", pdriveid: "0:1:0" }
+  - { id: "1", pdriveid: "0:1:1" }
+  - { id: "2", pdriveid: "0:1:2" }
+  - { id: "3", pdriveid: "0:1:3" }
+
+# sc_36 Dell health variables
+ sc_36_dell_health_tool: /opt/dell/srvadmin/bin/omreport
+ sc_36_dell_health_fans:
+  - { id: "0", fanid: "0" }
+ sc_36_dell_health_temps:
+  - { id: "0", tempid: "0" }
+ sc_36_dell_health_cpus:
+  - { id: "0", cpuid: "0" }
+ sc_36_dell_health_psus:
+  - { id: "0", psuid: "0" }
+
+# sc_08 CRL variables
+ sc_08_crl_time_out: 10
+ sc_08_crl_retries: 2
+ sc_08_crl_host_name_ip: ""
+ sc_08_crl_from_webserver_urls:
+  - "http://localhost/crl/eIDCA.crl"
+  - "http://localhost/crl/eSignCA.crl"
+
+# sc_33 healthcheck variables
+ sc_33_healthcheck:
+  - "certservice-public"
+
+ apache_public_http_ip: "127.0.0.1"
+ apache_public_http_port: "80"
+ apache_admin_http_ip: "127.0.0.1"
+ apache_admin_http_port: "443"
+
+# sc_20 Wildfly log variables
+ sc_20_jboss_logfile: "/var/log/wildfly/server.log"
+ sc_20_jboss_logfile_posfile: "/var/tmp/wildfly_server_default_log_server.log.lastposision"
+
+# related 907 variables
+ related_907_remote_mysqldump:
+  - { remote_host: "localhost", remote_dir: "/backup", user: "root", sshkey: "/root/.ssh/id_rsa" }
 
 
  syscheck_930_remote_monitoring:
@@ -315,3 +360,15 @@
 
  # "OLDFMT", "NEWFMT" or "JSON"
  syscheck_screen_outputtype: "NEWFMT"
+
+# common.conf template variable mappings
+ syscheck_send_to_syslog: "0"
+ syscheck_send_to_syslog_fmt: "JSON"
+ syscheck_send_to_syslog_facillity: "local3"
+ syscheck_send_to_screen_fmt: "NEWFMT"
+ syscheck_send_to_file_enabled: "1"
+ syscheck_send_to_file_name: "/var/log/syscheck.log"
+ syscheck_send_to_file_format: "JSON"
+ syscheck_logbook_enabled: "1"
+ syscheck_logbook_file: "/var/log/syscheck-logbook.log"
+ syscheck_logbook_format: "JSON"
