@@ -15,6 +15,20 @@ sshd are planned for Phase 4 and not used yet.
 ./run.sh -m known_bug                 # just the open-defect tests
 ```
 
+### Generating Reports
+
+You can generate test execution reports in different formats by passing standard `pytest` flags to `run.sh`:
+
+1. **JUnit XML Report (Standard for CI/CD):**
+   ```bash
+   ./run.sh --junitxml=report.xml
+   ```
+
+2. **Visual HTML Report:**
+   ```bash
+   ./run.sh --html=report.html --self-contained-html
+   ```
+
 `run.sh` creates `.venv/` on first use (needs `python3-venv`) and installs
 `requirements.txt`. Docker must be reachable by the current user.
 
