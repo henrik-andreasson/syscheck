@@ -19,23 +19,6 @@ SCRIPTID=919
 NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR || exit 1;
 
-
-# get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose" -- "$@"`
-if [ $? != 0 ] ; then schelp ; fi
-#echo "TEMP: >$TEMP<"
-eval set -- "$INPUTARGS"
-
-while true; do
-  case "$1" in
-    -s|--screen  ) PRINTTOSCREEN=1; shift;;
-    -v|--verbose ) PRINTVERBOSESCREEN=1 ; shift;;
-    -h|--help )   schelp;exit;shift;;
-    --) break;;
-  esac
-done
-
-
 # get command line arguments
 INPUTARGS=`/usr/bin/getopt --options "hsv" --long "help,screen,verbose,cert:" -- "$@"`
 if [ $? != 0 ] ; then schelp ; fi
@@ -71,17 +54,17 @@ if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
-CERTUID=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout | grep -oi 'uid=[[:alnum:][:space:]]*' |sed 's/uid=//gi')
+CERTUID=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout | grep -oi 'uid=[[:alnum:][:space:].-]*' |sed 's/uid=//gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$?"
 fi
 
-CERTCN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'cn=[[:alnum:][:space:]]*'  |sed 's/cn=//gi')
+CERTCN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'cn=[[:alnum:][:space:].-]*'  |sed 's/cn=//gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
 
-CERTSN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'serialnumber=[[:alnum:][:space:]]*' |sed 's/serialnumber=//gi')
+CERTSN=$(openssl x509 -inform der -in ${CERTFILE} -subject -noout |  grep -oi 'serialnumber=[[:alnum:][:space:].-]*' |sed 's/serialnumber=//gi')
 if [ $? -ne 0 ] ; then
     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$?"
 fi
@@ -115,6 +98,14 @@ for (( j=0; j < ${#REMOTE_HOST[@]} ; j++ )){
 	    RemoteCmd="${REMOTE_CMD[$j]}"
     fi
 
+    SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
     printtoscreen "remotecommand arg: ${REMOTE_ARG[$j]} host:${REMOTE_HOST[$j]} cmd:${RemoteCmd} remotreuser:${REMOTE_USER[$j]} sshkey:${SSHKEY[$j]}"
-    ${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${REMOTE_HOST[$j]} ${RemoteCmd} ${REMOTE_USER[$j]} ${SSHKEY[$j]}
+    RUNRESULT=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${REMOTE_HOST[$j]}" --command="${RemoteCmd}" --user="${REMOTE_USER[$j]}" --key="${SSHKEY[$j]}")
+    retcode=$?
+
+    if [ "$retcode" -eq 0 ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${REMOTE_HOST[$j]}" -2 "${RemoteCmd}"
+    else
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${REMOTE_HOST[$j]}" -2 "${RemoteCmd}" -3 "${RUNRESULT}"
+    fi
 }
