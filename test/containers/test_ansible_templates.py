@@ -88,7 +88,7 @@ def test_template_compiles_and_renders_successfully(template_name):
 
 def test_ansible_playbook_syntax_check():
     """Verify that the overall Ansible playbook syntax check passes."""
-    playbook_path = os.path.abspath(os.path.join(ROLE_PATH, "../../playbook-syscheck"))
+    playbook_path = os.path.abspath(os.path.join(ROLE_PATH, "../../playbooks/playbook-syscheck.yml"))
     hosts_path = os.path.abspath(os.path.join(ROLE_PATH, "../../hosts"))
     
     # We find the ansible-playbook executable inside the virtualenv's bin directory
@@ -96,6 +96,29 @@ def test_ansible_playbook_syntax_check():
     if not os.path.exists(ansible_playbook_bin):
         ansible_playbook_bin = "ansible-playbook"
         
+    # Set up temporary ANSIBLE_COLLECTIONS_PATH structure
+    collections_dir = "/tmp/ansible_test_collections_syntax"
+    collection_link_dir = os.path.join(collections_dir, "ansible_collections/aberosecurity")
+    os.makedirs(collection_link_dir, exist_ok=True)
+    
+    # Symlink our collection root (misc/ansible) to the collection path
+    collection_dest = os.path.join(collection_link_dir, "syscheck")
+    if os.path.exists(collection_dest):
+        if os.path.islink(collection_dest):
+            os.remove(collection_dest)
+        else:
+            subprocess.run(["rm", "-rf", collection_dest])
+            
+    os.symlink(os.path.abspath(os.path.join(ROLE_PATH, "../..")), collection_dest)
+
     cmd = [ansible_playbook_bin, "--syntax-check", "-i", hosts_path, playbook_path]
-    res = subprocess.run(cmd, capture_output=True, text=True)
+    run_env = dict(os.environ)
+    run_env["ANSIBLE_COLLECTIONS_PATH"] = collections_dir
+
+    res = subprocess.run(cmd, capture_output=True, text=True, env=run_env)
+    
+    # Clean up symlink
+    if os.path.exists(collections_dir):
+        subprocess.run(["rm", "-rf", collections_dir])
+
     assert res.returncode == 0, f"Ansible playbook syntax check failed:\nSTDERR: {res.stderr}\nSTDOUT: {res.stdout}"
