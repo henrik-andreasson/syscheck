@@ -6,7 +6,7 @@ DESCR[1]="Table %s is identical on all %s nodes (%s)"
 HELP[1]="No action is needed"
 
 DESCR[2]="Table %s differs between nodes: %s has %s, %s has %s"
-HELP[2]="The nodes did not converge after the configured retries, so this is a real divergence and not replication lag. Use pt-table-checksum and pt-table-sync, or related-available/914_compare_master_slave_db.sh, to find the differing rows"
+HELP[2]="The nodes did not converge after the configured retries, so this is a real divergence and not replication lag. Use pt-table-checksum and pt-table-sync to find the differing rows"
 
 DESCR[3]="Table %s converged only after %s attempts (%s), the nodes are lagging"
 HELP[3]="The data is consistent but at least one node was behind. Check replication status and load, and raise DBSYNC_SETTLE_SECONDS if this happens on every run"
