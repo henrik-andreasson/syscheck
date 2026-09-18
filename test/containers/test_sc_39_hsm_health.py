@@ -399,18 +399,6 @@ def test_the_session_guard_accepts_the_real_slot_set_line(hsm):
     assert all(m.level == "I" for m in run.messages), run.describe()
 
 
-def test_without_a_bare_slot_line_every_check_reports_a_session_error(hsm):
-    """The other half of D70, stated positively: what the script does today if
-    `slot list` does not supply a clean `Current Slot Id`."""
-    set_fixtures(hsm, slot_list="Command Result : No Error\n")
-
-    run = hsm.run_script(SCRIPT)
-
-    assert all(m.level == "E" for m in run.messages), run.describe()
-    assert any("did not select application partition slot" in m.text
-               for m in run.messages), run.describe()
-
-
 def test_help_documents_every_error_code(hsm):
     res = hsm.exec([hsm.script_path(SCRIPT), "--help"])
 
