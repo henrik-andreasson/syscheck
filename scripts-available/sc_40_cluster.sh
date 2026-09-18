@@ -22,6 +22,7 @@ ERRORNUM=0
 NO_OF_ERR=8
 
 initscript $SCRIPTID $NO_OF_ERR
+getconfig "mariadb"
 
 default_script_getopt $*
 
@@ -40,19 +41,31 @@ fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
-status=$(echo "SELECT * FROM $DB_TEST_TABLE LIMIT 1" | $MYSQL_BIN $DB_NAME 2>&1 > /dev/null)
-if [ $? -ne 0 ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e  ${ERRNO[4]} -d "${DESCR[4]}"
+if [ "x${MYSQL_BIN}" = "x" -o "x${DB_NAME}" = "x" -o "x${DB_TEST_TABLE}" = "x" ] ; then
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e  ${ERRNO[4]} -d "${DESCR[4]}" -1 "MYSQL_BIN, DB_NAME and DB_TEST_TABLE must be set, see config/mariadb.conf"
     (( ERRORNUM++ )) || true
 else
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e  ${ERRNO[3]} -d "${DESCR[3]}"
+    status=$(echo "SELECT * FROM $DB_TEST_TABLE LIMIT 1" | $MYSQL_BIN $DB_NAME 2>&1 > /dev/null)
+    if [ $? -ne 0 ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e  ${ERRNO[4]} -d "${DESCR[4]}" -1 "$status"
+        (( ERRORNUM++ )) || true
+    else
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e  ${ERRNO[3]} -d "${DESCR[3]}"
+    fi
 fi
 
 ####################
-Sub_Compare()(
-  IFS=" "
-  exec awk "BEGIN{ if (!($*)) exit(1)}"
-)
+# string values compare with test, only the float operands need awk
+Sub_Compare(){
+  VALUE=$1
+  OPERAND=$2
+  EXPECTED=$3
+  case "$OPERAND" in
+    "="|"==") [ "$VALUE" = "$EXPECTED" ] ;;
+    "!=")     [ "$VALUE" != "$EXPECTED" ] ;;
+    *)        awk -v a="$VALUE" -v b="$EXPECTED" "BEGIN{ exit !(a $OPERAND b) }" ;;
+  esac
+}
 
 # Check Galera cluster
 Sub_Check_Cluster(){
@@ -61,15 +74,15 @@ Sub_Check_Cluster(){
     SCRIPTINDEX=$3
     OPERAND=$4
 
-    STATUS=$(echo "show status like '${CLUSTER}';" | mysql 2>&1)
+    STATUS=$(echo "show status like '${CLUSTER}';" | $MYSQL_BIN 2>&1)
     retcode=$?
     if [ $retcode -eq 0 ] ; then
-      STATUS=$(echo "$STATUS" | awk '{print $2}' | sed 's/Value//;s/^$//;/^$/d')
+      STATUS=$(echo "$STATUS" | cut -f2 | sed '/^Value$/d;/^$/d')
     fi
     if [ $retcode -ne 0 -o "x${STATUS}" = "x" ] ; then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$CLUSTER $STATUS should be $RESULT"
       (( ERRORNUM++ )) || true
-    elif Sub_Compare "${STATUS} ${OPERAND} ${RESULT}" ; then
+    elif Sub_Compare "${STATUS}" "${OPERAND}" "${RESULT}" ; then
       printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$CLUSTER $STATUS should be $RESULT"
       (( ERRORNUM++ )) || true
     else
