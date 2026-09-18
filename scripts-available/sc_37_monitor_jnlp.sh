@@ -26,8 +26,12 @@ default_script_getopt $*
 
 OUTPUT="/tmp/internal-error.txt"
 
+# clear before and after, a stale file would be read as this runs answer
+rm -f "$OUTPUT"
+trap 'rm -f "$OUTPUT"' EXIT
+
 if [ "x${CHECKTOOL}" = "xcurl" ] ; then
-        ${CHECKTOOL} ${URL} ${HEADER} --max-time ${CURL_TIMEOUT} --retry 1 --output $OUTPUT -v 2>/dev/null
+        ${CHECKTOOL} "${URL}" "${HEADER[@]}" --max-time ${CURL_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
 else
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
 fi
@@ -41,5 +45,3 @@ if [ "x${OKOUTPUT}" != "x" ]; then
 else
 	 printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "$FULLOUTPUT"
 fi
-
-rm $OUTPUT
