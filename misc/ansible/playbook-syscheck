@@ -1,7 +1,0 @@
----
-- hosts: all
-  gather_facts: True
-#  connection: local
-  roles:
-     - syscheck
-
