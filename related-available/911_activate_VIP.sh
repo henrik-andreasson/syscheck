@@ -39,6 +39,9 @@ done
 
 # main part of script
 
+# initscript sets noclobber, the marker file is rewritten on every activation
+set +o noclobber
+
 IP_GATEWAY=`$ROUTE -n | awk '/0.0.0.0/'| awk '{print $2}' |awk '!/0.0.0.0/'`
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
@@ -56,7 +59,7 @@ if [ $? -eq 0 ] ; then
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-res=($IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up)
+res=$($IFCONFIG ${IF_VIRTUAL} inet ${HOSTNAME_VIRTUAL} netmask ${NETMASK_VIRTUAL} up 2>&1)
 if [ $? -ne 0 ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$res"
 	exit
@@ -69,7 +72,7 @@ printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERR
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 res=$(arping -f -q -U ${IP_GATEWAY} -I ${IF_VIRTUAL} -s ${HOSTNAME_VIRTUAL} )
 if [ $? -ne 0 ] ; then
-    	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  $WARN ${ERRNO[6]} -d "${DESCR[6]}" -1 "$res"
+    	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$res"
 else
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[5]} -d "${DESCR[5]}"
 fi
