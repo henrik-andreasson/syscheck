@@ -98,7 +98,7 @@ def test_ansible_playbook_syntax_check():
         
     # Set up temporary ANSIBLE_COLLECTIONS_PATH structure
     collections_dir = "/tmp/ansible_test_collections_syntax"
-    collection_link_dir = os.path.join(collections_dir, "ansible_collections/aberosecurity")
+    collection_link_dir = os.path.join(collections_dir, "ansible_collections/henrikandreasson")
     os.makedirs(collection_link_dir, exist_ok=True)
     
     # Symlink our collection root (misc/ansible) to the collection path
