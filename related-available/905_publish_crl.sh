@@ -48,7 +48,7 @@ get () {
     printtoscreen "${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME $CRLFILE"
     CMD=$(${EJBCA_HOME}/bin/ejbca.sh ca getcrl $CRLNAME "$CRLFILE")
     if [ $? != 0 -o  ! -r $CRLFILE  ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "$DESCR[6]" -1 "$CRLNAME/$CRLFILE"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$CRLNAME/$CRLFILE"
     fi
     printtoscreen $CMD
 
@@ -64,13 +64,27 @@ put () {
     SSHKEY=$4
     SSHUSER=$5
 
-    $SYSCHECK_HOME/related-enabled/906_ssh-copy-to-remote-machine.sh -s $CRLFILE $REMOTEHOST $REMOTEDIR $SSHUSER $SSHKEY
+    $SYSCHECK_HOME/related-available/906_ssh-copy-to-remote-machine.sh -s --file="$CRLFILE" --host="$REMOTEHOST" --dir="$REMOTEDIR" --user="$SSHUSER" --key="$SSHKEY"
 
     if [ $? = 0 ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[8]} -d "$DESCR[8]" -1 $CRLNAME -2 $REMOTEHOST
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[8]} -d "${DESCR[8]}" -1 $CRLNAME -2 $REMOTEHOST
     else
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "$DESCR[2]" -1 $CRLNAME -2 $REMOTEHOST
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 $CRLNAME -2 $REMOTEHOST
     fi
+}
+
+
+### read one field from a crl ###
+# ejbca writes der, a hand-placed crl is often pem, so try both
+crlfield () {
+    CRLFIELD=$1
+    CRLPATH=$2
+
+    CRLVALUE=$(openssl crl -inform der -in "$CRLPATH" $CRLFIELD -noout 2>/dev/null)
+    if [ "x${CRLVALUE}" = "x" ] ; then
+        CRLVALUE=$(openssl crl -inform pem -in "$CRLPATH" $CRLFIELD -noout 2>/dev/null)
+    fi
+    echo "$CRLVALUE"
 }
 
 
@@ -97,34 +111,34 @@ checkcrl () {
 
 # file not found where it should be
     if [ ! -f $CRLFILE ] ; then
-	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "$DESCR[4]" -1 "$CRLFILE"
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$CRLFILE"
        return 4
     fi
 
 # stat return check
     CRL_FILE_SIZE=`stat -c"%s" $CRLFILE`
     if [ $? -ne 0 ] ; then
-	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "$DESCR[5]" -1 "$CRLFILE"
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "$CRLFILE"
        return 5
     fi
 
 # crl of 0 size?
     if [ "x$CRL_FILE_SIZE" = "x0" ] ; then
-	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "$DESCR[6]" -1 "$CRLFILE"
+	     printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$CRLFILE"
         return 6
     fi
 
 
-      LASTUPDATE=$(openssl crl -inform der -in $outname -lastupdate -noout | sed 's/lastUpdate=//')
+      LASTUPDATE=$(crlfield -lastupdate "$CRLFILE" | sed 's/lastUpdate=//')
       if [ "x${LASTUPDATE}" = "x" ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLFILE (Cant parse file,lastupdate)"
-
+        return 7
       fi
 
-      NEXTUPDATE=$(openssl crl -inform der -in $outname -nextupdate -noout | sed 's/nextUpdate=//')
+      NEXTUPDATE=$(crlfield -nextupdate "$CRLFILE" | sed 's/nextUpdate=//')
       if [ "x${NEXTUPDATE}" = "x" ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLFILE (Cant parse file,nextupdate)"
-
+        return 7
       fi
 
       CRLMESSAGE=$(${SYSCHECK_HOME}/lib/cmp_dates.py "$LASTUPDATE" "$NEXTUPDATE" ${ARGWARNMIN} ${ARGERRMIN} )
@@ -135,19 +149,19 @@ checkcrl () {
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$CRLFILE (Cant parse file)"
         return 7
 
-      elif [ $CRLCHECK -eq 3 ] ; then
+      elif [ "$CRLCHECK" -eq 3 ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "$CRLFILE: ${CRLMESSAGE}"
         return 7
 
-      elif [ $CRLCHECK -eq 2 ] ; then
+      elif [ "$CRLCHECK" -eq 2 ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "$CRLFILE: ${CRLMESSAGE}"
         return 7
 
-      elif [ $CRLCHECK -eq 1 ] ; then
+      elif [ "$CRLCHECK" -eq 1 ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[8]} -d "${DESCR[8]}" -1 "$CRLFILE: ${CRLMESSAGE}"
         return 7
 
-      elif [ $CRLCHECK -eq 0 ] ; then
+      elif [ "$CRLCHECK" -eq 0 ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$CRLFILE: ${CRLMESSAGE}"
         return 0
       else
@@ -182,9 +196,9 @@ for (( i=0; i < ${#CRLCANAME[@]} ; i++ )){
     if [ "x${REMOTE_HOST[$i]}" = "xlocalhost" ] ; then
 	cp -f ${CRLFILE} "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	if [ $? -eq 0 ] ;then
-	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "$DESCR[1]" -1 ${CRLCANAME[$i]}
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 ${CRLCANAME[$i]}
 	else
-	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "$DESCR[3]" -1 ${CRL_NAME[$i]} -2 "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 ${CRL_NAME[$i]} -2 "${CRLTO_DIR[$i]}/${CRL_NAME[$i]}"
 	fi
 
     else
