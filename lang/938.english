@@ -8,7 +8,7 @@ HELP[1]="configure fullbackup name"
 DESCR[2]="Mariadb full backup dir already exist"
 HELP[2]="Use a non-existing directory"
 
-DESCR[3]="run failed (%s)"
+DESCR[3]="run failed %s (time: %s size: %s error: %s)"
 HELP[3]="Check error code"
 
 DESCR[4]="backup successful %s (time: %s size: %s)"

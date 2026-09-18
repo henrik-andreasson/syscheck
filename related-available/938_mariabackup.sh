@@ -22,8 +22,8 @@ getconfig "mariadb"
 
 #test $# == 0 &&schelp&&exit
 
-INPUTARGS=`/usr/bin/getopt --options "fi" --long "full,incremental,help,screen" -- "$@"`
-if [ $? != 0 ] ; then help ; fi
+INPUTARGS=`/usr/bin/getopt --options "fisxh" --long "full,incremental,screen,batch,help" -- "$@"`
+if [ $? != 0 ] ; then schelp ; exit 1 ; fi
 eval set -- "$INPUTARGS"
 
 while true; do
@@ -37,21 +37,14 @@ while true; do
   esac
 done
 
-if [[ $TYPE == "full" ]] ; then
-    mariabackup_full_backup
-elif [[ $TYPE == "full" ]] ; then
-    mariabackup_incremental_backup
-fi
-
-
 mariabackup_full_backup() {
     FULL_BACKUP_NAME=$1
-    if [[ -z "${FULL_BACKUP_NAME" ]] ; then
+    if [[ -z "${FULL_BACKUP_NAME}" ]] ; then
         printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l $ERROR -e "${ERRNO[1]}" -d "${DESCR[1]}"
     fi
     BACKUP_TO_DIR="${MARIABACKUP_BASEDIR}/"
     if [ -f ${BACKUP_TO_DIR}/xtrabackup_logfile.qp ];then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d ${DESCR[2]} -1 "${BACKUP_TO_DIR}"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${BACKUP_TO_DIR}"
         exit 1
     fi
 
@@ -64,9 +57,9 @@ mariabackup_full_backup() {
   filesize=$(du -sh "${BACKUP_TO_DIR}")
 
   if [ $retcode != 0 ] ; then
-      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${BACKUP_TO_DIR}" -2 $TIMETOCOMPLEATE -3 $filesize -4 "$dumpret"
+      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${BACKUP_TO_DIR}" -2 "$TIMETOCOMPLEATE" -3 "$filesize" -4 "$dumpret"
   else
-      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${BACKUP_TO_DIR}" -2 $TIMETOCOMPLEATE -3 "$filesize" -4 "$dumpret"
+      printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${BACKUP_TO_DIR}" -2 "$TIMETOCOMPLEATE" -3 "$filesize" -4 "$dumpret"
   fi
 
 }
@@ -88,9 +81,15 @@ mariabackup_incremental_backup() {
     filesize=$(du -sh "${BACKUP_TO_INC_DIR}")
 
     if [ $retcode != 0 ] ; then
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "${FULL_BACKUP_NAME}" -2 "${BACKUP_TO_INC_DIR}" -3 $TIMETOCOMPLEATE -3 $filesize -4 "$dumpret"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "${FULL_BACKUP_NAME}" -2 "${BACKUP_TO_INC_DIR}" -3 "$TIMETOCOMPLEATE" -4 "$filesize" -5 "$dumpret"
     else
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "${FULL_BACKUP_NAME}" -2 "${BACKUP_TO_INC_DIR}" -3 $TIMETOCOMPLEATE -3 "$filesize"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO  -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "${FULL_BACKUP_NAME}" -2 "${BACKUP_TO_INC_DIR}" -3 "$TIMETOCOMPLEATE" -4 "$filesize" -5 "$dumpret"
     fi
 
 }
+
+if [[ $TYPE == "full" ]] ; then
+    mariabackup_full_backup
+elif [[ $TYPE == "incremental" ]] ; then
+    mariabackup_incremental_backup
+fi
