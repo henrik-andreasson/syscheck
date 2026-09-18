@@ -44,58 +44,65 @@ done
 # main part of script
 
 if [ "x$SSHFILE" = "x" ] ; then
-    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
-    exit
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$SSHFILE"
+    exit 1
+fi
+
+if [ ! -f "$SSHFILE" ] || [ ! -r "$SSHFILE" ] ; then
+    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$SSHFILE"
+    exit 1
 fi
 
 if [ "x$SSHHOST" = "x"  ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
-	exit
+	exit 1
 fi
-BASE_FILE_NAME=$(basename $SSHFILE)
+BASE_FILE_NAME=$(basename "$SSHFILE")
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 CHECK_REMOTE_FILE_ALREADY_EXIST=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="ls -1  \"${SSHDIR}/${BASE_FILE_NAME}\"" | tail -1)
 FIXED_REMOTE_FILE_ALREADY_EXIST=$(echo "${CHECK_REMOTE_FILE_ALREADY_EXIST}" | grep "${BASE_FILE_NAME}")
 if [ "x$FIXED_REMOTE_FILE_ALREADY_EXIST" == "x${SSHDIR}/${BASE_FILE_NAME}" ] ; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[7]} -d "${DESCR[7]}" -1 "${SSHHOST}" -2 "${CHECK_REMOTE_FILE_ALREADY_EXIST}" -3 "${SSHFILE}"
-  exit -1
+  exit 1
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 LOCAL_SHA1=$(sha1sum "${SSHFILE}" | awk '{print $1}')
 FILESIZE=$(du --block-size=M "${SSHFILE}" | grep "${SSHFILE}" | awk '{print $1}' | sed 's/M//')
 CHECK_REMOTE_SPACE=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="df  --block-size=M \"${SSHDIR}\"" | tail -1 | awk '{print $4}' | sed 's/M//' )
-if [ $? -ne 0 ] ; then
-   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$runresult"
-   exit -1
-fi
-
 FIXED_REMOTE_SPACE=$(echo "${CHECK_REMOTE_SPACE}" | grep -v "${SYSTEMNAME}")
-if [ $FIXED_REMOTE_SPACE -lt $FILESIZE ] ; then
+case "$FIXED_REMOTE_SPACE" in
+  ''|*[!0-9]*)
+   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "no disk space figure from ${SSHHOST}:${SSHDIR} (${CHECK_REMOTE_SPACE})"
+   exit 1
+   ;;
+esac
+
+if [ "$FIXED_REMOTE_SPACE" -lt "$FILESIZE" ] ; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "${SSHHOST}" -2 "${SSHDIR}" -3 "${CHECK_REMOTE_SPACE}" -4 "${FILESIZE}"  -5 "${SSHFILE}"
-  exit -1
+  exit 1
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 runresult=$(echo "put ${SSHFILE}" | sftp -r ${SSHTIMEOUT} -i ${SSHFROMKEY} -b - ${SSHTOUSER}@${SSHHOST}:${SSHDIR} 2>&1)
 if [ $? -ne 0 ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$runresult"
-	exit -1
+	exit 1
 fi
 
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 REMOTE_SHA1=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="sha1sum \"${SSHDIR}/${BASE_FILE_NAME}\"" | tail -1 | awk '{print $1}')
 CHECK_REMOTE_FILESIZE=$(${SYSCHECK_HOME}/related-available/915_remote_command_via_ssh.sh --host="${SSHHOST}" --user="${SSHTOUSER}" --key="${SSHFROMKEY}" --command="du  --block-size=M \"${SSHDIR}/${BASE_FILE_NAME}\"" | tail -1)
-if [ $? -ne 0 ] ; then
-   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "$CHECK_REMOTE_FILESIZE"
-   exit -1
+if [ -z "$CHECK_REMOTE_FILESIZE" ] ; then
+   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "no size reported for ${SSHHOST}:${SSHDIR}/${BASE_FILE_NAME}"
+   exit 1
 fi
 
 if [ "$REMOTE_SHA1" != "$LOCAL_SHA1" ] ; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX}  -l $ERROR -e ${ERRNO[6]} -d "${DESCR[6]}" -1 "${SSHHOST}" -2 "${SSHDIR}" -3 "${REMOTE_SHA1}" -4 "${LOCAL_SHA1}" -5 "${SSHFILE}"
-  exit -1
+  exit 1
 else
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}"
 fi
