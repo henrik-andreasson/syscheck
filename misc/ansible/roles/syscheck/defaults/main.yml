@@ -44,6 +44,10 @@
  enable_sc_31_hp_health:       false
  enable_sc_32_check_db_sync:   false
  enable_sc_33_healthchecker:   false
+ enable_sc_34_redis:           false
+ enable_sc_35_dell_raid:       false
+ enable_sc_35_dell_health:     false
+ enable_sc_36_dell_health:     false
 
  enable_900_export_cert:            false
  enable_901_export_revocation:      false
@@ -71,15 +75,11 @@
 
  webclitool: curl
 
- sc_01_disks: 4
- sc_01_path_0: "/"
- sc_01_proc_0: "70"
- sc_01_path_1: "/var/lib"
- sc_01_proc_1: "70"
- sc_01_path_2: "/var/log"
- sc_01_proc_2: "70"
- sc_01_path_3: "/backup"
- sc_01_proc_3: "60"
+ sc_01_disks:
+  - { path: "/", warn: "70", error: "85" }
+  - { path: "/var/lib", warn: "70", error: "85" }
+  - { path: "/var/log", warn: "70", error: "85" }
+  - { path: "/backup", warn: "60", error: "80" }
 
  sc_03_mem: 85
  sc_03_swap: 77
