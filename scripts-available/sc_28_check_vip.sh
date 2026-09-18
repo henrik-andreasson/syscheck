@@ -28,8 +28,8 @@ if [ ! -f "${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh" ] ; t
   exit
 fi
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-CHECK_VIP_NODE1=$(${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE1} "${IFCONFIG} | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} ${SSH_KEY} | awk '{print $2}' | sed 's/addr\://g')
-CHECK_VIP_NODE2=$(${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh ${HOSTNAME_NODE2} "${IFCONFIG} | grep ${HOSTNAME_VIRTUAL}" ${SSH_USER} ${SSH_KEY} | awk '{print $2}' | sed 's/addr\://g')
+CHECK_VIP_NODE1=$(${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh --host="${HOSTNAME_NODE1}" --command="${IFCONFIG} | grep ${HOSTNAME_VIRTUAL}" --user="${SSH_USER}" --key="${SSH_KEY}" | awk '{print $2}' | sed 's/addr\://g')
+CHECK_VIP_NODE2=$(${SYSCHECK_HOME}/related-enabled/915_remote_command_via_ssh.sh --host="${HOSTNAME_NODE2}" --command="${IFCONFIG} | grep ${HOSTNAME_VIRTUAL}" --user="${SSH_USER}" --key="${SSH_KEY}" | awk '{print $2}' | sed 's/addr\://g')
 
 if [ "$CHECK_VIP_NODE1" = "${HOSTNAME_VIRTUAL}" -a "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
@@ -40,6 +40,6 @@ elif [ "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 fi
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-if [ ! "$NODE1" = "${HOSTNAME_VIRTUAL}" -a ! "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
+if [ ! "$CHECK_VIP_NODE1" = "${HOSTNAME_VIRTUAL}" -a ! "$CHECK_VIP_NODE2" = "${HOSTNAME_VIRTUAL}" ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}"
 fi
