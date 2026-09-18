@@ -205,11 +205,11 @@ printlogmess(){
 
         if [ "x${PRINTTOSCREEN}" = "x1" ] ; then
           if [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xJSON" ] ; then
-            printf "${JSONSTRING}\n" >&2
+            printf '%s\n' "${JSONSTRING}" >&2
           elif [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xNEWFMT" ] ; then
-            printf "${NEWFMTSTRING}\n" >&2
+            printf '%s\n' "${NEWFMTSTRING}" >&2
           elif [ "x${PRINTTOSCREEN_OUTPUTTYPE}" = "xOLDFMT" ] ; then
-            printf "${OLDFMTSTRING}\n" >&2
+            printf '%s\n' "${OLDFMTSTRING}" >&2
           else
             printf "unknown format PRINTTOSCREEN_OUTPUTTYPE: ${PRINTTOSCREEN_OUTPUTTYPE}"
             exit -1
@@ -218,11 +218,11 @@ printlogmess(){
 
         if [ "x${PRINTTOFILE}" = "x1" ] ; then
           if [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xJSON" ] ; then
-            printf "${JSONSTRING}\n" >> ${PRINTTOFILE_FILENAME}
+            printf '%s\n' "${JSONSTRING}" >> ${PRINTTOFILE_FILENAME}
           elif [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xNEWFMT" ] ; then
-            printf "${NEWFMTSTRING}\n"  >> ${PRINTTOFILE_FILENAME}
+            printf '%s\n' "${NEWFMTSTRING}"  >> ${PRINTTOFILE_FILENAME}
           elif [ "x${PRINTTOFILE_OUTPUTTYPE}" = "xOLDFMT" ] ; then
-            printf "${OLDFMTSTRING}\n"  >> ${PRINTTOFILE_FILENAME}
+            printf '%s\n' "${OLDFMTSTRING}"  >> ${PRINTTOFILE_FILENAME}
           else
             printf "unknown format PRINTTOFILE_OUTPUTTYPE: ${PRINTTOFILE_OUTPUTTYPE}"
             exit -1
@@ -231,11 +231,11 @@ printlogmess(){
 
         if [ "x${SENDTOSYSLOG}" = "x1" ] ; then
           if [ "x${SENDTOSYSLOG_OUTPUTTYPE}" = "xJSON" ] ; then
-            printf "${JSONSTRING}\n"   | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL}
+            printf '%s\n' "${JSONSTRING}"   | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL}
           elif [ "x${SENDTOSYSLOG_OUTPUTTYPE}" = "xNEWFMT" ] ; then
-            printf "${NEWFMTSTRING}\n" | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL}
+            printf '%s\n' "${NEWFMTSTRING}" | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL}
           elif [ "x${SENDTOSYSLOG_OUTPUTTYPE}" = "xOLDFMT" ] ; then
-            printf "${OLDFMTSTRING}\n" | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL}
+            printf '%s\n' "${OLDFMTSTRING}" | logger -p ${SYSLOGFACILLITY}.${SYSLOGLEVEL}
           else
             printf "unknown format SENDTOSYSLOG_OUTPUTTYPE: ${SENDTOSYSLOG_OUTPUTTYPE}"
             exit -1
@@ -244,11 +244,11 @@ printlogmess(){
 
         if [ "x${SAVELASTSTATUS}" = "x1" ] ; then
           if [ "x${SAVELASTSTATUS_OUTPUTTYPE}" = "xJSON" ] ; then
-            printf "${JSONSTRING}\n"   >> ${SYSCHECK_HOME}/var/last_status
+            printf '%s\n' "${JSONSTRING}"   >> ${SYSCHECK_HOME}/var/last_status
           elif [ "x${SAVELASTSTATUS_OUTPUTTYPE}" = "xNEWFMT" ] ; then
-            printf "${NEWFMTSTRING}\n" >> ${SYSCHECK_HOME}/var/last_status
+            printf '%s\n' "${NEWFMTSTRING}" >> ${SYSCHECK_HOME}/var/last_status
           elif [ "x${SAVELASTSTATUS_OUTPUTTYPE}" = "xOLDFMT" ] ; then
-            printf "${OLDFMTSTRING}\n" >> ${SYSCHECK_HOME}/var/last_status
+            printf '%s\n' "${OLDFMTSTRING}" >> ${SYSCHECK_HOME}/var/last_status
           else
             printf "unknown format SAVELASTSTATUS_OUTPUTTYPE: ${SAVELASTSTATUS_OUTPUTTYPE}"
             exit -1
@@ -331,10 +331,10 @@ logbookmess(){
 
 	if [ "x${LOGBOOK_OUTPUTTYPE}" = "xJSON" ] ; then
            LOGBOOK_JSONSTRING="{ \"FROM\": \"SYSCHECK\", \"SYSCHECK_VERSION\": \"${SYSCHECK_VERSION}\", \"LOGFMT\": \"LOGBOOK-1.1\", \"SCRIPTID\": \"${SCRIPTID}\", \"SCRIPTINDEX\": \"${SCRIPTINDEX}\", \"LEVEL\": \"${LEVEL}\", \"ERRNO\": \"${ERRNO}\", \"SYSTEMNAME\": \"${SYSTEMNAME}\", \"DATE\": \"${DATE}\", \"HOSTNAME\": \"${HOST}\", \"SEC1970NANO\": \"${SEC1970NANO}\", \"LONGLEVEL\":  \"$LONGLEVEL\", \"DESCRIPTION\": \"$DESCR\", \"USERNAME\":   \"$ARG1\", \"LOGENTRY\":   \"$ARG2\", \"LEGACYFMT\":   \"${NEWFMTSTRING}\", \"SEC1970\": \"${SEC1970}\"  }"
-       		printf "${LOGBOOK_JSONSTRING}\n" >> ${LOGBOOK_FILENAME}
+       		printf '%s\n' "${LOGBOOK_JSONSTRING}" >> ${LOGBOOK_FILENAME}
 
 	elif [ "x${LOGBOOK_OUTPUTTYPE}" = "xNEWFMT" ] ; then
-      		printf "${NEWFMTSTRING}\n" >> ${LOGBOOK_FILENAME}
+      		printf '%s\n' "${NEWFMTSTRING}" >> ${LOGBOOK_FILENAME}
 	else
 			printf "unknown format LOGBOOK_OUTPUTTYPE: ${LOGBOOK_OUTPUTTYPE}"
 			exit -1

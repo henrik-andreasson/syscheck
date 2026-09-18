@@ -50,6 +50,7 @@ export PRINTVERBOSESCREEN
 export SAVELASTSTATUS
 
 if [ "x$TESTALL" == "x1" ] ; then
+  SAVELASTSTATUS=0 ; export SAVELASTSTATUS
   for file in ${SYSCHECK_HOME}/scripts-available/sc_* ; do
   	$file
   done

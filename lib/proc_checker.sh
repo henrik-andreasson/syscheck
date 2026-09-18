@@ -39,8 +39,8 @@ elif [ -f $1 ] ; then
 	fi
 
 
-elif [ $(isdigit $1) ] ; then
-	checkpid $1
+elif isdigit "$1" ; then
+	checkpid "$1"
 
 elif [ "x$2" != "x" ] ; then
 	procname=$2
