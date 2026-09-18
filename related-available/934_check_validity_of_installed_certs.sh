@@ -41,8 +41,8 @@ done
 checkJKS() {
     keystoreFile=$1
     alias=$2
-    certFile=$(mktemp) || exit
-    trap "rm -f -- '$certFile'" EXIT
+    local certFile
+    certFile=$(mktemp) || return 1
 
     if [ "x$alias" = "x" ] ; then
         # we'll try to guess the alias
@@ -57,7 +57,7 @@ checkJKS() {
     # TODO check error
 
     checkDER $certFile
-
+    rm -f -- "$certFile"
 }
 
 checkPEM() {
@@ -71,24 +71,31 @@ checkPEM() {
     #notAfter=May 22 12:41:47 2020 GMT
     #subject=CN = admin.lcsim.certificateservices.se, serialNumber = 2018, O = Logica SE IM Certificate Service
 
-    nowDate=$(TZ="GMT" date +"%b %d %H:%m:%S %Y %Z")
+    nowDate=$(TZ="GMT" date +"%b %d %H:%M:%S %Y %Z")
     notAfter=$(openssl x509 -in $keystoreFile -enddate -noout| sed 's/notAfter=//')
-    if [ $? -ne 0 ] ; then echo asdf ; exit ; fi
-    # TODO check error
+    if [ "x$notAfter" = "x" ] ; then
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$keystoreFile" -2 "no expiry date in file" -3 ""
+        return 1
+    fi
 
 
     subject=$(openssl x509 -in $keystoreFile -subject -noout)
     # TODO check error
 
     timeDiffMin=$($SYSCHECK_HOME/lib/cmp_dates.py "$nowDate"  "$notAfter"  --minutes )
-    # TODO check error
+    case "$timeDiffMin" in
+        ''|*[!0-9-]*)
+            printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$keystoreFile" -2 "could not read expiry date" -3 "$subject"
+            return 1
+            ;;
+    esac
 
     let timeDiffHours="$timeDiffMin / 60"
     let timeDiffDays="$timeDiffMin / 60 / 24"
 
-    if [ $timeDiffDays -le $ERRORDAYS ] ; then
+    if [ "$timeDiffDays" -le "$ERRORDAYS" ] ; then
 	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$keystoreFile" -2 "$timeDiffDays" -3 "$subject"
-	elif [ $timeDiffDays -le $WARNINGDAYS ] ; then
+	elif [ "$timeDiffDays" -le "$WARNINGDAYS" ] ; then
 	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $WARN -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$keystoreFile" -2 "$timeDiffDays" -3 "$subject"
 	else
 	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "$keystoreFile" -2 "$timeDiffDays" -3 "$subject"
@@ -105,14 +112,14 @@ checkDER() {
             exit
     fi
 
-    certFile=$(mktemp) || exit
-    trap "rm -f -- '$certFile'" EXIT
+    local certFile
+    certFile=$(mktemp) || return 1
 
     openssl x509 -in $keystoreFile -out $certFile -inform der -outform pem
     # TODO check error
 
     checkPEM $certFile
-
+    rm -f -- "$certFile"
 }
 
 
@@ -120,13 +127,14 @@ checkP12() {
     keystoreFile=$1
     keystorePass=$2
 
-    certFile=$(mktemp) || exit
-    trap "rm -f -- '$certFile'" EXIT
+    local certFile
+    certFile=$(mktemp) || return 1
 
     openssl pkcs12 -info -in $keystoreFile -clcerts -nokeys -out $certFile -passin "pass:$keystorePass" 2>/dev/null
     # TODO check error
 
     checkPEM $certFile
+    rm -f -- "$certFile"
 }
 
 
