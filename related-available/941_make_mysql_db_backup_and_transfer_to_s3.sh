@@ -125,7 +125,7 @@ for FILE in ${FULLFILENAME}; do
 			"${S3_ENDPOINT[$i]}/${S3_BUCKET[$i]}/${OBJECTKEY}" 2>&1)
 		retcode=$?
 
-		if [ $retcode -eq 0 ] ; then
+		if [ "$retcode" -eq 0 ] ; then
 			ETAG=$(grep -i '^etag:' "${HEADERFILE}" | tr -d '\r"' | awk '{print $2}')
 			printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${S3_ENDPOINT[$i]}" -2 "${OBJECTKEY}" -3 "${ETAG}"
 		else
