@@ -16,13 +16,13 @@ SCRIPTNAME=mariadb_jobs
 SCRIPTID=940
 
 # how many info/warn/error messages
-NO_OF_ERR=2
-initscript $SCRIPTID $NO_OF_ERR 3
+NO_OF_ERR=3
+initscript $SCRIPTID $NO_OF_ERR
 getconfig "mariadb"
 
 
 INPUTARGS=`/usr/bin/getopt --options "hsj:l" --long "help,screen,listjob,job:" -- "$@"`
-if [ $? != 0 ] ; then help ; fi
+if [ $? != 0 ] ; then schelp ; exit 1 ; fi
 eval set -- "$INPUTARGS"
 
 while true; do
@@ -45,10 +45,20 @@ if [ "x${listjob}" == "x1" ] ; then
 elif [ "x${jobname}" != "x" ] ; then
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
+    case "$jobname" in
+        ''|*[!0-9]*)
+            printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "${jobname}"
+            exit 1 ;;
+    esac
+    if [ "${jobname}" -ge "${#DBJOBS_SQL[@]}" ] ; then
+        printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[3]}" -d "${DESCR[3]}" -1 "${jobname}"
+        exit 1
+    fi
+
     sqlret=$(echo "${DBJOBS_SQL[${jobname}]}" | $MYSQL_BIN -u root --password="${MYSQLROOT_PASSWORD}")
     retcode=$?
     sqlret=$(echo "$sqlret" | grep -v "count" | tr '\n' ';')
-    if [ $retcode -eq 0 ] ; then
+    if [ "$retcode" -eq 0 ] ; then
         printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$INFO"  -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "${DBJOBS_NAME[$jobname]}" -2 "${sqlret}"
     else
         printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "${DBJOBS_NAME[$jobname]}" -2 "${sqlret}"
@@ -62,7 +72,7 @@ else
 		sqlret=$(echo "${DBJOBS_SQL[$i]}" | $MYSQL_BIN -u root --password="${MYSQLROOT_PASSWORD}")
 		retcode=$?
 		sqlret=$(echo "$sqlret" | grep -v "count" | tr '\n' ';')
-		if [ $retcode -eq 0 ] ; then
+		if [ "$retcode" -eq 0 ] ; then
 			printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$INFO"  -e "${ERRNO[1]}" -d "${DESCR[1]}" -1 "${DBJOBS_NAME[$i]}" -2 "${sqlret}"
 		else
 			printlogmess -n "${SCRIPTNAME}" -i "${SCRIPTID}" -x "${SCRIPTINDEX}" -l "$ERROR" -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "${DBJOBS_NAME[$i]}" -2 "${sqlret}"

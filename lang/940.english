@@ -7,3 +7,6 @@ HELP[1]="no action needed"
 
 DESCR[2]="Job: %s run failed with %s"
 HELP[2]="Run manually to see more error messages"
+
+DESCR[3]="No such job: %s, run with --listjob to see the configured jobs"
+HELP[3]="Pass the number shown by --listjob"
