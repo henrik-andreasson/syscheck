@@ -4097,3 +4097,35 @@ applies the pattern as a regex, and strips the quotes the raw conf line carries.
 
 Suites run behind the shared-library change: `sc_12`, `sc_40` and
 `test_proc_checker.py` — 28 passed, 0 xfailed.
+
+## 2026-09-18 — D41 and D42 in `sc_02`
+
+**D41** — `addOneToIndex` ran *after* the fetch block, so the two
+`printlogmess` calls inside it (the curl connection failure and the unknown-tool
+guard) reported at the initial `SCRIPTINDEX` of `00` while every other outcome
+reported at `01`.
+
+Monitoring keys on `${SCRIPTID}-${SCRIPTINDEX}`, so `02-00` and `02-01` were two
+different services. When EJBCA became unreachable, `02-01` — the service anyone
+was actually watching — stopped being updated and went *stale* rather than red,
+while a `02-00` nobody had a rule for appeared instead. The failure most worth
+catching was the one that did not light up the dashboard.
+
+`00` is also the **summary** index by convention elsewhere in the tree — `sc_06`,
+`sc_31` and `sc_40` all reset to it deliberately, and D50 in `sc_08` was exactly
+a case of leaking a non-summary message onto it.
+
+Fixed by moving the increment above the dispatch, so every outcome of a
+single-check script lands on one key.
+
+**D42** — the `else` branch reporting `ERRNO[3]` ("health check tool failure")
+had no `exit`, so it fell through to the output parsing. `$OUTPUT` had never
+been written, `FULLOUTPUT` was empty, and the script emitted a second message —
+`ERRNO[4]`, "application server unavailable" — blaming EJBCA for a typo in
+`CHECKTOOL`. Fixed with `exit 1`.
+
+`test_sc_02_ejbca.py` is 20 passed, 0 xfailed. Neither test needed rewriting;
+both already asserted the right thing.
+
+**Still open in this family:** `sc_37` has the identical D42 pattern — its
+`CHECKTOOL` guard reports and then carries on to claim the fetch failed.
