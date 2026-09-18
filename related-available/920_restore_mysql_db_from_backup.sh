@@ -16,12 +16,12 @@ SCRIPTNAME=restore_db
 SCRIPTID=920
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR
 getconfig "mariadb"
 
 # get command line arguments
-INPUTARGS=`/usr/bin/getopt --options "hsvb" --long "help,screen,verbose,backupfile:" -- "$@"`
+INPUTARGS=`/usr/bin/getopt --options "hsvb:" --long "help,screen,verbose,backupfile:" -- "$@"`
 if [ $? != 0 ] ; then schelp ; fi
 #echo "TEMP: >$TEMP<"
 eval set -- "$INPUTARGS"
@@ -39,11 +39,11 @@ done
 # main part of script
 
 if [ "x$BACKUPFILE" = "x" ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -d ${DESCR[4]}
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}"
 	exit
 fi
 
-echo "enter 'im-really-sure' (without the '-') to continue or ctrl-c to abort"
+echo "enter 'im really sure' to continue or ctrl-c to abort"
 read a
 if [ "x$a" != "xim really sure" ] ; then
         echo "ok probably wise choice, exiting"
@@ -53,18 +53,21 @@ fi
 
 echo "now we'll backup the current database before we restore the one you specified"
 
-$SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s
+# 904 --batch prints the filename it wrote, one line per configured database
+SAFETYBACKUP=$($SYSCHECK_HOME/related-available/904_make_mysql_db_backup.sh -s --batch)
+SAFETYBACKUPRET=$?
+SAFETYBACKUP=$(echo "${SAFETYBACKUP}" | tr '\n' ' ')
 
-if [ $? -ne 0 ] ; then
+if [ "$SAFETYBACKUPRET" -ne 0 ] || [ "x${SAFETYBACKUP}" = "x" ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}"
-	exit
+	exit 1
 fi
 
 
 echo "restoring the db from $BACKUPFILE"
 zcat "$BACKUPFILE" | $MYSQL_BIN ${DB_NAME} -u root --password="$MYSQLROOT_PASSWORD"
 if [ $? -eq 0 ] ; then
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "$1"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[2]} -d "${DESCR[2]}" -1 "${BACKUPFILE}"
 else
-	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "$1" -2 "${BACKUPFILE}"
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${BACKUPFILE}" -2 "${SAFETYBACKUP}"
 fi

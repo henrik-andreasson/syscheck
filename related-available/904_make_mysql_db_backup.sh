@@ -63,6 +63,12 @@ for ((i = 0; i < ${#DBNAME[@]}; i++)); do
     MYSQLBACKUPFULLFILENAME="${MYSQLBACKUPDIR}/${EXTRADIR}/${DBNAME[$i]}-${DATESTR}.gz"
     DATESTART=$(date +%s)
 
+    # a name collision means a backup already exists for this second; leave it
+    if [ -f "$MYSQLBACKUPFULLFILENAME" ] ; then
+        printlogmess -n "$SCRIPTNAME" -i "$SCRIPTID" -x "$SCRIPTINDEX" -l "$ERROR" -e "${ERRNO[2]}" -d "${DESCR[2]}" -1 "$MYSQLBACKUPFULLFILENAME" -2 "0" -3 "0" -4 "a backup with this name already exists, not overwriting"
+        continue
+    fi
+
     read -r -a table_args <<< "${TABLENAMES[$i]:-}"
 
     if dumpret=$(set -o pipefail; { "$MYSQLDUMP_BIN" -u root --password="$MYSQLROOT_PASSWORD" "${MYSQLDUMP_OPTIONS[@]}" "${DBNAME[$i]}" "${table_args[@]}" | gzip -c > "$MYSQLBACKUPFULLFILENAME"; } 2>&1); then
