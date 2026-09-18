@@ -369,9 +369,6 @@ def test_a_failure_reaches_the_summary(hsm):
 
 # --- the reconstructed command, and what it hides ---------------------------
 
-@pytest.mark.xfail(strict=True, reason="D70: the real `slot set` answer carries a "
-                                      "parenthetical, so the session guard's slot "
-                                      "comparison can never match")
 def test_the_session_guard_accepts_the_real_slot_set_line(hsm):
     """`slot set` answers, verbatim from the capture:
 

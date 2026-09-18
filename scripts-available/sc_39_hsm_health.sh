@@ -137,6 +137,12 @@ validate_configuration () {
   fi
 }
 
+# lunacm answers "Current Slot Id: 1 (Luna User Slot 7.0.1 (PW) ...)" - the
+# parenthetical is descriptive, only the leading number is the slot
+extract_slot_id () {
+  extract_colon_field "$1" "Current Slot Id" | awk '{print $1}'
+}
+
 run_lunacm_sessions () {
   if [[ ! -x ${LUNACM} ]] ; then
     APP_SESSION_ERROR="LunaCM executable not found or not executable: ${LUNACM}"
@@ -176,7 +182,7 @@ run_lunacm_sessions () {
     else
       APP_COMMAND_ERRORS=$(printf '%s\n' "${APP_OUTPUT}" | grep -E 'Command Result[[:space:]]*:' | grep -Ev 'Command Result[[:space:]]*:[[:space:]]*No Error[[:space:]]*$' | paste -sd ';' -)
       APP_COMMAND_SUCCESS_COUNT=$(printf '%s\n' "${APP_OUTPUT}" | grep -Ec 'Command Result[[:space:]]*:[[:space:]]*No Error[[:space:]]*$')
-      APP_CURRENT_SLOT=$(extract_colon_field "${APP_OUTPUT}" "Current Slot Id")
+      APP_CURRENT_SLOT=$(extract_slot_id "${APP_OUTPUT}")
       if [[ -n ${APP_COMMAND_ERRORS} ]] ; then
         APP_SESSION_ERROR="LunaCM application partition command failed: ${APP_COMMAND_ERRORS}"
       elif (( APP_COMMAND_SUCCESS_COUNT < 4 )) ; then
@@ -201,7 +207,7 @@ run_lunacm_sessions () {
     else
       ENV_COMMAND_ERRORS=$(printf '%s\n' "${ENV_OUTPUT}" | grep -E 'Command Result[[:space:]]*:' | grep -Ev 'Command Result[[:space:]]*:[[:space:]]*No Error[[:space:]]*$' | paste -sd ';' -)
       ENV_COMMAND_SUCCESS_COUNT=$(printf '%s\n' "${ENV_OUTPUT}" | grep -Ec 'Command Result[[:space:]]*:[[:space:]]*No Error[[:space:]]*$')
-      ENV_CURRENT_SLOT=$(extract_colon_field "${ENV_OUTPUT}" "Current Slot Id")
+      ENV_CURRENT_SLOT=$(extract_slot_id "${ENV_OUTPUT}")
       if [[ -n ${ENV_COMMAND_ERRORS} ]] ; then
         ENV_SESSION_ERROR="LunaCM environmental command failed: ${ENV_COMMAND_ERRORS}"
       elif (( ENV_COMMAND_SUCCESS_COUNT < 3 )) ; then
