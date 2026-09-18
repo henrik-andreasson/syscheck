@@ -16,7 +16,7 @@ SCRIPTNAME=firewall
 SCRIPTID=09
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
@@ -24,6 +24,20 @@ default_script_getopt $*
 # main part of script
 
 SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
+# an empty rule is an empty grep pattern, it matches every line
+UNCONFIGURED=""
+if [ "x${IPTABLES_RULE1}" = "x" ] ; then
+	UNCONFIGURED="IPTABLES_RULE1"
+fi
+if [ "x${IPTABLES_RULE2}" = "x" ] ; then
+	UNCONFIGURED="${UNCONFIGURED:+${UNCONFIGURED} and }IPTABLES_RULE2"
+fi
+if [ "x${UNCONFIGURED}" != "x" ] ; then
+	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${UNCONFIGURED}"
+	exit
+fi
+
 IPTABLES_RULES=$($IPTABLES_BIN -L -n 2>&1)
 if [ $? -ne 0 ] ; then
 	printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[1]} -d "${DESCR[1]}"
