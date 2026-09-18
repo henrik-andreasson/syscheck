@@ -2,4 +2,4 @@
 - hosts: all
   gather_facts: True
   roles:
-     - aberosecurity.syscheck.syscheck
+     - henrikandreasson.syscheck.syscheck
