@@ -1,8 +1,0 @@
-SCRIPT_HUMAN_NAME="Copy config to NODE2"
-
-HELP="Copy EJBCA conf/, p12/ and syscheck"
-DESCR[1]="Copy run successfully"
-HELP[1]="All is ok"
-
-DESCR[2]="Copy failed (%s) "
-HELP[1]="Check config and keys to remote hosts"
