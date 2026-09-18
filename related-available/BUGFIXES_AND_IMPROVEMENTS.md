@@ -526,7 +526,7 @@ fi
 **Recommendation**: Establish consistent error handling policy  
 **Severity**: LOW - Maintainability issue
 
-### 21. Hard-coded paths (Multiple files) ❌ OPEN
+### 21. Hard-coded paths (Multiple files) ✅ CLOSED (MOOT)
 **Files**: `922-simple-database-replication-check.sh`, `938_mariabackup.sh`  
 **Issue**: Paths hard-coded instead of using variables
 ```bash
@@ -540,6 +540,11 @@ mkdir -p "$SYSCHECK_HOME/tmp/"
 ```
 **Recommendation**: Use variables for all paths  
 **Severity**: LOW - Flexibility issue
+
+> **2026-09-14 — ✅ CLOSED (MOOT).** The `938` script was fully rewritten
+> and now uses the configured `${MARIABACKUP_BASEDIR}` directory exclusively.
+> The `922` script already parameterizes temp paths under `"$SYSCHECK_HOME/tmp/"`.
+> Hard-coded paths are no longer present in production scripts.
 
 ### 22. Missing input validation (920_restore_mysql_db_from_backup.sh) ⚠️ PARTIAL
 **File**: `920_restore_mysql_db_from_backup.sh`  
