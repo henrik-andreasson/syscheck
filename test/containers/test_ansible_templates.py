@@ -1,0 +1,85 @@
+"""End-to-end template compilation and rendering tests for the Ansible role.
+
+This ensures all templates under misc/ansible/roles/syscheck/templates compile
+successfully against the default variables configured in defaults/main.yml.
+"""
+
+from __future__ import annotations
+
+import os
+import pytest
+import yaml
+import jinja2
+
+ROLE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../misc/ansible/roles/syscheck"))
+DEFAULTS_FILE = os.path.join(ROLE_PATH, "defaults/main.yml")
+TEMPLATES_DIR = os.path.join(ROLE_PATH, "templates")
+
+
+def load_defaults() -> dict:
+    """Load default variables from main.yml."""
+    with open(DEFAULTS_FILE, "r") as f:
+        # Load yaml and strip out potential ansible-specific values or set mock defaults
+        data = yaml.safe_load(f) or {}
+    
+    # Add common extra vars that would normally be supplied by Ansible at runtime
+    data.update({
+        "inventory_hostname": "ca1.lab.certificateservices.org",
+        "webclitool": "curl",
+        "sc_01_disks": [
+            {"path": "/", "warn": "70", "error": "85"},
+            {"path": "/var/lib", "warn": "70", "error": "85"}
+        ],
+        "sc_08_crl_from_webserver_urls": [
+            "http://localhost/crl/eIDCA.crl",
+            "http://localhost/crl/eSignCA.crl"
+        ],
+        "sc_08_crl_time_out": 10,
+        "sc_08_crl_retries": 2,
+        "sc_33_healthcheck": [
+            "certservice-public"
+        ],
+        "apache_public_http_ip": "127.0.0.1",
+        "apache_public_http_port": "80",
+        "apache_admin_http_ip": "127.0.0.1",
+        "apache_admin_http_port": "443",
+        "sc_36_dell_health_fans": [{"id": "0", "fanid": "0"}],
+        "sc_36_dell_health_temps": [{"id": "0", "tempid": "0"}],
+        "sc_36_dell_health_cpus": [{"id": "0", "cpuid": "0"}],
+        "sc_36_dell_health_psus": [{"id": "0", "psuid": "0"}]
+    })
+    return data
+
+
+def test_defaults_yaml_loads_successfully():
+    """Verify defaults/main.yml is valid YAML."""
+    defaults = load_defaults()
+    assert isinstance(defaults, dict)
+    assert "syscheck_home" in defaults
+
+
+def get_templates() -> list[str]:
+    """Gather all template file names."""
+    if not os.path.exists(TEMPLATES_DIR):
+        return []
+    return [f for f in os.listdir(TEMPLATES_DIR) if os.path.isfile(os.path.join(TEMPLATES_DIR, f))]
+
+
+@pytest.mark.parametrize("template_name", get_templates())
+def test_template_compiles_and_renders_successfully(template_name):
+    """Verify each template compiles and renders with defaults."""
+    # Load defaults
+    defaults = load_defaults()
+
+    # Load template
+    with open(os.path.join(TEMPLATES_DIR, template_name), "r") as f:
+        template_content = f.read()
+
+    # Set up Jinja2 environment and render template
+    env = jinja2.Environment(undefined=jinja2.StrictUndefined)
+    template = env.from_string(template_content)
+    
+    # This will raise an exception if there are undefined variables or syntax errors
+    rendered = template.render(**defaults)
+    
+    assert isinstance(rendered, str)
