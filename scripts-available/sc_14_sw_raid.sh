@@ -47,5 +47,5 @@ swraidcheck () {
 
 for (( i = 0 ;  i < ${#MDDEV[@]} ; i++ )) ; do
     SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-    swraidcheck ${#MDDEV[$i]} ${#DDDEV[$i]} $SCRIPTINDEX
+    swraidcheck "${MDDEV[$i]}" "${HDDEV[$i]}" "$SCRIPTINDEX"
 done
