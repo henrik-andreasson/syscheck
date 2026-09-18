@@ -12,7 +12,7 @@ import subprocess
 import pytest
 
 ROLE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../misc/ansible/roles/syscheck"))
-PLAYBOOK_PATH = os.path.abspath(os.path.join(ROLE_PATH, "../../playbook-syscheck"))
+PLAYBOOK_PATH = os.path.abspath(os.path.join(ROLE_PATH, "../../playbooks/playbook-syscheck.yml"))
 TEST_HOME = "/tmp/syscheck_test"
 TEST_BACKUP = "/tmp/syscheck_test/backup"
 TEST_SSH_KEY = "/tmp/syscheck_test/id_rsa"
@@ -86,9 +86,27 @@ def test_ansible_playbook_run_and_installation():
         "setup_cron=false"
     )
 
+    # Set up temporary ANSIBLE_COLLECTIONS_PATH structure
+    collections_dir = "/tmp/ansible_test_collections_run"
+    collection_link_dir = os.path.join(collections_dir, "ansible_collections/aberosecurity")
+    os.makedirs(collection_link_dir, exist_ok=True)
+    
+    # Symlink our collection root (misc/ansible) to the collection path
+    collection_dest = os.path.join(collection_link_dir, "syscheck")
+    if os.path.exists(collection_dest):
+        if os.path.islink(collection_dest):
+            os.remove(collection_dest)
+        else:
+            subprocess.run(["rm", "-rf", collection_dest])
+            
+    os.symlink(os.path.abspath(os.path.join(ROLE_PATH, "../..")), collection_dest)
+
     # Run playbook with sudo, local connection, targeting localhost
+    # We pass ANSIBLE_COLLECTIONS_PATH directly into the env block of sudo
     cmd = [
-        "sudo", ansible_playbook_bin,
+        "sudo",
+        f"ANSIBLE_COLLECTIONS_PATH={collections_dir}",
+        ansible_playbook_bin,
         "-i", "localhost,",
         "-c", "local",
         "--extra-vars", extra_vars,
@@ -97,6 +115,10 @@ def test_ansible_playbook_run_and_installation():
     
     res = subprocess.run(cmd, capture_output=True, text=True)
     
+    # Clean up symlink
+    if os.path.exists(collections_dir):
+        subprocess.run(["rm", "-rf", collections_dir])
+
     assert res.returncode == 0, f"Playbook run failed:\nSTDERR: {res.stderr}\nSTDOUT: {res.stdout}"
 
     # Verify directory structure was created by Ansible
