@@ -23,6 +23,8 @@ default_script_getopt $*
 
 # main part of script
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
 CMD=$($SYSCHECK_HOME/lib/list-pcsc-readers.py 2>&1)
 ERRCHK=$(echo $CMD| grep "ModuleNotFoundError: No module named")
 
@@ -33,7 +35,6 @@ fi
 
 CURRENT_NUMBER_OF_READERS=$(echo "${CMD}" | head -1 | cut -f2 -d\: )
 
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 if [ "$PCSC_NUMBER_OF_READERS" == "$CURRENT_NUMBER_OF_READERS" ] ; then
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $INFO -e ${ERRNO[1]} -d "${DESCR[1]}" -1 "${CURRENT_NUMBER_OF_READERS}" -2 "${PCSC_NUMBER_OF_READERS}"
 else
