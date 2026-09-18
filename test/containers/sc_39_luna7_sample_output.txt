@@ -1,0 +1,173 @@
+# thales luna 7 doc
+
+https://www.thalesdocs.com/gphsm/luna/7/docs/pci/Content/PDF_PCI/LunaCM%20Command%20Reference.pdf
+
+# slot set
+
+https://www.thalesdocs.com/gphsm/luna/7/docs/pci/Content/lunacm/commands/slot/slot_set.htm
+
+lunacm:>slot set -slot 1
+Current Slot Id: 1 (Luna User Slot 7.0.1 (PW) Signing With Cloning Mode)
+Command Result : No Error
+
+
+# role show
+
+https://www.thalesdocs.com/gphsm/luna/7/docs/pci/Content/lunacm/commands/role/role_show.htm
+
+lunacm:> role show -name co
+State of role 'Crypto Officer':
+Primary authentication type: PED
+Secondary authentication type: PIN
+Failed login attempts before lockout: 10
+Failed change password attempts before lockout: 10
+Command Result : No Error
+lunacm:> role show -name Crypto User
+State of role 'Crypto User':
+Not initialized.
+Command Result : No Error
+
+# hsm showinfo
+
+https://www.thalesdocs.com/gphsm/luna/7/docs/pci/Content/lunacm/commands/hsm/hsm_showinfo.htm
+
+lunacm:> hsm showinfo
+Partition Label -> myPCIeHSM
+Partition Manufacturer -> SafeNet
+Partition Model -> Luna K7
+Partition Serial Number -> 67842
+Partition Status -> L3 Device
+HSM Part Number -> 808-000048-002
+HSM Serial Number -> 67842
+Token Flags ->
+CKF_RNG
+CKF_RESTORE_KEY_NOT_NEEDED
+CKF_TOKEN_INITIALIZED
+RPV Initialized -> No
+Slot Id -> 16
+Session State -> CKS_RW_SO_FUNCTIONS
+Role Status -> SO logged in
+Partition SMK OUIDs:
+SMK-FW4: Not Initialized
+SMK-FW6: Not Initialized
+SMK-FW7-FM: Not Initialized
+SMK-FW7-Rollover: Not Initialized
+SMK-FW7-Primary: 2a0000003a00000102090100
+Extended Token Flags ->
+TOKEN_KCV_CREATED
+Partition OUID -> 000000000000000002090100
+Partition Storage:
+Total Storage Space: 655360
+Used Storage Space: 0
+Free Storage Space: 655360
+Object Count: 0
+Overhead: 16192
+*** The HSM is NOT in FIPS approved operation mode. ***
+FM HW Status -> FM Ready
+Firmware Version -> 7.8.4
+Bootloader Version -> 1.1.5
+Rollback Firmware Version -> 7.4.2
+System Times:
+HSM : Wed Nov 27 20:20:21 UTC 2024
+Host : Wed Nov 27 20:20:21 UTC 2024
+Difference: 0 sec
+Environmental:
+Fan 1 Status : active
+Fan 2 Status : active
+Battery Voltage : 3.093 V
+Battery Warning Threshold Voltage : 2.750 V
+System Temp : 64 deg. C
+System Temperature Warning Threshold : 75 deg. C
+HSM Storage:
+Total Storage Space: 67108864
+Used Storage Space: 7315283
+Free Storage Space: 59793581
+Allowed Partitions: 1
+Number of Partitions: 1
+License Count:
+1. 621000068-000 Test Cert : K7 Base
+2. 621010185-003 Key backup via cloning protocol
+3. 621000138-001 Controlled tamper recovery
+4. 621000134-002 Enable 64 megabytes of object storage
+5. 621000021-002 Maximum performance
+6. 621000135-002 Enable allow decommissioning
+7. 621000154-001 Enable decommission on tamper with policy off
+Command Result : No Error
+
+
+# partition showinfo v0
+
+https://www.thalesdocs.com/gphsm/luna/7/docs/pci/Content/lunacm/commands/partition/partition_showinfo.htm
+
+lunacm:> partition showinfo
+Partition Label -> par0
+Partition Manufacturer -> Safenet, Inc.
+Partition Model -> LunaSA 7.0.0
+Partition Serial Number -> 154438865317
+Partition Status -> L3 Device
+HSM Part Number -> 808-000048-002
+Token Flags ->
+CKF_LOGIN_REQUIRED
+CKF_USER_PIN_INITIALIZED
+CKF_RESTORE_KEY_NOT_NEEDED
+CKF_TOKEN_INITIALIZED
+RPV Initialized -> Not Supported
+Slot Id -> 0
+Session State -> CKS_RW_PUBLIC_SESSION
+Role Status -> none logged in
+Token Flags ->
+TOKEN_KCV_CREATED
+Partition OUID: 01010000090000061b030100
+Partition Storage:
+Total Storage Space: 324096
+Used Storage Space: 0
+Free Storage Space: 324096
+Object Count: 0
+Overhead: 9648
+*** The partition is NOT in FIPS 140-2 approved operation mode. ***
+Command Result : No Error
+
+# partition showinfo v1
+
+lunacm:> partition showinfo
+Partition Label -> myPCIePar
+Partition Manufacturer -> SafeNet
+Partition Model -> Luna K7
+Partition Serial Number -> 157956935657
+Partition Status -> L3 Device
+HSM Part Number -> 808-000048-002
+HSM Serial Number -> 67842
+Token Flags ->
+CKF_RNG
+CKF_LOGIN_REQUIRED
+CKF_USER_PIN_INITIALIZED
+CKF_RESTORE_KEY_NOT_NEEDED
+CKF_TOKEN_INITIALIZED
+RPV Initialized -> No
+Slot Id -> 6
+Session State -> CKS_RW_PUBLIC_SESSION
+Role Status -> none logged in
+Partition SMK OUIDs:
+SMK-FW4: Not Initialized
+SMK-FW6: Not Initialized
+SMK-FW7-FM: Not Initialized
+SMK-FW7-Rollover: Not Initialized
+SMK-FW7-Primary: 320000003a00000102090100
+Extended Token Flags ->
+TOKEN_KCV_CREATED
+Partition OUID -> 2b0000003a00000102090100
+Partition Storage:
+Total Storage Space: 6627739
+Used Storage Space: 84480
+Free Storage Space: 6543259
+Object Count: 256
+*** The HSM is NOT in FIPS approved operation mode. ***
+FM HW Status -> FM Ready
+Firmware Version -> 7.8.4
+Bootloader Version -> 1.1.5
+Rollback Firmware Version -> 7.4.2
+System Times:
+HSM : Wed Nov 27 20:27:47 UTC 2024
+Host : Wed Nov 27 20:27:46 UTC 2024
+Difference: 1 sec
+Command Result : No Error
