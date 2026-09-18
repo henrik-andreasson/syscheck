@@ -16,7 +16,7 @@ SCRIPTNAME=running_processes
 SCRIPTID=30
 
 # how many info/warn/error messages
-NO_OF_ERR=3
+NO_OF_ERR=4
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
@@ -32,12 +32,12 @@ for (( i = 0 ;  i < ${#PROCNAME[@]} ; i++ )) ; do
 	# try restart
 	if [ "x${RESTARTCMD[$i]}" = "x" ] ; then
 	    # no restart cmd defined
-	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${PROCNAME[$i]}"
+	    printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[4]} -d "${DESCR[4]}" -1 "${PROCNAME[$i]}"
 	    continue
 	fi
 
-	SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
-	FOO=$(${RESTARTCMD[$i]} 2>&1)
+	# eval, the config uses the "stop ; sleep 3 ; start" form
+	FOO=$(eval "${RESTARTCMD[$i]}" 2>&1)
 
 	if [ $? -eq 0 ] ; then
 	# log restart success
