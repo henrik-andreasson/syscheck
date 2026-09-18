@@ -39,11 +39,7 @@
  enable_sc_18_sqlselect:       true
  enable_sc_19_alive:           true
  enable_sc_20_errors_ejbcalog: true
- enable_sc_22_boks_replica:    false
- enable_sc_23_rsa_axm:         false
- enable_sc_27_dss:             false
  enable_sc_28_check_vip:       false
- enable_sc_29_signserver:      false
  enable_sc_30_check_running_procs: false
  enable_sc_31_hp_health:       false
  enable_sc_32_check_db_sync:   false
@@ -52,7 +48,6 @@
  enable_900_export_cert:            false
  enable_901_export_revocation:      false
  enable_902_export_crl:             false
- enable_903_make_hsm_backup:        false
  enable_904_make_mysql_db_backup:   true
  enable_905_publish_crl:            false
  enable_906_ssh_copy_to_remote_machine:                          true
@@ -62,22 +57,14 @@
  enable_910_deactivate_CAs:         false
  enable_911_activate_VIP:           false
  enable_912_deactivate_VIP:         false
- enable_913_copy_ejbca_conf:        false
- enable_914_compare_master_slave_db:     false
  enable_915_remote_command_via_ssh:      false
  enable_916_archive_access_manager_logs: false
  enable_917_archive_file:                false
- enable_918_server_alive:                false
  enable_919_certpublisher_remotecommand:  false
  enable_920_restore_mysql_db_from_backup: true
- enable_921_copy_htmf_conf:               false
  enable_922_simple_database_replication_check:       false
- enable_923_rsync_to_remote_machine:                 false
- enable_924_backup_this_machine_to_remote_machine:   false
  enable_925_publish_crl_from_file:                   false
- enable_926_local_htmf_copy_conf:                    false
  enable_927_create_crls:                             true
- enable_928_check_dsm_backup:                        false
  enable_929_filter_syscheck_messages:                true
  enable_930_send_filtered_result_to_remote_machine:  true
  enable_931_mysql_backup_encrypt_send_to_remote_host: true
