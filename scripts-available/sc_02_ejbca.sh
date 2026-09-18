@@ -29,6 +29,9 @@ OUTPUT='/tmp/ejbcahealth.log'
 rm -f $OUTPUT
 
 cd /tmp
+
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
 if [ "x${CHECKTOOL}" = "xwget" ] ; then
         ${CHECKTOOL} "${URL}" -T ${EJBCA_TIMEOUT} -t 1 -O $OUTPUT 2>/dev/null
 elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
@@ -41,9 +44,8 @@ elif [ "x${CHECKTOOL}" = "xcurl" ] ; then
 
 else
         printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+        exit 1
 fi
-
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
 FULLOUTPUT=$(cat $OUTPUT)
 OKOUTPUT=$(cat $OUTPUT | grep ALLOK )
