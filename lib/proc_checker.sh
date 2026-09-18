@@ -16,7 +16,7 @@ checkpid(){
 }
 checkPidByName(){
 	the_name=$1
-	ps -ef | egrep $the_name  | grep -v grep | grep -v proc_checker.sh
+	ps -ef | egrep "$the_name"  | grep -v grep | grep -v proc_checker.sh
 }
 
 proc_checker_help() {
