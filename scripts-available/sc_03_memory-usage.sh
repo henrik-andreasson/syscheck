@@ -16,10 +16,18 @@ SCRIPTNAME=memoryusage
 SCRIPTID=03
 
 # how many info/warn/error messages
-NO_OF_ERR=4
+NO_OF_ERR=5
 initscript $SCRIPTID $NO_OF_ERR
 
 default_script_getopt $*
+
+# If HUMAN_READABLE=1 but numfmt is not installed on the system,
+# gracefully fall back to displaying raw KB values. We re-source the
+# language file so that the DESCR messages are properly re-evaluated with ' KB'.
+if [ "x$HUMAN_READABLE" == "x1" ] && ! command -v numfmt >/dev/null 2>&1 ; then
+    HUMAN_READABLE=0
+    source $SYSCHECK_HOME/lang/03.${SYSCHECK_LANG:-english}
+fi
 
 # main part of script
 
@@ -35,6 +43,16 @@ checkmem(){
     TOTALSWAP=`free | grep Swap | awk '{print $2}'`
     USEDSWAP=`free | grep Swap | awk '{print $3}'`
 
+    # no figures from free, without this both checks report a false breach
+    for VALUE in "$TOTALMEMORY" "$USEDMEMORY" "$TOTALSWAP" "$USEDSWAP" ; do
+        case "$VALUE" in
+            ''|*[!0-9]*)
+                SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+                printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[5]} -d "${DESCR[5]}" -1 "free gave no usable figures"
+                return 1
+                ;;
+        esac
+    done
 
     MEMORYLIMIT=`expr $TOTALMEMORY \* $INMEMORYLIMIT \/ 100`
     SWAPLIMIT=`expr $TOTALSWAP \* $INSWAPLIMIT \/ 100`
@@ -72,4 +90,14 @@ checkmem(){
 }
 
 # max 80% of memory and 50% of swap
-checkmem ${MEM_PERCENT} ${SWAP_PERCENT}
+MEM_PERCENT="${MEM_PERCENT:-80}"
+SWAP_PERCENT="${SWAP_PERCENT:-50}"
+
+case "$MEM_PERCENT" in
+    ''|*[!0-9]*) MEM_PERCENT=80 ;;
+esac
+case "$SWAP_PERCENT" in
+    ''|*[!0-9]*) SWAP_PERCENT=50 ;;
+esac
+
+checkmem "${MEM_PERCENT}" "${SWAP_PERCENT}"
