@@ -7,6 +7,7 @@ successfully against the default variables configured in defaults/main.yml.
 from __future__ import annotations
 
 import os
+import subprocess
 import pytest
 import yaml
 import jinja2
@@ -83,3 +84,18 @@ def test_template_compiles_and_renders_successfully(template_name):
     rendered = template.render(**defaults)
     
     assert isinstance(rendered, str)
+
+
+def test_ansible_playbook_syntax_check():
+    """Verify that the overall Ansible playbook syntax check passes."""
+    playbook_path = os.path.abspath(os.path.join(ROLE_PATH, "../../playbook-syscheck"))
+    hosts_path = os.path.abspath(os.path.join(ROLE_PATH, "../../hosts"))
+    
+    # We find the ansible-playbook executable inside the virtualenv's bin directory
+    ansible_playbook_bin = os.path.abspath(os.path.join(os.path.dirname(__file__), ".venv/bin/ansible-playbook"))
+    if not os.path.exists(ansible_playbook_bin):
+        ansible_playbook_bin = "ansible-playbook"
+        
+    cmd = [ansible_playbook_bin, "--syntax-check", "-i", hosts_path, playbook_path]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    assert res.returncode == 0, f"Ansible playbook syntax check failed:\nSTDERR: {res.stderr}\nSTDOUT: {res.stdout}"
