@@ -39,13 +39,13 @@ send_syslog_msg(){
 
 
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
 syslog=$($SYSCHECK_HOME/lib/proc_checker.sh $pidfile $procname)
 
 if [ "x$syslog" = "x" ] ; then
   printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[2]} -d "${DESCR[2]}"
 	exit 2;
 fi
-
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 
 send_syslog_msg
