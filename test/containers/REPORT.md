@@ -2717,12 +2717,12 @@ described as a missing one, and that it produces no archive.
 With this, every script in `related-available/` runs. `902` was the last one
 that could not.
 
-### `925_publish_crl_from_file` calls `906` positionally ❌ OPEN — needs a decision
+### `925_publish_crl_from_file` calls `906` positionally ✅ FIXED 2026-09-16
 
-Same class as `921` and `913`, but not silent: `906` refuses on the missing
-`--file` and `925` reports `ERRNO[4]` for every host, so it always fails rather
-than never running. Delete on the `921` precedent, or convert to named options —
-not decided, so no suite written.
+Same class as `921` and `913`, but not silent: `906` refused on the missing
+`--file` and `925` reported `ERRNO[4]` for every host, so it always failed
+rather than never running. Converted to named options rather than deleted, and
+`test_925_publish_crl_from_file.py` written behind it — 12 passed.
 
 ### Smaller items
 
@@ -3369,10 +3369,27 @@ Two changes went in alongside:
 
 `test_930_send_filtered_result_to_remote_machine.py` is 11 passed, 0 xfailed.
 
-### D117 — `907`'s messages name neither file nor host ❌ OPEN
+### D117 — `907`'s messages name neither file nor host ✅ FIXED 2026-09-18
 
-Both outcome calls pass no arguments, though `DESCR[3]` has a placeholder. With
-several backup hosts configured the log says a transfer failed but not which.
+Both outcome calls passed no arguments, though `DESCR[3]` had a placeholder and
+`DESCR[1]` had none at all. With several backup hosts configured the log said a
+transfer failed but not which destination, leaving the index as the only way to
+tell them apart.
+
+Both descriptions now carry file and host, matching `930` and `931`. `DESCR[2]`,
+the failed-backup branch, also gained the `FULLFILENAME` its own placeholder had
+been waiting for.
+
+The `906` call moved from `related-enabled/` to `related-available/` at the same
+time. That completes the sweep for every script that calls `906`: `905`, `907`,
+`919`, `925`, `930` and `931` are all off the enabled path.
+
+`test_907_backup_and_transfer.py` is 12 passed, 0 xfailed.
+
+**Still on `related-enabled/`:** `900`, `901` and `902`, all calling `917` —
+which defaults to **disabled** in the ansible role, so those three are the
+exposed ones. `906` defaults to enabled, which is why nothing broke in practice
+for the scripts just moved.
 
 ### D118–D121 — `923` cannot transfer anything 🗑 SCRIPT DELETED
 
@@ -3999,3 +4016,84 @@ range. All three sites corrected together. Verified: `CN=publisher.example.com`
 now publishes intact, and a `serialNumber=SN-123.4` survives too.
 
 `test_919_certpublisher_remotecommand.py` is 10 passed, 0 xfailed.
+
+## 2026-09-18 — `sc_38`'s swapped codes
+
+Both defects were swaps, and both were fixed in the **script** rather than the
+language file.
+
+**D36** — the `threads_connected` guard emitted `ERRNO[2]` ("problem reading max
+variable") and the `max_connections` guard emitted `ERRNO[3]` ("problem reading
+connections"). Each sent the operator to look at the figure that was fine.
+
+Swapping the indices in the script keeps `382` meaning what it has always meant
+and makes it fire on the right condition. Swapping the texts instead would have
+redefined an existing error code — silently changing every historical record and
+any alert rule keyed on it. The two `-1` arguments went with the fix: both
+descriptions have no placeholder, and the value passed is empty by definition in
+the branch that fired.
+
+**D37** — crossing `ERROR_PERCENT` reported `DESCR[4]` "High level", crossing
+`WARN_PERCENT` reported `DESCR[5]` "Very Hugh level", and **both** were logged at
+`$ERROR`. So the milder condition produced the louder text and the warning tier
+did not exist — both thresholds paged identically, which is what the Icinga
+integration maps to a status code.
+
+`384` is now the warning at `$WARN` and `385` the error at `$ERROR`, matching
+their texts and their severity ordering.
+
+Two existing tests had encoded the swapped codes and were corrected with the
+fix: `test_crossing_the_warn_threshold_is_reported` expected `385`, and
+`test_crossing_the_error_threshold_is_reported` expected `384`. Both now also
+assert the level, which D37 broke independently of the text.
+
+`test_sc_38_mysql_connections.py` is 12 passed, 0 xfailed.
+
+Not changed: `DESCR[5]`'s "Very Hugh" is a typo for "Huge", left alone because it
+is operator-visible text someone may be grepping for. And `percent_used` is
+integer division, so 99.7% reads as 99 — a host one connection from its limit
+can sit just under a 99% error threshold.
+
+## 2026-09-18 — D40, and the quoting that had to precede it
+
+`config/12.conf` and `config/40.conf` both shipped
+
+```
+pidfile=/var/lib/mysql/mysqld.pid
+procname=/usr/sbin/mysqld
+```
+
+Verified against a live `mariadb:11`: the process is `mariadbd` and the pidfile
+is `/run/mysqld/mysqld.pid`. Neither shipped value matched, so on any current
+MariaDB `sc_12` reported a perfectly healthy server as **down** and exited 3.
+`sc_40` carried the identical pair.
+
+Now:
+
+```
+pidfile=/run/mysqld/mysqld.pid
+procname='mysqld|mariadbd'
+```
+
+**`lib/proc_checker.sh` had to be fixed first.** `checkPidByName` ran
+`egrep $the_name` unquoted, so an alternation would have been read by bash as a
+**pipe** — `egrep mysqld` feeding a command called `mariadbd`. Measured: it
+"succeeds" with exit 0 while matching nothing. Now `egrep "$the_name"`, which is
+strictly more correct anyway; a procname containing a space broke the same way.
+
+The `/usr/sbin/` prefix went deliberately. A container shows the process as bare
+`mariadbd`, systemd shows `/usr/sbin/mariadbd`, and a path-anchored pattern
+matches only one of them. The cost is a looser match — `mariadbd-safe` would hit
+too — which is the right trade for a liveness check.
+
+The pidfile matters less than it appears: `proc_checker.sh` falls through to the
+name check when the file is absent, so a wrong path degrades rather than fails.
+Both being wrong is what turned a degraded check into a false alarm.
+
+`test_the_shipped_procname_matches_a_real_server` needed rewriting rather than
+just unmarking: it asserted the value was a literal **substring** of the
+server's argv, which was right for a path and wrong for a pattern. It now
+applies the pattern as a regex, and strips the quotes the raw conf line carries.
+
+Suites run behind the shared-library change: `sc_12`, `sc_40` and
+`test_proc_checker.py` — 28 passed, 0 xfailed.
