@@ -1,5 +1,5 @@
 ### Ansible Collection Metadata
-namespace: aberosecurity
+namespace: henrikandreasson
 name: syscheck
 version: 2.0.0
 readme: README.md
@@ -7,5 +7,5 @@ authors:
   - Henrik Andreasson <henrik.andreasson@gmail.com>
 description: Ansible Collection for deploying and configuring Syscheck on secure nodes.
 license: GPL-3.0-or-later
-repository: https://github.com/aberosecurity/syscheck
+repository: https://github.com/henrik-andreasson/syscheck
 dependencies: {}
