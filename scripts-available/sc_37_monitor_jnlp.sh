@@ -30,13 +30,15 @@ OUTPUT="/tmp/internal-error.txt"
 rm -f "$OUTPUT"
 trap 'rm -f "$OUTPUT"' EXIT
 
+SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
+
 if [ "x${CHECKTOOL}" = "xcurl" ] ; then
         ${CHECKTOOL} "${URL}" "${HEADER[@]}" --max-time ${CURL_TIMEOUT} --retry 1 --output $OUTPUT 2>/dev/null
 else
-        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}"
+        printlogmess -n ${SCRIPTNAME} -i ${SCRIPTID} -x ${SCRIPTINDEX} -l $ERROR -e ${ERRNO[3]} -d "${DESCR[3]}" -1 "${CHECKTOOL}"
+        exit 1
 fi
 
-SCRIPTINDEX=$(addOneToIndex $SCRIPTINDEX)
 OKOUTPUT=$(cat $OUTPUT | grep "JNLP File generated" | sed 's/<!--//' | sed 's/-->//')
 FULLOUTPUT=$(cat $OUTPUT | tr -d "\n")
 

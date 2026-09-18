@@ -232,8 +232,6 @@ def test_an_unknown_checktool_is_reported(jnlp):
     assert "373" in run.errnos, run.describe()
 
 
-@pytest.mark.xfail(strict=True, reason="D42 class: the CHECKTOOL guard reports and "
-                                      "then carries on to claim the fetch failed")
 def test_an_unknown_checktool_reports_only_the_tool_failure(jnlp):
     """`sc_37`'s `else` branch reports ERRNO[3] without `exit`, so the script
     goes on to `cat` a file nothing wrote and adds a second, misleading
