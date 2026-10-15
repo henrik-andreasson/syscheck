@@ -389,3 +389,24 @@ $ ./getroot.sh
 Syscheck is on hold, are you done Y/n?y
 700 00 I 7004 han (1000) User:  is done with root reason:  Sun Nov 19 12:32:52 CET 2017:upgrade sytscheck:han
 ```
+
+
+Nexus CM PGWY Scripts
+===============
+
+For the Nexus CM PGWY scripts to work you need to get the following jar files on your own:
+
+cm-common.jar
+bcprov-jdk15on-1.70.jar
+cm-sdk.jar
+common.jar
+
+You can access them if you have either Nexus CM Server or Nexus CM Client installed at the installation location:
+/opt/cm/server/lib/ (Default location for CM Server)
+/opt/cm/client/lib/ (Default location for CM Client)
+
+The jar files should be put in syscheck location syscheck/lib/
+
+You then need to compile the PgwySign.java and PgwySignServer.java with lib/build_pgwysign.sh before running the API script (sc_50) and test script for load testing in test/ dir.
+
+The sc_50 script expects the p12 files to exist in syscheck/cert dir
